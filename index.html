@@ -81,7 +81,7 @@ body.oraculo .hero{
              radial-gradient(800px 600px at -10% 110%, rgba(20,0,8,.9), transparent 55%), #0A0410;
 }
 body.oraculo .seccion h2.titulo,body.oraculo .panel h3,body.oraculo .metodo h3,
-body.oraculo .cuad h4,body.oraculo .lectura h4{color:#F3EEFC}
+body.oraculo .cuad h4,body.oraculo .lectura h3{color:#F3EEFC}
 body.oraculo .formula{background:#15101F;color:#FF6680;border-color:#2E2342}
 body.oraculo .tabla-zonas tr:hover td,body.oraculo .ranking li:hover{background:#15101F}
 body.oraculo .banda-oscura{background:#000}
@@ -262,7 +262,7 @@ img{max-width:100%}
 }
 .cifra .num{font-family:var(--display);font-weight:800;font-size:1.9rem;letter-spacing:-.02em;color:var(--granate);line-height:1.1}
 .cifra .que{font-weight:600;font-size:.88rem;margin-top:.2rem}
-.cifra .src{font-family:var(--mono);font-size:.62rem;color:#9B6A6E;margin-top:.45rem;letter-spacing:.03em}
+.cifra .src{font-family:var(--mono);font-size:.62rem;color:#6E464B;margin-top:.45rem;letter-spacing:.03em}
 
 .dos-col{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;align-items:stretch}
 .panel{
@@ -303,7 +303,7 @@ img{max-width:100%}
 .pestana{
   flex:1;border:none;background:transparent;cursor:pointer;
   font-family:var(--cuerpo);font-weight:700;font-size:.8rem;
-  padding:.85rem .4rem;color:#9B6A6E;border-bottom:3px solid transparent;
+  padding:.85rem .4rem;color:#7A4E53;border-bottom:3px solid transparent;
   transition:color .2s,border-color .2s;
 }
 .pestana[aria-selected="true"]{color:var(--granate);border-bottom-color:var(--rojo);background:#fff}
@@ -312,7 +312,7 @@ img{max-width:100%}
 @keyframes entra{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 .campo{margin-bottom:1.05rem}
 .campo label{display:block;font-weight:700;font-size:.82rem;margin-bottom:.3rem}
-.campo .ayuda{display:block;font-weight:400;font-size:.72rem;color:#9B6A6E;margin-top:.18rem}
+.campo .ayuda{display:block;font-weight:400;font-size:.72rem;color:#6E464B;margin-top:.18rem}
 .campo select,.campo input[type="number"]{
   width:100%;padding:.6rem .7rem;border:1.5px solid var(--niebla-2);border-radius:9px;
   font-family:var(--cuerpo);font-size:.92rem;color:var(--tinta);background:#fff;
@@ -336,7 +336,7 @@ img{max-width:100%}
   transition:background .2s,transform .15s;
 }
 .btn-calcular:hover{background:var(--granate);transform:translateY(-1px)}
-.nota-mini{font-family:var(--mono);font-size:.64rem;color:#9B6A6E;max-width:18rem}
+.nota-mini{font-family:var(--mono);font-size:.64rem;color:#6E464B;max-width:18rem}
 
 /* Resultados */
 .resultados{display:flex;flex-direction:column;gap:1.5rem;position:sticky;top:84px}
@@ -365,12 +365,12 @@ img{max-width:100%}
   padding:.35rem 1rem;border-radius:999px;text-transform:uppercase;
 }
 .semaforo.alto{background:#E3F1E8;color:var(--ok)}
-.semaforo.medio{background:#F7EDD8;color:var(--alerta)}
+.semaforo.medio{background:#F7EDD8;color:#7A4A06}
 .semaforo.bajo{background:#FBE2E5;color:var(--rojo)}
 .mini-grid{display:grid;grid-template-columns:repeat(20,1fr);gap:3px;margin-top:1rem}
 .mini-grid .celda{border-radius:2px;background:var(--niebla-2);animation:none}
 .mini-grid .celda.viva{background:var(--granate)}
-.mini-grid-leyenda{font-family:var(--mono);font-size:.62rem;color:#9B6A6E;margin-top:.5rem;text-align:left}
+.mini-grid-leyenda{font-family:var(--mono);font-size:.62rem;color:#6E464B;margin-top:.5rem;text-align:left}
 
 .kpis{display:grid;grid-template-columns:1fr 1fr;gap:.8rem}
 .kpi{
@@ -379,13 +379,13 @@ img{max-width:100%}
 }
 .kpi .v{font-family:var(--mono);font-weight:700;font-size:1.05rem;color:var(--granate)}
 .kpi .k{font-size:.7rem;font-weight:600;color:var(--gris-texto);text-transform:uppercase;letter-spacing:.06em}
-.kpi .d{font-size:.68rem;color:#9B6A6E;margin-top:.15rem}
+.kpi .d{font-size:.68rem;color:#6E464B;margin-top:.15rem}
 
 .lectura{
   background:#fff;border-radius:var(--radio);padding:1.3rem 1.4rem;color:var(--tinta);
   box-shadow:0 14px 36px rgba(0,0,0,.35);font-size:.9rem;
 }
-.lectura h4{font-family:var(--display);font-size:1rem;margin-bottom:.5rem;color:var(--granate)}
+.lectura h3{font-family:var(--display);font-size:1rem;margin-bottom:.5rem;color:var(--granate)}
 .lectura ul{padding-left:1.1rem;display:grid;gap:.4rem}
 .lectura li::marker{color:var(--rojo)}
 
@@ -429,7 +429,7 @@ img{max-width:100%}
 .limitaciones h3{font-family:var(--display);font-size:1.1rem;margin-bottom:.5rem;color:var(--granate)}
 .limitaciones p{font-size:.92rem;color:var(--gris-texto)}
 
-.ficha-esc{font-family:var(--mono);font-size:.66rem;color:#9B6A6E;margin-top:.55rem;letter-spacing:.02em}
+.ficha-esc{font-family:var(--mono);font-size:.66rem;color:#6E464B;margin-top:.55rem;letter-spacing:.02em}
 .postales{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:1.5rem}
 .postal{background:#fff;border:1px solid var(--niebla-2);border-radius:var(--radio);overflow:hidden;box-shadow:var(--sombra)}
 .postal svg{display:block;width:100%;height:auto}
@@ -459,7 +459,7 @@ img{max-width:100%}
 
 /* ====== Mapa de zonas ====== */
 .conmutador{display:inline-flex;gap:.4rem;background:var(--hueso);border:1px solid var(--niebla-2);border-radius:999px;padding:.25rem;margin-bottom:1rem}
-.conmutador button{border:none;background:transparent;font-family:var(--cuerpo);font-weight:700;font-size:.78rem;color:#9B6A6E;padding:.45rem 1rem;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
+.conmutador button{border:none;background:transparent;font-family:var(--cuerpo);font-weight:700;font-size:.78rem;color:#6E464B;padding:.45rem 1rem;border-radius:999px;cursor:pointer;transition:background .2s,color .2s}
 .conmutador button.activa{background:var(--rojo);color:#fff}
 .mapa-leaflet{height:440px;border-radius:12px;overflow:hidden;border:1px solid var(--niebla-2);background:var(--niebla)}
 .leaflet-container{font-family:var(--cuerpo)}
@@ -482,7 +482,7 @@ img{max-width:100%}
 .et-geo{font-family:var(--mono);font-size:10px;fill:#9B8078;pointer-events:none;text-anchor:middle;letter-spacing:.06em}
 .mapa-tooltip{position:absolute;pointer-events:none;background:#38070F;color:#fff;font-size:.74rem;line-height:1.45;padding:.55rem .75rem;border-radius:9px;opacity:0;transition:opacity .15s;max-width:230px;box-shadow:0 10px 24px rgba(0,0,0,.3);z-index:5}
 .mapa-tooltip strong{color:#FFC9CF}
-.mapa-nota{font-family:var(--mono);font-size:.64rem;color:#9B6A6E;margin-top:.6rem}
+.mapa-nota{font-family:var(--mono);font-size:.64rem;color:#6E464B;margin-top:.6rem}
 .ranking-titulo{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;text-transform:uppercase;color:var(--granate);margin-bottom:.8rem}
 .ranking{list-style:none;display:grid;gap:.55rem}
 .ranking li{display:flex;align-items:center;gap:.7rem;background:var(--hueso);border:1px solid var(--niebla-2);padding:.55rem .8rem;border-radius:10px;cursor:pointer;transition:transform .15s,box-shadow .15s}
@@ -490,7 +490,7 @@ img{max-width:100%}
 .ranking .medalla{font-size:.95rem;width:1.6rem;text-align:center;flex:none}
 .ranking .punto{width:13px;height:13px;border-radius:4px;flex:none}
 .ranking .rz{flex:1;font-size:.8rem;font-weight:700;line-height:1.25}
-.ranking .ru{display:block;font-size:.66rem;font-weight:500;color:#9B6A6E}
+.ranking .ru{display:block;font-size:.66rem;font-weight:500;color:#6E464B}
 .ranking .rp{font-family:var(--mono);font-weight:700;color:var(--granate)}
 .reco{margin-top:1rem;font-size:.85rem;background:var(--niebla);border-left:4px solid var(--rojo);padding:.7rem .95rem;border-radius:8px}
 
@@ -530,7 +530,7 @@ img{max-width:100%}
 /* ====== Escenarios paralelos (triplete) ====== */
 .triplete{display:grid;grid-template-columns:repeat(3,1fr);gap:.8rem;margin:0 0 1.6rem}
 .universo{background:#fff;border:1px solid var(--niebla-2);border-radius:12px;padding:.9rem 1rem;text-align:center;box-shadow:var(--sombra);position:relative;overflow:hidden}
-.universo .et{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:#9B6A6E;font-weight:700}
+.universo .et{font-family:var(--mono);font-size:.64rem;letter-spacing:.12em;text-transform:uppercase;color:#6E464B;font-weight:700}
 .universo .v{font-family:var(--display);font-weight:800;font-size:1.55rem;letter-spacing:-.02em;line-height:1.1;margin-top:.2rem}
 .universo.pes .v{color:var(--rojo)}.universo.base .v{color:var(--granate)}.universo.opt .v{color:var(--ok)}
 .universo .d{font-size:.72rem;color:var(--gris-texto);margin-top:.15rem}
@@ -542,7 +542,7 @@ img{max-width:100%}
 .cuad:hover{transform:translateY(-3px)}
 .cuad h4{font-family:var(--display);font-weight:700;font-size:1.05rem;display:flex;align-items:center;gap:.55rem;margin-bottom:.2rem}
 .cuad .gl{width:30px;height:30px;border-radius:8px;display:inline-flex;align-items:center;justify-content:center;font-family:var(--mono);font-weight:700;font-size:.95rem;color:#fff;flex:none}
-.cuad .lema{font-size:.74rem;color:#9B6A6E;margin-bottom:.7rem;font-style:italic}
+.cuad .lema{font-size:.74rem;color:#6E464B;margin-bottom:.7rem;font-style:italic}
 .cuad ul{list-style:none;display:grid;gap:.4rem}
 .cuad li{font-size:.85rem;padding-left:1.1rem;position:relative;line-height:1.4}
 .cuad li::before{content:"";position:absolute;left:0;top:.5em;width:7px;height:7px;border-radius:2px}
@@ -551,23 +551,23 @@ img{max-width:100%}
 .cuad.d{border-top:4px solid var(--alerta)} .cuad.d .gl{background:var(--alerta)} .cuad.d li::before{background:var(--alerta)}
 .cuad.a{border-top:4px solid var(--rojo)} .cuad.a .gl{background:var(--rojo)} .cuad.a li::before{background:var(--rojo)}
 .cuad li .factor{font-weight:700}
-.cuad .vacio{font-size:.8rem;color:#B89BA0;font-style:italic}
+.cuad .vacio{font-size:.8rem;color:#6E464B;font-style:italic}
 
 .plan-cab{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:.5rem;margin-bottom:1rem}
 .plan-cab h3{font-family:var(--display);font-weight:700;font-size:1.3rem}
-.plan-cab .nota{font-family:var(--mono);font-size:.7rem;color:#9B6A6E}
+.plan-cab .nota{font-family:var(--mono);font-size:.7rem;color:#6E464B}
 .acciones{display:grid;gap:1rem}
 .accion{background:#fff;border:1px solid var(--niebla-2);border-radius:14px;padding:1.15rem 1.3rem;box-shadow:var(--sombra);display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;transition:transform .18s,box-shadow .18s;animation:pop .4s both}
 .accion:hover{transform:translateX(4px);box-shadow:0 16px 40px rgba(56,7,15,.15)}
 .accion .rank{width:34px;height:34px;border-radius:10px;background:var(--granate);color:#fff;font-family:var(--display);font-weight:800;font-size:1.05rem;display:flex;align-items:center;justify-content:center;flex:none}
-.accion .cuerpo h5{font-family:var(--display);font-weight:600;font-size:1.05rem;margin-bottom:.2rem;color:var(--tinta)}
+.accion .cuerpo h3{font-family:var(--display);font-weight:600;font-size:1.05rem;margin-bottom:.2rem;color:var(--tinta)}
 .accion .que{font-size:.88rem;color:var(--gris-texto);margin-bottom:.5rem}
 .accion .base{font-size:.76rem;color:#7A5B5E;background:var(--hueso);border-left:3px solid var(--rojo);padding:.4rem .65rem;border-radius:6px}
 .accion .base b{color:var(--granate)}
 .accion .impacto{text-align:center;flex:none;min-width:96px}
 .accion .lift{font-family:var(--display);font-weight:800;font-size:1.5rem;color:var(--ok);line-height:1}
 .accion .lift.neg{color:var(--rojo)}
-.accion .lift-k{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:#9B6A6E;margin-top:.2rem}
+.accion .lift-k{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:#6E464B;margin-top:.2rem}
 .accion .proy{font-size:.7rem;color:var(--granate);font-weight:700;margin-top:.35rem}
 .accion .tasa{display:inline-block;margin-top:.4rem;font-family:var(--mono);font-size:.64rem;font-weight:700;color:#2563A8;background:#EAF1FA;padding:.2rem .5rem;border-radius:999px}
 .plan-cierre{margin-top:1.4rem;background:var(--niebla);border-left:5px solid var(--granate);border-radius:12px;padding:1.1rem 1.4rem;font-size:.9rem;color:var(--gris-texto)}
@@ -629,6 +629,8 @@ img{max-width:100%}
 }
 .lista-supuestos{margin:.4rem 0 1rem 1.1rem;font-size:.92rem;color:var(--gris-texto)}
 .lista-supuestos li{margin-bottom:.35rem}
+body.oraculo .accion .cuerpo h3{color:#F3EEFC}
+.cuadro:focus-visible,.pestana:focus-visible{outline:3px solid var(--granate);outline-offset:-3px}
 
 </style>
 </head>
@@ -767,13 +769,13 @@ img{max-width:100%}
     <div class="simulador">
       <form class="consola" id="forma" novalidate>
         <div class="pestanas" role="tablist" aria-label="Grupos de variables">
-          <button type="button" class="pestana" role="tab" aria-selected="true" data-cuadro="c-negocio">① Negocio</button>
-          <button type="button" class="pestana" role="tab" aria-selected="false" data-cuadro="c-ubicacion">② Ubicación</button>
-          <button type="button" class="pestana" role="tab" aria-selected="false" data-cuadro="c-finanzas">③ Finanzas</button>
-          <button type="button" class="pestana" role="tab" aria-selected="false" data-cuadro="c-operacion">④ Operación</button>
+          <button type="button" class="pestana" role="tab" id="t-negocio" aria-controls="c-negocio" tabindex="0" aria-selected="true" data-cuadro="c-negocio">① Negocio</button>
+          <button type="button" class="pestana" role="tab" id="t-ubicacion" aria-controls="c-ubicacion" tabindex="-1" aria-selected="false" data-cuadro="c-ubicacion">② Ubicación</button>
+          <button type="button" class="pestana" role="tab" id="t-finanzas" aria-controls="c-finanzas" tabindex="-1" aria-selected="false" data-cuadro="c-finanzas">③ Finanzas</button>
+          <button type="button" class="pestana" role="tab" id="t-operacion" aria-controls="c-operacion" tabindex="-1" aria-selected="false" data-cuadro="c-operacion">④ Operación</button>
         </div>
 
-        <div class="cuadro activo" id="c-negocio" role="tabpanel">
+        <div class="cuadro activo" id="c-negocio" role="tabpanel" aria-labelledby="t-negocio" tabindex="0">
           <div class="campo">
             <label for="giro">Giro del negocio</label>
             <select id="giro"></select>
@@ -825,7 +827,7 @@ img{max-width:100%}
           </div>
         </div>
 
-        <div class="cuadro" id="c-ubicacion" role="tabpanel">
+        <div class="cuadro" id="c-ubicacion" role="tabpanel" aria-labelledby="t-ubicacion" tabindex="0">
           <div class="campo">
             <label for="zona">Zona de Coacalco</label>
             <select id="zona"></select>
@@ -864,7 +866,7 @@ img{max-width:100%}
           </div>
         </div>
 
-        <div class="cuadro" id="c-finanzas" role="tabpanel">
+        <div class="cuadro" id="c-finanzas" role="tabpanel" aria-labelledby="t-finanzas" tabindex="0">
           <div class="campo">
             <label for="inversion">Inversión inicial total: <span class="valor-rango" id="vInversion">$250,000</span></label>
             <input type="range" id="inversion" min="30000" max="3000000" step="10000" value="250000">
@@ -931,7 +933,7 @@ img{max-width:100%}
           </div>
         </div>
 
-        <div class="cuadro" id="c-operacion" role="tabpanel">
+        <div class="cuadro" id="c-operacion" role="tabpanel" aria-labelledby="t-operacion" tabindex="0">
           <div class="campo">
             <label for="clientes">Clientes esperados por día <button type="button" class="boton-sugerir" id="sugerirClientes">Sugerir por giro y zona</button></label>
             <input type="number" id="clientes" min="1" max="2000" step="1" value="60">
@@ -1029,7 +1031,7 @@ img{max-width:100%}
         </div>
         <div class="kpis" id="kpis"></div>
         <div class="lectura" id="lecturaPanel" hidden>
-          <h4>Lectura estadística del escenario</h4>
+          <h3>Lectura estadística del escenario</h3>
           <ul id="lecturaLista"></ul>
         </div>
       </div>
@@ -1039,25 +1041,26 @@ img{max-width:100%}
       <div class="panel">
         <h3>Curva de supervivencia proyectada</h3>
         <p class="sub">Tu escenario frente al promedio nacional (riesgos proporcionales sobre la tabla INEGI). La banda muestra el rango plausible de P.</p>
-        <div class="lienzo"><canvas id="graficaSupervivencia"></canvas></div>
+        <div class="lienzo"><canvas id="graficaSupervivencia" role="img" aria-label="Curva de supervivencia proyectada a 10 años con banda de incertidumbre" aria-describedby="descGraficas"></canvas></div>
       </div>
       <div class="panel">
         <h3>Distribución de la utilidad anual (Monte Carlo)</h3>
         <p class="sub">Histograma de 2,000 años simulados: choque anual de demanda, ruido mensual de clientes y ticket, y variación del costo variable. Líneas: P5, mediana y P95.</p>
-        <div class="lienzo"><canvas id="graficaMC"></canvas></div>
+        <div class="lienzo"><canvas id="graficaMC" role="img" aria-label="Histograma de la utilidad anual simulada con percentiles 5, 50 y 95" aria-describedby="descGraficas"></canvas></div>
       </div>
       <div class="panel">
         <h3>Punto de equilibrio</h3>
         <p class="sub">Ingresos vs. costos totales según clientes por día; el cruce marca el equilibrio.</p>
-        <div class="lienzo"><canvas id="graficaPE"></canvas></div>
+        <div class="lienzo"><canvas id="graficaPE" role="img" aria-label="Gráfica de punto de equilibrio: ingresos y costos según clientes por día" aria-describedby="descGraficas"></canvas></div>
       </div>
     </div>
 
+    <p class="sr-only" id="descGraficas"></p>
     <div class="graficas-sim analisis" id="analisis">
       <div class="panel">
         <h3>Sensibilidad por variable (tornado de β)</h3>
         <p class="sub">Aporte de cada variable a z en el modelo logístico. Las barras rojas restan probabilidad; las granates la suman.</p>
-        <div class="lienzo"><canvas id="graficaTornado" role="img" aria-label="Gráfica de tornado con el aporte de cada variable"></canvas></div>
+        <div class="lienzo"><canvas id="graficaTornado" role="img" aria-label="Gráfica de tornado con el aporte de cada variable" aria-describedby="descGraficas"></canvas></div>
       </div>
       <div class="panel">
         <h3>Comparar escenarios</h3>
@@ -1475,6 +1478,10 @@ function modeloLogistico(e){
     ["Marketing", e.mktZ],
     ["Estructura de deuda", deudaZ],
     ["Local propio", e.propio?0.10:0],
+    ["Modelo de negocio", e.modZ||0],
+    ["Permisos municipales", e.permZ||0],
+    ["Modalidad de venta", e.modalZ||0],
+    ["Horario extendido", e.horZ||0],
     ["Margen de seguridad financiero", msZ]
   ];
   const z=-0.16+contribs.reduce((s,c)=>s+c[1],0);
@@ -1580,6 +1587,7 @@ $("inversion").addEventListener("input",()=>$("vInversion").textContent=mxn.form
 $("credito").addEventListener("input",()=>$("vCredito").textContent=$("credito").value+"%");
 $("cvar").addEventListener("input",()=>$("vCvar").textContent=$("cvar").value+"%");
 $("merma").addEventListener("input",()=>$("vMerma").textContent=(+$("merma").value)+"%");
+$("ajustePrecio").addEventListener("input",()=>{const v=+$("ajustePrecio").value;$("vAjuste").textContent=(v>0?"+":"")+v+"%"});
 $("sugerirRenta").addEventListener("click",()=>{
   const z=ZONAS[$("zona").value];
   $("renta").value=Math.round(z.rm2*(+$("superficie").value)/100)*100;
@@ -1592,13 +1600,20 @@ $("sugerirClientes").addEventListener("click",()=>{
   calcular();
 });
 
-/* Pestañas */
-document.querySelectorAll(".pestana").forEach(b=>{
-  b.addEventListener("click",()=>{
-    document.querySelectorAll(".pestana").forEach(x=>x.setAttribute("aria-selected","false"));
-    document.querySelectorAll(".cuadro").forEach(x=>x.classList.remove("activo"));
-    b.setAttribute("aria-selected","true");
-    $(b.dataset.cuadro).classList.add("activo");
+/* Pestañas: patrón WAI-ARIA (clic, flechas, Inicio/Fin; tabindex móvil). */
+const PESTANAS=[...document.querySelectorAll(".pestana")];
+function activarPestana(b,foco){
+  PESTANAS.forEach(x=>{x.setAttribute("aria-selected","false");x.tabIndex=-1});
+  document.querySelectorAll(".cuadro").forEach(x=>x.classList.remove("activo"));
+  b.setAttribute("aria-selected","true"); b.tabIndex=0;
+  $(b.dataset.cuadro).classList.add("activo");
+  if(foco) b.focus();
+}
+PESTANAS.forEach((b,i)=>{
+  b.addEventListener("click",()=>activarPestana(b,false));
+  b.addEventListener("keydown",ev=>{
+    const n=PESTANAS.length, mapa={ArrowRight:(i+1)%n, ArrowLeft:(i-1+n)%n, Home:0, End:n-1};
+    if(ev.key in mapa){ev.preventDefault();activarPestana(PESTANAS[mapa[ev.key]],true)}
   });
 });
 
@@ -1619,22 +1634,40 @@ document.querySelectorAll(".pestana").forEach(b=>{
 })();
 
 /* ---------- 5. Lectura del formulario ---------- */
+/* Lee un número respetando los límites min/max del control (hallazgo 1 de Codex):
+   evita NaN o VPN infinito con valores manuales o de un enlace manipulado. */
+function num(id){
+  const c=$(id); let v=Number(c.value);
+  if(!Number.isFinite(v)) v=Number(c.defaultValue)||0;
+  if(c.min!=="") v=Math.max(Number(c.min),v);
+  if(c.max!=="") v=Math.min(Number(c.max),v);
+  if(String(v)!==c.value && document.activeElement!==c) c.value=String(v);
+  return v;
+}
 function leerEscenario(){
-  const giro=GIROS[$("giro").value], zona=ZONAS[$("zona").value];
+  const giro=GIROS[$("giro").value]||GIROS.cafeteria, zona=ZONAS[$("zona").value]||ZONAS.heroes;
   const e={
     zonaKey:$("zona").value, giro, zona,
     expZ:+$("experiencia").value, formZ:+$("formalidad").value, mktZ:+$("marketing").value,
     compZ:+$("competencia").value, resZ:+$("reserva").value,
-    empleados:+$("empleados").value||0, costoEmpleado:+$("costoEmpleado").value||0,
-    propio:$("local").value==="propio", superficie:+$("superficie").value||0,
-    inversion:+$("inversion").value, credPct:(+$("credito").value)/100, tasa:(+$("tasa").value)/100,
-    renta:+$("renta").value||0, ticket:+$("ticket").value||1, cv:(+$("cvar").value)/100,
-    otrosFijos:+$("otrosFijos").value||0,
-    mu:+$("clientes").value||1, diasSem:+$("dias").value,
-    estacion:ESTACION[$("estacionalidad").value], r:(+$("descuento").value)/100,
-    merma:(+$("merma").value)/100, mktGasto:+$("mktGasto").value||0,
-    crec:(+$("crecimiento").value)/100, inf:(+$("inflacion").value)/100
+    modZ:+$("modeloNegocio").value||0, permZ:+$("permisos").value||0,
+    modalZ:+$("modalidad").value||0, horZ:+$("horario").value||0,
+    empleados:num("empleados"), costoEmpleado:num("costoEmpleado"),
+    propio:$("local").value==="propio", superficie:num("superficie"),
+    inversion:num("inversion"), credPct:num("credito")/100, tasa:num("tasa")/100,
+    renta:num("renta"), ticket:Math.max(1,num("ticket")), cv:num("cvar")/100,
+    otrosFijos:num("otrosFijos"),
+    mu:Math.max(1,num("clientes")), diasSem:+$("dias").value||6,
+    estacion:ESTACION[$("estacionalidad").value]||ESTACION.estable, r:num("descuento")/100,
+    merma:num("merma")/100, mktGasto:num("mktGasto"),
+    crec:num("crecimiento")/100, inf:num("inflacion")/100,
+    ajustePrecio:num("ajustePrecio")/100, elasticidad:+$("elasticidad").value||-1
   };
+  /* Precio vs. mercado con elasticidad constante (hallazgo 2 de Codex):
+     ticket′ = ticket·(1+a),  μ′ = μ·(1+a)^ε. Con a = 0 (por defecto) no cambia nada. */
+  e.ticketBase=e.ticket; e.muBase=e.mu;
+  e.ticket=e.ticketBase*(1+e.ajustePrecio);
+  e.mu=Math.max(1,e.muBase*Math.pow(1+e.ajustePrecio,e.elasticidad));
   return derivar(e);
 }
 
@@ -1845,6 +1878,9 @@ function pintarComparador(){
     fila("VPN 3 años",g=>mxn.format(Math.round(g.vpn)))+"</tbody>";
 }
 $("guardarEsc").addEventListener("click",()=>{
+  /* Resuelve un recálculo pendiente para no guardar métricas viejas (hallazgo 7 de Codex). */
+  if(typeof tVivo!=="undefined") clearTimeout(tVivo);
+  calcular();
   if(!ultimoResumen)return;
   if(guardados.length>=3)guardados.shift();
   guardados.push(Object.assign({},ultimoResumen));
@@ -1909,8 +1945,20 @@ $("exportarPNG").addEventListener("click",()=>{
   const a=document.createElement("a"); a.download="COATL-escenario.png"; a.href=cv.toDataURL("image/png"); a.click();
 });
 
+/* Alternativa textual de las gráficas para lectores de pantalla (WCAG 1.1.1). */
+function describirGraficas(e,modelo,mc,S){
+  const rp=rangoP(modelo), sb=curvaSupervivencia(rp.p05), sa=curvaSupervivencia(rp.p95);
+  const tor=[...modelo.contribs].filter(c=>c[1]!==0).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1]))
+    .map(c=>c[0].replace(/ (.+)$/,"")+" "+(c[1]>0?"+":"")+c[1].toFixed(2)).join("; ");
+  $("descGraficas").textContent=
+    "Supervivencia: año 1 "+pct(S[1])+", año 3 "+pct(S[3])+" (banda "+pct(sb[3])+" a "+pct(sa[3])+"), año 5 "+pct(S[5])+", año 10 "+pct(S[10])+
+    ". Monte Carlo: P5 "+mxn.format(Math.round(mc.p05))+", mediana "+mxn.format(Math.round(mc.p50))+", P95 "+mxn.format(Math.round(mc.p95))+
+    ". Punto de equilibrio: "+(isFinite(e.peDia)?Math.ceil(e.peDia)+" clientes por día":"no alcanzable")+
+    ". Aportes β al modelo logístico: "+(tor||"todas las variables neutras")+".";
+}
 function pintarWidgets(e,modelo,mc,S){
   const f=finanzas(e,mc,S);
+  describirGraficas(e,modelo,mc,S);
   ultimoResumen=resumenEscenario(e,modelo,mc,f);
   pintarTornado(modelo);
   pintarComparadorZonas();
@@ -1933,15 +1981,19 @@ function colorP(p){
   return "rgb("+c[0]+","+c[1]+","+c[2]+")";
 }
 let datosMapa=[], escZonaActual="heroes";
+/* Traslada el mismo negocio a otra zona: renta de referencia y demanda escalada
+   por afluencia. Se usa en el mapa, el comparador y el plan FODA (hallazgo 3 de Codex). */
+function trasladarZona(e,k){
+  const c=Object.assign({},e);
+  c.zonaKey=k; c.zona=ZONAS[k];
+  c.renta=e.propio?0:Math.round(ZONAS[k].rm2*e.superficie/100)*100;
+  c.mu=Math.max(1,e.mu/e.zona.afl*ZONAS[k].afl);
+  return derivar(c);
+}
 function pintarMapa(e,modelo){
-  const muN=e.mu/e.zona.afl;
   datosMapa=Object.keys(ZONAS).map(k=>{
     if(k===e.zonaKey) return {k,z:ZONAS[k],P:modelo.P,util:e.utilMes};
-    const c=Object.assign({},e);
-    c.zona=ZONAS[k];
-    c.renta=e.propio?0:Math.round(ZONAS[k].rm2*e.superficie/100)*100;
-    c.mu=Math.max(1,muN*ZONAS[k].afl);
-    derivar(c);
+    const c=trasladarZona(e,k);
     return {k,z:ZONAS[k],P:modeloLogistico(c).P,util:c.utilMes};
   });
   escZonaActual=e.zonaKey;
@@ -1967,7 +2019,7 @@ function pintarMapa(e,modelo){
   actualizarLeaflet();
 }
 function irAZona(k){
-  const e=leerEscenario(), muN=e.mu/e.zona.afl;
+  const e=leerEscenario(), muN=e.muBase/e.zona.afl;
   $("zona").value=k;
   if(!e.propio) $("renta").value=Math.round(ZONAS[k].rm2*e.superficie/100)*100;
   $("clientes").value=Math.max(1,Math.round(muN*ZONAS[k].afl));
@@ -2034,7 +2086,7 @@ function initLeaflet(){
       pol.addTo(mapaL);
       capasZona[k]=pol;
     }
-    HITOS.forEach(h=>L.marker(h.ll,{icon:L.divIcon({className:"lf-hito",iconSize:[14,14]})}).bindTooltip(h.t).addTo(mapaL));
+    HITOS.forEach(h=>L.marker(h.ll,{icon:L.divIcon({className:"lf-hito",iconSize:[14,14]}),title:h.t,alt:h.t,keyboard:true}).bindTooltip(h.t).addTo(mapaL).getElement()?.setAttribute("aria-label",h.t));
     setTimeout(()=>mapaL.invalidateSize(),300);
     return true;
   }catch(err){ mapaL=null; return false; }
@@ -2271,12 +2323,15 @@ function pintarFODA(e, modelo, mc){
     if(l.clave==="diferenciacion"){cTecho.compZ=0;cTecho.mktZ=Math.min(0.12,cTecho.mktZ+0.07);}
     if(l.clave==="retencion"){cTecho.mu=Math.round(cTecho.mu*1.07);cTecho.cv=Math.max(0.05,cTecho.cv-0.01);}
   });
+  /* El traslado de zona se aplica al final para escalar la demanda ya ajustada. */
+  const accZona=L.slice(0,3).find(l=>l.clave==="zona");
+  if(accZona) cTecho=trasladarZona(cTecho,accZona.zonaK);
   const techo = L.length ? Math.max(P0, probDe(cTecho)) : P0;
   $("fodaP").textContent=(P0*100).toFixed(1)+"%";
   $("fodaTecho").textContent="potencial con el plan: "+(techo*100).toFixed(1)+"%";
 
   if(!L.length){
-    $("acciones").innerHTML='<div class="accion"><div class="rank">✓</div><div class="cuerpo"><h5>Escenario muy sólido</h5><p class="que">El modelo no encuentra palancas con mejora significativa: tu configuración ya es robusta. Mantén la reserva de capital y vigila la competencia y la inflación.</p></div><div class="impacto"><div class="lift">—</div><div class="lift-k">sin brecha</div></div></div>';
+    $("acciones").innerHTML='<div class="accion"><div class="rank">✓</div><div class="cuerpo"><h3>Escenario muy sólido</h3><p class="que">El modelo no encuentra palancas con mejora significativa: tu configuración ya es robusta. Mantén la reserva de capital y vigila la competencia y la inflación.</p></div><div class="impacto"><div class="lift">—</div><div class="lift-k">sin brecha</div></div></div>';
     $("planCierre").innerHTML="<b>Lectura:</b> conserva la disciplina financiera; incluso con probabilidad alta, la cola izquierda del Monte Carlo existe. Reevalúa el plan si cambian renta, competencia o inflación.";
     return;
   }
@@ -2285,8 +2340,8 @@ function pintarFODA(e, modelo, mc){
     const proy=(l.P*100).toFixed(1);
     const accZona = l.esZona ? ' data-irzona="'+l.zonaK+'"' : '';
     const cursor = l.esZona ? ' style="cursor:pointer"' : '';
-    return '<div class="accion"'+accZona+cursor+'><div class="rank">'+(i+1)+'</div><div class="cuerpo"><h5>'+
-      l.titulo+'</h5><p class="que">'+l.que+'</p><p class="base">'+l.base+
+    return '<div class="accion"'+accZona+cursor+'><div class="rank">'+(i+1)+'</div><div class="cuerpo"><h3>'+
+      l.titulo+'</h3><p class="que">'+l.que+'</p><p class="base">'+l.base+
       '</p><span class="tasa">Evidencia: '+l.tasa+'</span></div><div class="impacto"><div class="lift">+'+dp+
       '</div><div class="lift-k">puntos de prob.</div><div class="proy">→ '+proy+'%</div></div></div>';
   }).join("");

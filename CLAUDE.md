@@ -94,6 +94,8 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 
 ## Pendiente
 
+- Rendimiento (Lighthouse ~50): el Monte Carlo de 2,000 años corre en el hilo principal al cargar; candidato a Web Worker o a diferirlo.
+
 - Verificar contra la publicación vigente del INEGI los valores de S₀(t) y los datos por giro (marcados «por verificar»).
 - Faltan en el repo: reporte .docx, COATL_Presentacion.pptx, fotos de assets/img (no estaban en el equipo al importar).
 - Diagrama UML de 6 carriles: hecho (`scripts/diagrama_uml.mjs` → docs/ y entregables/).

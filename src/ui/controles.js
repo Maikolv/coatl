@@ -13,6 +13,7 @@ $("inversion").addEventListener("input",()=>$("vInversion").textContent=mxn.form
 $("credito").addEventListener("input",()=>$("vCredito").textContent=$("credito").value+"%");
 $("cvar").addEventListener("input",()=>$("vCvar").textContent=$("cvar").value+"%");
 $("merma").addEventListener("input",()=>$("vMerma").textContent=(+$("merma").value)+"%");
+$("ajustePrecio").addEventListener("input",()=>{const v=+$("ajustePrecio").value;$("vAjuste").textContent=(v>0?"+":"")+v+"%"});
 $("sugerirRenta").addEventListener("click",()=>{
   const z=ZONAS[$("zona").value];
   $("renta").value=Math.round(z.rm2*(+$("superficie").value)/100)*100;
@@ -25,13 +26,20 @@ $("sugerirClientes").addEventListener("click",()=>{
   calcular();
 });
 
-/* Pestañas */
-document.querySelectorAll(".pestana").forEach(b=>{
-  b.addEventListener("click",()=>{
-    document.querySelectorAll(".pestana").forEach(x=>x.setAttribute("aria-selected","false"));
-    document.querySelectorAll(".cuadro").forEach(x=>x.classList.remove("activo"));
-    b.setAttribute("aria-selected","true");
-    $(b.dataset.cuadro).classList.add("activo");
+/* Pestañas: patrón WAI-ARIA (clic, flechas, Inicio/Fin; tabindex móvil). */
+const PESTANAS=[...document.querySelectorAll(".pestana")];
+function activarPestana(b,foco){
+  PESTANAS.forEach(x=>{x.setAttribute("aria-selected","false");x.tabIndex=-1});
+  document.querySelectorAll(".cuadro").forEach(x=>x.classList.remove("activo"));
+  b.setAttribute("aria-selected","true"); b.tabIndex=0;
+  $(b.dataset.cuadro).classList.add("activo");
+  if(foco) b.focus();
+}
+PESTANAS.forEach((b,i)=>{
+  b.addEventListener("click",()=>activarPestana(b,false));
+  b.addEventListener("keydown",ev=>{
+    const n=PESTANAS.length, mapa={ArrowRight:(i+1)%n, ArrowLeft:(i-1+n)%n, Home:0, End:n-1};
+    if(ev.key in mapa){ev.preventDefault();activarPestana(PESTANAS[mapa[ev.key]],true)}
   });
 });
 
@@ -52,22 +60,40 @@ document.querySelectorAll(".pestana").forEach(b=>{
 })();
 
 /* ---------- 5. Lectura del formulario ---------- */
+/* Lee un número respetando los límites min/max del control (hallazgo 1 de Codex):
+   evita NaN o VPN infinito con valores manuales o de un enlace manipulado. */
+function num(id){
+  const c=$(id); let v=Number(c.value);
+  if(!Number.isFinite(v)) v=Number(c.defaultValue)||0;
+  if(c.min!=="") v=Math.max(Number(c.min),v);
+  if(c.max!=="") v=Math.min(Number(c.max),v);
+  if(String(v)!==c.value && document.activeElement!==c) c.value=String(v);
+  return v;
+}
 function leerEscenario(){
-  const giro=GIROS[$("giro").value], zona=ZONAS[$("zona").value];
+  const giro=GIROS[$("giro").value]||GIROS.cafeteria, zona=ZONAS[$("zona").value]||ZONAS.heroes;
   const e={
     zonaKey:$("zona").value, giro, zona,
     expZ:+$("experiencia").value, formZ:+$("formalidad").value, mktZ:+$("marketing").value,
     compZ:+$("competencia").value, resZ:+$("reserva").value,
-    empleados:+$("empleados").value||0, costoEmpleado:+$("costoEmpleado").value||0,
-    propio:$("local").value==="propio", superficie:+$("superficie").value||0,
-    inversion:+$("inversion").value, credPct:(+$("credito").value)/100, tasa:(+$("tasa").value)/100,
-    renta:+$("renta").value||0, ticket:+$("ticket").value||1, cv:(+$("cvar").value)/100,
-    otrosFijos:+$("otrosFijos").value||0,
-    mu:+$("clientes").value||1, diasSem:+$("dias").value,
-    estacion:ESTACION[$("estacionalidad").value], r:(+$("descuento").value)/100,
-    merma:(+$("merma").value)/100, mktGasto:+$("mktGasto").value||0,
-    crec:(+$("crecimiento").value)/100, inf:(+$("inflacion").value)/100
+    modZ:+$("modeloNegocio").value||0, permZ:+$("permisos").value||0,
+    modalZ:+$("modalidad").value||0, horZ:+$("horario").value||0,
+    empleados:num("empleados"), costoEmpleado:num("costoEmpleado"),
+    propio:$("local").value==="propio", superficie:num("superficie"),
+    inversion:num("inversion"), credPct:num("credito")/100, tasa:num("tasa")/100,
+    renta:num("renta"), ticket:Math.max(1,num("ticket")), cv:num("cvar")/100,
+    otrosFijos:num("otrosFijos"),
+    mu:Math.max(1,num("clientes")), diasSem:+$("dias").value||6,
+    estacion:ESTACION[$("estacionalidad").value]||ESTACION.estable, r:num("descuento")/100,
+    merma:num("merma")/100, mktGasto:num("mktGasto"),
+    crec:num("crecimiento")/100, inf:num("inflacion")/100,
+    ajustePrecio:num("ajustePrecio")/100, elasticidad:+$("elasticidad").value||-1
   };
+  /* Precio vs. mercado con elasticidad constante (hallazgo 2 de Codex):
+     ticket′ = ticket·(1+a),  μ′ = μ·(1+a)^ε. Con a = 0 (por defecto) no cambia nada. */
+  e.ticketBase=e.ticket; e.muBase=e.mu;
+  e.ticket=e.ticketBase*(1+e.ajustePrecio);
+  e.mu=Math.max(1,e.muBase*Math.pow(1+e.ajustePrecio,e.elasticidad));
   return derivar(e);
 }
 

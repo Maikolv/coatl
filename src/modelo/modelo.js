@@ -35,6 +35,10 @@ function modeloLogistico(e){
     ["Marketing", e.mktZ],
     ["Estructura de deuda", deudaZ],
     ["Local propio", e.propio?0.10:0],
+    ["Modelo de negocio", e.modZ||0],
+    ["Permisos municipales", e.permZ||0],
+    ["Modalidad de venta", e.modalZ||0],
+    ["Horario extendido", e.horZ||0],
     ["Margen de seguridad financiero", msZ]
   ];
   const z=-0.16+contribs.reduce((s,c)=>s+c[1],0);

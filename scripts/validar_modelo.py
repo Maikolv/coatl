@@ -18,6 +18,7 @@ ZONA_HEROES_Z = 0.04
 # ---- Valores por defecto del formulario (atributos value/selected del HTML) ----
 DEF = dict(
     expZ=0.0, formZ=0.10, mktZ=0.05, compZ=0.0, resZ=0.0,
+    modZ=0.0, permZ=0.0, modalZ=0.0, horZ=0.0, ajustePrecio=0.0, elasticidad=-1.0,
     empleados=1, costoEmpleado=11000, propio=False, superficie=50,
     inversion=250000, credPct=0.20, tasa=0.24, renta=7500, ticket=95, cv=0.38,
     otrosFijos=6000, mu=60, diasSem=6, estacion=[1] * 12, r=0.12, merma=0.03,
@@ -34,6 +35,9 @@ def acota(x, a, b):
 
 
 def derivar(e):
+    # Precio vs. mercado con elasticidad constante (neutro con ajustePrecio = 0).
+    e["ticket"] = e["ticket"] * (1 + e["ajustePrecio"])
+    e["mu"] = max(1, e["mu"] * (1 + e["ajustePrecio"]) ** e["elasticidad"])
     e["diasMes"] = e["diasSem"] * 4.33
     e["cvEff"] = acota(e["cv"] + e["merma"], 0.02, 0.95)
     e["rentaEf"] = 0 if e["propio"] else e["renta"]
@@ -53,7 +57,8 @@ def modelo_logistico(e):
     c = e["credPct"]
     deudaZ = -0.20 if c >= 0.6 else -0.08 if c >= 0.3 else 0 if c > 0 else 0.05
     z = (-0.16 + GIRO_CAFETERIA_Z + ZONA_HEROES_Z + e["expZ"] + e["resZ"] + e["compZ"]
-         + e["formZ"] + e["mktZ"] + deudaZ + (0.10 if e["propio"] else 0) + msZ)
+         + e["formZ"] + e["mktZ"] + deudaZ + (0.10 if e["propio"] else 0) + msZ
+         + e["modZ"] + e["permZ"] + e["modalZ"] + e["horZ"])
     return acota(1 / (1 + math.exp(-z)), 0.04, 0.93), z
 
 

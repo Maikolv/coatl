@@ -6,9 +6,11 @@ import path from 'node:path';
 const puerto = Number(process.argv[2] || process.env.PORT || 8000);
 const raiz = path.resolve(process.argv[3] || '.');
 const tipos = { '.html': 'text/html; charset=utf-8', '.js': 'text/javascript', '.css': 'text/css',
-  '.png': 'image/png', '.svg': 'image/svg+xml', '.json': 'application/json', '.pdf': 'application/pdf' };
+  '.png': 'image/png', '.svg': 'image/svg+xml', '.json': 'application/json', '.pdf': 'application/pdf', '.txt': 'text/plain; charset=utf-8' };
 http.createServer((req, res) => {
-  let ruta = decodeURIComponent(new URL(req.url, 'http://x').pathname);
+  let ruta;
+  try { ruta = decodeURIComponent(new URL(req.url, 'http://x').pathname); }
+  catch { res.writeHead(400).end('Solicitud mal formada'); return; }
   if (ruta.endsWith('/')) ruta += 'index.html';
   const archivo = path.join(raiz, path.normalize(ruta));
   if (!archivo.startsWith(raiz)) { res.writeHead(403).end(); return; }

@@ -13,15 +13,19 @@ function colorP(p){
   return "rgb("+c[0]+","+c[1]+","+c[2]+")";
 }
 let datosMapa=[], escZonaActual="heroes";
+/* Traslada el mismo negocio a otra zona: renta de referencia y demanda escalada
+   por afluencia. Se usa en el mapa, el comparador y el plan FODA (hallazgo 3 de Codex). */
+function trasladarZona(e,k){
+  const c=Object.assign({},e);
+  c.zonaKey=k; c.zona=ZONAS[k];
+  c.renta=e.propio?0:Math.round(ZONAS[k].rm2*e.superficie/100)*100;
+  c.mu=Math.max(1,e.mu/e.zona.afl*ZONAS[k].afl);
+  return derivar(c);
+}
 function pintarMapa(e,modelo){
-  const muN=e.mu/e.zona.afl;
   datosMapa=Object.keys(ZONAS).map(k=>{
     if(k===e.zonaKey) return {k,z:ZONAS[k],P:modelo.P,util:e.utilMes};
-    const c=Object.assign({},e);
-    c.zona=ZONAS[k];
-    c.renta=e.propio?0:Math.round(ZONAS[k].rm2*e.superficie/100)*100;
-    c.mu=Math.max(1,muN*ZONAS[k].afl);
-    derivar(c);
+    const c=trasladarZona(e,k);
     return {k,z:ZONAS[k],P:modeloLogistico(c).P,util:c.utilMes};
   });
   escZonaActual=e.zonaKey;
@@ -47,7 +51,7 @@ function pintarMapa(e,modelo){
   actualizarLeaflet();
 }
 function irAZona(k){
-  const e=leerEscenario(), muN=e.mu/e.zona.afl;
+  const e=leerEscenario(), muN=e.muBase/e.zona.afl;
   $("zona").value=k;
   if(!e.propio) $("renta").value=Math.round(ZONAS[k].rm2*e.superficie/100)*100;
   $("clientes").value=Math.max(1,Math.round(muN*ZONAS[k].afl));
@@ -114,7 +118,7 @@ function initLeaflet(){
       pol.addTo(mapaL);
       capasZona[k]=pol;
     }
-    HITOS.forEach(h=>L.marker(h.ll,{icon:L.divIcon({className:"lf-hito",iconSize:[14,14]})}).bindTooltip(h.t).addTo(mapaL));
+    HITOS.forEach(h=>L.marker(h.ll,{icon:L.divIcon({className:"lf-hito",iconSize:[14,14]}),title:h.t,alt:h.t,keyboard:true}).bindTooltip(h.t).addTo(mapaL).getElement()?.setAttribute("aria-label",h.t));
     setTimeout(()=>mapaL.invalidateSize(),300);
     return true;
   }catch(err){ mapaL=null; return false; }

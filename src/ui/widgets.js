@@ -47,6 +47,9 @@ function pintarComparador(){
     fila("VPN 3 años",g=>mxn.format(Math.round(g.vpn)))+"</tbody>";
 }
 $("guardarEsc").addEventListener("click",()=>{
+  /* Resuelve un recálculo pendiente para no guardar métricas viejas (hallazgo 7 de Codex). */
+  if(typeof tVivo!=="undefined") clearTimeout(tVivo);
+  calcular();
   if(!ultimoResumen)return;
   if(guardados.length>=3)guardados.shift();
   guardados.push(Object.assign({},ultimoResumen));
@@ -111,8 +114,20 @@ $("exportarPNG").addEventListener("click",()=>{
   const a=document.createElement("a"); a.download="COATL-escenario.png"; a.href=cv.toDataURL("image/png"); a.click();
 });
 
+/* Alternativa textual de las gráficas para lectores de pantalla (WCAG 1.1.1). */
+function describirGraficas(e,modelo,mc,S){
+  const rp=rangoP(modelo), sb=curvaSupervivencia(rp.p05), sa=curvaSupervivencia(rp.p95);
+  const tor=[...modelo.contribs].filter(c=>c[1]!==0).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1]))
+    .map(c=>c[0].replace(/ (.+)$/,"")+" "+(c[1]>0?"+":"")+c[1].toFixed(2)).join("; ");
+  $("descGraficas").textContent=
+    "Supervivencia: año 1 "+pct(S[1])+", año 3 "+pct(S[3])+" (banda "+pct(sb[3])+" a "+pct(sa[3])+"), año 5 "+pct(S[5])+", año 10 "+pct(S[10])+
+    ". Monte Carlo: P5 "+mxn.format(Math.round(mc.p05))+", mediana "+mxn.format(Math.round(mc.p50))+", P95 "+mxn.format(Math.round(mc.p95))+
+    ". Punto de equilibrio: "+(isFinite(e.peDia)?Math.ceil(e.peDia)+" clientes por día":"no alcanzable")+
+    ". Aportes β al modelo logístico: "+(tor||"todas las variables neutras")+".";
+}
 function pintarWidgets(e,modelo,mc,S){
   const f=finanzas(e,mc,S);
+  describirGraficas(e,modelo,mc,S);
   ultimoResumen=resumenEscenario(e,modelo,mc,f);
   pintarTornado(modelo);
   pintarComparadorZonas();

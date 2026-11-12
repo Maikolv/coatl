@@ -31,6 +31,7 @@ export function construir() {
   fs.mkdirSync(path.join(raiz, 'dist'), { recursive: true });
   fs.writeFileSync(path.join(raiz, 'dist', 'index.html'), html);
   fs.writeFileSync(path.join(raiz, 'dist', '.nojekyll'), '');
+  fs.writeFileSync(path.join(raiz, 'dist', 'robots.txt'), 'User-agent: *\nAllow: /\n');
   return html.length;
 }
 

@@ -84,3 +84,11 @@ test('35 giros y 6 zonas', () => {
   assert.equal(Object.keys(M.GIROS).length, 35);
   assert.equal(Object.keys(M.ZONAS).length, 6);
 });
+
+test('los controles de modelo de negocio, permisos, modalidad y horario mueven P (neutros por defecto)', () => {
+  const base = M.modeloLogistico(escenarioReferencia(M)).P;
+  const franquicia = M.modeloLogistico(escenarioReferencia(M, { modZ: 0.18 })).P;
+  const sinPermisos = M.modeloLogistico(escenarioReferencia(M, { permZ: -0.25 })).P;
+  assert.ok(franquicia > base && sinPermisos < base);
+  assert.equal(M.modeloLogistico(escenarioReferencia(M, { modZ: 0, permZ: 0, modalZ: 0, horZ: 0 })).P, base);
+});

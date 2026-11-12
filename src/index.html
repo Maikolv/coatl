@@ -158,13 +158,13 @@
     <div class="simulador">
       <form class="consola" id="forma" novalidate>
         <div class="pestanas" role="tablist" aria-label="Grupos de variables">
-          <button type="button" class="pestana" role="tab" aria-selected="true" data-cuadro="c-negocio">① Negocio</button>
-          <button type="button" class="pestana" role="tab" aria-selected="false" data-cuadro="c-ubicacion">② Ubicación</button>
-          <button type="button" class="pestana" role="tab" aria-selected="false" data-cuadro="c-finanzas">③ Finanzas</button>
-          <button type="button" class="pestana" role="tab" aria-selected="false" data-cuadro="c-operacion">④ Operación</button>
+          <button type="button" class="pestana" role="tab" id="t-negocio" aria-controls="c-negocio" tabindex="0" aria-selected="true" data-cuadro="c-negocio">① Negocio</button>
+          <button type="button" class="pestana" role="tab" id="t-ubicacion" aria-controls="c-ubicacion" tabindex="-1" aria-selected="false" data-cuadro="c-ubicacion">② Ubicación</button>
+          <button type="button" class="pestana" role="tab" id="t-finanzas" aria-controls="c-finanzas" tabindex="-1" aria-selected="false" data-cuadro="c-finanzas">③ Finanzas</button>
+          <button type="button" class="pestana" role="tab" id="t-operacion" aria-controls="c-operacion" tabindex="-1" aria-selected="false" data-cuadro="c-operacion">④ Operación</button>
         </div>
 
-        <div class="cuadro activo" id="c-negocio" role="tabpanel">
+        <div class="cuadro activo" id="c-negocio" role="tabpanel" aria-labelledby="t-negocio" tabindex="0">
           <div class="campo">
             <label for="giro">Giro del negocio</label>
             <select id="giro"></select>
@@ -216,7 +216,7 @@
           </div>
         </div>
 
-        <div class="cuadro" id="c-ubicacion" role="tabpanel">
+        <div class="cuadro" id="c-ubicacion" role="tabpanel" aria-labelledby="t-ubicacion" tabindex="0">
           <div class="campo">
             <label for="zona">Zona de Coacalco</label>
             <select id="zona"></select>
@@ -255,7 +255,7 @@
           </div>
         </div>
 
-        <div class="cuadro" id="c-finanzas" role="tabpanel">
+        <div class="cuadro" id="c-finanzas" role="tabpanel" aria-labelledby="t-finanzas" tabindex="0">
           <div class="campo">
             <label for="inversion">Inversión inicial total: <span class="valor-rango" id="vInversion">$250,000</span></label>
             <input type="range" id="inversion" min="30000" max="3000000" step="10000" value="250000">
@@ -322,7 +322,7 @@
           </div>
         </div>
 
-        <div class="cuadro" id="c-operacion" role="tabpanel">
+        <div class="cuadro" id="c-operacion" role="tabpanel" aria-labelledby="t-operacion" tabindex="0">
           <div class="campo">
             <label for="clientes">Clientes esperados por día <button type="button" class="boton-sugerir" id="sugerirClientes">Sugerir por giro y zona</button></label>
             <input type="number" id="clientes" min="1" max="2000" step="1" value="60">
@@ -420,7 +420,7 @@
         </div>
         <div class="kpis" id="kpis"></div>
         <div class="lectura" id="lecturaPanel" hidden>
-          <h4>Lectura estadística del escenario</h4>
+          <h3>Lectura estadística del escenario</h3>
           <ul id="lecturaLista"></ul>
         </div>
       </div>
@@ -430,25 +430,26 @@
       <div class="panel">
         <h3>Curva de supervivencia proyectada</h3>
         <p class="sub">Tu escenario frente al promedio nacional (riesgos proporcionales sobre la tabla INEGI). La banda muestra el rango plausible de P.</p>
-        <div class="lienzo"><canvas id="graficaSupervivencia"></canvas></div>
+        <div class="lienzo"><canvas id="graficaSupervivencia" role="img" aria-label="Curva de supervivencia proyectada a 10 años con banda de incertidumbre" aria-describedby="descGraficas"></canvas></div>
       </div>
       <div class="panel">
         <h3>Distribución de la utilidad anual (Monte Carlo)</h3>
         <p class="sub">Histograma de 2,000 años simulados: choque anual de demanda, ruido mensual de clientes y ticket, y variación del costo variable. Líneas: P5, mediana y P95.</p>
-        <div class="lienzo"><canvas id="graficaMC"></canvas></div>
+        <div class="lienzo"><canvas id="graficaMC" role="img" aria-label="Histograma de la utilidad anual simulada con percentiles 5, 50 y 95" aria-describedby="descGraficas"></canvas></div>
       </div>
       <div class="panel">
         <h3>Punto de equilibrio</h3>
         <p class="sub">Ingresos vs. costos totales según clientes por día; el cruce marca el equilibrio.</p>
-        <div class="lienzo"><canvas id="graficaPE"></canvas></div>
+        <div class="lienzo"><canvas id="graficaPE" role="img" aria-label="Gráfica de punto de equilibrio: ingresos y costos según clientes por día" aria-describedby="descGraficas"></canvas></div>
       </div>
     </div>
 
+    <p class="sr-only" id="descGraficas"></p>
     <div class="graficas-sim analisis" id="analisis">
       <div class="panel">
         <h3>Sensibilidad por variable (tornado de β)</h3>
         <p class="sub">Aporte de cada variable a z en el modelo logístico. Las barras rojas restan probabilidad; las granates la suman.</p>
-        <div class="lienzo"><canvas id="graficaTornado" role="img" aria-label="Gráfica de tornado con el aporte de cada variable"></canvas></div>
+        <div class="lienzo"><canvas id="graficaTornado" role="img" aria-label="Gráfica de tornado con el aporte de cada variable" aria-describedby="descGraficas"></canvas></div>
       </div>
       <div class="panel">
         <h3>Comparar escenarios</h3>

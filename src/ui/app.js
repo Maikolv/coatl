@@ -203,12 +203,15 @@ function pintarFODA(e, modelo, mc){
     if(l.clave==="diferenciacion"){cTecho.compZ=0;cTecho.mktZ=Math.min(0.12,cTecho.mktZ+0.07);}
     if(l.clave==="retencion"){cTecho.mu=Math.round(cTecho.mu*1.07);cTecho.cv=Math.max(0.05,cTecho.cv-0.01);}
   });
+  /* El traslado de zona se aplica al final para escalar la demanda ya ajustada. */
+  const accZona=L.slice(0,3).find(l=>l.clave==="zona");
+  if(accZona) cTecho=trasladarZona(cTecho,accZona.zonaK);
   const techo = L.length ? Math.max(P0, probDe(cTecho)) : P0;
   $("fodaP").textContent=(P0*100).toFixed(1)+"%";
   $("fodaTecho").textContent="potencial con el plan: "+(techo*100).toFixed(1)+"%";
 
   if(!L.length){
-    $("acciones").innerHTML='<div class="accion"><div class="rank">✓</div><div class="cuerpo"><h5>Escenario muy sólido</h5><p class="que">El modelo no encuentra palancas con mejora significativa: tu configuración ya es robusta. Mantén la reserva de capital y vigila la competencia y la inflación.</p></div><div class="impacto"><div class="lift">—</div><div class="lift-k">sin brecha</div></div></div>';
+    $("acciones").innerHTML='<div class="accion"><div class="rank">✓</div><div class="cuerpo"><h3>Escenario muy sólido</h3><p class="que">El modelo no encuentra palancas con mejora significativa: tu configuración ya es robusta. Mantén la reserva de capital y vigila la competencia y la inflación.</p></div><div class="impacto"><div class="lift">—</div><div class="lift-k">sin brecha</div></div></div>';
     $("planCierre").innerHTML="<b>Lectura:</b> conserva la disciplina financiera; incluso con probabilidad alta, la cola izquierda del Monte Carlo existe. Reevalúa el plan si cambian renta, competencia o inflación.";
     return;
   }
@@ -217,8 +220,8 @@ function pintarFODA(e, modelo, mc){
     const proy=(l.P*100).toFixed(1);
     const accZona = l.esZona ? ' data-irzona="'+l.zonaK+'"' : '';
     const cursor = l.esZona ? ' style="cursor:pointer"' : '';
-    return '<div class="accion"'+accZona+cursor+'><div class="rank">'+(i+1)+'</div><div class="cuerpo"><h5>'+
-      l.titulo+'</h5><p class="que">'+l.que+'</p><p class="base">'+l.base+
+    return '<div class="accion"'+accZona+cursor+'><div class="rank">'+(i+1)+'</div><div class="cuerpo"><h3>'+
+      l.titulo+'</h3><p class="que">'+l.que+'</p><p class="base">'+l.base+
       '</p><span class="tasa">Evidencia: '+l.tasa+'</span></div><div class="impacto"><div class="lift">+'+dp+
       '</div><div class="lift-k">puntos de prob.</div><div class="proy">→ '+proy+'%</div></div></div>';
   }).join("");

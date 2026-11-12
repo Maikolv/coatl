@@ -87,3 +87,20 @@ test('sin desbordamiento horizontal', async ({ page }) => {
   const ancho = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(ancho).toBeLessThanOrEqual(1);
 });
+
+test('un enlace con valores fuera de rango no rompe el cálculo', async ({ page }) => {
+  await page.goto('/#e=' + encodeURIComponent('crecimiento=-200&descuento=-100&clientes=abc'), { waitUntil: 'domcontentloaded' });
+  await page.waitForTimeout(1200);
+  const kpis = await page.locator('#kpis').innerText();
+  expect(kpis).not.toMatch(/NaN|Infinity|∞/);
+  await expect(page.locator('#crecimiento')).toHaveValue('-20');
+  await expect(page.locator('#descuento')).toHaveValue('1');
+});
+
+test('pestañas navegables con flechas', async ({ page }) => {
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.locator('#t-negocio').focus();
+  await page.keyboard.press('ArrowRight');
+  await expect(page.locator('#t-ubicacion')).toHaveAttribute('aria-selected', 'true');
+  await expect(page.locator('#t-ubicacion')).toBeFocused();
+});
