@@ -49,7 +49,7 @@ En Windows, las e2e usan Microsoft Edge (`COATL_CANAL=msedge`) porque el Chromiu
 
 | P (3 años) | Rango plausible | Utilidad/mes | ROI | Payback | VPN 3 años |
 |---|---|---|---|---|---|
-| 55.0 % | 47.8 %–61.7 % | $60,371 | 302.9 % | 4 meses | $970,106 |
+| 55.0 % | 47.8 %–61.6 % | $60,371 | 302.9 % | 4 meses | $970,106 |
 
 El cambio frente a la versión 1 está documentado en [docs/METODOLOGIA.md](docs/METODOLOGIA.md#escenario-de-referencia).
 

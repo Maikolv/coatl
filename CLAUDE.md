@@ -50,7 +50,7 @@ Alcance funcional: 35 giros de negocio, 32 variables en 4 pestañas, 6 zonas con
 
 | Métrica | Valor |
 |---|---|
-| P(supervivencia 3 años) | 55.0 % (rango plausible 47.8–61.7 %) |
+| P(supervivencia 3 años) | 55.0 % (rango plausible 47.8–61.6 %) |
 | Utilidad mensual | ≈ $60,371 |
 | ROI | 302.9 % |
 | Payback | 4 meses (4.1) |

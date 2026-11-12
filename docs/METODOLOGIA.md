@@ -63,6 +63,6 @@ No incluyen ISR/RESICO, depreciación, sueldo del dueño, capital de trabajo ni 
 | v1 (original) | ticket 85, CV 45 %, MC sin choque anual | 55.0 % | $41,899 | 212.6 % | 6 | $601,442 |
 | **v2 (vigente)** | ticket 95, CV 38 % (giro Cafetería), MC con choque anual | **55.0 %** | **$60,371** | **302.9 %** | **4** | **$970,106** |
 
-Rango plausible de P (v2): 47.8 %–61.7 %.
+Rango plausible de P (v2): 47.8 %–61.6 %.
 Monte Carlo v2: DE $179,399; P5 $489,097; P50 $744,277; P95 $1,072,698.
 La prueba `compatibilidad` de `tests/modelo.test.mjs` confirma que con las entradas v1 se recuperan la utilidad y el VPN v1. Ninguna de las dos cantidades depende del Monte Carlo.
