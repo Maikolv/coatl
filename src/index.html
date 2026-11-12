@@ -1,0 +1,720 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>COATL · Probabilidad de éxito de negocios en Coacalco de Berriozábal</title>
+<meta name="description" content="Simulador estadístico de probabilidad de éxito y rentabilidad para negocios en Coacalco de Berriozábal, Estado de México. Proyecto de Probabilidad y Estadística — Jornada Académica de Negocios.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<meta name="theme-color" content="#7A0C1F">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<style>
+/*@@CSS@@*/
+</style>
+</head>
+<body>
+
+<div class="progreso" id="progreso" aria-hidden="true"></div>
+<nav class="nav" aria-label="Navegación principal">
+  <div class="nav-inner">
+    <a class="marca" href="#inicio" aria-label="COATL, inicio">
+      <svg width="38" height="38" viewBox="0 0 38 38" role="img" aria-hidden="true">
+        <rect width="38" height="38" rx="9" fill="#C8102E"/>
+        <path d="M8 27 v-5 h5 v-5 h5 v-5 h12 v5 h-7 v5 h-5 v5 z" fill="#fff"/>
+        <circle cx="27.5" cy="14.5" r="1.8" fill="#C8102E"/>
+      </svg>
+      <span class="marca-texto">
+        <strong>COATL</strong>
+        <span>Análisis territorial · Coacalco</span>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="#contexto">Contexto</a>
+      <a href="#mapa">Mapa</a>
+      <a href="#estrategia">Estrategia</a>
+      <a href="#metodologia">Metodología</a>
+      <a href="#lectura">Cómo leerlo</a>
+      <a href="#legal">Legal</a>
+      <a href="#creditos">Créditos</a>
+      <button class="btn-tema" id="btnTema" type="button" aria-pressed="false" title="Cambiar entre tema claro y Modo Oráculo">
+        <span class="ojo" aria-hidden="true">◉</span><span id="temaTexto">Modo Oráculo</span>
+      </button>
+      <a class="cta" href="#simulador">Abrir simulador</a>
+    </div>
+  </div>
+</nav>
+
+<header class="hero" id="inicio">
+  <div class="hero-inner">
+    <div>
+      <span class="eyebrow">Jornada Académica de Negocios · Probabilidad y Estadística · UVM</span>
+      <h1>¿Qué probabilidad tiene tu negocio de <span class="acento">sobrevivir</span> en Coacalco?</h1>
+      <p class="lede">COATL — Cálculo de Oportunidad y Análisis Territorial Local — estima la probabilidad de éxito y la rentabilidad esperada de un negocio en Coacalco de Berriozábal, Estado de México, combinando datos oficiales del INEGI e IGECEM con un modelo logístico, tablas de supervivencia empresarial y simulación Monte Carlo.</p>
+      <div class="hero-acciones">
+        <a class="btn btn-primario" href="#simulador">Calcular mi probabilidad</a>
+        <a class="btn btn-fantasma" href="#metodologia">Ver los modelos estadísticos</a>
+      </div>
+      <p class="hero-nota">Coacalco proviene del náhuatl <em>Cōācalco</em>, «en la casa de la serpiente». De ahí el nombre y la cenefa de este proyecto.</p>
+    </div>
+    <aside class="tablero" aria-label="Visualización de frecuencias de supervivencia">
+      <h2 id="tablero-titulo">De cada 100 negocios que nacen en México…</h2>
+      <div class="cuadricula" id="cuadricula-hero" role="img" aria-describedby="tablero-titulo"></div>
+      <div class="tablero-leyenda">
+        <span><span class="chip"></span> Siguen operando al año <strong id="anio-tablero">&nbsp;1</strong></span>
+        <span><span class="chip r"></span> Ya cerraron</span>
+      </div>
+      <p class="tablero-fuente">Fuente: INEGI, Esperanza de vida de los negocios en México (tablas de supervivencia, Censos Económicos).</p>
+    </aside>
+  </div>
+  <div class="greca" aria-hidden="true"></div>
+</header>
+
+<main>
+<!-- ============ 01 CONTEXTO ============ -->
+<section class="seccion" id="contexto">
+  <p class="folio">Sección 01 · El territorio en cifras</p>
+  <h2 class="titulo">Coacalco de Berriozábal: un mercado de 293 mil personas</h2>
+  <p class="intro">Antes de modelar probabilidades hay que conocer la población de estudio. Estos indicadores oficiales —tomados del <a href="https://www.inegi.org.mx/programas/ccpv/2020/" target="_blank" rel="noopener">Censo 2020 del INEGI</a>, del <a href="https://coacalco.gob.mx/datos-economicos/" target="_blank" rel="noopener">portal de datos económicos del municipio</a> (IGECEM/DENUE) y de la <a href="https://www.coneval.org.mx/Medicion/Paginas/Pobreza-municipal.aspx" target="_blank" rel="noopener">medición municipal del CONEVAL</a>— describen el tamaño del mercado, su tejido empresarial y su poder de compra, y son los parámetros base que alimentan al simulador.</p>
+
+  <div class="cifras">
+    <div class="cifra">
+      <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24"><circle cx="9" cy="8" r="3.2"/><path d="M3.5 20c0-3.1 2.4-5.2 5.5-5.2s5.5 2.1 5.5 5.2"/><circle cx="17" cy="9" r="2.6"/><path d="M15.2 15.5c2.9.1 5.3 1.9 5.3 4.5"/></svg></div>
+      <div class="num">293,444</div>
+      <div class="que">habitantes (51.9% mujeres, 48.1% hombres)</div>
+      <div class="src">INEGI · Censo de Población y Vivienda 2020</div>
+    </div>
+    <div class="cifra">
+      <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 10h16v10H4z"/><path d="M4 10 6 5h12l2 5"/><path d="M9.5 20v-5.5h5V20"/></svg></div>
+      <div class="num">11,018</div>
+      <div class="que">unidades económicas activas en el municipio</div>
+      <div class="src">IGECEM / DENUE · 2020</div>
+    </div>
+    <div class="cifra">
+      <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M6 16l4-5.2 3 3 5-6.8"/><path d="M14.8 7H18v3.2"/></svg></div>
+      <div class="num">$17,179.6 M</div>
+      <div class="que">valor agregado censal bruto (miles de pesos: 17,179,600)</div>
+      <div class="src">IGECEM · Censos Económicos / IMAE 2021</div>
+    </div>
+    <div class="cifra">
+      <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.4 7.9-7 9-3.6-1.1-7-4-7-9V6z"/><path d="M9 12l2.2 2.2 4.3-4.4"/></svg></div>
+      <div class="num">71.4%</div>
+      <div class="que">de la población fuera de situación de pobreza</div>
+      <div class="src">CONEVAL 2020 (26.1% pobreza moderada, 2.5% extrema)</div>
+    </div>
+  </div>
+
+  <div class="dos-col">
+    <div class="panel">
+      <h3>El tejido empresarial crece</h3>
+      <p class="sub">Unidades económicas registradas en Coacalco de Berriozábal. Crecimiento medio de <strong>3.7% anual</strong> entre 2013 y 2020: más mercado, pero también más competencia.</p>
+      <div class="lienzo"><canvas id="graficaUE" role="img" aria-label="Gráfica de barras: unidades económicas 2013: 8,517; 2018: 9,710; 2020: 11,018"></canvas></div>
+    </div>
+    <div class="panel">
+      <h3>¿En qué sectores compite un negocio aquí?</h3>
+      <p class="sub">Estructura típica del padrón de unidades económicas del municipio según el DENUE: predominio claro del comercio al por menor y los servicios.</p>
+      <div class="lienzo"><canvas id="graficaSectores" role="img" aria-label="Gráfica de dona con la distribución sectorial de las unidades económicas"></canvas></div>
+    </div>
+  </div>
+
+  <div class="panel" style="margin-top:1.5rem">
+    <h3>Seis zonas, seis mercados distintos</h3>
+    <p class="sub">Coacalco no es homogéneo: el corredor de la Vía José López Portillo concentra cinco centros comerciales y la mayor afluencia, mientras que las colonias habitacionales ofrecen rentas bajas y demanda de proximidad. El simulador asigna a cada zona un índice de afluencia y un costo de renta de referencia.</p>
+    <div class="tabla-envoltura"><table class="tabla-zonas">
+      <thead>
+        <tr><th>Zona</th><th>Perfil</th><th>Índice de afluencia*</th><th>Renta de referencia</th><th>Costo de entrada</th></tr>
+      </thead>
+      <tbody>
+        <tr><td><strong>Corredor Vía López Portillo</strong></td><td>Comercial regional, 5 centros comerciales</td><td>1.35</td><td>$280/m²·mes</td><td><span class="pildora alta">Alto</span></td></tr>
+        <tr><td><strong>San Francisco Coacalco (Centro)</strong></td><td>Centro tradicional, comercio de barrio intenso</td><td>1.15</td><td>$170/m²·mes</td><td><span class="pildora media">Medio</span></td></tr>
+        <tr><td><strong>Villa de las Flores · Parque Residencial · Bosques</strong></td><td>Residencial de nivel medio-alto</td><td>1.10</td><td>$190/m²·mes</td><td><span class="pildora media">Medio</span></td></tr>
+        <tr><td><strong>Los Héroes · Loma Bonita · Villa de las Manzanas</strong></td><td>Residencial de nivel medio, alta densidad</td><td>1.00</td><td>$150/m²·mes</td><td><span class="pildora media">Medio</span></td></tr>
+        <tr><td><strong>El Potrero · San Rafael · El Olivo</strong></td><td>Popular, comercio de proximidad</td><td>0.90</td><td>$110/m²·mes</td><td><span class="pildora baja">Bajo</span></td></tr>
+        <tr><td><strong>Zonas habitacionales periféricas</strong></td><td>Demanda local, flujo peatonal limitado</td><td>0.78</td><td>$90/m²·mes</td><td><span class="pildora baja">Bajo</span></td></tr>
+      </tbody>
+    </table></div>
+    <p style="font-family:var(--mono);font-size:.66rem;color:#9B6A6E;margin-top:.7rem">* Índice relativo construido por el equipo (1.00 = promedio municipal) a partir de la caracterización socioeconómica de colonias del municipio y la concentración comercial del corredor López Portillo. Rentas: valores de referencia del mercado local; pueden editarse en el simulador.</p>
+  </div>
+</section>
+
+<!-- ============ 02 SIMULADOR ============ -->
+<section class="banda-oscura" id="simulador">
+  <div class="greca invertida" aria-hidden="true"></div>
+  <div class="seccion">
+    <p class="folio">Sección 02 · El instrumento</p>
+    <h2 class="titulo" style="color:#fff">Simulador de éxito y rentabilidad</h2>
+    <p class="intro">Configura las 22 variables del escenario en las cuatro pestañas: <strong style="color:#FFC9CF">el cálculo es en vivo</strong>, cada ajuste mueve al instante el medidor, las gráficas y el mapa de zonas. ¿Sin ideas? Lanza el dado de <strong style="color:#FFC9CF">🎲 Escenario sorpresa</strong>. El modelo devuelve la probabilidad (con un decimal, cálculo determinista y reproducible) de operar con rentabilidad al tercer año, la curva de supervivencia, la distribución de utilidades (Monte Carlo, 2,000 corridas) y los indicadores financieros del proyecto.</p>
+
+    <div class="simulador">
+      <form class="consola" id="forma" novalidate>
+        <div class="pestanas" role="tablist" aria-label="Grupos de variables">
+          <button type="button" class="pestana" role="tab" aria-selected="true" data-cuadro="c-negocio">① Negocio</button>
+          <button type="button" class="pestana" role="tab" aria-selected="false" data-cuadro="c-ubicacion">② Ubicación</button>
+          <button type="button" class="pestana" role="tab" aria-selected="false" data-cuadro="c-finanzas">③ Finanzas</button>
+          <button type="button" class="pestana" role="tab" aria-selected="false" data-cuadro="c-operacion">④ Operación</button>
+        </div>
+
+        <div class="cuadro activo" id="c-negocio" role="tabpanel">
+          <div class="campo">
+            <label for="giro">Giro del negocio</label>
+            <select id="giro"></select>
+            <span class="ayuda">Cada giro carga su ticket promedio, costo variable y demanda de referencia; puedes ajustarlos después.</span>
+          </div>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="experiencia">Experiencia previa en el giro</label>
+              <select id="experiencia">
+                <option value="-0.25">Sin experiencia</option>
+                <option value="0" selected>1 a 3 años</option>
+                <option value="0.15">3 a 5 años</option>
+                <option value="0.30">Más de 5 años</option>
+                <option value="0.38">Más de 5 años + capacitación formal</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="empleados">Empleados (además de ti)</label>
+              <input type="number" id="empleados" min="0" max="50" step="1" value="1">
+            </div>
+          </div>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="formalidad">Formalidad fiscal</label>
+              <select id="formalidad">
+                <option value="0.10" selected>Formal desde el inicio (SAT/IMSS)</option>
+                <option value="0.02">Formalización gradual</option>
+                <option value="-0.06">Informal</option>
+              </select>
+              <span class="ayuda">La formalidad abre acceso a crédito, proveedores y clientes empresariales.</span>
+            </div>
+            <div class="campo">
+              <label for="marketing">Estrategia de marketing</label>
+              <select id="marketing">
+                <option value="0.12">Activa (redes + pauta + WhatsApp Business)</option>
+                <option value="0.05" selected>Básica (redes sociales orgánicas)</option>
+                <option value="-0.08">Sin marketing</option>
+              </select>
+            </div>
+          </div>
+          <div class="campo">
+            <label for="modeloNegocio">Modelo de negocio</label>
+            <select id="modeloNegocio">
+              <option value="0" selected>Independiente</option>
+              <option value="0.08">Sociedad con socio operador</option>
+              <option value="0.18">Franquicia establecida</option>
+            </select>
+            <span class="ayuda">La evidencia de demografía de negocios asocia las franquicias con mayor supervivencia.</span>
+          </div>
+        </div>
+
+        <div class="cuadro" id="c-ubicacion" role="tabpanel">
+          <div class="campo">
+            <label for="zona">Zona de Coacalco</label>
+            <select id="zona"></select>
+            <span class="ayuda">Determina afluencia esperada y renta de referencia por m².</span>
+          </div>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="local">Tipo de local</label>
+              <select id="local">
+                <option value="renta" selected>Rentado</option>
+                <option value="propio">Propio (sin renta)</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="superficie">Superficie del local (m²)</label>
+              <input type="number" id="superficie" min="10" max="1000" step="5" value="50">
+            </div>
+          </div>
+          <div class="campo">
+            <label for="competencia">Competencia directa a menos de 500 m</label>
+            <select id="competencia">
+              <option value="0.15">Baja (0–1 competidores)</option>
+              <option value="0" selected>Media (2–4 competidores)</option>
+              <option value="-0.20">Alta (5–8 competidores)</option>
+              <option value="-0.35">Saturada (más de 8)</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label for="permisos">Permisos y licencias municipales</label>
+            <select id="permisos">
+              <option value="0.08">Completos (uso de suelo, funcionamiento, protección civil)</option>
+              <option value="0" selected>En trámite</option>
+              <option value="-0.25">Sin permisos</option>
+            </select>
+            <span class="ayuda">Operar sin licencia expone a clausura por el municipio: riesgo directo de mortalidad del negocio.</span>
+          </div>
+        </div>
+
+        <div class="cuadro" id="c-finanzas" role="tabpanel">
+          <div class="campo">
+            <label for="inversion">Inversión inicial total: <span class="valor-rango" id="vInversion">$250,000</span></label>
+            <input type="range" id="inversion" min="30000" max="3000000" step="10000" value="250000">
+            <span class="ayuda">Equipo, adecuaciones, inventario inicial, depósitos y permisos.</span>
+          </div>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="reserva">Reserva de capital de trabajo</label>
+              <select id="reserva">
+                <option value="-0.30">Menos de 3 meses de gastos</option>
+                <option value="0" selected>3 a 6 meses</option>
+                <option value="0.20">6 a 12 meses</option>
+                <option value="0.35">Más de 12 meses</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="credito">Porcentaje financiado con crédito: <span class="valor-rango" id="vCredito">20%</span></label>
+              <input type="range" id="credito" min="0" max="90" step="5" value="20">
+            </div>
+          </div>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="tasa">Tasa anual del crédito (%)</label>
+              <input type="number" id="tasa" min="0" max="80" step="0.5" value="24">
+            </div>
+            <div class="campo">
+              <label for="renta">Renta mensual (MXN) <button type="button" class="boton-sugerir" id="sugerirRenta">Sugerir por zona</button></label>
+              <input type="number" id="renta" min="0" step="500" value="7500">
+            </div>
+          </div>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="ticket">Ticket promedio por cliente (MXN)</label>
+              <input type="number" id="ticket" min="10" step="5" value="85">
+            </div>
+            <div class="campo">
+              <label for="cvar">Costo variable (% de la venta): <span class="valor-rango" id="vCvar">45%</span></label>
+              <input type="range" id="cvar" min="5" max="90" step="1" value="45">
+            </div>
+          </div>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="merma">Merma / desperdicio de inventario: <span class="valor-rango" id="vMerma">3%</span></label>
+              <input type="range" id="merma" min="0" max="15" step="0.5" value="3">
+              <span class="ayuda">Producto caducado, dañado o robado; se suma al costo variable.</span>
+            </div>
+            <div class="campo">
+              <label for="mktGasto">Presupuesto mensual de marketing (MXN)</label>
+              <input type="number" id="mktGasto" min="0" step="250" value="1500">
+              <span class="ayuda">Pauta, impresos, promociones; se suma a tus gastos fijos.</span>
+            </div>
+          </div>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="costoEmpleado">Costo mensual por empleado (MXN)</label>
+              <input type="number" id="costoEmpleado" min="0" step="500" value="11000">
+              <span class="ayuda">Sueldo + carga social aproximada (IMSS, INFONAVIT, prestaciones).</span>
+            </div>
+            <div class="campo">
+              <label for="otrosFijos">Otros gastos fijos mensuales (MXN)</label>
+              <input type="number" id="otrosFijos" min="0" step="500" value="6000">
+              <span class="ayuda">Luz, agua, internet, software, contador, seguridad, etc.</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="cuadro" id="c-operacion" role="tabpanel">
+          <div class="campo">
+            <label for="clientes">Clientes esperados por día <button type="button" class="boton-sugerir" id="sugerirClientes">Sugerir por giro y zona</button></label>
+            <input type="number" id="clientes" min="1" max="2000" step="1" value="60">
+            <span class="ayuda">La sugerencia combina la demanda base del giro, el índice de afluencia de la zona y la competencia.</span>
+          </div>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="dias">Días de operación por semana</label>
+              <select id="dias">
+                <option value="5">5 días</option>
+                <option value="6" selected>6 días</option>
+                <option value="7">7 días</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="estacionalidad">Estacionalidad de la demanda</label>
+              <select id="estacionalidad">
+                <option value="estable" selected>Estable todo el año</option>
+                <option value="diciembre">Pico en fin de año (nov–dic)</option>
+                <option value="verano">Pico en verano y regreso a clases</option>
+              </select>
+            </div>
+          </div>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="modalidad">Modalidad de venta</label>
+              <select id="modalidad">
+                <option value="0" selected>Solo en el local</option>
+                <option value="0.10">Local + entrega a domicilio / apps</option>
+                <option value="0.04">Principalmente a domicilio o en línea</option>
+              </select>
+            </div>
+            <div class="campo">
+              <label for="horario">Horario de operación</label>
+              <select id="horario">
+                <option value="0" selected>Estándar (8–12 h/día)</option>
+                <option value="0.06">Extendido (nocturno o fines de semana)</option>
+              </select>
+            </div>
+          </div>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="ajustePrecio">Ajuste de precio vs. mercado: <span class="valor-rango" id="vAjuste">0%</span></label>
+              <input type="range" id="ajustePrecio" min="-20" max="20" step="1" value="0">
+              <span class="ayuda">Cobrar arriba o abajo del precio típico del giro modifica la demanda según la elasticidad.</span>
+            </div>
+            <div class="campo">
+              <label for="elasticidad">Elasticidad precio de la demanda (ε)</label>
+              <select id="elasticidad">
+                <option value="-0.4">Inelástica (ε = −0.4): necesidad básica</option>
+                <option value="-1" selected>Unitaria (ε = −1.0)</option>
+                <option value="-1.6">Elástica (ε = −1.6): compra sustituible</option>
+              </select>
+            </div>
+          </div>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="crecimiento">Crecimiento anual esperado de la demanda (%)</label>
+              <input type="number" id="crecimiento" min="-20" max="60" step="0.5" value="8">
+              <span class="ayuda">Curva de adopción: cuánto crecen tus clientes conforme te conocen.</span>
+            </div>
+            <div class="campo">
+              <label for="inflacion">Inflación anual esperada de costos (%)</label>
+              <input type="number" id="inflacion" min="0" max="30" step="0.1" value="4.5">
+              <span class="ayuda">Encarece renta, insumos y nómina en los flujos a 3 años.</span>
+            </div>
+          </div>
+          <div class="campo">
+            <label for="descuento">Tasa de descuento anual para el VPN (%)</label>
+            <input type="number" id="descuento" min="1" max="40" step="0.5" value="12">
+            <span class="ayuda">Costo de oportunidad del capital del inversionista (referencia: CETES + prima de riesgo).</span>
+          </div>
+        </div>
+
+        <div class="pie-consola">
+          <span class="vivo">Cálculo en vivo · cada cambio recalcula al instante</span>
+          <button type="button" class="btn-dado" id="dado"><span class="ic">🎲</span> Escenario sorpresa</button>
+        </div>
+      </form>
+
+      <div class="resultados" id="resultados" aria-live="polite">
+        <div class="veredicto">
+          <div class="confeti-capa" id="confeti" aria-hidden="true"></div>
+          <div class="medidor" aria-hidden="true">
+            <div class="medidor-arco"></div>
+            <div class="aguja" id="aguja"></div>
+          </div>
+          <div class="prob-num" id="probNum">—</div>
+          <p class="prob-que">probabilidad estimada de que el negocio <strong>siga operando y sea rentable al tercer año</strong></p>
+          <span class="semaforo medio" id="semaforo">Configura y calcula</span>
+          <p class="ficha-esc" id="fichaEsc"></p>
+          <div class="mini-grid" id="miniGrid" role="img" aria-label="Retícula de 100 escenarios según la probabilidad estimada"></div>
+          <p class="mini-grid-leyenda" id="miniLeyenda">Cada cuadro = 1 escenario de cada 100.</p>
+          <span class="oraculo-cita" id="oraculoCita">«El futuro no es aleatorio. Es calculable.»</span>
+        </div>
+        <div class="kpis" id="kpis"></div>
+        <div class="lectura" id="lectura" hidden>
+          <h4>Lectura estadística del escenario</h4>
+          <ul id="lecturaLista"></ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="graficas-sim">
+      <div class="panel">
+        <h3>Curva de supervivencia proyectada</h3>
+        <p class="sub">Tu escenario frente al promedio nacional (modelo de riesgos proporcionales sobre la tabla INEGI).</p>
+        <div class="lienzo"><canvas id="graficaSupervivencia"></canvas></div>
+      </div>
+      <div class="panel">
+        <h3>Distribución de la utilidad anual (Monte Carlo)</h3>
+        <p class="sub">Histograma de 2,000 años simulados con demanda y ticket aleatorios (distribución normal).</p>
+        <div class="lienzo"><canvas id="graficaMC"></canvas></div>
+      </div>
+      <div class="panel">
+        <h3>Punto de equilibrio</h3>
+        <p class="sub">Ingresos vs. costos totales según clientes por día; el cruce marca el equilibrio.</p>
+        <div class="lienzo"><canvas id="graficaPE"></canvas></div>
+      </div>
+    </div>
+
+    <div class="panel" id="mapa" style="margin-top:1.5rem">
+      <h3>Mapa de probabilidad por zona</h3>
+      <p class="sub">Tu mismo negocio, evaluado en las seis zonas de Coacalco con la renta de referencia y la afluencia de cada una. El color indica la probabilidad de éxito a 3 años. <strong>Haz clic en una zona</strong> (o en el ranking) para trasladar tu escenario ahí. Activa la capa <strong>satélite</strong> para ver la fotografía aérea real del municipio.</p>
+      <div class="conmutador" role="group" aria-label="Modo de mapa">
+        <button type="button" id="btnMapaReal" class="activa">🗺️ Mapa real (calles / satélite)</button>
+        <button type="button" id="btnMapaEsquema">✏️ Esquema del equipo</button>
+      </div>
+      <div class="mapa-grid">
+        <div class="mapa-cont">
+          <div class="mapa-leaflet" id="mapaReal" role="application" aria-label="Mapa real de Coacalco de Berriozábal con las seis zonas de análisis coloreadas según su probabilidad de éxito"></div>
+          <svg viewBox="0 0 760 470" id="mapaEsquema" hidden role="group" aria-label="Mapa esquemático de Coacalco de Berriozábal dividido en seis zonas coloreadas según su probabilidad de éxito">
+            <rect x="2" y="2" width="756" height="466" rx="14" fill="#FBF6F3" stroke="#EFD6D4"/>
+            <!-- Zonas (norte arriba) -->
+            <path class="zona-mapa" id="mz-periferia" data-zona="periferia" d="M98,88 L380,74 L660,80 Q702,86 708,146 L96,160 Q82,122 98,88 Z"><title>Zonas habitacionales periféricas</title></path>
+            <path class="zona-mapa" id="mz-heroes" data-zona="heroes" d="M96,160 L330,153 L327,258 L86,257 Q78,206 96,160 Z"><title>Los Héroes · Loma Bonita · Villa de las Manzanas</title></path>
+            <path class="zona-mapa" id="mz-centro" data-zona="centro" d="M330,153 L472,150 L470,259 L327,258 Z"><title>San Francisco Coacalco (Centro)</title></path>
+            <path class="zona-mapa" id="mz-flores" data-zona="flores" d="M472,150 L708,146 Q716,204 712,262 L470,259 Z"><title>Villa de las Flores · Parque Residencial · Bosques</title></path>
+            <path class="zona-mapa" id="mz-corredor" data-zona="corredor" d="M86,257 L327,258 L470,259 L712,262 L706,316 L78,308 Q74,282 86,257 Z"><title>Corredor Vía López Portillo</title></path>
+            <path class="zona-mapa" id="mz-popular" data-zona="popular" d="M78,308 L368,312 L358,386 Q222,396 106,378 Q86,346 78,308 Z"><title>El Potrero · San Rafael · El Olivo</title></path>
+            <!-- Sierra de Guadalupe (decorativa) -->
+            <path d="M368,312 L706,316 Q690,374 636,416 Q518,440 398,410 Q374,364 368,312 Z" fill="#E7D8D1" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/>
+            <path d="M470,372 l14,-22 l14,22 Z M520,384 l16,-26 l16,26 Z M580,372 l14,-22 l14,22 Z" fill="#CBB3A9"/>
+            <text class="et-geo" x="535" y="408">SIERRA DE GUADALUPE · ÁREA NATURAL</text>
+            <!-- Vía José López Portillo -->
+            <path d="M84,284 C 240,278 520,294 704,290" fill="none" stroke="#fff" stroke-width="4" stroke-dasharray="14 9" opacity=".85"/>
+            <!-- Etiquetas -->
+            <text class="et-zona" x="390" y="120">Periferia norte</text><text class="et-p" id="pl-periferia" x="390" y="138">—</text>
+            <text class="et-zona" x="206" y="200">Héroes · Loma Bonita</text><text class="et-p" id="pl-heroes" x="206" y="218">—</text>
+            <text class="et-zona" x="398" y="200">Centro S. Fco.</text><text class="et-p" id="pl-centro" x="398" y="218">—</text>
+            <text class="et-zona" x="590" y="198">V. de las Flores</text><text class="et-p" id="pl-flores" x="590" y="216">—</text>
+            <text class="et-zona" x="262" y="291">Corredor López Portillo</text><text class="et-p" id="pl-corredor" x="560" y="291">—</text>
+            <text class="et-zona" x="212" y="348">Potrero · S. Rafael</text><text class="et-p" id="pl-popular" x="212" y="366">—</text>
+            <!-- Rosa de los vientos -->
+            <g transform="translate(712,44)" aria-hidden="true">
+              <line x1="0" y1="14" x2="0" y2="-12" stroke="#7A0C1F" stroke-width="2"/>
+              <path d="M0,-16 L6,-4 L0,-7 L-6,-4 Z" fill="#C8102E"/>
+              <text x="0" y="30" text-anchor="middle" font-family="Spline Sans Mono,monospace" font-size="11" fill="#7A0C1F" font-weight="700">N</text>
+            </g>
+          </svg>
+          <div class="mapa-tooltip" id="mapaTip" role="status"></div>
+          <p class="mapa-nota">Mapa real: cartografía © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · fotografía aérea © Esri y proveedores. La delimitación de zonas es aproximada y fue elaborada por el equipo con fines de análisis; los hitos comerciales se muestran con ubicación aproximada. Cada zona se evalúa con tu escenario actual ajustando renta de referencia y afluencia. Si no hay conexión, se muestra el esquema del equipo.</p>
+        </div>
+        <div>
+          <p class="ranking-titulo">Ranking de zonas para tu escenario</p>
+          <ul class="ranking" id="ranking"></ul>
+          <p class="reco" id="recomendacion"></p>
+        </div>
+      </div>
+    </div>
+    <div class="toast" id="toastCOATL" role="status"></div>
+  </div>
+  <div class="greca invertida" aria-hidden="true"></div>
+</section>
+
+<!-- ============ 03 PLAN DE ACCIÓN FODA ============ -->
+<section class="seccion" id="estrategia">
+  <p class="folio">Sección 03 · Estrategia en tiempo real</p>
+  <h2 class="titulo">Qué hacer para no perder: análisis FODA y plan de acción</h2>
+  <div class="foda-intro">
+    <p class="intro" style="margin-bottom:0">No basta con saber la probabilidad: hay que poder moverla. Este apartado lee tu escenario <strong>en vivo</strong>, lo clasifica en Fortalezas, Oportunidades, Debilidades y Amenazas, y construye un <strong>plan de acción priorizado</strong>. Cada estrategia muestra cuántos puntos de probabilidad ganarías —calculados volviendo a correr el modelo con esa mejora— y la evidencia real que la respalda.</p>
+    <div class="foda-resumen">
+      Probabilidad actual
+      <span class="gr" id="fodaP">—</span>
+      <span id="fodaTecho">potencial con el plan: —</span>
+    </div>
+  </div>
+
+  <h3 style="font-family:var(--display);font-weight:700;font-size:1.25rem;margin-bottom:.4rem">Tres escenarios de tu negocio</h3>
+  <p class="sub" style="color:var(--gris-texto);margin-bottom:1rem">Utilidad anual de los 2,000 años simulados con Monte Carlo: el pesimista (percentil 5), el esperado (mediana) y el optimista (percentil 95).</p>
+  <div class="triplete" id="triplete"></div>
+
+  <h3 style="font-family:var(--display);font-weight:700;font-size:1.25rem;margin-bottom:1rem">Matriz FODA de tu escenario</h3>
+  <div class="foda-grid" id="fodaGrid">
+    <div class="cuad f"><h4><span class="gl">F</span> Fortalezas</h4><p class="lema">Lo que ya juega a tu favor (interno)</p><ul id="fodaF"></ul></div>
+    <div class="cuad o"><h4><span class="gl">O</span> Oportunidades</h4><p class="lema">Palancas del entorno que puedes aprovechar (externo)</p><ul id="fodaO"></ul></div>
+    <div class="cuad d"><h4><span class="gl">D</span> Debilidades</h4><p class="lema">Lo que te resta y sí controlas (interno)</p><ul id="fodaD"></ul></div>
+    <div class="cuad a"><h4><span class="gl">A</span> Amenazas</h4><p class="lema">Riesgos del entorno que debes blindar (externo)</p><ul id="fodaA"></ul></div>
+  </div>
+
+  <div class="plan-cab">
+    <h3>Plan de acción priorizado</h3>
+    <span class="nota">Ordenado por impacto en la probabilidad · se actualiza al cambiar el simulador</span>
+  </div>
+  <div class="acciones" id="acciones"></div>
+  <p class="plan-cierre" id="planCierre"></p>
+</section>
+
+<!-- ============ 04 METODOLOGÍA ============ -->
+<section class="seccion" id="metodologia">
+  <p class="folio">Sección 04 · Los modelos detrás del número</p>
+  <h2 class="titulo">Metodología estadística</h2>
+  <p class="intro">El simulador encadena cinco herramientas vistas en el curso. Ninguna probabilidad sale «de la nada»: cada una se construye con un modelo explícito, parámetros documentados y datos oficiales como punto de anclaje.</p>
+
+  <div class="metodos">
+    <article class="metodo" data-num="ƒ₁">
+      <h3>Modelo logístico de puntaje</h3>
+      <p>La probabilidad de éxito a 3 años se obtiene con una función logística: cada variable del escenario aporta un coeficiente β (positivo si protege al negocio, negativo si lo arriesga) y la suma z se transforma en una probabilidad entre 0 y 1.</p>
+      <div class="formula">P(éxito) = 1 / (1 + e^(−z)),&nbsp;&nbsp; z = β₀ + β₁x₁ + β₂x₂ + … + βₖxₖ</div>
+      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI (~46%). Los coeficientes de zona, experiencia, reserva de capital, competencia, deuda y margen de seguridad se asignaron por criterio del equipo a partir de la literatura de demografía de negocios.</p>
+      <p class="uso">Conceptos del curso: probabilidad condicional, función logística, variables explicativas.</p>
+    </article>
+
+    <article class="metodo" data-num="ƒ₂">
+      <h3>Tablas de supervivencia y riesgos proporcionales</h3>
+      <p>El INEGI publica <a href="https://www.inegi.org.mx/temas/dn/" target="_blank" rel="noopener">tablas de mortalidad de negocios</a> construidas con los Censos Económicos: de cada 100 negocios que nacen en México, cerca de 33 cierran el primer año y solo unos 35 llegan a los 5 años. La esperanza de vida al nacer es de 7.8 años (9.7 en manufactura, 8.0 en servicios y 6.9 en comercio). La curva personalizada se obtiene elevando la supervivencia nacional a un exponente h (razón de riesgo) derivado de tu probabilidad:</p>
+      <div class="formula">S(t) = S₀(t)^h,&nbsp;&nbsp; h = ln P(éxito) / ln S₀(3)</div>
+      <table class="tabla-sup">
+        <thead><tr><th>Año</th><th>1</th><th>2</th><th>3</th><th>5</th><th>7</th><th>10</th></tr></thead>
+        <tbody><tr><td><strong>S₀(t) nacional</strong></td><td>0.67</td><td>0.56</td><td>0.46</td><td>0.35</td><td>0.31</td><td>0.25</td></tr></tbody>
+      </table>
+      <p class="uso">Conceptos: probabilidad de supervivencia, frecuencia relativa, esperanza de vida.</p>
+    </article>
+
+    <article class="metodo" data-num="ƒ₃">
+      <h3>Simulación Monte Carlo</h3>
+      <p>La utilidad de un negocio no es fija: la demanda diaria y el ticket varían. Modelamos los clientes por día como una variable aleatoria Normal con media μ (tu dato) y desviación estándar σ = 0.22·μ, y el ticket como Normal(ticket, 0.08·ticket). Repetimos el año completo 2,000 veces (con números pseudoaleatorios de semilla fija, método Box–Muller) y obtenemos la distribución de la utilidad anual: su media, su dispersión, el intervalo central del 95% y la probabilidad empírica de terminar el año con utilidad positiva.</p>
+      <div class="formula">Clientes ~ N(μ, (0.22μ)²)&nbsp;&nbsp;·&nbsp;&nbsp;Ticket ~ N(t̄, (0.08t̄)²)&nbsp;&nbsp;·&nbsp;&nbsp;P(U&gt;0) ≈ #{Uᵢ&gt;0}/2000</div>
+      <p class="uso">Conceptos: distribución normal, teorema central del límite, percentiles, probabilidad empírica.</p>
+    </article>
+
+    <article class="metodo" data-num="ƒ₄">
+      <h3>Punto de equilibrio y margen de seguridad</h3>
+      <p>Con el margen de contribución unitario (ticket menos costo variable) se calcula cuántos clientes al mes se necesitan para cubrir los costos fijos. El margen de seguridad —qué tan lejos opera el negocio por encima de su equilibrio— alimenta de regreso al modelo logístico: operar pegado al equilibrio es, estadísticamente, una señal de fragilidad.</p>
+      <div class="formula">PE = CF / (ticket − cv)&nbsp;&nbsp;·&nbsp;&nbsp;MS = (Ventas − PE$) / Ventas</div>
+      <p class="uso">Conceptos: modelos lineales de costo–volumen, análisis de sensibilidad.</p>
+    </article>
+
+    <article class="metodo" data-num="ƒ₅">
+      <h3>Indicadores de inversión: ROI, payback y VPN</h3>
+      <p>Para el inversionista, la probabilidad debe traducirse a dinero. El simulador reporta el retorno anual sobre la inversión, el periodo de recuperación y el valor presente neto a 3 años: los flujos crecen con tu tasa g de adopción de demanda, los costos fijos se encarecen con la inflación π esperada, cada flujo se pondera por la probabilidad de seguir vivo S(t) y todo se descuenta a la tasa que tú definas. El costo variable efectivo cv′ incluye la merma de inventario.</p>
+      <div class="formula">VPN = −I₀ + Σₜ S(t)·Uₜ/(1+r)ᵗ,&nbsp; Uₜ = V₁(1+g)ᵗ⁻¹(1−cv′) − CF₁(1+π)ᵗ⁻¹</div>
+      <p class="uso">Conceptos: valor esperado, esperanza matemática aplicada a flujos de efectivo.</p>
+    </article>
+
+    <article class="metodo" data-num="ƒ₆">
+      <h3>Datos de anclaje</h3>
+      <p>Población y estructura demográfica: Censo de Población y Vivienda 2020 (INEGI). Unidades económicas, personal ocupado y valor agregado del municipio: IGECEM con Censos Económicos y DENUE (8,517 en 2013 → 9,710 en 2018 → 11,018 en 2020). Pobreza: CONEVAL 2020. Supervivencia empresarial: INEGI, «Esperanza de vida de los negocios en México». Los índices de afluencia por zona y las rentas de referencia son estimaciones propias del equipo, editables en el simulador, y así se declaran.</p>
+      <p class="uso">Principio rector: separar dato oficial, supuesto del equipo y resultado del modelo.</p>
+    </article>
+  </div>
+</section>
+
+<!-- ============ 04 LECTURA ============ -->
+<section class="seccion" id="lectura" style="padding-top:0">
+  <p class="folio">Sección 05 · Interpretación y decisión</p>
+  <h2 class="titulo">Cómo leer tu resultado</h2>
+  <div class="intro-flex">
+    <p class="intro">Una probabilidad no es una sentencia: es una medida de riesgo bajo supuestos. Esta guía traduce los rangos del medidor a decisiones de inversión, en línea con los criterios de evaluación de la Jornada Académica.</p>
+    <svg class="ilustracion" viewBox="0 0 240 210" role="img" aria-label="Ilustración de un local comercial con una gráfica creciente en el aparador">
+      <line x1="6" y1="192" x2="234" y2="192" stroke="#38070F" stroke-width="3" stroke-linecap="round"/>
+      <rect x="20" y="76" width="200" height="116" rx="7" fill="#fff" stroke="#38070F" stroke-width="3"/>
+      <path d="M12,76 L228,76 L218,44 L22,44 Z" fill="#C8102E" stroke="#38070F" stroke-width="3" stroke-linejoin="round"/>
+      <g stroke="#38070F" stroke-width="3">
+        <path d="M12,76 a18,15 0 0 0 36,0" fill="#fff"/><path d="M48,76 a18,15 0 0 0 36,0" fill="#C8102E"/>
+        <path d="M84,76 a18,15 0 0 0 36,0" fill="#fff"/><path d="M120,76 a18,15 0 0 0 36,0" fill="#C8102E"/>
+        <path d="M156,76 a18,15 0 0 0 36,0" fill="#fff"/><path d="M192,76 a18,15 0 0 0 36,0" fill="#C8102E"/>
+      </g>
+      <rect x="36" y="106" width="92" height="60" rx="4" fill="#FBF6F3" stroke="#38070F" stroke-width="2.5"/>
+      <polyline points="46,154 62,138 78,144 96,120 116,112" fill="none" stroke="#C8102E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M109,108 h9 v9" fill="none" stroke="#C8102E" stroke-width="3.5" stroke-linecap="round"/>
+      <rect x="150" y="108" width="52" height="84" rx="4" fill="#7A0C1F" stroke="#38070F" stroke-width="3"/>
+      <circle cx="192" cy="152" r="3" fill="#FBF6F3"/>
+      <rect x="156" y="118" width="40" height="16" rx="3" fill="#fff" stroke="#38070F" stroke-width="2"/>
+      <text x="176" y="130" text-anchor="middle" font-family="Spline Sans Mono,monospace" font-size="9" font-weight="700" fill="#7A0C1F">ABIERTO</text>
+    </svg>
+  </div>
+
+  <div class="guia">
+    <div class="panel verde">
+      <p class="rango" style="color:var(--ok)">P ≥ 65% · ESCENARIO SÓLIDO</p>
+      <p style="font-size:.92rem;color:var(--gris-texto);margin-top:.5rem">El escenario supera con holgura la supervivencia promedio nacional. Verifica que P(utilidad&gt;0) del Monte Carlo también sea alta (≥80%) y que el payback sea menor a 24 meses antes de comprometer capital. Aun aquí, conserva la reserva de 6 meses: la cola izquierda del histograma existe.</p>
+    </div>
+    <div class="panel ambar">
+      <p class="rango" style="color:var(--alerta)">45% ≤ P &lt; 65% · ESCENARIO CONDICIONADO</p>
+      <p style="font-size:.92rem;color:var(--gris-texto);margin-top:.5rem">Viable pero sensible. Usa el simulador como análisis de sensibilidad: cambia una variable a la vez (zona, ticket, costo variable, deuda) y observa cuál mueve más la probabilidad. Invierte solo si puedes corregir las dos variables de mayor impacto.</p>
+    </div>
+    <div class="panel">
+      <p class="rango" style="color:var(--rojo)">P &lt; 45% · ESCENARIO FRÁGIL</p>
+      <p style="font-size:.92rem;color:var(--gris-texto);margin-top:.5rem">El modelo estima un riesgo mayor al promedio nacional. No significa «imposible»: significa que, de 100 negocios como el tuyo, la mayoría no llega rentable al tercer año. Replantea giro, zona o estructura de costos antes de invertir.</p>
+    </div>
+  </div>
+
+  <div class="limitaciones">
+    <h3>Limitaciones y propuesta de mejora</h3>
+    <p>Este es un modelo educativo: los coeficientes logísticos no provienen de una regresión ajustada con microdatos (que el INEGI no publica a nivel negocio), sino de una calibración documentada sobre las tablas de supervivencia oficiales. La mejora natural del proyecto es estimar los β con datos de panel de la Demografía de los Negocios del INEGI, incorporar la distribución de Poisson para llegadas de clientes en giros de bajo flujo y validar las rentas por zona con un muestreo de campo en el municipio. Ningún resultado de esta herramienta constituye asesoría financiera.</p>
+  </div>
+</section>
+<!-- ============ 05 AVISO LEGAL Y REFERENCIAS ============ -->
+<section class="seccion" id="legal" style="padding-top:0">
+  <p class="folio">Sección 06 · Marco legal y referencias</p>
+  <h2 class="titulo">Aviso legal</h2>
+  <p class="intro">Este apartado protege los derechos de los autores del proyecto y delimita con claridad el alcance de la herramienta, conforme a la legislación mexicana aplicable. El uso del sitio implica la aceptación de estos términos.</p>
+
+  <div class="metodos">
+    <article class="metodo" data-num="§1">
+      <h3>Titularidad y propiedad intelectual</h3>
+      <p><strong>COATL — Cálculo de Oportunidad y Análisis Territorial Local</strong>, incluyendo su código fuente, diseño visual, identidad gráfica (logotipo, cenefa de greca y retícula de 100), textos, ilustraciones, estructura del modelo estadístico y su documentación, es una obra original cuyos autores y titulares de los derechos morales y patrimoniales son <strong>Miguel Antonio Cruz García, Bruno Alejandro López Bautista y Alonso Arroyo Cortés</strong>, en términos de los artículos 11, 12, 18 a 21 y 24 a 27 de la <a href="https://www.diputados.gob.mx/LeyesBiblio/ref/lfda.htm" target="_blank" rel="noopener">Ley Federal del Derecho de Autor</a>. La protección existe desde el momento de la creación de la obra, sin necesidad de registro (art. 5 LFDA). Queda prohibida su reproducción total o parcial, distribución, comunicación pública con fines comerciales, o la creación de obras derivadas, sin autorización previa, expresa y por escrito de los autores. Se permite la cita académica con atribución conforme al artículo 148 LFDA.</p>
+    </article>
+    <article class="metodo" data-num="§2">
+      <h3>Naturaleza académica · no es asesoría de inversión</h3>
+      <p>Esta herramienta fue desarrollada como Proyecto Especial de Participación para la Jornada Académica de Negocios (asignatura de Probabilidad y Estadística). Sus resultados son <strong>estimaciones de un modelo educativo</strong> bajo supuestos declarados y <strong>no constituyen asesoría financiera, contable, legal ni recomendación de inversión</strong> en términos de la legislación financiera mexicana. Toda decisión de negocio tomada con apoyo en esta herramienta es responsabilidad exclusiva de quien la toma; se recomienda consultar a profesionales certificados antes de comprometer capital.</p>
+    </article>
+    <article class="metodo" data-num="§3">
+      <h3>Limitación de responsabilidad</h3>
+      <p>El sitio se proporciona «tal cual» y «según disponibilidad». En la máxima medida permitida por la legislación aplicable, los autores no garantizan la exactitud futura de las estimaciones —ninguna técnica estadística predice el futuro con certeza— ni serán responsables por daños directos, indirectos, incidentales o consecuenciales (incluidas pérdidas económicas o de oportunidad) derivados del uso o imposibilidad de uso del sitio o de la confianza depositada en sus resultados. Los índices de afluencia por zona, las rentas de referencia y la delimitación de zonas en el mapa son estimaciones propias del equipo, declaradas como tales.</p>
+    </article>
+    <article class="metodo" data-num="§4">
+      <h3>Privacidad y datos personales</h3>
+      <p>Este sitio <strong>no recolecta, almacena ni transmite datos personales</strong>: no utiliza cookies propias, no tiene formularios de registro y todos los cálculos del simulador se ejecutan localmente en tu navegador, sin enviarse a servidor alguno. Al no existir tratamiento de datos personales, no se actualizan los supuestos de la <a href="https://www.diputados.gob.mx/LeyesBiblio/ref/lfpdppp.htm" target="_blank" rel="noopener">LFPDPPP</a>; los proveedores de mapas (OpenStreetMap, Esri) pueden registrar solicitudes técnicas de teselas conforme a sus propias políticas.</p>
+    </article>
+    <article class="metodo" data-num="§5">
+      <h3>Contenido y licencias de terceros</h3>
+      <p>Los datos estadísticos provienen de fuentes oficiales de libre uso citando la fuente (INEGI, IGECEM, CONEVAL). La cartografía es © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> bajo licencia ODbL; la imagen satelital es cortesía de Esri y sus proveedores. Bibliotecas: <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a> (BSD-2), <a href="https://www.chartjs.org/" target="_blank" rel="noopener">Chart.js</a> (MIT) y tipografías de <a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts</a> (SIL OFL). Cada recurso conserva su licencia original; su uso aquí no implica afiliación ni respaldo de sus titulares.</p>
+    </article>
+    <article class="metodo" data-num="§6">
+      <h3>Marco aplicable y jurisdicción</h3>
+      <p>Este aviso se rige por las leyes de los Estados Unidos Mexicanos. Para cualquier controversia relacionada con la titularidad o el uso de esta obra, las partes se someten a los tribunales competentes del Estado de México, renunciando a cualquier otro fuero. Si alguna disposición de este aviso fuera declarada inválida, las restantes conservarán plena vigencia. Los autores podrán actualizar este aviso; la versión publicada en el sitio será la vigente. <em>Este apartado es informativo y no sustituye la asesoría de un abogado titulado.</em></p>
+    </article>
+  </div>
+
+  <div class="panel" style="margin-top:1.5rem">
+    <h3>Referencias</h3>
+    <p class="sub">Todas las fuentes utilizadas en el proyecto, con hipervínculo directo.</p>
+    <ol class="refs">
+      <li><a href="https://www.inegi.org.mx/programas/ccpv/2020/" target="_blank" rel="noopener">INEGI (2020). Censo de Población y Vivienda 2020.</a> Población y estructura demográfica de Coacalco de Berriozábal.</li>
+      <li><a href="https://coacalco.gob.mx/datos-economicos/" target="_blank" rel="noopener">Gobierno de Coacalco de Berriozábal. Datos económicos abiertos (IGECEM / Censos Económicos / DENUE).</a> Unidades económicas 2013–2020 y valor agregado censal bruto.</li>
+      <li><a href="https://www.inegi.org.mx/temas/dn/" target="_blank" rel="noopener">INEGI. Demografía de los Negocios — Esperanza de vida de los negocios en México.</a> Tablas de supervivencia empresarial por sector.</li>
+      <li><a href="https://www.coneval.org.mx/Medicion/Paginas/Pobreza-municipal.aspx" target="_blank" rel="noopener">CONEVAL (2020). Medición de pobreza a nivel municipal.</a> Indicadores de pobreza moderada y extrema.</li>
+      <li><a href="https://www.economia.gob.mx/datamexico/es/profile/geo/coacalco-de-berriozabal" target="_blank" rel="noopener">Secretaría de Economía. Data México: perfil de Coacalco de Berriozábal.</a> Indicadores económicos complementarios.</li>
+      <li><a href="https://www.diputados.gob.mx/LeyesBiblio/ref/lfda.htm" target="_blank" rel="noopener">Cámara de Diputados. Ley Federal del Derecho de Autor.</a> Fundamento de la protección de la obra.</li>
+      <li><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap Foundation. Copyright y licencia ODbL.</a> Cartografía base del mapa real.</li>
+      <li><a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet (BSD-2-Clause).</a> Biblioteca de mapas interactivos.</li>
+      <li><a href="https://www.chartjs.org/" target="_blank" rel="noopener">Chart.js (MIT).</a> Biblioteca de gráficas estadísticas.</li>
+      <li><a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts (SIL Open Font License).</a> Tipografías Bricolage Grotesque, Hanken Grotesk y Spline Sans Mono.</li>
+    </ol>
+  </div>
+</section>
+</main>
+
+<!-- ============ PIE ============ -->
+<footer class="pie" id="creditos">
+  <div class="pie-inner">
+    <div>
+      <h4>Proyecto realizado por</h4>
+      <ul class="autores">
+        <li>Miguel Antonio Cruz García</li>
+        <li>Bruno Alejandro López Bautista</li>
+        <li>Alonso Arroyo Cortés</li>
+      </ul>
+      <p style="font-size:.82rem;margin-top:1rem;color:#D9A8AE">Proyecto Especial de Participación · Jornada Académica de Negocios<br>Asignatura: Probabilidad y Estadística<br>Docente: Mtra. Noemí Daniela Palacios Fermín</p>
+    </div>
+    <div>
+      <h4>Fuentes de datos</h4>
+      <ul>
+        <li><a href="https://www.inegi.org.mx/programas/ccpv/2020/" target="_blank" rel="noopener">INEGI · Censo de Población y Vivienda 2020</a></li>
+        <li><a href="https://coacalco.gob.mx/datos-economicos/" target="_blank" rel="noopener">IGECEM · Censos Económicos Edomex / DENUE 2020</a></li>
+        <li><a href="https://www.inegi.org.mx/temas/dn/" target="_blank" rel="noopener">INEGI · Esperanza de vida de los negocios en México</a></li>
+        <li><a href="https://www.coneval.org.mx/Medicion/Paginas/Pobreza-municipal.aspx" target="_blank" rel="noopener">CONEVAL · Medición de pobreza municipal 2020</a></li>
+        <li><a href="https://www.economia.gob.mx/datamexico/es/profile/geo/coacalco-de-berriozabal" target="_blank" rel="noopener">Data México · Perfil de Coacalco de Berriozábal</a></li>
+      </ul>
+    </div>
+    <div>
+      <h4>Sobre COATL</h4>
+      <ul>
+        <li>Cálculo de Oportunidad y Análisis Territorial Local</li>
+        <li>Modelos: logístico · supervivencia · Monte Carlo</li>
+        <li>2,000 corridas por escenario, semilla reproducible</li>
+        <li>Hecho con HTML, CSS y JavaScript (Chart.js + Leaflet)</li>
+        <li><a href="#legal">Aviso legal y referencias completas</a></li>
+      </ul>
+    </div>
+  </div>
+  <p class="pie-legal">© 2026 Miguel Antonio Cruz García, Bruno Alejandro López Bautista y Alonso Arroyo Cortés. Todos los derechos reservados. COATL es una herramienta académica de apoyo a la decisión; sus resultados no constituyen asesoría financiera, legal ni de inversión. Consulta el <a href="#legal">Aviso legal</a> completo. Coacalco de Berriozábal, Estado de México · 2026.</p>
+</footer>
+
+<script>
+"use strict";
+/*@@JS@@*/
+</script>
+</body>
+</html>
