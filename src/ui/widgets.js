@@ -1,13 +1,11 @@
 /* ---------- 17. Widgets de análisis (todos derivados del propio modelo) ---------- */
-let chTornado=null;
 const COL={rojo:"#C8102E",granate:"#7A0C1F",rosa:"#E9B9BE",hueso:"#FBF6F3",tinta:"#38070F"};
 
 /* Tornado: contribución βᵢ de cada variable a z, ordenada por magnitud. */
 function pintarTornado(modelo){
   const c=[...modelo.contribs].filter(x=>x[1]!==0).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1]));
   const datos=c.length?c:[["Todas las variables en posición neutra",0]];
-  if(chTornado)chTornado.destroy();
-  chTornado=new Chart($("graficaTornado"),{type:"bar",data:{
+  graficar($("graficaTornado"),{type:"bar",data:{
     labels:datos.map(x=>x[0].replace(/ \(.+\)$/,"")),
     datasets:[{label:"β (aporte a z)",data:datos.map(x=>+x[1].toFixed(2)),
       backgroundColor:datos.map(x=>x[1]<0?COL.rojo:COL.granate),borderRadius:4}]},
@@ -93,7 +91,7 @@ $("compartirURL").addEventListener("click",async()=>{
 /* Exportar: PNG compuesto (encabezado + KPIs + gráficas) y PDF vía impresión del navegador. */
 $("exportarPDF").addEventListener("click",()=>window.print());
 $("exportarPNG").addEventListener("click",()=>{
-  const W=1400, graf=[chSup,chMC,chTornado,chPE].filter(Boolean), alto=230+Math.ceil(graf.length/2)*420+60;
+  const W=1400, graf=graficasListas(["graficaSupervivencia","graficaMC","graficaTornado","graficaPE"]), alto=230+Math.ceil(graf.length/2)*420+60;
   const cv=document.createElement("canvas"); cv.width=W; cv.height=alto;
   const x=cv.getContext("2d");
   x.fillStyle=COL.hueso; x.fillRect(0,0,W,alto);
@@ -126,9 +124,7 @@ function describirGraficas(e,modelo,mc,S){
     ". Aportes β al modelo logístico: "+(tor||"todas las variables neutras")+".";
 }
 function pintarWidgets(e,modelo,mc,S){
-  const f=finanzas(e,mc,S);
   describirGraficas(e,modelo,mc,S);
-  ultimoResumen=resumenEscenario(e,modelo,mc,f);
   pintarTornado(modelo);
   pintarComparadorZonas();
   pintarComparador();
