@@ -246,11 +246,14 @@ function calcular(){
   pintarVeredicto(modelo.P);
   const vpn=pintarKPIs(e,mc,S,modelo);
   pintarLectura(e,mc,modelo,vpn);
-  pintarGraficas(e,mc,S,modelo);
-  pintarMapa(e,modelo);
-  pintarFODA(e,modelo,mc);
-  pintarWidgets(e,modelo,mc,S);
+  ultimoResumen=resumenEscenario(e,modelo,mc,finanzas(e,mc,S));
+  /* Lo que está fuera de la vista se pinta en tareas separadas (<50 ms cada una)
+     para no bloquear el hilo principal; una versión nueva cancela la anterior. */
+  const v=++versionCalculo;
+  [()=>pintarGraficas(e,mc,S,modelo), ()=>pintarMapa(e,modelo), ()=>pintarFODA(e,modelo,mc), ()=>pintarWidgets(e,modelo,mc,S)]
+    .forEach(f=>setTimeout(()=>{ if(v===versionCalculo) f(); },0));
 }
+let versionCalculo=0;
 /* ---------- 15. Barra de progreso y navegación activa ---------- */
 (function navViva(){
   const barra=$("progreso");

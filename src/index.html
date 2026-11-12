@@ -106,7 +106,7 @@
       <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M6 16l4-5.2 3 3 5-6.8"/><path d="M14.8 7H18v3.2"/></svg></div>
       <div class="num">$17,179.6 M</div>
       <div class="que">valor agregado censal bruto (miles de pesos: 17,179,600)</div>
-      <div class="src">IGECEM · Censos Económicos / IMAE 2021</div>
+      <div class="src">Gobierno de Coacalco · datos económicos (IGECEM/INEGI) · 2020</div>
     </div>
     <div class="cifra">
       <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.4 7.9-7 9-3.6-1.1-7-4-7-9V6z"/><path d="M9 12l2.2 2.2 4.3-4.4"/></svg></div>
@@ -124,7 +124,7 @@
     </div>
     <div class="panel">
       <h3>¿En qué sectores compite un negocio aquí?</h3>
-      <p class="sub">Estructura típica del padrón de unidades económicas del municipio según el DENUE: predominio claro del comercio al por menor y los servicios.</p>
+      <p class="sub">Estructura sectorial <strong>estimada por el equipo</strong> (por verificar contra el DENUE): las fuentes municipales consultadas no publican el desglose por sector.</p>
       <div class="lienzo"><canvas id="graficaSectores" role="img" aria-label="Gráfica de dona con la distribución sectorial de las unidades económicas"></canvas></div>
     </div>
   </div>
@@ -573,17 +573,18 @@
       <h3>Modelo logístico de puntaje</h3>
       <p>La probabilidad de éxito a 3 años se obtiene con una función logística: cada variable del escenario aporta un coeficiente β (positivo si protege al negocio, negativo si lo arriesga) y la suma z se transforma en una probabilidad entre 0 y 1.</p>
       <div class="formula">P(éxito) = 1 / (1 + e^(−z)),&nbsp;&nbsp; z = β₀ + β₁x₁ + β₂x₂ + … + βₖxₖ</div>
-      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI (~46%). Los coeficientes de zona, experiencia, reserva de capital, competencia, deuda y margen de seguridad se asignaron por criterio del equipo a partir de la literatura de demografía de negocios. Como ningún β tiene error estándar, el simulador no presenta P como cifra exacta: perturba cada βᵢ con una desviación relativa de 30 % (y β₀ con 0.15) en 1,000 sorteos y reporta el <strong>rango plausible P5–P95</strong>. Es un análisis de sensibilidad, no un intervalo de confianza muestral.</p>
+      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI 1989–2019 (42.6 %): β₀ = ln(0.4261/0.5739) ≈ −0.298. Los coeficientes de zona, experiencia, reserva de capital, competencia, deuda y margen de seguridad se asignaron por criterio del equipo a partir de la literatura de demografía de negocios. Como ningún β tiene error estándar, el simulador no presenta P como cifra exacta: perturba cada βᵢ con una desviación relativa de 30 % (y β₀ con 0.15) en 1,000 sorteos y reporta el <strong>rango plausible P5–P95</strong>. Es un análisis de sensibilidad, no un intervalo de confianza muestral.</p>
       <p class="uso">Conceptos del curso: probabilidad condicional, función logística, variables explicativas.</p>
     </article>
 
     <article class="metodo" data-num="ƒ₂">
       <h3>Tablas de supervivencia y riesgos proporcionales</h3>
-      <p>El INEGI publica <a href="https://www.inegi.org.mx/temas/dn/" target="_blank" rel="noopener">tablas de mortalidad de negocios</a> construidas con los Censos Económicos: de cada 100 negocios que nacen en México, cerca de 33 cierran el primer año y solo unos 35 llegan a los 5 años. La esperanza de vida al nacer es de 7.8 años (9.7 en manufactura, 8.0 en servicios y 6.9 en comercio). La curva personalizada se obtiene elevando la supervivencia nacional a un exponente h (razón de riesgo) derivado de tu probabilidad:</p>
+      <p>El INEGI publica <a href="https://www.inegi.org.mx/temas/dn/" target="_blank" rel="noopener">tablas de mortalidad de negocios</a> construidas con los Censos Económicos: de cada 100 negocios que nacen en México, alrededor de 31 mueren antes de cumplir un año y unos 36 llegan a los 5 años; la esperanza de vida al nacer es de 8.4 años (tabla 1989–2019, <a href="https://www.inegi.org.mx/contenidos/programas/dn/2021/doc/Nota_Demo_Negocios.pdf" target="_blank" rel="noopener">nota técnica del INEGI, 2021</a>). Los años 6 a 10 de la tabla los interpoló el equipo (decaimiento geométrico hasta S(32) = 0.105), porque la nota solo publica las edades 0–4 y 30–34. La curva personalizada se obtiene elevando la supervivencia nacional a un exponente h (razón de riesgo) derivado de tu probabilidad:</p>
       <div class="formula">S(t) = S₀(t)^h,&nbsp;&nbsp; h = ln P(éxito) / ln S₀(3)</div>
       <table class="tabla-sup">
         <thead><tr><th>Año</th><th>1</th><th>2</th><th>3</th><th>5</th><th>7</th><th>10</th></tr></thead>
-        <tbody><tr><td><strong>S₀(t) nacional</strong></td><td>0.67</td><td>0.56</td><td>0.46</td><td>0.35</td><td>0.31</td><td>0.25</td></tr></tbody>
+        <tbody><tr><td><strong>S₀(t) nacional</strong></td><td>0.691</td><td>0.481</td><td>0.426</td><td>0.357</td><td>0.326*</td><td>0.284*</td></tr></tbody>
+        <caption class="nota-tabla">* Interpolado por el equipo. Fuente t = 1–5: INEGI, Demografía de los Negocios 1989–2019.</caption>
       </table>
       <p class="uso">Conceptos: probabilidad de supervivencia, frecuencia relativa, esperanza de vida.</p>
     </article>
@@ -661,7 +662,7 @@
     <h3>Supuestos declarados</h3>
     <ul class="lista-supuestos">
       <li><strong>Coeficientes β:</strong> asignados por el equipo, no estimados con microdatos; por eso P se acompaña de un rango plausible.</li>
-      <li><strong>Supervivencia base S₀(t):</strong> tabla nacional aproximada del INEGI («Esperanza de vida de los negocios»), aplicada a Coacalco sin ajuste municipal. Los valores redondeados deben verificarse contra la publicación vigente.</li>
+      <li><strong>Supervivencia base S₀(t):</strong> tabla nacional del INEGI 1989–2019 para t = 1…5; t = 6…10 interpolado por el equipo. Se aplica a Coacalco sin ajuste municipal.</li><li><strong>Distribución sectorial</strong> de la gráfica de dona: estimación del equipo, no publicada por las fuentes municipales consultadas.</li>
       <li><strong>Riesgos proporcionales:</strong> se impone S(3) = P; la forma de la curva es la nacional.</li>
       <li><strong>Incertidumbre del Monte Carlo:</strong> σ de demanda mensual 22 %, de ticket 8 %, choque anual 15 % y costo variable ±2 pp, todos supuestos del equipo.</li>
       <li><strong>Datos por giro y zona:</strong> ticket, costo variable, demanda de referencia, afluencia y renta por m² son estimaciones propias, editables en el simulador.</li>

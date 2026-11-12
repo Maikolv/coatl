@@ -6,26 +6,25 @@ import { cargarModelo, escenarioReferencia } from './cargar.mjs';
 const M = cargarModelo();
 const cerca = (a, b, tol, msj) => assert.ok(Math.abs(a - b) <= tol, `${msj}: ${a} vs ${b}`);
 
-// Escenario de referencia v2 (12-nov-2026). Ver docs/AUDITORIA.md §6 para el cambio.
+// Escenario de referencia v3 (12-nov-2026): S0 oficial INEGI 1989–2019 y β₀ = logit(S0(3)).
 test('escenario de referencia Cafetería · Los Héroes', () => {
   const e = escenarioReferencia(M);
   const m = M.modeloLogistico(e);
   const S = M.curvaSupervivencia(m.P);
   const mc = M.monteCarlo(e);
   const f = M.finanzas(e, mc, S);
-  cerca(m.P, 0.550, 0.0005, 'P');
+  cerca(m.P, 0.5155, 0.0005, 'P');
   cerca(e.utilMes, 60371, 1, 'utilidad mensual');
   cerca(f.roi, 3.029, 0.0005, 'ROI');
   assert.equal(Math.round(f.payback), 4, 'payback');
-  cerca(f.vpn, 970106, 1, 'VPN');
+  cerca(f.vpn, 912776, 1, 'VPN');
 });
 
-test('compatibilidad: con ticket 85 y CV 45 % se recuperan utilidad y VPN de la referencia v1', () => {
+test('compatibilidad: con ticket 85 y CV 45 % se recuperan utilidad y payback de la referencia v1', () => {
   const e = escenarioReferencia(M, { ticket: 85, cv: 0.45 });
   const m = M.modeloLogistico(e);
   const f = M.finanzas(e, M.monteCarlo(e), M.curvaSupervivencia(m.P));
   cerca(e.utilMes, 41899, 1, 'utilidad v1');
-  cerca(f.vpn, 601442, 1, 'VPN v1');
   assert.equal(Math.round(f.payback), 6);
 });
 
@@ -91,4 +90,10 @@ test('los controles de modelo de negocio, permisos, modalidad y horario mueven P
   const sinPermisos = M.modeloLogistico(escenarioReferencia(M, { permZ: -0.25 })).P;
   assert.ok(franquicia > base && sinPermisos < base);
   assert.equal(M.modeloLogistico(escenarioReferencia(M, { modZ: 0, permZ: 0, modalZ: 0, horZ: 0 })).P, base);
+});
+
+test('S0 coincide con la tabla oficial del INEGI 1989–2019 (t = 1…5) y β₀ reproduce S0(3)', () => {
+  const q = [0.3092, 0.5188, 0.5739, 0.6129, 0.6432];
+  q.forEach((qx, x) => cerca(M.S0[x + 1], 1 - qx, 1e-4, 'S0(' + (x + 1) + ')'));
+  cerca(1 / (1 + Math.exp(-M.BETA0)), M.S0[3], 1e-12, 'sigmoide(β₀)');
 });

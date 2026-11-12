@@ -44,19 +44,19 @@ Funciones núcleo: `modeloLogistico`, `rangoP`, `monteCarlo`, `curvaSupervivenci
 
 Alcance funcional: 35 giros de negocio, 32 variables en 4 pestañas, 6 zonas con polígonos de color en el mapa.
 
-### Escenario de referencia (prueba de regresión) — v2 desde 12-nov-2026
+### Escenario de referencia (prueba de regresión) — v3 desde 12-nov-2026 (S₀ oficial INEGI)
 
 **Cafetería · Los Héroes** (valores por defecto: ticket 95, CV 38 %) debe dar:
 
 | Métrica | Valor |
 |---|---|
-| P(supervivencia 3 años) | 55.0 % (rango plausible 47.8–61.6 %) |
+| P(supervivencia 3 años) | 51.6 % (rango plausible 44.3–58.3 %) |
 | Utilidad mensual | ≈ $60,371 |
 | ROI | 302.9 % |
 | Payback | 4 meses (4.1) |
-| VPN | $970,106 |
+| VPN | $912,776 |
 
-La v1 (P 55.0 %, $41,899, 212.6 %, 6, $601,442) usaba ticket 85 / CV 45 % y un Monte Carlo sin choque anual; ver docs/METODOLOGIA.md. Lo vigilan `tests/modelo.test.mjs`, `scripts/validar_modelo.py` y la e2e. Cualquier cambio en el modelo debe reproducir estos números o documentar explícitamente por qué cambian.
+v1 (55.0 %, $41,899, 212.6 %, 6, $601,442) y v2 (55.0 %, $60,371, 302.9 %, 4, $970,106) usaban una S₀(t) aproximada y β₀ = −0.16; ver docs/METODOLOGIA.md y docs/VERIFICACION_DATOS.md. Lo vigilan `tests/modelo.test.mjs`, `scripts/validar_modelo.py` y la e2e. Cualquier cambio en el modelo debe reproducir estos números o documentar explícitamente por qué cambian.
 
 ## Identidad visual (FIJA)
 
@@ -96,6 +96,6 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 
 - Rendimiento (Lighthouse ~50): el Monte Carlo de 2,000 años corre en el hilo principal al cargar; candidato a Web Worker o a diferirlo.
 
-- Verificar contra la publicación vigente del INEGI los valores de S₀(t) y los datos por giro (marcados «por verificar»).
-- Faltan en el repo: reporte .docx, COATL_Presentacion.pptx, fotos de assets/img (no estaban en el equipo al importar).
+- S₀(t) ya verificada (INEGI 1989–2019, t=1…5); años 6–10 interpolados. Pendiente: tabla completa del INEGI para t=6…10, datos por giro y distribución sectorial (estimaciones del equipo).
+- Reporte y presentación se generan con `node scripts/reporte_docx.mjs` y `node scripts/presentacion_pptx.mjs` (cifras tomadas del propio modelo). Las fotos de assets/img no estaban en el equipo.
 - Diagrama UML de 6 carriles: hecho (`scripts/diagrama_uml.mjs` → docs/ y entregables/).

@@ -49,9 +49,9 @@ En Windows, las e2e usan Microsoft Edge (`COATL_CANAL=msedge`) porque el Chromiu
 
 | P (3 años) | Rango plausible | Utilidad/mes | ROI | Payback | VPN 3 años |
 |---|---|---|---|---|---|
-| 55.0 % | 47.8 %–61.6 % | $60,371 | 302.9 % | 4 meses | $970,106 |
+| 51.6 % | 44.3 %–58.3 % | $60,371 | 302.9 % | 4 meses | $912,776 |
 
-El cambio frente a la versión 1 está documentado en [docs/METODOLOGIA.md](docs/METODOLOGIA.md#escenario-de-referencia).
+Los cambios frente a las versiones anteriores están en [docs/METODOLOGIA.md](docs/METODOLOGIA.md#escenario-de-referencia). Las fuentes de cada dato se verificaron en [docs/VERIFICACION_DATOS.md](docs/VERIFICACION_DATOS.md).
 
 ## Estructura
 
@@ -66,7 +66,7 @@ src/
 scripts/                build, servidor, validador Python, diagrama UML, capturas
 tests/                  unitarias (node:test) y e2e (Playwright)
 docs/                   AUDITORIA, METODOLOGIA, diagrama de proceso, capturas
-entregables/            pitch PPTX y diagrama
+entregables/            reporte Word/PDF, presentación PPTX/PDF, pitch y diagrama
 ```
 
 ## Metodología

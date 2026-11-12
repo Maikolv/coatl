@@ -11,6 +11,8 @@
     "servir": "node scripts/servir.mjs"
   },
   "devDependencies": {
-    "@playwright/test": "^1.56.1"
+    "@playwright/test": "^1.56.1",
+    "docx": "^9.5.1",
+    "pptxgenjs": "^3.12.0"
   }
 }

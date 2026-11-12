@@ -47,7 +47,7 @@ PESTANAS.forEach((b,i)=>{
 (function tableroHero(){
   const cont=$("cuadricula-hero");
   for(let i=0;i<100;i++){const c=document.createElement("div");c.className="celda";c.style.animationDelay=(i*8)+"ms";cont.appendChild(c)}
-  const etapas=[[1,67],[2,56],[3,46],[5,35],[10,25]];
+  const etapas=[[1,69],[2,48],[3,43],[5,36],[10,28]]; /* INEGI 1989–2019; año 10 interpolado */
   let e=0;
   function pinta(){
     const [anio,vivos]=etapas[e];

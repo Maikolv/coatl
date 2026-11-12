@@ -717,7 +717,7 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
       <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M4 19h16"/><path d="M6 16l4-5.2 3 3 5-6.8"/><path d="M14.8 7H18v3.2"/></svg></div>
       <div class="num">$17,179.6 M</div>
       <div class="que">valor agregado censal bruto (miles de pesos: 17,179,600)</div>
-      <div class="src">IGECEM · Censos Económicos / IMAE 2021</div>
+      <div class="src">Gobierno de Coacalco · datos económicos (IGECEM/INEGI) · 2020</div>
     </div>
     <div class="cifra">
       <div class="icono" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M12 3l7 3v5c0 5-3.4 7.9-7 9-3.6-1.1-7-4-7-9V6z"/><path d="M9 12l2.2 2.2 4.3-4.4"/></svg></div>
@@ -735,7 +735,7 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
     </div>
     <div class="panel">
       <h3>¿En qué sectores compite un negocio aquí?</h3>
-      <p class="sub">Estructura típica del padrón de unidades económicas del municipio según el DENUE: predominio claro del comercio al por menor y los servicios.</p>
+      <p class="sub">Estructura sectorial <strong>estimada por el equipo</strong> (por verificar contra el DENUE): las fuentes municipales consultadas no publican el desglose por sector.</p>
       <div class="lienzo"><canvas id="graficaSectores" role="img" aria-label="Gráfica de dona con la distribución sectorial de las unidades económicas"></canvas></div>
     </div>
   </div>
@@ -1184,17 +1184,18 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
       <h3>Modelo logístico de puntaje</h3>
       <p>La probabilidad de éxito a 3 años se obtiene con una función logística: cada variable del escenario aporta un coeficiente β (positivo si protege al negocio, negativo si lo arriesga) y la suma z se transforma en una probabilidad entre 0 y 1.</p>
       <div class="formula">P(éxito) = 1 / (1 + e^(−z)),&nbsp;&nbsp; z = β₀ + β₁x₁ + β₂x₂ + … + βₖxₖ</div>
-      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI (~46%). Los coeficientes de zona, experiencia, reserva de capital, competencia, deuda y margen de seguridad se asignaron por criterio del equipo a partir de la literatura de demografía de negocios. Como ningún β tiene error estándar, el simulador no presenta P como cifra exacta: perturba cada βᵢ con una desviación relativa de 30 % (y β₀ con 0.15) en 1,000 sorteos y reporta el <strong>rango plausible P5–P95</strong>. Es un análisis de sensibilidad, no un intervalo de confianza muestral.</p>
+      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI 1989–2019 (42.6 %): β₀ = ln(0.4261/0.5739) ≈ −0.298. Los coeficientes de zona, experiencia, reserva de capital, competencia, deuda y margen de seguridad se asignaron por criterio del equipo a partir de la literatura de demografía de negocios. Como ningún β tiene error estándar, el simulador no presenta P como cifra exacta: perturba cada βᵢ con una desviación relativa de 30 % (y β₀ con 0.15) en 1,000 sorteos y reporta el <strong>rango plausible P5–P95</strong>. Es un análisis de sensibilidad, no un intervalo de confianza muestral.</p>
       <p class="uso">Conceptos del curso: probabilidad condicional, función logística, variables explicativas.</p>
     </article>
 
     <article class="metodo" data-num="ƒ₂">
       <h3>Tablas de supervivencia y riesgos proporcionales</h3>
-      <p>El INEGI publica <a href="https://www.inegi.org.mx/temas/dn/" target="_blank" rel="noopener">tablas de mortalidad de negocios</a> construidas con los Censos Económicos: de cada 100 negocios que nacen en México, cerca de 33 cierran el primer año y solo unos 35 llegan a los 5 años. La esperanza de vida al nacer es de 7.8 años (9.7 en manufactura, 8.0 en servicios y 6.9 en comercio). La curva personalizada se obtiene elevando la supervivencia nacional a un exponente h (razón de riesgo) derivado de tu probabilidad:</p>
+      <p>El INEGI publica <a href="https://www.inegi.org.mx/temas/dn/" target="_blank" rel="noopener">tablas de mortalidad de negocios</a> construidas con los Censos Económicos: de cada 100 negocios que nacen en México, alrededor de 31 mueren antes de cumplir un año y unos 36 llegan a los 5 años; la esperanza de vida al nacer es de 8.4 años (tabla 1989–2019, <a href="https://www.inegi.org.mx/contenidos/programas/dn/2021/doc/Nota_Demo_Negocios.pdf" target="_blank" rel="noopener">nota técnica del INEGI, 2021</a>). Los años 6 a 10 de la tabla los interpoló el equipo (decaimiento geométrico hasta S(32) = 0.105), porque la nota solo publica las edades 0–4 y 30–34. La curva personalizada se obtiene elevando la supervivencia nacional a un exponente h (razón de riesgo) derivado de tu probabilidad:</p>
       <div class="formula">S(t) = S₀(t)^h,&nbsp;&nbsp; h = ln P(éxito) / ln S₀(3)</div>
       <table class="tabla-sup">
         <thead><tr><th>Año</th><th>1</th><th>2</th><th>3</th><th>5</th><th>7</th><th>10</th></tr></thead>
-        <tbody><tr><td><strong>S₀(t) nacional</strong></td><td>0.67</td><td>0.56</td><td>0.46</td><td>0.35</td><td>0.31</td><td>0.25</td></tr></tbody>
+        <tbody><tr><td><strong>S₀(t) nacional</strong></td><td>0.691</td><td>0.481</td><td>0.426</td><td>0.357</td><td>0.326*</td><td>0.284*</td></tr></tbody>
+        <caption class="nota-tabla">* Interpolado por el equipo. Fuente t = 1–5: INEGI, Demografía de los Negocios 1989–2019.</caption>
       </table>
       <p class="uso">Conceptos: probabilidad de supervivencia, frecuencia relativa, esperanza de vida.</p>
     </article>
@@ -1272,7 +1273,7 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
     <h3>Supuestos declarados</h3>
     <ul class="lista-supuestos">
       <li><strong>Coeficientes β:</strong> asignados por el equipo, no estimados con microdatos; por eso P se acompaña de un rango plausible.</li>
-      <li><strong>Supervivencia base S₀(t):</strong> tabla nacional aproximada del INEGI («Esperanza de vida de los negocios»), aplicada a Coacalco sin ajuste municipal. Los valores redondeados deben verificarse contra la publicación vigente.</li>
+      <li><strong>Supervivencia base S₀(t):</strong> tabla nacional del INEGI 1989–2019 para t = 1…5; t = 6…10 interpolado por el equipo. Se aplica a Coacalco sin ajuste municipal.</li><li><strong>Distribución sectorial</strong> de la gráfica de dona: estimación del equipo, no publicada por las fuentes municipales consultadas.</li>
       <li><strong>Riesgos proporcionales:</strong> se impone S(3) = P; la forma de la curva es la nacional.</li>
       <li><strong>Incertidumbre del Monte Carlo:</strong> σ de demanda mensual 22 %, de ticket 8 %, choque anual 15 % y costo variable ±2 pp, todos supuestos del equipo.</li>
       <li><strong>Datos por giro y zona:</strong> ticket, costo variable, demanda de referencia, afluencia y renta por m² son estimaciones propias, editables en el simulador.</li>
@@ -1420,8 +1421,15 @@ const ZONAS = {
   popular:   {n:"El Potrero · San Rafael · El Olivo",                afl:0.90, rm2:110, z:-0.10},
   periferia: {n:"Zonas habitacionales periféricas",                  afl:0.78, rm2:90,  z:-0.18}
 };
-/* Supervivencia nacional S0(t), t = 0…10 años (aprox. INEGI, EVN) */
-const S0 = [1, .67, .56, .46, .40, .35, .33, .31, .29, .27, .25];
+/* Supervivencia nacional S0(t), t = 0…10 años.
+   t = 1…5: INEGI, Demografía de los Negocios 1989–2019, S(x+1) = 1 − q(x) con
+   q(0)=0.3092, q(1)=0.5188, q(2)=0.5739, q(3)=0.6129, q(4)=0.6432 (E(0) = 8.4 años).
+   Fuente: «Nota sobre los indicadores de la Demografía de los Negocios», INEGI, 2021.
+   t = 6…10: INTERPOLACIÓN GEOMÉTRICA del equipo entre S(5)=0.3568 y S(32)=1−0.8952=0.1048
+   (la nota publica solo x = 0…4 y 30…34). Marcado como supuesto. */
+const S0 = [1, 0.6908, 0.4812, 0.4261, 0.3871, 0.3568, 0.3410, 0.3259, 0.3114, 0.2976, 0.2844];
+/* Intercepto calibrado: un escenario neutro reproduce S0(3) nacional → β₀ = logit(0.4261). */
+const BETA0 = Math.log(S0[3]/(1-S0[3]));
 const ESTACION = {
   estable:   [1,1,1,1,1,1,1,1,1,1,1,1],
   diciembre: [.95,.90,.95,.95,1,1,1,1,1,1.05,1.15,1.35],
@@ -1486,7 +1494,7 @@ function modeloLogistico(e){
     ["Horario extendido", e.horZ||0],
     ["Margen de seguridad financiero", msZ]
   ];
-  const z=-0.16+contribs.reduce((s,c)=>s+c[1],0);
+  const z=BETA0+contribs.reduce((s,c)=>s+c[1],0);
   return {P:acota(sigmoide(z),0.04,0.93), z, contribs};
 }
 
@@ -1538,14 +1546,15 @@ function cuantil(ordenados,p){
    de 30 % y el intercepto con DE 0.15, y se reportan P5–P95 de P.
    Es un análisis de sensibilidad, NO un intervalo de confianza muestral. */
 function rangoP(modelo){
+  if(modelo._rangoP) return modelo._rangoP;   // memo: se consulta varias veces por recálculo
   const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA+1), n=1000, ps=new Array(n);
   for(let i=0;i<n;i++){
-    let z=-0.16+gaussiana(rng)*U.intercepto;
+    let z=BETA0+gaussiana(rng)*U.intercepto;
     for(const c of modelo.contribs) z+=c[1]*(1+gaussiana(rng)*U.betaRelativa);
     ps[i]=acota(sigmoide(z),0.04,0.93);
   }
   ps.sort((a,b)=>a-b);
-  return {p05:cuantil(ps,.05), p50:cuantil(ps,.5), p95:cuantil(ps,.95)};
+  return (modelo._rangoP={p05:cuantil(ps,.05), p50:cuantil(ps,.5), p95:cuantil(ps,.95)});
 }
 
 
@@ -1623,7 +1632,7 @@ PESTANAS.forEach((b,i)=>{
 (function tableroHero(){
   const cont=$("cuadricula-hero");
   for(let i=0;i<100;i++){const c=document.createElement("div");c.className="celda";c.style.animationDelay=(i*8)+"ms";cont.appendChild(c)}
-  const etapas=[[1,67],[2,56],[3,46],[5,35],[10,25]];
+  const etapas=[[1,69],[2,48],[3,43],[5,36],[10,28]]; /* INEGI 1989–2019; año 10 interpolado */
   let e=0;
   function pinta(){
     const [anio,vivos]=etapas[e];
@@ -1737,7 +1746,7 @@ function pintarKPIs(e,mc,S,modelo){
 
 function pintarLectura(e,mc,modelo,vpn){
   const P=modelo.P, frases=[];
-  frases.push("La probabilidad estimada de éxito a 3 años es de <strong>"+pct(P)+"</strong>, frente al <strong>46%</strong> de supervivencia promedio nacional (INEGI): tu escenario está "+(P>0.46?"por encima":"por debajo")+" de la media. Al perturbar los supuestos del modelo, P se mueve entre <strong>"+pct(rangoP(modelo).p05)+"</strong> y <strong>"+pct(rangoP(modelo).p95)+"</strong>: léelo como orden de magnitud, no como cifra exacta.");
+  frases.push("La probabilidad estimada de éxito a 3 años es de <strong>"+pct(P)+"</strong>, frente al <strong>42.6%</strong> de supervivencia nacional a 3 años (INEGI, 1989–2019): tu escenario está "+(P>S0[3]?"por encima":"por debajo")+" de la media. Al perturbar los supuestos del modelo, P se mueve entre <strong>"+pct(rangoP(modelo).p05)+"</strong> y <strong>"+pct(rangoP(modelo).p95)+"</strong>: léelo como orden de magnitud, no como cifra exacta.");
   const ordenados=[...modelo.contribs].sort((a,b)=>a[1]-b[1]);
   const peor=ordenados[0], mejor=ordenados[ordenados.length-1];
   if(peor[1]<0) frases.push("La variable que más resta es <strong>"+peor[0].toLowerCase()+"</strong> (β = "+peor[1].toFixed(2)+"); es el primer candidato para el análisis de sensibilidad.");
@@ -1754,7 +1763,8 @@ function pintarLectura(e,mc,modelo,vpn){
 Chart.defaults.font.family='"Hanken Grotesk",Arial,sans-serif';
 Chart.defaults.color="#4A3A3C";
 Chart.defaults.plugins.legend.labels.boxWidth=14;
-let chSup=null, chMC=null, chPE=null;
+/* Sin animaciones de Chart.js: eran la mayor parte del tiempo de bloqueo (Lighthouse). */
+Chart.defaults.animation=false;
 
 (function graficasContexto(){
   new Chart($("graficaUE"),{type:"bar",data:{
@@ -1772,8 +1782,29 @@ let chSup=null, chMC=null, chPE=null;
 })();
 
 /* Plugin de Chart.js: líneas verticales en los percentiles del Monte Carlo. */
-function lineasPercentil(marcas,lo,paso){
-  return {id:"lineasPercentil",afterDatasetsDraw(ch){
+/* Crea la gráfica una vez y después solo actualiza datos y opciones (sin animación):
+   recrear las 6 gráficas en cada recálculo dominaba el tiempo de bloqueo. */
+const GRAF={}, PENDIENTES=new Map();
+const ioGraficas=("IntersectionObserver" in window)?new IntersectionObserver(es=>es.forEach(en=>{
+  if(!en.isIntersecting) return;
+  ioGraficas.unobserve(en.target);
+  const cfg=PENDIENTES.get(en.target); PENDIENTES.delete(en.target);
+  if(cfg) GRAF[en.target.id]=new Chart(en.target,cfg);
+}),{rootMargin:"200px 0px"}):null;
+/* La primera vez la gráfica se crea solo cuando su lienzo se acerca a la vista. */
+function graficar(lienzo,cfg){
+  const prev=GRAF[lienzo.id];
+  if(prev && prev.config.type===cfg.type){ prev.data=cfg.data; prev.options=cfg.options; prev.update("none"); return prev; }
+  if(prev){ prev.destroy(); delete GRAF[lienzo.id]; }
+  if(ioGraficas){ if(!PENDIENTES.has(lienzo)) ioGraficas.observe(lienzo); PENDIENTES.set(lienzo,cfg); return null; }
+  return (GRAF[lienzo.id]=new Chart(lienzo,cfg));
+}
+/* Para exportar: crea en el acto las gráficas pendientes. */
+function graficasListas(ids){
+  return ids.map(id=>{const c=$(id); if(!GRAF[id]&&PENDIENTES.has(c)){ioGraficas.unobserve(c);GRAF[id]=new Chart(c,PENDIENTES.get(c));PENDIENTES.delete(c)} return GRAF[id]}).filter(Boolean);
+}
+const PLUGIN_PERCENTILES={id:"lineasPercentil",afterDatasetsDraw(ch,_a,o){
+    const marcas=o.marcas||[], lo=o.lo, paso=o.paso;
     const {ctx,chartArea:a,scales:{x}}=ch, n=ch.data.labels.length;
     ctx.save(); ctx.setLineDash([5,4]); ctx.strokeStyle="#38070F"; ctx.fillStyle="#38070F";
     ctx.font="600 11px 'Spline Sans Mono',monospace"; ctx.textAlign="center";
@@ -1783,12 +1814,10 @@ function lineasPercentil(marcas,lo,paso){
     });
     ctx.restore();
   }};
-}
 function pintarGraficas(e,mc,S,modelo){
   const rp=rangoP(modelo), Sbajo=curvaSupervivencia(rp.p05), Salto=curvaSupervivencia(rp.p95);
   const anios=[...Array(11).keys()];
-  if(chSup)chSup.destroy();
-  chSup=new Chart($("graficaSupervivencia"),{type:"line",data:{
+  graficar($("graficaSupervivencia"),{type:"line",data:{
     labels:anios.map(a=>"Año "+a),
     datasets:[
       {label:"Banda alta (P95 de P)",data:Salto.map(x=>+(100*x).toFixed(1)),borderColor:"rgba(200,16,46,.25)",borderWidth:1,pointRadius:0,tension:.35,fill:false},
@@ -1803,21 +1832,19 @@ function pintarGraficas(e,mc,S,modelo){
   const bins=new Array(nb).fill(0);
   mc.res.forEach(x=>bins[Math.min(nb-1,Math.floor((x-lo)/paso))]++);
   const centros=bins.map((_,i)=>lo+paso*(i+0.5));
-  if(chMC)chMC.destroy();
-  chMC=new Chart($("graficaMC"),{type:"bar",data:{
+  graficar($("graficaMC"),{type:"bar",data:{
     labels:centros.map(c=>mxn.format(Math.round(c/1000)*1000)),
     datasets:[{label:"Años simulados",data:bins,
       backgroundColor:centros.map(c=>c<0?"#E2233F":(c<mc.p05||c>mc.p95)?"#E9B9BE":"#7A0C1F"),borderRadius:3,categoryPercentage:1,barPercentage:.96}]},
-    plugins:[lineasPercentil([["P5",mc.p05],["P50",mc.p50],["P95",mc.p95]],lo,paso)],
+    plugins:[PLUGIN_PERCENTILES],
     options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{title:i=>"Utilidad ≈ "+i[0].label,label:c=>c.parsed.y+" de 2,000 corridas"}}},
+      plugins:{lineasPercentil:{marcas:[["P5",mc.p05],["P50",mc.p50],["P95",mc.p95]],lo,paso},legend:{display:false},tooltip:{callbacks:{title:i=>"Utilidad ≈ "+i[0].label,label:c=>c.parsed.y+" de 2,000 corridas"}}},
       scales:{y:{beginAtZero:true,grid:{color:"#F4E2E1"},title:{display:true,text:"Frecuencia"}},
               x:{ticks:{maxTicksLimit:6,maxRotation:0},grid:{display:false}}}}});
 
   const maxX=Math.max(Math.ceil(e.peDia*2),Math.ceil(e.mu*1.4),10);
   const xs=[...Array(13).keys()].map(i=>Math.round(maxX*i/12));
-  if(chPE)chPE.destroy();
-  chPE=new Chart($("graficaPE"),{type:"line",data:{
+  graficar($("graficaPE"),{type:"line",data:{
     datasets:[
       {label:"Ingresos mensuales",data:xs.map(x=>({x,y:x*e.diasMes*e.ticket})),borderColor:"#1F7A4D",pointRadius:0,tension:0},
       {label:"Costos totales",data:xs.map(x=>({x,y:e.fijos+x*e.diasMes*e.ticket*e.cvEff})),borderColor:"#C8102E",pointRadius:0,tension:0},
@@ -1832,15 +1859,13 @@ function pintarGraficas(e,mc,S,modelo){
 
 /* ===== src/ui/widgets.js ===== */
 /* ---------- 17. Widgets de análisis (todos derivados del propio modelo) ---------- */
-let chTornado=null;
 const COL={rojo:"#C8102E",granate:"#7A0C1F",rosa:"#E9B9BE",hueso:"#FBF6F3",tinta:"#38070F"};
 
 /* Tornado: contribución βᵢ de cada variable a z, ordenada por magnitud. */
 function pintarTornado(modelo){
   const c=[...modelo.contribs].filter(x=>x[1]!==0).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1]));
   const datos=c.length?c:[["Todas las variables en posición neutra",0]];
-  if(chTornado)chTornado.destroy();
-  chTornado=new Chart($("graficaTornado"),{type:"bar",data:{
+  graficar($("graficaTornado"),{type:"bar",data:{
     labels:datos.map(x=>x[0].replace(/ \(.+\)$/,"")),
     datasets:[{label:"β (aporte a z)",data:datos.map(x=>+x[1].toFixed(2)),
       backgroundColor:datos.map(x=>x[1]<0?COL.rojo:COL.granate),borderRadius:4}]},
@@ -1926,7 +1951,7 @@ $("compartirURL").addEventListener("click",async()=>{
 /* Exportar: PNG compuesto (encabezado + KPIs + gráficas) y PDF vía impresión del navegador. */
 $("exportarPDF").addEventListener("click",()=>window.print());
 $("exportarPNG").addEventListener("click",()=>{
-  const W=1400, graf=[chSup,chMC,chTornado,chPE].filter(Boolean), alto=230+Math.ceil(graf.length/2)*420+60;
+  const W=1400, graf=graficasListas(["graficaSupervivencia","graficaMC","graficaTornado","graficaPE"]), alto=230+Math.ceil(graf.length/2)*420+60;
   const cv=document.createElement("canvas"); cv.width=W; cv.height=alto;
   const x=cv.getContext("2d");
   x.fillStyle=COL.hueso; x.fillRect(0,0,W,alto);
@@ -1959,9 +1984,7 @@ function describirGraficas(e,modelo,mc,S){
     ". Aportes β al modelo logístico: "+(tor||"todas las variables neutras")+".";
 }
 function pintarWidgets(e,modelo,mc,S){
-  const f=finanzas(e,mc,S);
   describirGraficas(e,modelo,mc,S);
-  ultimoResumen=resumenEscenario(e,modelo,mc,f);
   pintarTornado(modelo);
   pintarComparadorZonas();
   pintarComparador();
@@ -2368,11 +2391,14 @@ function calcular(){
   pintarVeredicto(modelo.P);
   const vpn=pintarKPIs(e,mc,S,modelo);
   pintarLectura(e,mc,modelo,vpn);
-  pintarGraficas(e,mc,S,modelo);
-  pintarMapa(e,modelo);
-  pintarFODA(e,modelo,mc);
-  pintarWidgets(e,modelo,mc,S);
+  ultimoResumen=resumenEscenario(e,modelo,mc,finanzas(e,mc,S));
+  /* Lo que está fuera de la vista se pinta en tareas separadas (<50 ms cada una)
+     para no bloquear el hilo principal; una versión nueva cancela la anterior. */
+  const v=++versionCalculo;
+  [()=>pintarGraficas(e,mc,S,modelo), ()=>pintarMapa(e,modelo), ()=>pintarFODA(e,modelo,mc), ()=>pintarWidgets(e,modelo,mc,S)]
+    .forEach(f=>setTimeout(()=>{ if(v===versionCalculo) f(); },0));
 }
+let versionCalculo=0;
 /* ---------- 15. Barra de progreso y navegación activa ---------- */
 (function navViva(){
   const barra=$("progreso");

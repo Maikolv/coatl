@@ -11,12 +11,12 @@ const erroresDe = (page) => {
 test('carga sin errores de consola y muestra el escenario de referencia', async ({ page }) => {
   const errores = erroresDe(page);
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('#probNum')).toHaveText('55.0%', { timeout: 5000 });
+  await expect(page.locator('#probNum')).toHaveText('51.6%', { timeout: 5000 });
   const kpis = page.locator('#kpis');
   await expect(kpis).toContainText('$60,371');
   await expect(kpis).toContainText('302.9%');
   await expect(kpis).toContainText('4.1 meses');
-  await expect(kpis).toContainText('$970,106');
+  await expect(kpis).toContainText('$912,776');
   await expect(page.locator('#ticket')).toHaveValue('95');
   await expect(page.locator('#cvar')).toHaveValue('38');
   expect(errores.filter((e) => !/tile|ERR_|Failed to load resource/i.test(e))).toEqual([]);
@@ -31,9 +31,9 @@ test('identidad visual: paleta y greca presentes', async ({ page }) => {
 
 test('el simulador recalcula al cambiar una variable', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('#probNum')).toHaveText('55.0%');
+  await expect(page.locator('#probNum')).toHaveText('51.6%');
   await page.locator('#experiencia').selectOption('0.38', { force: true });
-  await expect(page.locator('#probNum')).not.toHaveText('55.0%', { timeout: 5000 });
+  await expect(page.locator('#probNum')).not.toHaveText('51.6%', { timeout: 5000 });
 });
 
 test('mapa: 6 zonas en ranking y comparador', async ({ page }) => {

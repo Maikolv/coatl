@@ -60,7 +60,7 @@ function pintarKPIs(e,mc,S,modelo){
 
 function pintarLectura(e,mc,modelo,vpn){
   const P=modelo.P, frases=[];
-  frases.push("La probabilidad estimada de éxito a 3 años es de <strong>"+pct(P)+"</strong>, frente al <strong>46%</strong> de supervivencia promedio nacional (INEGI): tu escenario está "+(P>0.46?"por encima":"por debajo")+" de la media. Al perturbar los supuestos del modelo, P se mueve entre <strong>"+pct(rangoP(modelo).p05)+"</strong> y <strong>"+pct(rangoP(modelo).p95)+"</strong>: léelo como orden de magnitud, no como cifra exacta.");
+  frases.push("La probabilidad estimada de éxito a 3 años es de <strong>"+pct(P)+"</strong>, frente al <strong>42.6%</strong> de supervivencia nacional a 3 años (INEGI, 1989–2019): tu escenario está "+(P>S0[3]?"por encima":"por debajo")+" de la media. Al perturbar los supuestos del modelo, P se mueve entre <strong>"+pct(rangoP(modelo).p05)+"</strong> y <strong>"+pct(rangoP(modelo).p95)+"</strong>: léelo como orden de magnitud, no como cifra exacta.");
   const ordenados=[...modelo.contribs].sort((a,b)=>a[1]-b[1]);
   const peor=ordenados[0], mejor=ordenados[ordenados.length-1];
   if(peor[1]<0) frases.push("La variable que más resta es <strong>"+peor[0].toLowerCase()+"</strong> (β = "+peor[1].toFixed(2)+"); es el primer candidato para el análisis de sensibilidad.");
@@ -77,7 +77,8 @@ function pintarLectura(e,mc,modelo,vpn){
 Chart.defaults.font.family='"Hanken Grotesk",Arial,sans-serif';
 Chart.defaults.color="#4A3A3C";
 Chart.defaults.plugins.legend.labels.boxWidth=14;
-let chSup=null, chMC=null, chPE=null;
+/* Sin animaciones de Chart.js: eran la mayor parte del tiempo de bloqueo (Lighthouse). */
+Chart.defaults.animation=false;
 
 (function graficasContexto(){
   new Chart($("graficaUE"),{type:"bar",data:{
@@ -95,8 +96,29 @@ let chSup=null, chMC=null, chPE=null;
 })();
 
 /* Plugin de Chart.js: líneas verticales en los percentiles del Monte Carlo. */
-function lineasPercentil(marcas,lo,paso){
-  return {id:"lineasPercentil",afterDatasetsDraw(ch){
+/* Crea la gráfica una vez y después solo actualiza datos y opciones (sin animación):
+   recrear las 6 gráficas en cada recálculo dominaba el tiempo de bloqueo. */
+const GRAF={}, PENDIENTES=new Map();
+const ioGraficas=("IntersectionObserver" in window)?new IntersectionObserver(es=>es.forEach(en=>{
+  if(!en.isIntersecting) return;
+  ioGraficas.unobserve(en.target);
+  const cfg=PENDIENTES.get(en.target); PENDIENTES.delete(en.target);
+  if(cfg) GRAF[en.target.id]=new Chart(en.target,cfg);
+}),{rootMargin:"200px 0px"}):null;
+/* La primera vez la gráfica se crea solo cuando su lienzo se acerca a la vista. */
+function graficar(lienzo,cfg){
+  const prev=GRAF[lienzo.id];
+  if(prev && prev.config.type===cfg.type){ prev.data=cfg.data; prev.options=cfg.options; prev.update("none"); return prev; }
+  if(prev){ prev.destroy(); delete GRAF[lienzo.id]; }
+  if(ioGraficas){ if(!PENDIENTES.has(lienzo)) ioGraficas.observe(lienzo); PENDIENTES.set(lienzo,cfg); return null; }
+  return (GRAF[lienzo.id]=new Chart(lienzo,cfg));
+}
+/* Para exportar: crea en el acto las gráficas pendientes. */
+function graficasListas(ids){
+  return ids.map(id=>{const c=$(id); if(!GRAF[id]&&PENDIENTES.has(c)){ioGraficas.unobserve(c);GRAF[id]=new Chart(c,PENDIENTES.get(c));PENDIENTES.delete(c)} return GRAF[id]}).filter(Boolean);
+}
+const PLUGIN_PERCENTILES={id:"lineasPercentil",afterDatasetsDraw(ch,_a,o){
+    const marcas=o.marcas||[], lo=o.lo, paso=o.paso;
     const {ctx,chartArea:a,scales:{x}}=ch, n=ch.data.labels.length;
     ctx.save(); ctx.setLineDash([5,4]); ctx.strokeStyle="#38070F"; ctx.fillStyle="#38070F";
     ctx.font="600 11px 'Spline Sans Mono',monospace"; ctx.textAlign="center";
@@ -106,12 +128,10 @@ function lineasPercentil(marcas,lo,paso){
     });
     ctx.restore();
   }};
-}
 function pintarGraficas(e,mc,S,modelo){
   const rp=rangoP(modelo), Sbajo=curvaSupervivencia(rp.p05), Salto=curvaSupervivencia(rp.p95);
   const anios=[...Array(11).keys()];
-  if(chSup)chSup.destroy();
-  chSup=new Chart($("graficaSupervivencia"),{type:"line",data:{
+  graficar($("graficaSupervivencia"),{type:"line",data:{
     labels:anios.map(a=>"Año "+a),
     datasets:[
       {label:"Banda alta (P95 de P)",data:Salto.map(x=>+(100*x).toFixed(1)),borderColor:"rgba(200,16,46,.25)",borderWidth:1,pointRadius:0,tension:.35,fill:false},
@@ -126,21 +146,19 @@ function pintarGraficas(e,mc,S,modelo){
   const bins=new Array(nb).fill(0);
   mc.res.forEach(x=>bins[Math.min(nb-1,Math.floor((x-lo)/paso))]++);
   const centros=bins.map((_,i)=>lo+paso*(i+0.5));
-  if(chMC)chMC.destroy();
-  chMC=new Chart($("graficaMC"),{type:"bar",data:{
+  graficar($("graficaMC"),{type:"bar",data:{
     labels:centros.map(c=>mxn.format(Math.round(c/1000)*1000)),
     datasets:[{label:"Años simulados",data:bins,
       backgroundColor:centros.map(c=>c<0?"#E2233F":(c<mc.p05||c>mc.p95)?"#E9B9BE":"#7A0C1F"),borderRadius:3,categoryPercentage:1,barPercentage:.96}]},
-    plugins:[lineasPercentil([["P5",mc.p05],["P50",mc.p50],["P95",mc.p95]],lo,paso)],
+    plugins:[PLUGIN_PERCENTILES],
     options:{responsive:true,maintainAspectRatio:false,
-      plugins:{legend:{display:false},tooltip:{callbacks:{title:i=>"Utilidad ≈ "+i[0].label,label:c=>c.parsed.y+" de 2,000 corridas"}}},
+      plugins:{lineasPercentil:{marcas:[["P5",mc.p05],["P50",mc.p50],["P95",mc.p95]],lo,paso},legend:{display:false},tooltip:{callbacks:{title:i=>"Utilidad ≈ "+i[0].label,label:c=>c.parsed.y+" de 2,000 corridas"}}},
       scales:{y:{beginAtZero:true,grid:{color:"#F4E2E1"},title:{display:true,text:"Frecuencia"}},
               x:{ticks:{maxTicksLimit:6,maxRotation:0},grid:{display:false}}}}});
 
   const maxX=Math.max(Math.ceil(e.peDia*2),Math.ceil(e.mu*1.4),10);
   const xs=[...Array(13).keys()].map(i=>Math.round(maxX*i/12));
-  if(chPE)chPE.destroy();
-  chPE=new Chart($("graficaPE"),{type:"line",data:{
+  graficar($("graficaPE"),{type:"line",data:{
     datasets:[
       {label:"Ingresos mensuales",data:xs.map(x=>({x,y:x*e.diasMes*e.ticket})),borderColor:"#1F7A4D",pointRadius:0,tension:0},
       {label:"Costos totales",data:xs.map(x=>({x,y:e.fijos+x*e.diasMes*e.ticket*e.cvEff})),borderColor:"#C8102E",pointRadius:0,tension:0},

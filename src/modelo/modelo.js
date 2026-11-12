@@ -41,7 +41,7 @@ function modeloLogistico(e){
     ["Horario extendido", e.horZ||0],
     ["Margen de seguridad financiero", msZ]
   ];
-  const z=-0.16+contribs.reduce((s,c)=>s+c[1],0);
+  const z=BETA0+contribs.reduce((s,c)=>s+c[1],0);
   return {P:acota(sigmoide(z),0.04,0.93), z, contribs};
 }
 
@@ -93,13 +93,14 @@ function cuantil(ordenados,p){
    de 30 % y el intercepto con DE 0.15, y se reportan P5–P95 de P.
    Es un análisis de sensibilidad, NO un intervalo de confianza muestral. */
 function rangoP(modelo){
+  if(modelo._rangoP) return modelo._rangoP;   // memo: se consulta varias veces por recálculo
   const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA+1), n=1000, ps=new Array(n);
   for(let i=0;i<n;i++){
-    let z=-0.16+gaussiana(rng)*U.intercepto;
+    let z=BETA0+gaussiana(rng)*U.intercepto;
     for(const c of modelo.contribs) z+=c[1]*(1+gaussiana(rng)*U.betaRelativa);
     ps[i]=acota(sigmoide(z),0.04,0.93);
   }
   ps.sort((a,b)=>a-b);
-  return {p05:cuantil(ps,.05), p50:cuantil(ps,.5), p95:cuantil(ps,.95)};
+  return (modelo._rangoP={p05:cuantil(ps,.05), p50:cuantil(ps,.5), p95:cuantil(ps,.95)});
 }
 

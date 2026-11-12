@@ -10,7 +10,9 @@ import math
 import sys
 
 # ---- Constantes copiadas de index.html (sección 1) ----
-S0 = [1, .67, .56, .46, .40, .35, .33, .31, .29, .27, .25]
+# INEGI, Demografía de los Negocios 1989–2019 (t=1..5); t=6..10 interpolación geométrica.
+S0 = [1, 0.6908, 0.4812, 0.4261, 0.3871, 0.3568, 0.3410, 0.3259, 0.3114, 0.2976, 0.2844]
+BETA0 = math.log(S0[3] / (1 - S0[3]))
 N_SIM, SEMILLA = 2000, 20262
 GIRO_CAFETERIA_Z = -0.08
 ZONA_HEROES_Z = 0.04
@@ -25,8 +27,8 @@ DEF = dict(
     mktGasto=1500, crec=0.08, inf=0.045,
 )
 
-# Referencia v2 (12-nov-2026): ticket/CV del giro Cafetería y Monte Carlo con choque anual.
-REFERENCIA = dict(P=0.550, util=60371, roi=3.029, payback=4, vpn=970106)
+# Referencia v3 (12-nov-2026): S0 oficial INEGI, β₀ = logit(S0(3)), ticket/CV de Cafetería, MC con choque anual.
+REFERENCIA = dict(P=0.5155, util=60371, roi=3.029, payback=4, vpn=912776)
 INC = dict(demandaMensual=0.22, ticket=0.08, demandaAnual=0.15, costoVariable=0.02)
 
 
@@ -56,7 +58,7 @@ def modelo_logistico(e):
     msZ = 0.25 if ms >= 0.30 else 0.10 if ms >= 0.15 else -0.10 if ms >= 0 else -0.50
     c = e["credPct"]
     deudaZ = -0.20 if c >= 0.6 else -0.08 if c >= 0.3 else 0 if c > 0 else 0.05
-    z = (-0.16 + GIRO_CAFETERIA_Z + ZONA_HEROES_Z + e["expZ"] + e["resZ"] + e["compZ"]
+    z = (BETA0 + GIRO_CAFETERIA_Z + ZONA_HEROES_Z + e["expZ"] + e["resZ"] + e["compZ"]
          + e["formZ"] + e["mktZ"] + deudaZ + (0.10 if e["propio"] else 0) + msZ
          + e["modZ"] + e["permZ"] + e["modalZ"] + e["horZ"])
     return acota(1 / (1 + math.exp(-z)), 0.04, 0.93), z
