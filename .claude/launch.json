@@ -1,0 +1,1 @@
+{ "version": "0.0.1", "configurations": [ { "name": "coatl", "runtimeExecutable": "node", "runtimeArgs": ["scripts/servir.mjs", "8000"], "port": 8000 } ] }

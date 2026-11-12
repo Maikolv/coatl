@@ -70,3 +70,23 @@ La semilla es fija, así que los resultados se repiten en cada corrida y en ambo
 
 ## 5. Herramientas usadas
 Lectura directa del código, `scripts/validar_modelo.py` (Python vía `uv`) y comparación con `actinver-terminal`. El navegador integrado no estuvo disponible (revisión de política pendiente), así que todavía faltan la consola, Lighthouse y la prueba de accesibilidad en vivo. Se harán con Playwright en la Fase 2.
+
+## 6. Resolución (Fase 2, rama `mejoras-profesionales`)
+
+| # | Hallazgo | Estado |
+|---|---|---|
+| 1 | β sin estimar | Declarado como supuesto en la UI y en `docs/METODOLOGIA.md`; P se muestra con rango plausible |
+| 2 | P sin incertidumbre | ✅ `rangoP()`: P5–P95 en KPIs, lectura, banda de supervivencia y comparador |
+| 3 | Monte Carlo subestima dispersión | ✅ Choque anual común (σ = 0.15) y ruido de CV (±2 pp). La DE anual pasa de $58,814 a $179,399 |
+| 4 | P5/P50/P95 | ✅ Cuantiles tipo 7. Además se corrigió un bug: el escenario «Optimista · P95» mostraba P97.5 |
+| 5 | Defaults ≠ Cafetería | ✅ Ticket 95 y CV 38 % al cargar. **Nueva referencia:** P 55.0 %, utilidad $60,371, ROI 302.9 %, payback 4, VPN $970,106 |
+| 6 | ROI/payback | Etiquetados «antes de impuestos» y con su base explícita |
+| 7 | Supuesto de Cox | Documentado |
+| 8 | Pages publica todo | ✅ Solo se publica `dist/`, después de las pruebas |
+| 9 | Datos sin fuente | Marcados «por verificar» / «estimación del equipo» |
+| 11 | SRI/CSP | ✅ SRI sha384 en Leaflet (JS y CSS) y Chart.js, más una CSP en meta |
+| 12 | Código monolítico | ✅ `src/{datos,modelo,ui,mapa}` con build, 10 pruebas unitarias y 9 e2e × 2 viewports |
+| — | `id="lectura"` duplicado (nuevo) | ✅ El panel pasó a `lecturaPanel` |
+| 15 | SEO | ✅ Open Graph, `og:locale` y favicon SVG |
+
+Sin cambios, a propósito: el «Modo Oráculo» (tema oscuro conmutable) ya existía y se conserva. CLAUDE.md rechaza *rediseños* neón/negro; este modo es opcional y no es el diseño base.

@@ -4,3 +4,9 @@ __pycache__/
 .DS_Store
 Thumbs.db
 /tmp/
+dist/
+node_modules/
+test-results/
+playwright-report/
+.herramientas/
+dist-artifact/
