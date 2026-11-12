@@ -38,3 +38,17 @@ export function construir() {
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   console.log(`index.html y dist/index.html generados (${construir().toLocaleString('es-MX')} bytes)`);
 }
+
+// Variante para artifact de claude.ai: su visor bloquea hojas de estilo externas y descargas.
+// Uso: node scripts/build.mjs --artifact  →  dist-artifact/index.html
+if (process.argv.includes('--artifact')) {
+  const base = fs.readFileSync(path.join(raiz, 'dist', 'index.html'), 'utf8');
+  const leafletCss = leer('assets/vendor/leaflet-1.9.4.css');
+  const html = base
+    .replace(/<link rel="stylesheet" href="https:\/\/cdnjs\.cloudflare\.com\/ajax\/libs\/leaflet\/1\.9\.4\/leaflet\.css"[^>]*>/, () => `<style>/* Leaflet 1.9.4 (BSD-2) */\n${leafletCss}</style>`)
+    .replace(/<meta http-equiv="Content-Security-Policy"[^>]*>\n?/, '')
+    .replace('</style>\n</head>', '#exportarPNG{display:none!important}\n</style>\n</head>');
+  fs.mkdirSync(path.join(raiz, 'dist-artifact'), { recursive: true });
+  fs.writeFileSync(path.join(raiz, 'dist-artifact', 'index.html'), html);
+  console.log('dist-artifact/index.html generado');
+}
