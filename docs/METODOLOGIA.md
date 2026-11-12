@@ -8,7 +8,7 @@ Diagrama de proceso (UML, 6 carriles): [`diagrama-proceso.svg`](diagrama-proceso
 ## ƒ₁ · Modelo logístico de puntaje
 
 ```
-z = β₀ + Σ βᵢ·xᵢ        β₀ = −0.16
+z = β₀ + Σ βᵢ·xᵢ        β₀ = logit(S₀(3)) = ln(0.4261/0.5739) ≈ −0.298
 P = acota( 1 / (1 + e^(−z)), 0.04, 0.93 )
 ```
 
@@ -25,8 +25,7 @@ h    = ln P / ln S₀(3)
 S(t) = S₀(t)^h,   t = 0…10
 ```
 
-S₀ = [1, .67, .56, .46, .40, .35, .33, .31, .29, .27, .25]. Es la tabla nacional aproximada de INEGI, «Esperanza de vida de los negocios». **Por verificar:** año y tabla exacta de la publicación.
-El resultado cumple S(3) = P por construcción. La banda de la gráfica usa S(t) evaluada en P5 y P95 del rango plausible.
+S₀ = [1, 0.691, 0.481, 0.426, 0.387, 0.357, 0.341*, 0.326*, 0.311*, 0.298*, 0.284*]. Fuente para t = 1…5: INEGI, «Nota sobre los indicadores de la Demografía de los Negocios», tabla 1989–2019, con S(x+1) = 1 − q(x). (*) Los años 6–10 son una interpolación geométrica del equipo hasta S(32) = 0.105.
 
 ## ƒ₃ · Monte Carlo (2,000 años)
 
@@ -61,8 +60,9 @@ No incluyen ISR/RESICO, depreciación, sueldo del dueño, capital de trabajo ni 
 | Versión | Entrada | P | Utilidad/mes | ROI | Payback | VPN |
 |---|---|---|---|---|---|---|
 | v1 (original) | ticket 85, CV 45 %, MC sin choque anual | 55.0 % | $41,899 | 212.6 % | 6 | $601,442 |
-| **v2 (vigente)** | ticket 95, CV 38 % (giro Cafetería), MC con choque anual | **55.0 %** | **$60,371** | **302.9 %** | **4** | **$970,106** |
+| v2 | ticket 95, CV 38 % (giro Cafetería), MC con choque anual | 55.0 % | $60,371 | 302.9 % | 4 | $970,106 |
+| **v3 (vigente)** | S₀ oficial INEGI 1989–2019 y β₀ = logit(S₀(3)) | **51.6 %** | **$60,371** | **302.9 %** | **4** | **$912,776** |
 
-Rango plausible de P (v2): 47.8 %–61.6 %.
+Rango plausible de P (v3): 44.3 %–58.3 %. La utilidad, el ROI y el payback no dependen de S₀, por eso no cambian de v2 a v3.
 Monte Carlo v2: DE $179,399; P5 $489,097; P50 $744,277; P95 $1,072,698.
 La prueba `compatibilidad` de `tests/modelo.test.mjs` confirma que con las entradas v1 se recuperan la utilidad y el VPN v1. Ninguna de las dos cantidades depende del Monte Carlo.
