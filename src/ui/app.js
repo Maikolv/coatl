@@ -169,8 +169,8 @@ function clasificarFODA(e, modelo){
 function pintarTriplete(mc){
   const u=[
     {c:"pes", et:"Pesimista · P5", v:mc.p05, d:"5% de los años caen por debajo"},
-    {c:"base", et:"Esperado · mediana", v:mc.res[Math.floor(0.5*N_SIM)], d:"resultado central más probable"},
-    {c:"opt", et:"Optimista · P95", v:mc.p975, d:"5% de los años superan esto"}
+    {c:"base", et:"Esperado · mediana", v:mc.p50, d:"la mitad de los años queda por encima y la mitad por debajo"},
+    {c:"opt", et:"Optimista · P95", v:mc.p95, d:"5% de los años superan esto"}
   ];
   $("triplete").innerHTML=u.map(x=>'<div class="universo '+x.c+'"><span class="et">'+x.et+
     '</span><div class="v">'+mxn.format(Math.round(x.v))+'</div><div class="d">'+x.d+"</div></div>").join("");

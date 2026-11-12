@@ -49,23 +49,53 @@ function curvaSupervivencia(P){
 
 /* ---------- 8. Monte Carlo (2,000 años simulados) ---------- */
 function monteCarlo(e){
-  const rng=mulberry32(SEMILLA), res=new Array(N_SIM);
+  /* Cada corrida = un año. Fuentes de variación (supuestos del equipo, ver
+     INCERTIDUMBRE en datos.js):
+     · choque anual común de demanda (lognormal de media 1): un "mal año" afecta
+       a los 12 meses a la vez, por lo que no se compensa al sumar;
+     · ruido mensual de clientes y de ticket (independiente por mes);
+     · ruido anual en el costo variable (proveedores, merma). */
+  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA), res=new Array(N_SIM);
   for(let i=0;i<N_SIM;i++){
+    const fAnual=Math.exp(gaussiana(rng)*U.demandaAnual - U.demandaAnual*U.demandaAnual/2);
+    const cvSim=acota(e.cvEff + gaussiana(rng)*U.costoVariable, 0.02, 0.98);
     let total=0;
     for(let m=0;m<12;m++){
       const rampa=Math.pow(1+(e.crec||0), m/12);
-      const muM=e.mu*e.estacion[m]*rampa;
-      const cli=Math.max(0, muM + gaussiana(rng)*0.22*muM);
-      const tk =Math.max(1, e.ticket + gaussiana(rng)*0.08*e.ticket);
-      total += cli*e.diasMes*tk*(1-e.cvEff) - e.fijos;
+      const muM=e.mu*e.estacion[m]*rampa*fAnual;
+      const cli=Math.max(0, muM + gaussiana(rng)*U.demandaMensual*muM);
+      const tk =Math.max(1, e.ticket + gaussiana(rng)*U.ticket*e.ticket);
+      total += cli*e.diasMes*tk*(1-cvSim) - e.fijos;
     }
     res[i]=total;
   }
   res.sort((a,b)=>a-b);
   const media=res.reduce((s,x)=>s+x,0)/N_SIM;
   const sd=Math.sqrt(res.reduce((s,x)=>s+(x-media)**2,0)/(N_SIM-1));
-  const q=p=>res[Math.min(N_SIM-1,Math.floor(p*N_SIM))];
-  return {res, media, sd, p025:q(.025), p975:q(.975), p05:q(.05),
+  return {res, media, sd, p025:cuantil(res,.025), p05:cuantil(res,.05), p50:cuantil(res,.5),
+          p95:cuantil(res,.95), p975:cuantil(res,.975),
           pPos:res.filter(x=>x>0).length/N_SIM};
+}
+
+/* Cuantil empírico con interpolación lineal (tipo 7 de Hyndman–Fan, el de R/NumPy). */
+function cuantil(ordenados,p){
+  const h=(ordenados.length-1)*p, lo=Math.floor(h), hi=Math.ceil(h);
+  return ordenados[lo]+(ordenados[hi]-ordenados[lo])*(h-lo);
+}
+
+/* ---------- 8-bis. Rango plausible de P (incertidumbre de los β) ----------
+   Los β son supuestos del equipo, no estimaciones con error estándar. Para no
+   presentar P como exacta, se perturba z: cada contribución βᵢ con DE relativa
+   de 30 % y el intercepto con DE 0.15, y se reportan P5–P95 de P.
+   Es un análisis de sensibilidad, NO un intervalo de confianza muestral. */
+function rangoP(modelo){
+  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA+1), n=1000, ps=new Array(n);
+  for(let i=0;i<n;i++){
+    let z=-0.16+gaussiana(rng)*U.intercepto;
+    for(const c of modelo.contribs) z+=c[1]*(1+gaussiana(rng)*U.betaRelativa);
+    ps[i]=acota(sigmoide(z),0.04,0.93);
+  }
+  ps.sort((a,b)=>a-b);
+  return {p05:cuantil(ps,.05), p50:cuantil(ps,.5), p95:cuantil(ps,.95)};
 }
 

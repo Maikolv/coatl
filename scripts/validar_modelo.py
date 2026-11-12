@@ -19,12 +19,14 @@ ZONA_HEROES_Z = 0.04
 DEF = dict(
     expZ=0.0, formZ=0.10, mktZ=0.05, compZ=0.0, resZ=0.0,
     empleados=1, costoEmpleado=11000, propio=False, superficie=50,
-    inversion=250000, credPct=0.20, tasa=0.24, renta=7500, ticket=85, cv=0.45,
+    inversion=250000, credPct=0.20, tasa=0.24, renta=7500, ticket=95, cv=0.38,
     otrosFijos=6000, mu=60, diasSem=6, estacion=[1] * 12, r=0.12, merma=0.03,
     mktGasto=1500, crec=0.08, inf=0.045,
 )
 
-REFERENCIA = dict(P=0.550, util=41899, roi=2.126, payback=6, vpn=601442)
+# Referencia v2 (12-nov-2026): ticket/CV del giro Cafetería y Monte Carlo con choque anual.
+REFERENCIA = dict(P=0.550, util=60371, roi=3.029, payback=4, vpn=970106)
+INC = dict(demandaMensual=0.22, ticket=0.08, demandaAnual=0.15, costoVariable=0.02)
 
 
 def acota(x, a, b):
@@ -90,17 +92,23 @@ def gaussiana(rng):
 def monte_carlo(e):
     rng, res = mulberry32(SEMILLA), []
     for _ in range(N_SIM):
+        sa = INC["demandaAnual"]
+        f_anual = math.exp(gaussiana(rng) * sa - sa * sa / 2)
+        cv_sim = acota(e["cvEff"] + gaussiana(rng) * INC["costoVariable"], 0.02, 0.98)
         total = 0.0
         for m in range(12):
-            muM = e["mu"] * e["estacion"][m] * (1 + e["crec"]) ** (m / 12)
-            cli = max(0, muM + gaussiana(rng) * 0.22 * muM)
-            tk = max(1, e["ticket"] + gaussiana(rng) * 0.08 * e["ticket"])
-            total += cli * e["diasMes"] * tk * (1 - e["cvEff"]) - e["fijos"]
+            muM = e["mu"] * e["estacion"][m] * (1 + e["crec"]) ** (m / 12) * f_anual
+            cli = max(0, muM + gaussiana(rng) * INC["demandaMensual"] * muM)
+            tk = max(1, e["ticket"] + gaussiana(rng) * INC["ticket"] * e["ticket"])
+            total += cli * e["diasMes"] * tk * (1 - cv_sim) - e["fijos"]
         res.append(total)
     res.sort()
     media = sum(res) / N_SIM
     sd = math.sqrt(sum((x - media) ** 2 for x in res) / (N_SIM - 1))
-    q = lambda p: res[min(N_SIM - 1, math.floor(p * N_SIM))]  # noqa: E731
+    def q(p):  # cuantil tipo 7 (interpolación lineal), igual que cuantil() en JS
+        h = (N_SIM - 1) * p
+        lo, hi = math.floor(h), math.ceil(h)
+        return res[lo] + (res[hi] - res[lo]) * (h - lo)
     return dict(media=media, sd=sd, p025=q(.025), p05=q(.05), p50=q(.5), p95=q(.95),
                 p975=q(.975), pPos=sum(x > 0 for x in res) / N_SIM)
 

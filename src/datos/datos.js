@@ -54,3 +54,15 @@ const ESTACION = {
 };
 const N_SIM = 2000, SEMILLA = 20262;
 
+
+/* Supuestos de incertidumbre del Monte Carlo y del rango de P.
+   Son SUPUESTOS DEL EQUIPO (no estimados con datos); se documentan en
+   docs/METODOLOGIA.md y en la ficha «Supuestos y limitaciones». */
+const INCERTIDUMBRE = {
+  demandaMensual: 0.22,  // DE relativa de clientes, independiente por mes
+  ticket:         0.08,  // DE relativa del ticket promedio, por mes
+  demandaAnual:   0.15,  // DE (log) del choque común del año
+  costoVariable:  0.02,  // DE absoluta del costo variable efectivo (2 pp)
+  betaRelativa:   0.30,  // DE relativa de cada β para el rango de P
+  intercepto:     0.15   // DE del intercepto para el rango de P
+};

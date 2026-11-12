@@ -42,31 +42,25 @@ function fiesta(){
 }
 
 function pintarKPIs(e,mc,S,modelo){
-  const payback = e.utilMes>0 ? (e.inversion/e.utilMes) : null;
-  let vpn=-e.inversion;
-  for(let t=1;t<=3;t++){
-    const ventasT=e.ventasMes*12*Math.pow(1+e.crec,t-1);
-    const fijosT=e.fijos*12*Math.pow(1+e.inf,t-1);
-    const Ut=ventasT*(1-e.cvEff)-fijosT;
-    vpn += S[t]*Ut/Math.pow(1+e.r,t);
-  }
+  const f=finanzas(e,mc,S), rp=rangoP(modelo);
   const datos=[
-    ["Utilidad mensual esperada", mxn.format(Math.round(e.utilMes)), "modelo determinista de costo–volumen"],
+    ["Probabilidad a 3 años: rango plausible", pct(rp.p05)+" a "+pct(rp.p95), "P5–P95 al perturbar los β (sensibilidad, no intervalo muestral)"],
+    ["Utilidad mensual esperada", mxn.format(Math.round(e.utilMes)), "modelo determinista de costo–volumen, antes de impuestos"],
     ["P(utilidad anual > 0)", pct(mc.pPos), "frecuencia empírica en 2,000 corridas"],
-    ["Utilidad anual: intervalo 95%", mxn.format(Math.round(mc.p025))+" a "+mxn.format(Math.round(mc.p975)), "percentiles 2.5 y 97.5 del Monte Carlo"],
+    ["Utilidad anual P5 · P50 · P95", mxn.format(Math.round(mc.p05))+" · "+mxn.format(Math.round(mc.p50))+" · "+mxn.format(Math.round(mc.p95)), "escenarios pesimista, mediano y optimista del Monte Carlo"],
     ["Punto de equilibrio", isFinite(e.peDia)?Math.ceil(e.peDia)+" clientes/día":"No alcanzable", mxn.format(Math.round(e.pePesos))+" en ventas mensuales"],
     ["Margen de seguridad", pct(e.ms), e.ms>=0?"ventas por encima del equilibrio":"ventas por debajo del equilibrio"],
-    ["ROI anual esperado", pct(mc.media/e.inversion), "utilidad anual media / inversión inicial"],
-    ["Recuperación (payback)", payback?payback.toFixed(1)+" meses":"No se recupera", "con la utilidad mensual esperada"],
-    ["VPN a 3 años ("+(e.r*100).toFixed(1).replace(/\.0$/,"")+"%)", mxn.format(Math.round(vpn)), "flujos con crecimiento g e inflación π, ponderados por S(t)"]
+    ["ROI anual esperado", pct(f.roi), "utilidad anual media del Monte Carlo / inversión, antes de impuestos"],
+    ["Recuperación (payback)", f.payback?f.payback.toFixed(1)+" meses":"No se recupera", "inversión / utilidad mensual determinista"],
+    ["VPN a 3 años ("+(e.r*100).toFixed(1).replace(/.0$/,"")+"%)", mxn.format(Math.round(f.vpn)), "flujos con crecimiento g e inflación π, ponderados por S(t); sin valor terminal"]
   ];
   $("kpis").innerHTML=datos.map(d=>'<div class="kpi"><div class="v">'+d[1]+'</div><div class="k">'+d[0]+'</div><div class="d">'+d[2]+"</div></div>").join("");
-  return vpn;
+  return f.vpn;
 }
 
 function pintarLectura(e,mc,modelo,vpn){
   const P=modelo.P, frases=[];
-  frases.push("La probabilidad estimada de éxito a 3 años es de <strong>"+pct(P)+"</strong>, frente al <strong>46%</strong> de supervivencia promedio nacional (INEGI): tu escenario está "+(P>0.46?"por encima":"por debajo")+" de la media.");
+  frases.push("La probabilidad estimada de éxito a 3 años es de <strong>"+pct(P)+"</strong>, frente al <strong>46%</strong> de supervivencia promedio nacional (INEGI): tu escenario está "+(P>0.46?"por encima":"por debajo")+" de la media. Al perturbar los supuestos del modelo, P se mueve entre <strong>"+pct(rangoP(modelo).p05)+"</strong> y <strong>"+pct(rangoP(modelo).p95)+"</strong>: léelo como orden de magnitud, no como cifra exacta.");
   const ordenados=[...modelo.contribs].sort((a,b)=>a[1]-b[1]);
   const peor=ordenados[0], mejor=ordenados[ordenados.length-1];
   if(peor[1]<0) frases.push("La variable que más resta es <strong>"+peor[0].toLowerCase()+"</strong> (β = "+peor[1].toFixed(2)+"); es el primer candidato para el análisis de sensibilidad.");

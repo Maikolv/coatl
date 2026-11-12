@@ -7,6 +7,8 @@
   sz.value="heroes";
 })();
 $("giro").addEventListener("change",()=>{const g=GIROS[$("giro").value];$("ticket").value=g.ticket;$("cvar").value=g.cv;$("vCvar").textContent=g.cv+"%"});
+/* Hallazgo 5: los campos arrancan con los valores del giro seleccionado (Cafetería). */
+$("giro").dispatchEvent(new Event("change"));
 $("inversion").addEventListener("input",()=>$("vInversion").textContent=mxn.format(+$("inversion").value));
 $("credito").addEventListener("input",()=>$("vCredito").textContent=$("credito").value+"%");
 $("cvar").addEventListener("input",()=>$("vCvar").textContent=$("cvar").value+"%");

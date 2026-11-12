@@ -861,11 +861,11 @@ img{max-width:100%}
           <div class="fila-2">
             <div class="campo">
               <label for="ticket">Ticket promedio por cliente (MXN)</label>
-              <input type="number" id="ticket" min="10" step="5" value="85">
+              <input type="number" id="ticket" min="10" step="5" value="95">
             </div>
             <div class="campo">
-              <label for="cvar">Costo variable (% de la venta): <span class="valor-rango" id="vCvar">45%</span></label>
-              <input type="range" id="cvar" min="5" max="90" step="1" value="45">
+              <label for="cvar">Costo variable (% de la venta): <span class="valor-rango" id="vCvar">38%</span></label>
+              <input type="range" id="cvar" min="5" max="90" step="1" value="38">
             </div>
           </div>
           <div class="fila-2">
@@ -1351,6 +1351,18 @@ const ESTACION = {
 const N_SIM = 2000, SEMILLA = 20262;
 
 
+/* Supuestos de incertidumbre del Monte Carlo y del rango de P.
+   Son SUPUESTOS DEL EQUIPO (no estimados con datos); se documentan en
+   docs/METODOLOGIA.md y en la ficha «Supuestos y limitaciones». */
+const INCERTIDUMBRE = {
+  demandaMensual: 0.22,  // DE relativa de clientes, independiente por mes
+  ticket:         0.08,  // DE relativa del ticket promedio, por mes
+  demandaAnual:   0.15,  // DE (log) del choque común del año
+  costoVariable:  0.02,  // DE absoluta del costo variable efectivo (2 pp)
+  betaRelativa:   0.30,  // DE relativa de cada β para el rango de P
+  intercepto:     0.15   // DE del intercepto para el rango de P
+};
+
 /* ===== src/modelo/modelo.js ===== */
 /* COATL · Núcleo estadístico puro (sin DOM): probado en tests/. */
 /* ---------- 2. Utilidades numéricas ---------- */
@@ -1403,26 +1415,73 @@ function curvaSupervivencia(P){
 
 /* ---------- 8. Monte Carlo (2,000 años simulados) ---------- */
 function monteCarlo(e){
-  const rng=mulberry32(SEMILLA), res=new Array(N_SIM);
+  /* Cada corrida = un año. Fuentes de variación (supuestos del equipo, ver
+     INCERTIDUMBRE en datos.js):
+     · choque anual común de demanda (lognormal de media 1): un "mal año" afecta
+       a los 12 meses a la vez, por lo que no se compensa al sumar;
+     · ruido mensual de clientes y de ticket (independiente por mes);
+     · ruido anual en el costo variable (proveedores, merma). */
+  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA), res=new Array(N_SIM);
   for(let i=0;i<N_SIM;i++){
+    const fAnual=Math.exp(gaussiana(rng)*U.demandaAnual - U.demandaAnual*U.demandaAnual/2);
+    const cvSim=acota(e.cvEff + gaussiana(rng)*U.costoVariable, 0.02, 0.98);
     let total=0;
     for(let m=0;m<12;m++){
       const rampa=Math.pow(1+(e.crec||0), m/12);
-      const muM=e.mu*e.estacion[m]*rampa;
-      const cli=Math.max(0, muM + gaussiana(rng)*0.22*muM);
-      const tk =Math.max(1, e.ticket + gaussiana(rng)*0.08*e.ticket);
-      total += cli*e.diasMes*tk*(1-e.cvEff) - e.fijos;
+      const muM=e.mu*e.estacion[m]*rampa*fAnual;
+      const cli=Math.max(0, muM + gaussiana(rng)*U.demandaMensual*muM);
+      const tk =Math.max(1, e.ticket + gaussiana(rng)*U.ticket*e.ticket);
+      total += cli*e.diasMes*tk*(1-cvSim) - e.fijos;
     }
     res[i]=total;
   }
   res.sort((a,b)=>a-b);
   const media=res.reduce((s,x)=>s+x,0)/N_SIM;
   const sd=Math.sqrt(res.reduce((s,x)=>s+(x-media)**2,0)/(N_SIM-1));
-  const q=p=>res[Math.min(N_SIM-1,Math.floor(p*N_SIM))];
-  return {res, media, sd, p025:q(.025), p975:q(.975), p05:q(.05),
+  return {res, media, sd, p025:cuantil(res,.025), p05:cuantil(res,.05), p50:cuantil(res,.5),
+          p95:cuantil(res,.95), p975:cuantil(res,.975),
           pPos:res.filter(x=>x>0).length/N_SIM};
 }
 
+/* Cuantil empírico con interpolación lineal (tipo 7 de Hyndman–Fan, el de R/NumPy). */
+function cuantil(ordenados,p){
+  const h=(ordenados.length-1)*p, lo=Math.floor(h), hi=Math.ceil(h);
+  return ordenados[lo]+(ordenados[hi]-ordenados[lo])*(h-lo);
+}
+
+/* ---------- 8-bis. Rango plausible de P (incertidumbre de los β) ----------
+   Los β son supuestos del equipo, no estimaciones con error estándar. Para no
+   presentar P como exacta, se perturba z: cada contribución βᵢ con DE relativa
+   de 30 % y el intercepto con DE 0.15, y se reportan P5–P95 de P.
+   Es un análisis de sensibilidad, NO un intervalo de confianza muestral. */
+function rangoP(modelo){
+  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA+1), n=1000, ps=new Array(n);
+  for(let i=0;i<n;i++){
+    let z=-0.16+gaussiana(rng)*U.intercepto;
+    for(const c of modelo.contribs) z+=c[1]*(1+gaussiana(rng)*U.betaRelativa);
+    ps[i]=acota(sigmoide(z),0.04,0.93);
+  }
+  ps.sort((a,b)=>a-b);
+  return {p05:cuantil(ps,.05), p50:cuantil(ps,.5), p95:cuantil(ps,.95)};
+}
+
+
+/* ===== src/modelo/finanzas.js ===== */
+/* COATL · Indicadores financieros (sin DOM). Cifras ANTES de impuestos
+   (ISR/RESICO), sin depreciación ni sueldo del dueño. */
+function finanzas(e,mc,S){
+  const payback = e.utilMes>0 ? e.inversion/e.utilMes : null;   // meses, utilidad determinista
+  let vpn=-e.inversion;                                          // inversión en t=0, no ponderada por S
+  const flujos=[];
+  for(let t=1;t<=3;t++){
+    const ventasT=e.ventasMes*12*Math.pow(1+e.crec,t-1);
+    const fijosT=e.fijos*12*Math.pow(1+e.inf,t-1);
+    const Ut=ventasT*(1-e.cvEff)-fijosT;
+    flujos.push(Ut);
+    vpn += S[t]*Ut/Math.pow(1+e.r,t);                            // flujo esperado = S(t)·Uₜ
+  }
+  return {payback, vpn, flujos, roi: mc.media/e.inversion};
+}
 
 /* ===== src/ui/formato.js ===== */
 /* Formatos y atajos de DOM */
@@ -1441,6 +1500,8 @@ const $ = id => document.getElementById(id);
   sz.value="heroes";
 })();
 $("giro").addEventListener("change",()=>{const g=GIROS[$("giro").value];$("ticket").value=g.ticket;$("cvar").value=g.cv;$("vCvar").textContent=g.cv+"%"});
+/* Hallazgo 5: los campos arrancan con los valores del giro seleccionado (Cafetería). */
+$("giro").dispatchEvent(new Event("change"));
 $("inversion").addEventListener("input",()=>$("vInversion").textContent=mxn.format(+$("inversion").value));
 $("credito").addEventListener("input",()=>$("vCredito").textContent=$("credito").value+"%");
 $("cvar").addEventListener("input",()=>$("vCvar").textContent=$("cvar").value+"%");
@@ -1549,31 +1610,25 @@ function fiesta(){
 }
 
 function pintarKPIs(e,mc,S,modelo){
-  const payback = e.utilMes>0 ? (e.inversion/e.utilMes) : null;
-  let vpn=-e.inversion;
-  for(let t=1;t<=3;t++){
-    const ventasT=e.ventasMes*12*Math.pow(1+e.crec,t-1);
-    const fijosT=e.fijos*12*Math.pow(1+e.inf,t-1);
-    const Ut=ventasT*(1-e.cvEff)-fijosT;
-    vpn += S[t]*Ut/Math.pow(1+e.r,t);
-  }
+  const f=finanzas(e,mc,S), rp=rangoP(modelo);
   const datos=[
-    ["Utilidad mensual esperada", mxn.format(Math.round(e.utilMes)), "modelo determinista de costo–volumen"],
+    ["Probabilidad a 3 años: rango plausible", pct(rp.p05)+" a "+pct(rp.p95), "P5–P95 al perturbar los β (sensibilidad, no intervalo muestral)"],
+    ["Utilidad mensual esperada", mxn.format(Math.round(e.utilMes)), "modelo determinista de costo–volumen, antes de impuestos"],
     ["P(utilidad anual > 0)", pct(mc.pPos), "frecuencia empírica en 2,000 corridas"],
-    ["Utilidad anual: intervalo 95%", mxn.format(Math.round(mc.p025))+" a "+mxn.format(Math.round(mc.p975)), "percentiles 2.5 y 97.5 del Monte Carlo"],
+    ["Utilidad anual P5 · P50 · P95", mxn.format(Math.round(mc.p05))+" · "+mxn.format(Math.round(mc.p50))+" · "+mxn.format(Math.round(mc.p95)), "escenarios pesimista, mediano y optimista del Monte Carlo"],
     ["Punto de equilibrio", isFinite(e.peDia)?Math.ceil(e.peDia)+" clientes/día":"No alcanzable", mxn.format(Math.round(e.pePesos))+" en ventas mensuales"],
     ["Margen de seguridad", pct(e.ms), e.ms>=0?"ventas por encima del equilibrio":"ventas por debajo del equilibrio"],
-    ["ROI anual esperado", pct(mc.media/e.inversion), "utilidad anual media / inversión inicial"],
-    ["Recuperación (payback)", payback?payback.toFixed(1)+" meses":"No se recupera", "con la utilidad mensual esperada"],
-    ["VPN a 3 años ("+(e.r*100).toFixed(1).replace(/\.0$/,"")+"%)", mxn.format(Math.round(vpn)), "flujos con crecimiento g e inflación π, ponderados por S(t)"]
+    ["ROI anual esperado", pct(f.roi), "utilidad anual media del Monte Carlo / inversión, antes de impuestos"],
+    ["Recuperación (payback)", f.payback?f.payback.toFixed(1)+" meses":"No se recupera", "inversión / utilidad mensual determinista"],
+    ["VPN a 3 años ("+(e.r*100).toFixed(1).replace(/.0$/,"")+"%)", mxn.format(Math.round(f.vpn)), "flujos con crecimiento g e inflación π, ponderados por S(t); sin valor terminal"]
   ];
   $("kpis").innerHTML=datos.map(d=>'<div class="kpi"><div class="v">'+d[1]+'</div><div class="k">'+d[0]+'</div><div class="d">'+d[2]+"</div></div>").join("");
-  return vpn;
+  return f.vpn;
 }
 
 function pintarLectura(e,mc,modelo,vpn){
   const P=modelo.P, frases=[];
-  frases.push("La probabilidad estimada de éxito a 3 años es de <strong>"+pct(P)+"</strong>, frente al <strong>46%</strong> de supervivencia promedio nacional (INEGI): tu escenario está "+(P>0.46?"por encima":"por debajo")+" de la media.");
+  frases.push("La probabilidad estimada de éxito a 3 años es de <strong>"+pct(P)+"</strong>, frente al <strong>46%</strong> de supervivencia promedio nacional (INEGI): tu escenario está "+(P>0.46?"por encima":"por debajo")+" de la media. Al perturbar los supuestos del modelo, P se mueve entre <strong>"+pct(rangoP(modelo).p05)+"</strong> y <strong>"+pct(rangoP(modelo).p95)+"</strong>: léelo como orden de magnitud, no como cifra exacta.");
   const ordenados=[...modelo.contribs].sort((a,b)=>a[1]-b[1]);
   const peor=ordenados[0], mejor=ordenados[ordenados.length-1];
   if(peor[1]<0) frases.push("La variable que más resta es <strong>"+peor[0].toLowerCase()+"</strong> (β = "+peor[1].toFixed(2)+"); es el primer candidato para el análisis de sensibilidad.");
@@ -1969,8 +2024,8 @@ function clasificarFODA(e, modelo){
 function pintarTriplete(mc){
   const u=[
     {c:"pes", et:"Pesimista · P5", v:mc.p05, d:"5% de los años caen por debajo"},
-    {c:"base", et:"Esperado · mediana", v:mc.res[Math.floor(0.5*N_SIM)], d:"resultado central más probable"},
-    {c:"opt", et:"Optimista · P95", v:mc.p975, d:"5% de los años superan esto"}
+    {c:"base", et:"Esperado · mediana", v:mc.p50, d:"la mitad de los años queda por encima y la mitad por debajo"},
+    {c:"opt", et:"Optimista · P95", v:mc.p95, d:"5% de los años superan esto"}
   ];
   $("triplete").innerHTML=u.map(x=>'<div class="universo '+x.c+'"><span class="et">'+x.et+
     '</span><div class="v">'+mxn.format(Math.round(x.v))+'</div><div class="d">'+x.d+"</div></div>").join("");
