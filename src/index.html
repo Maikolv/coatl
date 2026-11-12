@@ -9,9 +9,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta property="og:type" content="website">
+<meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
+<meta property="og:description" content="Probabilidad de supervivencia a 3 años y rentabilidad esperada de abrir un negocio en Coacalco de Berriozábal, con supuestos e incertidumbre declarados.">
+<meta property="og:locale" content="es_MX">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23C8102E'/%3E%3Cpath d='M6 22h6v-6h6v-6h8' fill='none' stroke='%23FBF6F3' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous" referrerpolicy="no-referrer">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
 /*@@CSS@@*/
 </style>
@@ -412,7 +419,7 @@
           <span class="oraculo-cita" id="oraculoCita">«El futuro no es aleatorio. Es calculable.»</span>
         </div>
         <div class="kpis" id="kpis"></div>
-        <div class="lectura" id="lectura" hidden>
+        <div class="lectura" id="lecturaPanel" hidden>
           <h4>Lectura estadística del escenario</h4>
           <ul id="lecturaLista"></ul>
         </div>
@@ -422,18 +429,45 @@
     <div class="graficas-sim">
       <div class="panel">
         <h3>Curva de supervivencia proyectada</h3>
-        <p class="sub">Tu escenario frente al promedio nacional (modelo de riesgos proporcionales sobre la tabla INEGI).</p>
+        <p class="sub">Tu escenario frente al promedio nacional (riesgos proporcionales sobre la tabla INEGI). La banda muestra el rango plausible de P.</p>
         <div class="lienzo"><canvas id="graficaSupervivencia"></canvas></div>
       </div>
       <div class="panel">
         <h3>Distribución de la utilidad anual (Monte Carlo)</h3>
-        <p class="sub">Histograma de 2,000 años simulados con demanda y ticket aleatorios (distribución normal).</p>
+        <p class="sub">Histograma de 2,000 años simulados: choque anual de demanda, ruido mensual de clientes y ticket, y variación del costo variable. Líneas: P5, mediana y P95.</p>
         <div class="lienzo"><canvas id="graficaMC"></canvas></div>
       </div>
       <div class="panel">
         <h3>Punto de equilibrio</h3>
         <p class="sub">Ingresos vs. costos totales según clientes por día; el cruce marca el equilibrio.</p>
         <div class="lienzo"><canvas id="graficaPE"></canvas></div>
+      </div>
+    </div>
+
+    <div class="graficas-sim analisis" id="analisis">
+      <div class="panel">
+        <h3>Sensibilidad por variable (tornado de β)</h3>
+        <p class="sub">Aporte de cada variable a z en el modelo logístico. Las barras rojas restan probabilidad; las granates la suman.</p>
+        <div class="lienzo"><canvas id="graficaTornado" role="img" aria-label="Gráfica de tornado con el aporte de cada variable"></canvas></div>
+      </div>
+      <div class="panel">
+        <h3>Comparar escenarios</h3>
+        <p class="sub">Guarda hasta 3 escenarios y compáralos lado a lado con las mismas métricas.</p>
+        <div class="acciones-widget">
+          <button type="button" class="btn btn-widget" id="guardarEsc">＋ Guardar escenario actual</button>
+          <button type="button" class="btn btn-widget btn-sec" id="limpiarEsc">Limpiar</button>
+        </div>
+        <div class="tabla-desliza"><table class="tabla-comparar" id="tablaComparar"><caption class="sr-only">Escenarios guardados</caption></table></div>
+      </div>
+      <div class="panel">
+        <h3>Exportar y compartir</h3>
+        <p class="sub">El enlace guarda todas las variables del formulario: quien lo abra verá exactamente tu escenario.</p>
+        <div class="acciones-widget columna">
+          <button type="button" class="btn btn-widget" id="compartirURL">🔗 Copiar enlace del escenario</button>
+          <button type="button" class="btn btn-widget" id="exportarPNG">🖼 Descargar reporte en imagen (PNG)</button>
+          <button type="button" class="btn btn-widget" id="exportarPDF">📄 Imprimir / guardar como PDF</button>
+        </div>
+        <p class="nota-widget" id="notaCompartir" aria-live="polite"></p>
       </div>
     </div>
 
@@ -483,6 +517,7 @@
           <p class="ranking-titulo">Ranking de zonas para tu escenario</p>
           <ul class="ranking" id="ranking"></ul>
           <p class="reco" id="recomendacion"></p>
+      <div class="tabla-desliza"><table class="tabla-zonas" id="comparadorZonas"><caption>Comparador de zonas para tu mismo negocio</caption></table></div>
         </div>
       </div>
     </div>
@@ -535,7 +570,7 @@
       <h3>Modelo logístico de puntaje</h3>
       <p>La probabilidad de éxito a 3 años se obtiene con una función logística: cada variable del escenario aporta un coeficiente β (positivo si protege al negocio, negativo si lo arriesga) y la suma z se transforma en una probabilidad entre 0 y 1.</p>
       <div class="formula">P(éxito) = 1 / (1 + e^(−z)),&nbsp;&nbsp; z = β₀ + β₁x₁ + β₂x₂ + … + βₖxₖ</div>
-      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI (~46%). Los coeficientes de zona, experiencia, reserva de capital, competencia, deuda y margen de seguridad se asignaron por criterio del equipo a partir de la literatura de demografía de negocios.</p>
+      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI (~46%). Los coeficientes de zona, experiencia, reserva de capital, competencia, deuda y margen de seguridad se asignaron por criterio del equipo a partir de la literatura de demografía de negocios. Como ningún β tiene error estándar, el simulador no presenta P como cifra exacta: perturba cada βᵢ con una desviación relativa de 30 % (y β₀ con 0.15) en 1,000 sorteos y reporta el <strong>rango plausible P5–P95</strong>. Es un análisis de sensibilidad, no un intervalo de confianza muestral.</p>
       <p class="uso">Conceptos del curso: probabilidad condicional, función logística, variables explicativas.</p>
     </article>
 
@@ -552,8 +587,8 @@
 
     <article class="metodo" data-num="ƒ₃">
       <h3>Simulación Monte Carlo</h3>
-      <p>La utilidad de un negocio no es fija: la demanda diaria y el ticket varían. Modelamos los clientes por día como una variable aleatoria Normal con media μ (tu dato) y desviación estándar σ = 0.22·μ, y el ticket como Normal(ticket, 0.08·ticket). Repetimos el año completo 2,000 veces (con números pseudoaleatorios de semilla fija, método Box–Muller) y obtenemos la distribución de la utilidad anual: su media, su dispersión, el intervalo central del 95% y la probabilidad empírica de terminar el año con utilidad positiva.</p>
-      <div class="formula">Clientes ~ N(μ, (0.22μ)²)&nbsp;&nbsp;·&nbsp;&nbsp;Ticket ~ N(t̄, (0.08t̄)²)&nbsp;&nbsp;·&nbsp;&nbsp;P(U&gt;0) ≈ #{Uᵢ&gt;0}/2000</div>
+      <p>La utilidad de un negocio no es fija. Cada corrida simula un año con cuatro fuentes de variación: un <strong>choque anual común de demanda</strong> F (lognormal de media 1 y σ = 0.15: un «mal año» afecta a los doce meses a la vez y no se compensa al sumar), clientes por día Normal(μF, (0.22·μF)²) mes a mes, ticket Normal(t̄, (0.08·t̄)²) y un costo variable que se desvía ±2 puntos porcentuales en el año. Repetimos el año 2,000 veces (números pseudoaleatorios de semilla fija, método Box–Muller) y reportamos la media, la dispersión, los escenarios <strong>P5 · mediana · P95</strong> y la probabilidad empírica de terminar con utilidad positiva. Las desviaciones son supuestos del equipo y se declaran como tales.</p>
+      <div class="formula">F ~ LogN(−σ²/2, 0.15²)&nbsp;·&nbsp;Clientes ~ N(μF, (0.22μF)²)&nbsp;·&nbsp;Ticket ~ N(t̄, (0.08t̄)²)&nbsp;·&nbsp;P(U&gt;0) ≈ #{Uᵢ&gt;0}/2000</div>
       <p class="uso">Conceptos: distribución normal, teorema central del límite, percentiles, probabilidad empírica.</p>
     </article>
 
@@ -566,7 +601,7 @@
 
     <article class="metodo" data-num="ƒ₅">
       <h3>Indicadores de inversión: ROI, payback y VPN</h3>
-      <p>Para el inversionista, la probabilidad debe traducirse a dinero. El simulador reporta el retorno anual sobre la inversión, el periodo de recuperación y el valor presente neto a 3 años: los flujos crecen con tu tasa g de adopción de demanda, los costos fijos se encarecen con la inflación π esperada, cada flujo se pondera por la probabilidad de seguir vivo S(t) y todo se descuenta a la tasa que tú definas. El costo variable efectivo cv′ incluye la merma de inventario.</p>
+      <p>Para el inversionista, la probabilidad debe traducirse a dinero. El simulador reporta el retorno anual sobre la inversión, el periodo de recuperación y el valor presente neto a 3 años: los flujos crecen con tu tasa g de adopción de demanda, los costos fijos se encarecen con la inflación π esperada, cada flujo se pondera por la probabilidad de seguir vivo S(t) y todo se descuenta a la tasa que tú definas. El costo variable efectivo cv′ incluye la merma de inventario. Todas las cifras son <strong>antes de impuestos</strong> (ISR/RESICO), sin depreciación ni sueldo del dueño, y el VPN no incluye valor terminal.</p>
       <div class="formula">VPN = −I₀ + Σₜ S(t)·Uₜ/(1+r)ᵗ,&nbsp; Uₜ = V₁(1+g)ᵗ⁻¹(1−cv′) − CF₁(1+π)ᵗ⁻¹</div>
       <p class="uso">Conceptos: valor esperado, esperanza matemática aplicada a flujos de efectivo.</p>
     </article>
@@ -619,7 +654,16 @@
     </div>
   </div>
 
-  <div class="limitaciones">
+  <div class="limitaciones" id="supuestos">
+    <h3>Supuestos declarados</h3>
+    <ul class="lista-supuestos">
+      <li><strong>Coeficientes β:</strong> asignados por el equipo, no estimados con microdatos; por eso P se acompaña de un rango plausible.</li>
+      <li><strong>Supervivencia base S₀(t):</strong> tabla nacional aproximada del INEGI («Esperanza de vida de los negocios»), aplicada a Coacalco sin ajuste municipal. Los valores redondeados deben verificarse contra la publicación vigente.</li>
+      <li><strong>Riesgos proporcionales:</strong> se impone S(3) = P; la forma de la curva es la nacional.</li>
+      <li><strong>Incertidumbre del Monte Carlo:</strong> σ de demanda mensual 22 %, de ticket 8 %, choque anual 15 % y costo variable ±2 pp, todos supuestos del equipo.</li>
+      <li><strong>Datos por giro y zona:</strong> ticket, costo variable, demanda de referencia, afluencia y renta por m² son estimaciones propias, editables en el simulador.</li>
+      <li><strong>Finanzas:</strong> antes de impuestos, sin depreciación, sin sueldo del dueño ni capital de trabajo; VPN a 3 años sin valor terminal.</li>
+    </ul>
     <h3>Limitaciones y propuesta de mejora</h3>
     <p>Este es un modelo educativo: los coeficientes logísticos no provienen de una regresión ajustada con microdatos (que el INEGI no publica a nivel negocio), sino de una calibración documentada sobre las tablas de supervivencia oficiales. La mejora natural del proyecto es estimar los β con datos de panel de la Demografía de los Negocios del INEGI, incorporar la distribución de Poisson para llegadas de clientes en giros de bajo flujo y validar las rentas por zona con un muestreo de campo en el municipio. Ningún resultado de esta herramienta constituye asesoría financiera.</p>
   </div>

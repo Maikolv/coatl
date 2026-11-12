@@ -577,3 +577,33 @@ img{max-width:100%}
   .btn{padding:.75rem 1.2rem;font-size:.88rem}
   .pie-consola{justify-content:center}
 }
+
+/* ====== Widgets de análisis (v2) ====== */
+.analisis .panel{display:flex;flex-direction:column}
+.acciones-widget{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:.9rem}
+.acciones-widget.columna{flex-direction:column}
+.btn-widget{background:var(--rojo);color:#fff;padding:.65rem 1.1rem;font-size:.88rem;justify-content:center}
+.btn-widget:hover{background:var(--granate)}
+.btn-widget:focus-visible,.btn:focus-visible{outline:3px solid var(--granate);outline-offset:2px}
+.btn-sec{background:transparent;color:var(--granate);border:2px solid var(--granate)}
+.btn-sec:hover{background:#FBF6F3}
+.tabla-desliza{overflow-x:auto;max-width:100%}
+.tabla-comparar{width:100%;border-collapse:collapse;font-size:.82rem}
+.tabla-comparar th,.tabla-comparar td{padding:.4rem .5rem;border-bottom:1px solid var(--niebla-2);text-align:left;vertical-align:top}
+.tabla-comparar thead th{color:var(--granate);font-weight:700}
+.tabla-comparar a{color:var(--rojo)}
+.tabla-comparar .vacio{color:var(--gris-texto);font-style:italic}
+#comparadorZonas{margin-top:1rem}
+#comparadorZonas caption{text-align:left;font-weight:700;color:var(--granate);padding-bottom:.3rem}
+#comparadorZonas tr.actual{background:#FFF0F2;font-weight:700}
+.nota-widget{font-size:.8rem;color:var(--gris-texto);word-break:break-all}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+@media (max-width:1000px){.graficas-sim{grid-template-columns:1fr}}
+@media print{
+  .nav,.progreso,.hero-acciones,#forma,.acciones-widget,.btn-tema,.toast,.confeti-capa,.mapa-cont{display:none!important}
+  body{background:#fff}
+  .panel{box-shadow:none;break-inside:avoid}
+  .revela{opacity:1!important;transform:none!important}
+}
+.lista-supuestos{margin:.4rem 0 1rem 1.1rem;font-size:.92rem;color:var(--gris-texto)}
+.lista-supuestos li{margin-bottom:.35rem}

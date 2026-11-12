@@ -243,9 +243,10 @@ function calcular(){
   pintarVeredicto(modelo.P);
   const vpn=pintarKPIs(e,mc,S,modelo);
   pintarLectura(e,mc,modelo,vpn);
-  pintarGraficas(e,mc,S);
+  pintarGraficas(e,mc,S,modelo);
   pintarMapa(e,modelo);
   pintarFODA(e,modelo,mc);
+  pintarWidgets(e,modelo,mc,S);
 }
 /* ---------- 15. Barra de progreso y navegación activa ---------- */
 (function navViva(){
@@ -295,4 +296,5 @@ if(!initLeaflet()) usarEsquema();
   btn.addEventListener("click",()=>aplicar(!document.body.classList.contains("oraculo")));
 })();
 
-calcular(); /* escenario inicial al cargar */
+/* Escenario inicial: el del enlace compartido (#e=...) o el de referencia. */
+if(!cargarEscenario(location.hash)) calcular();

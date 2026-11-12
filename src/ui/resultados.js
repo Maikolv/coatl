@@ -70,7 +70,7 @@ function pintarLectura(e,mc,modelo,vpn){
   else frases.push("Con este ticket y costo variable el margen de contribución es nulo o negativo: <strong>no existe punto de equilibrio alcanzable</strong>; revisa precio y costos antes que cualquier otra variable.");
   frases.push(vpn>0?"El VPN a 3 años es positivo ("+mxn.format(Math.round(vpn))+"): el proyecto crea valor por encima de tu tasa de descuento.":"El VPN a 3 años es negativo ("+mxn.format(Math.round(vpn))+"): a tu tasa de descuento, el proyecto aún no compensa la inversión.");
   $("lecturaLista").innerHTML=frases.map(f=>"<li>"+f+"</li>").join("");
-  $("lectura").hidden=false;
+  $("lecturaPanel").hidden=false;
 }
 
 /* ---------- 10. Gráficas ---------- */
@@ -94,13 +94,29 @@ let chSup=null, chMC=null, chPE=null;
       plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:c=>c.label+": "+c.parsed+"% del padrón"}}}}});
 })();
 
-function pintarGraficas(e,mc,S){
+/* Plugin de Chart.js: líneas verticales en los percentiles del Monte Carlo. */
+function lineasPercentil(marcas,lo,paso){
+  return {id:"lineasPercentil",afterDatasetsDraw(ch){
+    const {ctx,chartArea:a,scales:{x}}=ch, n=ch.data.labels.length;
+    ctx.save(); ctx.setLineDash([5,4]); ctx.strokeStyle="#38070F"; ctx.fillStyle="#38070F";
+    ctx.font="600 11px 'Spline Sans Mono',monospace"; ctx.textAlign="center";
+    marcas.forEach(([et,v])=>{
+      const idx=(v-lo)/paso-0.5, px=x.getPixelForValue(0)+(x.getPixelForValue(n-1)-x.getPixelForValue(0))*idx/(n-1||1);
+      ctx.beginPath(); ctx.moveTo(px,a.top+14); ctx.lineTo(px,a.bottom); ctx.stroke(); ctx.fillText(et,px,a.top+10);
+    });
+    ctx.restore();
+  }};
+}
+function pintarGraficas(e,mc,S,modelo){
+  const rp=rangoP(modelo), Sbajo=curvaSupervivencia(rp.p05), Salto=curvaSupervivencia(rp.p95);
   const anios=[...Array(11).keys()];
   if(chSup)chSup.destroy();
   chSup=new Chart($("graficaSupervivencia"),{type:"line",data:{
     labels:anios.map(a=>"Año "+a),
     datasets:[
-      {label:"Tu escenario",data:S.map(x=>+(100*x).toFixed(1)),borderColor:"#C8102E",backgroundColor:"rgba(200,16,46,.12)",fill:true,tension:.35,pointRadius:3},
+      {label:"Banda alta (P95 de P)",data:Salto.map(x=>+(100*x).toFixed(1)),borderColor:"rgba(200,16,46,.25)",borderWidth:1,pointRadius:0,tension:.35,fill:false},
+      {label:"Banda baja (P5 de P)",data:Sbajo.map(x=>+(100*x).toFixed(1)),borderColor:"rgba(200,16,46,.25)",borderWidth:1,backgroundColor:"rgba(200,16,46,.14)",pointRadius:0,tension:.35,fill:"-1"},
+      {label:"Tu escenario",data:S.map(x=>+(100*x).toFixed(1)),borderColor:"#C8102E",tension:.35,pointRadius:3,fill:false},
       {label:"Promedio nacional (INEGI)",data:S0.map(x=>+(100*x).toFixed(1)),borderColor:"#9B6A6E",borderDash:[6,5],pointRadius:0,tension:.35}]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+": "+c.parsed.y+"% sigue operando"}}},
@@ -114,7 +130,8 @@ function pintarGraficas(e,mc,S){
   chMC=new Chart($("graficaMC"),{type:"bar",data:{
     labels:centros.map(c=>mxn.format(Math.round(c/1000)*1000)),
     datasets:[{label:"Años simulados",data:bins,
-      backgroundColor:centros.map(c=>c<0?"#E2233F":"#7A0C1F"),borderRadius:3,categoryPercentage:1,barPercentage:.96}]},
+      backgroundColor:centros.map(c=>c<0?"#E2233F":(c<mc.p05||c>mc.p95)?"#E9B9BE":"#7A0C1F"),borderRadius:3,categoryPercentage:1,barPercentage:.96}]},
+    plugins:[lineasPercentil([["P5",mc.p05],["P50",mc.p50],["P95",mc.p95]],lo,paso)],
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{title:i=>"Utilidad ≈ "+i[0].label,label:c=>c.parsed.y+" de 2,000 corridas"}}},
       scales:{y:{beginAtZero:true,grid:{color:"#F4E2E1"},title:{display:true,text:"Frecuencia"}},

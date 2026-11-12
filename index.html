@@ -9,9 +9,16 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css">
-<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<meta property="og:type" content="website">
+<meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
+<meta property="og:description" content="Probabilidad de supervivencia a 3 años y rentabilidad esperada de abrir un negocio en Coacalco de Berriozábal, con supuestos e incertidumbre declarados.">
+<meta property="og:locale" content="es_MX">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23C8102E'/%3E%3Cpath d='M6 22h6v-6h6v-6h8' fill='none' stroke='%23FBF6F3' stroke-width='3'/%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous" referrerpolicy="no-referrer">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <style>
 :root{
   --rojo:#C8102E;
@@ -593,6 +600,36 @@ img{max-width:100%}
   .pie-consola{justify-content:center}
 }
 
+/* ====== Widgets de análisis (v2) ====== */
+.analisis .panel{display:flex;flex-direction:column}
+.acciones-widget{display:flex;gap:.6rem;flex-wrap:wrap;margin-bottom:.9rem}
+.acciones-widget.columna{flex-direction:column}
+.btn-widget{background:var(--rojo);color:#fff;padding:.65rem 1.1rem;font-size:.88rem;justify-content:center}
+.btn-widget:hover{background:var(--granate)}
+.btn-widget:focus-visible,.btn:focus-visible{outline:3px solid var(--granate);outline-offset:2px}
+.btn-sec{background:transparent;color:var(--granate);border:2px solid var(--granate)}
+.btn-sec:hover{background:#FBF6F3}
+.tabla-desliza{overflow-x:auto;max-width:100%}
+.tabla-comparar{width:100%;border-collapse:collapse;font-size:.82rem}
+.tabla-comparar th,.tabla-comparar td{padding:.4rem .5rem;border-bottom:1px solid var(--niebla-2);text-align:left;vertical-align:top}
+.tabla-comparar thead th{color:var(--granate);font-weight:700}
+.tabla-comparar a{color:var(--rojo)}
+.tabla-comparar .vacio{color:var(--gris-texto);font-style:italic}
+#comparadorZonas{margin-top:1rem}
+#comparadorZonas caption{text-align:left;font-weight:700;color:var(--granate);padding-bottom:.3rem}
+#comparadorZonas tr.actual{background:#FFF0F2;font-weight:700}
+.nota-widget{font-size:.8rem;color:var(--gris-texto);word-break:break-all}
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
+@media (max-width:1000px){.graficas-sim{grid-template-columns:1fr}}
+@media print{
+  .nav,.progreso,.hero-acciones,#forma,.acciones-widget,.btn-tema,.toast,.confeti-capa,.mapa-cont{display:none!important}
+  body{background:#fff}
+  .panel{box-shadow:none;break-inside:avoid}
+  .revela{opacity:1!important;transform:none!important}
+}
+.lista-supuestos{margin:.4rem 0 1rem 1.1rem;font-size:.92rem;color:var(--gris-texto)}
+.lista-supuestos li{margin-bottom:.35rem}
+
 </style>
 </head>
 <body>
@@ -991,7 +1028,7 @@ img{max-width:100%}
           <span class="oraculo-cita" id="oraculoCita">«El futuro no es aleatorio. Es calculable.»</span>
         </div>
         <div class="kpis" id="kpis"></div>
-        <div class="lectura" id="lectura" hidden>
+        <div class="lectura" id="lecturaPanel" hidden>
           <h4>Lectura estadística del escenario</h4>
           <ul id="lecturaLista"></ul>
         </div>
@@ -1001,18 +1038,45 @@ img{max-width:100%}
     <div class="graficas-sim">
       <div class="panel">
         <h3>Curva de supervivencia proyectada</h3>
-        <p class="sub">Tu escenario frente al promedio nacional (modelo de riesgos proporcionales sobre la tabla INEGI).</p>
+        <p class="sub">Tu escenario frente al promedio nacional (riesgos proporcionales sobre la tabla INEGI). La banda muestra el rango plausible de P.</p>
         <div class="lienzo"><canvas id="graficaSupervivencia"></canvas></div>
       </div>
       <div class="panel">
         <h3>Distribución de la utilidad anual (Monte Carlo)</h3>
-        <p class="sub">Histograma de 2,000 años simulados con demanda y ticket aleatorios (distribución normal).</p>
+        <p class="sub">Histograma de 2,000 años simulados: choque anual de demanda, ruido mensual de clientes y ticket, y variación del costo variable. Líneas: P5, mediana y P95.</p>
         <div class="lienzo"><canvas id="graficaMC"></canvas></div>
       </div>
       <div class="panel">
         <h3>Punto de equilibrio</h3>
         <p class="sub">Ingresos vs. costos totales según clientes por día; el cruce marca el equilibrio.</p>
         <div class="lienzo"><canvas id="graficaPE"></canvas></div>
+      </div>
+    </div>
+
+    <div class="graficas-sim analisis" id="analisis">
+      <div class="panel">
+        <h3>Sensibilidad por variable (tornado de β)</h3>
+        <p class="sub">Aporte de cada variable a z en el modelo logístico. Las barras rojas restan probabilidad; las granates la suman.</p>
+        <div class="lienzo"><canvas id="graficaTornado" role="img" aria-label="Gráfica de tornado con el aporte de cada variable"></canvas></div>
+      </div>
+      <div class="panel">
+        <h3>Comparar escenarios</h3>
+        <p class="sub">Guarda hasta 3 escenarios y compáralos lado a lado con las mismas métricas.</p>
+        <div class="acciones-widget">
+          <button type="button" class="btn btn-widget" id="guardarEsc">＋ Guardar escenario actual</button>
+          <button type="button" class="btn btn-widget btn-sec" id="limpiarEsc">Limpiar</button>
+        </div>
+        <div class="tabla-desliza"><table class="tabla-comparar" id="tablaComparar"><caption class="sr-only">Escenarios guardados</caption></table></div>
+      </div>
+      <div class="panel">
+        <h3>Exportar y compartir</h3>
+        <p class="sub">El enlace guarda todas las variables del formulario: quien lo abra verá exactamente tu escenario.</p>
+        <div class="acciones-widget columna">
+          <button type="button" class="btn btn-widget" id="compartirURL">🔗 Copiar enlace del escenario</button>
+          <button type="button" class="btn btn-widget" id="exportarPNG">🖼 Descargar reporte en imagen (PNG)</button>
+          <button type="button" class="btn btn-widget" id="exportarPDF">📄 Imprimir / guardar como PDF</button>
+        </div>
+        <p class="nota-widget" id="notaCompartir" aria-live="polite"></p>
       </div>
     </div>
 
@@ -1062,6 +1126,7 @@ img{max-width:100%}
           <p class="ranking-titulo">Ranking de zonas para tu escenario</p>
           <ul class="ranking" id="ranking"></ul>
           <p class="reco" id="recomendacion"></p>
+      <div class="tabla-desliza"><table class="tabla-zonas" id="comparadorZonas"><caption>Comparador de zonas para tu mismo negocio</caption></table></div>
         </div>
       </div>
     </div>
@@ -1114,7 +1179,7 @@ img{max-width:100%}
       <h3>Modelo logístico de puntaje</h3>
       <p>La probabilidad de éxito a 3 años se obtiene con una función logística: cada variable del escenario aporta un coeficiente β (positivo si protege al negocio, negativo si lo arriesga) y la suma z se transforma en una probabilidad entre 0 y 1.</p>
       <div class="formula">P(éxito) = 1 / (1 + e^(−z)),&nbsp;&nbsp; z = β₀ + β₁x₁ + β₂x₂ + … + βₖxₖ</div>
-      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI (~46%). Los coeficientes de zona, experiencia, reserva de capital, competencia, deuda y margen de seguridad se asignaron por criterio del equipo a partir de la literatura de demografía de negocios.</p>
+      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI (~46%). Los coeficientes de zona, experiencia, reserva de capital, competencia, deuda y margen de seguridad se asignaron por criterio del equipo a partir de la literatura de demografía de negocios. Como ningún β tiene error estándar, el simulador no presenta P como cifra exacta: perturba cada βᵢ con una desviación relativa de 30 % (y β₀ con 0.15) en 1,000 sorteos y reporta el <strong>rango plausible P5–P95</strong>. Es un análisis de sensibilidad, no un intervalo de confianza muestral.</p>
       <p class="uso">Conceptos del curso: probabilidad condicional, función logística, variables explicativas.</p>
     </article>
 
@@ -1131,8 +1196,8 @@ img{max-width:100%}
 
     <article class="metodo" data-num="ƒ₃">
       <h3>Simulación Monte Carlo</h3>
-      <p>La utilidad de un negocio no es fija: la demanda diaria y el ticket varían. Modelamos los clientes por día como una variable aleatoria Normal con media μ (tu dato) y desviación estándar σ = 0.22·μ, y el ticket como Normal(ticket, 0.08·ticket). Repetimos el año completo 2,000 veces (con números pseudoaleatorios de semilla fija, método Box–Muller) y obtenemos la distribución de la utilidad anual: su media, su dispersión, el intervalo central del 95% y la probabilidad empírica de terminar el año con utilidad positiva.</p>
-      <div class="formula">Clientes ~ N(μ, (0.22μ)²)&nbsp;&nbsp;·&nbsp;&nbsp;Ticket ~ N(t̄, (0.08t̄)²)&nbsp;&nbsp;·&nbsp;&nbsp;P(U&gt;0) ≈ #{Uᵢ&gt;0}/2000</div>
+      <p>La utilidad de un negocio no es fija. Cada corrida simula un año con cuatro fuentes de variación: un <strong>choque anual común de demanda</strong> F (lognormal de media 1 y σ = 0.15: un «mal año» afecta a los doce meses a la vez y no se compensa al sumar), clientes por día Normal(μF, (0.22·μF)²) mes a mes, ticket Normal(t̄, (0.08·t̄)²) y un costo variable que se desvía ±2 puntos porcentuales en el año. Repetimos el año 2,000 veces (números pseudoaleatorios de semilla fija, método Box–Muller) y reportamos la media, la dispersión, los escenarios <strong>P5 · mediana · P95</strong> y la probabilidad empírica de terminar con utilidad positiva. Las desviaciones son supuestos del equipo y se declaran como tales.</p>
+      <div class="formula">F ~ LogN(−σ²/2, 0.15²)&nbsp;·&nbsp;Clientes ~ N(μF, (0.22μF)²)&nbsp;·&nbsp;Ticket ~ N(t̄, (0.08t̄)²)&nbsp;·&nbsp;P(U&gt;0) ≈ #{Uᵢ&gt;0}/2000</div>
       <p class="uso">Conceptos: distribución normal, teorema central del límite, percentiles, probabilidad empírica.</p>
     </article>
 
@@ -1145,7 +1210,7 @@ img{max-width:100%}
 
     <article class="metodo" data-num="ƒ₅">
       <h3>Indicadores de inversión: ROI, payback y VPN</h3>
-      <p>Para el inversionista, la probabilidad debe traducirse a dinero. El simulador reporta el retorno anual sobre la inversión, el periodo de recuperación y el valor presente neto a 3 años: los flujos crecen con tu tasa g de adopción de demanda, los costos fijos se encarecen con la inflación π esperada, cada flujo se pondera por la probabilidad de seguir vivo S(t) y todo se descuenta a la tasa que tú definas. El costo variable efectivo cv′ incluye la merma de inventario.</p>
+      <p>Para el inversionista, la probabilidad debe traducirse a dinero. El simulador reporta el retorno anual sobre la inversión, el periodo de recuperación y el valor presente neto a 3 años: los flujos crecen con tu tasa g de adopción de demanda, los costos fijos se encarecen con la inflación π esperada, cada flujo se pondera por la probabilidad de seguir vivo S(t) y todo se descuenta a la tasa que tú definas. El costo variable efectivo cv′ incluye la merma de inventario. Todas las cifras son <strong>antes de impuestos</strong> (ISR/RESICO), sin depreciación ni sueldo del dueño, y el VPN no incluye valor terminal.</p>
       <div class="formula">VPN = −I₀ + Σₜ S(t)·Uₜ/(1+r)ᵗ,&nbsp; Uₜ = V₁(1+g)ᵗ⁻¹(1−cv′) − CF₁(1+π)ᵗ⁻¹</div>
       <p class="uso">Conceptos: valor esperado, esperanza matemática aplicada a flujos de efectivo.</p>
     </article>
@@ -1198,7 +1263,16 @@ img{max-width:100%}
     </div>
   </div>
 
-  <div class="limitaciones">
+  <div class="limitaciones" id="supuestos">
+    <h3>Supuestos declarados</h3>
+    <ul class="lista-supuestos">
+      <li><strong>Coeficientes β:</strong> asignados por el equipo, no estimados con microdatos; por eso P se acompaña de un rango plausible.</li>
+      <li><strong>Supervivencia base S₀(t):</strong> tabla nacional aproximada del INEGI («Esperanza de vida de los negocios»), aplicada a Coacalco sin ajuste municipal. Los valores redondeados deben verificarse contra la publicación vigente.</li>
+      <li><strong>Riesgos proporcionales:</strong> se impone S(3) = P; la forma de la curva es la nacional.</li>
+      <li><strong>Incertidumbre del Monte Carlo:</strong> σ de demanda mensual 22 %, de ticket 8 %, choque anual 15 % y costo variable ±2 pp, todos supuestos del equipo.</li>
+      <li><strong>Datos por giro y zona:</strong> ticket, costo variable, demanda de referencia, afluencia y renta por m² son estimaciones propias, editables en el simulador.</li>
+      <li><strong>Finanzas:</strong> antes de impuestos, sin depreciación, sin sueldo del dueño ni capital de trabajo; VPN a 3 años sin valor terminal.</li>
+    </ul>
     <h3>Limitaciones y propuesta de mejora</h3>
     <p>Este es un modelo educativo: los coeficientes logísticos no provienen de una regresión ajustada con microdatos (que el INEGI no publica a nivel negocio), sino de una calibración documentada sobre las tablas de supervivencia oficiales. La mejora natural del proyecto es estimar los β con datos de panel de la Demografía de los Negocios del INEGI, incorporar la distribución de Poisson para llegadas de clientes en giros de bajo flujo y validar las rentas por zona con un muestreo de campo en el municipio. Ningún resultado de esta herramienta constituye asesoría financiera.</p>
   </div>
@@ -1638,7 +1712,7 @@ function pintarLectura(e,mc,modelo,vpn){
   else frases.push("Con este ticket y costo variable el margen de contribución es nulo o negativo: <strong>no existe punto de equilibrio alcanzable</strong>; revisa precio y costos antes que cualquier otra variable.");
   frases.push(vpn>0?"El VPN a 3 años es positivo ("+mxn.format(Math.round(vpn))+"): el proyecto crea valor por encima de tu tasa de descuento.":"El VPN a 3 años es negativo ("+mxn.format(Math.round(vpn))+"): a tu tasa de descuento, el proyecto aún no compensa la inversión.");
   $("lecturaLista").innerHTML=frases.map(f=>"<li>"+f+"</li>").join("");
-  $("lectura").hidden=false;
+  $("lecturaPanel").hidden=false;
 }
 
 /* ---------- 10. Gráficas ---------- */
@@ -1662,13 +1736,29 @@ let chSup=null, chMC=null, chPE=null;
       plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:c=>c.label+": "+c.parsed+"% del padrón"}}}}});
 })();
 
-function pintarGraficas(e,mc,S){
+/* Plugin de Chart.js: líneas verticales en los percentiles del Monte Carlo. */
+function lineasPercentil(marcas,lo,paso){
+  return {id:"lineasPercentil",afterDatasetsDraw(ch){
+    const {ctx,chartArea:a,scales:{x}}=ch, n=ch.data.labels.length;
+    ctx.save(); ctx.setLineDash([5,4]); ctx.strokeStyle="#38070F"; ctx.fillStyle="#38070F";
+    ctx.font="600 11px 'Spline Sans Mono',monospace"; ctx.textAlign="center";
+    marcas.forEach(([et,v])=>{
+      const idx=(v-lo)/paso-0.5, px=x.getPixelForValue(0)+(x.getPixelForValue(n-1)-x.getPixelForValue(0))*idx/(n-1||1);
+      ctx.beginPath(); ctx.moveTo(px,a.top+14); ctx.lineTo(px,a.bottom); ctx.stroke(); ctx.fillText(et,px,a.top+10);
+    });
+    ctx.restore();
+  }};
+}
+function pintarGraficas(e,mc,S,modelo){
+  const rp=rangoP(modelo), Sbajo=curvaSupervivencia(rp.p05), Salto=curvaSupervivencia(rp.p95);
   const anios=[...Array(11).keys()];
   if(chSup)chSup.destroy();
   chSup=new Chart($("graficaSupervivencia"),{type:"line",data:{
     labels:anios.map(a=>"Año "+a),
     datasets:[
-      {label:"Tu escenario",data:S.map(x=>+(100*x).toFixed(1)),borderColor:"#C8102E",backgroundColor:"rgba(200,16,46,.12)",fill:true,tension:.35,pointRadius:3},
+      {label:"Banda alta (P95 de P)",data:Salto.map(x=>+(100*x).toFixed(1)),borderColor:"rgba(200,16,46,.25)",borderWidth:1,pointRadius:0,tension:.35,fill:false},
+      {label:"Banda baja (P5 de P)",data:Sbajo.map(x=>+(100*x).toFixed(1)),borderColor:"rgba(200,16,46,.25)",borderWidth:1,backgroundColor:"rgba(200,16,46,.14)",pointRadius:0,tension:.35,fill:"-1"},
+      {label:"Tu escenario",data:S.map(x=>+(100*x).toFixed(1)),borderColor:"#C8102E",tension:.35,pointRadius:3,fill:false},
       {label:"Promedio nacional (INEGI)",data:S0.map(x=>+(100*x).toFixed(1)),borderColor:"#9B6A6E",borderDash:[6,5],pointRadius:0,tension:.35}]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{tooltip:{callbacks:{label:c=>c.dataset.label+": "+c.parsed.y+"% sigue operando"}}},
@@ -1682,7 +1772,8 @@ function pintarGraficas(e,mc,S){
   chMC=new Chart($("graficaMC"),{type:"bar",data:{
     labels:centros.map(c=>mxn.format(Math.round(c/1000)*1000)),
     datasets:[{label:"Años simulados",data:bins,
-      backgroundColor:centros.map(c=>c<0?"#E2233F":"#7A0C1F"),borderRadius:3,categoryPercentage:1,barPercentage:.96}]},
+      backgroundColor:centros.map(c=>c<0?"#E2233F":(c<mc.p05||c>mc.p95)?"#E9B9BE":"#7A0C1F"),borderRadius:3,categoryPercentage:1,barPercentage:.96}]},
+    plugins:[lineasPercentil([["P5",mc.p05],["P50",mc.p50],["P95",mc.p95]],lo,paso)],
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{title:i=>"Utilidad ≈ "+i[0].label,label:c=>c.parsed.y+" de 2,000 corridas"}}},
       scales:{y:{beginAtZero:true,grid:{color:"#F4E2E1"},title:{display:true,text:"Frecuencia"}},
@@ -1703,6 +1794,128 @@ function pintarGraficas(e,mc,S){
               x:{type:"linear",min:0,max:maxX,title:{display:true,text:"Clientes por día"},grid:{display:false}}}}});
 }
 
+
+/* ===== src/ui/widgets.js ===== */
+/* ---------- 17. Widgets de análisis (todos derivados del propio modelo) ---------- */
+let chTornado=null;
+const COL={rojo:"#C8102E",granate:"#7A0C1F",rosa:"#E9B9BE",hueso:"#FBF6F3",tinta:"#38070F"};
+
+/* Tornado: contribución βᵢ de cada variable a z, ordenada por magnitud. */
+function pintarTornado(modelo){
+  const c=[...modelo.contribs].filter(x=>x[1]!==0).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1]));
+  const datos=c.length?c:[["Todas las variables en posición neutra",0]];
+  if(chTornado)chTornado.destroy();
+  chTornado=new Chart($("graficaTornado"),{type:"bar",data:{
+    labels:datos.map(x=>x[0].replace(/ \(.+\)$/,"")),
+    datasets:[{label:"β (aporte a z)",data:datos.map(x=>+x[1].toFixed(2)),
+      backgroundColor:datos.map(x=>x[1]<0?COL.rojo:COL.granate),borderRadius:4}]},
+    options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:false},tooltip:{callbacks:{label:t=>"β = "+(t.parsed.x>0?"+":"")+t.parsed.x.toFixed(2)}}},
+      scales:{x:{grid:{color:"#F4E2E1"},title:{display:true,text:"Aporte a z (unidades logit)"}},y:{grid:{display:false},ticks:{autoSkip:false}}}}});
+}
+
+/* Comparador de zonas: el mismo negocio evaluado en las 6 zonas (usa datosMapa del mapa). */
+function pintarComparadorZonas(){
+  const filas=[...datosMapa].sort((a,b)=>b.P-a.P).map(d=>
+    "<tr"+(d.k===escZonaActual?' class="actual"':"")+'><th scope="row">'+CORTOS[d.k]+"</th><td>"+pct(d.P)+
+    "</td><td>"+mxn.format(Math.round(d.util))+"</td><td>$"+d.z.rm2+"</td><td>"+d.z.afl.toFixed(2)+"</td></tr>").join("");
+  $("comparadorZonas").innerHTML="<caption>Comparador de zonas para tu mismo negocio</caption>"+
+    '<thead><tr><th scope="col">Zona</th><th scope="col">P (3 años)</th><th scope="col">Utilidad/mes</th><th scope="col">Renta m²</th><th scope="col">Afluencia</th></tr></thead><tbody>'+filas+"</tbody>";
+}
+
+/* Escenarios guardados (solo en memoria: no se guarda nada en el navegador ni se envía). */
+const guardados=[];
+let ultimoResumen=null;
+function resumenEscenario(e,modelo,mc,f){
+  const rp=rangoP(modelo);
+  return {nombre:e.giro.n+" · "+CORTOS[e.zonaKey], P:modelo.P, rango:pct(rp.p05)+"–"+pct(rp.p95),
+    util:e.utilMes, p05:mc.p05, p95:mc.p95, pe:e.peDia, roi:f.roi, payback:f.payback, vpn:f.vpn, hash:serializarEscenario()};
+}
+function pintarComparador(){
+  const t=$("tablaComparar"), cap='<caption class="sr-only">Escenarios guardados</caption>';
+  if(!guardados.length){t.innerHTML=cap+'<tbody><tr><td class="vacio">Aún no hay escenarios guardados.</td></tr></tbody>';return}
+  const fila=(et,fn)=>'<tr><th scope="row">'+et+"</th>"+guardados.map(g=>"<td>"+fn(g)+"</td>").join("")+"</tr>";
+  t.innerHTML=cap+'<thead><tr><th scope="col">Métrica</th>'+
+    guardados.map((g,i)=>'<th scope="col"><a href="#'+g.hash+'" data-cargar="'+i+'">'+String.fromCharCode(65+i)+". "+g.nombre+"</a></th>").join("")+"</tr></thead><tbody>"+
+    fila("P a 3 años",g=>pct(g.P))+fila("Rango plausible",g=>g.rango)+
+    fila("Utilidad/mes",g=>mxn.format(Math.round(g.util)))+
+    fila("Utilidad anual P5–P95",g=>mxn.format(Math.round(g.p05))+" a "+mxn.format(Math.round(g.p95)))+
+    fila("Equilibrio",g=>isFinite(g.pe)?Math.ceil(g.pe)+" clientes/día":"No alcanzable")+
+    fila("ROI anual",g=>pct(g.roi))+fila("Payback",g=>g.payback?g.payback.toFixed(1)+" meses":"—")+
+    fila("VPN 3 años",g=>mxn.format(Math.round(g.vpn)))+"</tbody>";
+}
+$("guardarEsc").addEventListener("click",()=>{
+  if(!ultimoResumen)return;
+  if(guardados.length>=3)guardados.shift();
+  guardados.push(Object.assign({},ultimoResumen));
+  pintarComparador();
+  toast("Escenario guardado para comparar ("+guardados.length+"/3).");
+});
+$("limpiarEsc").addEventListener("click",()=>{guardados.length=0;pintarComparador()});
+$("tablaComparar").addEventListener("click",ev=>{
+  const a=ev.target.closest("a[data-cargar]"); if(!a)return;
+  ev.preventDefault(); cargarEscenario(guardados[+a.dataset.cargar].hash);
+});
+
+/* Compartir por URL: todas las variables del formulario en el fragmento (#), nunca en el servidor. */
+const camposForma=()=>[...$("forma").querySelectorAll("input[id],select[id]")];
+function serializarEscenario(){
+  const p=new URLSearchParams();
+  camposForma().forEach(c=>p.set(c.id,c.type==="checkbox"?(c.checked?"1":"0"):c.value));
+  return "e="+encodeURIComponent(p.toString());
+}
+function cargarEscenario(hash){
+  const m=/(?:^#?|&)e=([^&]+)/.exec(hash||""); if(!m)return false;
+  let p; try{p=new URLSearchParams(decodeURIComponent(m[1]))}catch(_){return false}
+  camposForma().forEach(c=>{
+    if(!p.has(c.id))return;
+    const v=p.get(c.id);
+    if(c.type==="checkbox")c.checked=v==="1";
+    else if(c.tagName==="SELECT"){if([...c.options].some(o=>o.value===v))c.value=v}
+    else{const n=Number(v);if(Number.isFinite(n))c.value=String(n)}
+  });
+  ["inversion","credito","cvar","merma"].forEach(id=>$(id).dispatchEvent(new Event("input")));
+  calcular();
+  return true;
+}
+$("compartirURL").addEventListener("click",async()=>{
+  const frag="#"+serializarEscenario(), url=location.origin+location.pathname+frag;
+  history.replaceState(null,"",frag);
+  let ok=false; try{await navigator.clipboard.writeText(url);ok=true}catch(_){}
+  $("notaCompartir").textContent=ok?"Enlace copiado al portapapeles.":"Copia este enlace: "+url;
+});
+
+/* Exportar: PNG compuesto (encabezado + KPIs + gráficas) y PDF vía impresión del navegador. */
+$("exportarPDF").addEventListener("click",()=>window.print());
+$("exportarPNG").addEventListener("click",()=>{
+  const W=1400, graf=[chSup,chMC,chTornado,chPE].filter(Boolean), alto=230+Math.ceil(graf.length/2)*420+60;
+  const cv=document.createElement("canvas"); cv.width=W; cv.height=alto;
+  const x=cv.getContext("2d");
+  x.fillStyle=COL.hueso; x.fillRect(0,0,W,alto);
+  x.fillStyle=COL.rojo; x.fillRect(0,0,W,14);
+  x.fillStyle=COL.tinta; x.font="700 34px 'Bricolage Grotesque',Arial"; x.fillText("COATL · Reporte del escenario",40,64);
+  if(ultimoResumen){
+    const r=ultimoResumen;
+    x.font="500 20px 'Hanken Grotesk',Arial"; x.fillStyle=COL.granate; x.fillText(r.nombre,40,98);
+    [["P a 3 años",pct(r.P)+" ("+r.rango+")"],["Utilidad/mes",mxn.format(Math.round(r.util))],["ROI anual",pct(r.roi)],
+     ["Payback",r.payback?r.payback.toFixed(1)+" meses":"—"],["VPN 3 años",mxn.format(Math.round(r.vpn))]]
+      .forEach(([k,v],i)=>{x.font="500 16px 'Hanken Grotesk',Arial";x.fillStyle="#6B5457";x.fillText(k,40+i*270,140);
+        x.font="700 24px 'Hanken Grotesk',Arial";x.fillStyle=COL.tinta;x.fillText(v,40+i*270,172)});
+  }
+  graf.forEach((g,i)=>{const cx=40+(i%2)*670, cy=210+Math.floor(i/2)*420;
+    x.fillStyle="#fff";x.fillRect(cx,cy,640,400);x.drawImage(g.canvas,cx+10,cy+10,620,380)});
+  x.font="400 14px 'Hanken Grotesk',Arial"; x.fillStyle="#6B5457";
+  x.fillText("Estimaciones bajo supuestos declarados; no constituyen asesoría financiera. © 2026 Cruz García, López Bautista y Arroyo Cortés.",40,alto-24);
+  const a=document.createElement("a"); a.download="COATL-escenario.png"; a.href=cv.toDataURL("image/png"); a.click();
+});
+
+function pintarWidgets(e,modelo,mc,S){
+  const f=finanzas(e,mc,S);
+  ultimoResumen=resumenEscenario(e,modelo,mc,f);
+  pintarTornado(modelo);
+  pintarComparadorZonas();
+  pintarComparador();
+}
 
 /* ===== src/mapa/mapa.js ===== */
 /* ---------- 11. Mapa de probabilidad por zona ---------- */
@@ -2098,9 +2311,10 @@ function calcular(){
   pintarVeredicto(modelo.P);
   const vpn=pintarKPIs(e,mc,S,modelo);
   pintarLectura(e,mc,modelo,vpn);
-  pintarGraficas(e,mc,S);
+  pintarGraficas(e,mc,S,modelo);
   pintarMapa(e,modelo);
   pintarFODA(e,modelo,mc);
+  pintarWidgets(e,modelo,mc,S);
 }
 /* ---------- 15. Barra de progreso y navegación activa ---------- */
 (function navViva(){
@@ -2150,7 +2364,8 @@ if(!initLeaflet()) usarEsquema();
   btn.addEventListener("click",()=>aplicar(!document.body.classList.contains("oraculo")));
 })();
 
-calcular(); /* escenario inicial al cargar */
+/* Escenario inicial: el del enlace compartido (#e=...) o el de referencia. */
+if(!cargarEscenario(location.hash)) calcular();
 
 </script>
 </body>
