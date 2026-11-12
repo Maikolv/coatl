@@ -12,20 +12,22 @@ Idioma del proyecto: **español (México)** en UI, comentarios, commits y docume
 ## Estructura
 
 ```
-index.html              App autocontenida (punto de entrada; GitHub Pages)
-assets/img/             Fotos postales y mapa de contexto
-assets/vendor/          PNGs de Leaflet vendorizados
-assets/coatl-i18n.js    Script de i18n
-docs/                   Especificación del modelo y notas
-entregables/            Reporte Word, presentación PPTX, diagramas
-scripts/                Generadores (Python/Node) de figuras y documentos
-.github/workflows/      Deploy a GitHub Pages
+src/datos/            Giros, zonas, S₀(t), supuestos de incertidumbre (sin DOM)
+src/modelo/            modelo.js (logístico, rangoP, Cox, Monte Carlo) y finanzas.js — puros y probados
+src/ui/  src/mapa/     Formulario, resultados, widgets, estilos y mapa
+src/index.html         Plantilla; scripts/build.mjs la llena
+index.html             GENERADO por `npm run build` (no editar a mano); también dist/index.html
+tests/                 modelo.test.mjs (node:test) y e2e/ (Playwright)
+scripts/               build, servir, validar_modelo.py, diagrama_uml.mjs, capturas.mjs
+docs/                  AUDITORIA.md, METODOLOGIA.md, diagrama-proceso.svg/png, capturas/
+entregables/           Pitch PPTX y diagrama
+.github/workflows/     Pruebas → build → deploy de dist/ a GitHub Pages
 ```
 
 ## Stack
 
 - HTML/CSS/JS autocontenido (originalmente React/Vite empaquetado). Sin backend.
-- Leaflet **1.9.4** (cdnjs) + OpenStreetMap / satélite; Chart.js **4.4.1** (jsDelivr); Google Fonts.
+- Leaflet **1.9.4** y Chart.js **4.4.1**, ambos desde cdnjs con SRI sha384; OpenStreetMap / Esri; Google Fonts. CSP en meta.
 - Deploy: GitHub Pages vía GitHub Actions (`.nojekyll` presente).
 - Documentos: `docx` (Node), `pptxgenjs`, Sharp, matplotlib, LibreOffice headless, `pdftoppm`.
 
@@ -33,27 +35,28 @@ scripts/                Generadores (Python/Node) de figuras y documentos
 
 1. **Regresión logística** → probabilidad base de éxito con coeficientes β por variable.
 2. **Supervivencia tipo Cox**: tabla base S₀(t) × hazard ratio → curva de supervivencia.
-3. **Monte Carlo**: RNG `mulberry32` (semilla fija, reproducible) + **Box-Muller** para normales. Escenarios P5 / mediana / P95.
+3. **Monte Carlo**: RNG `mulberry32` (semilla fija, reproducible) + **Box-Muller**. Choque anual común de demanda + ruido mensual + ruido de CV (supuestos en `INCERTIDUMBRE`). Escenarios P5 / mediana / P95 (cuantil tipo 7).
+1b. **Rango plausible de P** (`rangoP`): perturba los β; sensibilidad, no IC muestral.
 4. **Finanzas**: VPN, ROI, payback (meses).
 5. **FODA dinámico**: 9 estrategias cuantificadas con sensibilidad real ΔP (se recalcula P moviendo cada palanca).
 
-Funciones núcleo en `index.html`: `modeloLogistico`, `monteCarlo`, `curvaSupervivencia`, `palancas`, `clasificarFODA`, `pintarKPIs`.
+Funciones núcleo: `modeloLogistico`, `rangoP`, `monteCarlo`, `curvaSupervivencia`, `finanzas` (en `src/modelo/`); `palancas`, `clasificarFODA` (`src/ui/app.js`); `pintarKPIs` (`src/ui/resultados.js`).
 
 Alcance funcional: 35 giros de negocio, 32 variables en 4 pestañas, 6 zonas con polígonos de color en el mapa.
 
-### Escenario de referencia (prueba de regresión)
+### Escenario de referencia (prueba de regresión) — v2 desde 12-nov-2026
 
-**Cafetería · Los Héroes** (valores por defecto) debe dar:
+**Cafetería · Los Héroes** (valores por defecto: ticket 95, CV 38 %) debe dar:
 
 | Métrica | Valor |
 |---|---|
-| P(supervivencia 3 años) | 55.0 % |
-| Utilidad mensual | ≈ $41,899 |
-| ROI | 212.6 % |
-| Payback | 6 meses |
-| VPN | $601,442 |
+| P(supervivencia 3 años) | 55.0 % (rango plausible 47.8–61.7 %) |
+| Utilidad mensual | ≈ $60,371 |
+| ROI | 302.9 % |
+| Payback | 4 meses (4.1) |
+| VPN | $970,106 |
 
-Cualquier cambio en el modelo debe reproducir estos números o documentar explícitamente por qué cambian.
+La v1 (P 55.0 %, $41,899, 212.6 %, 6, $601,442) usaba ticket 85 / CV 45 % y un Monte Carlo sin choque anual; ver docs/METODOLOGIA.md. Lo vigilan `tests/modelo.test.mjs`, `scripts/validar_modelo.py` y la e2e. Cualquier cambio en el modelo debe reproducir estos números o documentar explícitamente por qué cambian.
 
 ## Identidad visual (FIJA)
 
@@ -70,11 +73,16 @@ Cualquier cambio en el modelo debe reproducir estos números o documentar explí
 ## Comandos
 
 ```bash
-# Servir localmente
-python -m http.server 8000      # → http://localhost:8000
+npm run build                      # regenera index.html y dist/ desde src/
+npm run servir                     # http://127.0.0.1:8000
+npm test                           # unitarias del modelo
+python scripts/validar_modelo.py   # validación cruzada (en Windows: uv run --no-project python …)
+npm run test:e2e                   # Playwright; en Windows usa Edge (Chromium de PW bloqueado)
+node scripts/diagrama_uml.mjs && node scripts/capturas.mjs [--sitio]
 ```
 
-Antes de dar algo por terminado: abrir la página, revisar consola sin errores, y comprobar el escenario de referencia.
+Edita siempre `src/` y luego `npm run build`; el CI falla si `index.html` no coincide con el build.
+Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en verde (incluye consola sin errores y escenario de referencia).
 
 ## Gotchas de la cadena de entregables
 
@@ -86,4 +94,6 @@ Antes de dar algo por terminado: abrir la página, revisar consola sin errores, 
 
 ## Pendiente
 
-- Diagrama de proceso estilo UML con 6 carriles (Entrada → Determinista → Probabilístico → Simulación → Rentabilidad → Decisión/FODA), rombos de decisión, guardas, bucles de retroalimentación y fórmulas embebidas. Quedó a medias.
+- Verificar contra la publicación vigente del INEGI los valores de S₀(t) y los datos por giro (marcados «por verificar»).
+- Faltan en el repo: reporte .docx, COATL_Presentacion.pptx, fotos de assets/img (no estaban en el equipo al importar).
+- Diagrama UML de 6 carriles: hecho (`scripts/diagrama_uml.mjs` → docs/ y entregables/).
