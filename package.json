@@ -1,0 +1,16 @@
+{
+  "name": "coatl",
+  "version": "2.0.0",
+  "private": true,
+  "description": "COATL — Cálculo de Oportunidad y Análisis Territorial Local",
+  "type": "module",
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test tests/modelo.test.mjs",
+    "test:e2e": "playwright test",
+    "servir": "node scripts/servir.mjs"
+  },
+  "devDependencies": {
+    "@playwright/test": "^1.56.1"
+  }
+}
