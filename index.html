@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-J0p9+pRSDCGI/x9imBlZ4bEL+xgQUEiUFFPhOay8FjQ=' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'sha256-ehhM7aBRaFBAAfaKRJxVgajonkviM4gB/tuIIFln3hI=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-BBhxYDLJteW27N1yYx/neTkYBPzKNvxZazmnBNzIj7M=' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'sha256-OUXKj7wan3GM8gBakBvKFRKQq9yBr37sbZmH3LknAPE=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -785,6 +785,45 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
   .widget[data-estado="cargando"] .widget-estado::before,.escenario-vigente[data-estado="pendiente"] .ev-punto{animation:none}
 }
 
+/* ---- DENUE nacional ---- */
+.denue-controles{display:flex;flex-wrap:wrap;gap:.8rem 1.2rem;align-items:end}
+.denue-controles label{display:flex;flex-direction:column;gap:.25rem;min-width:200px}
+.denue-controles input[type=search]{font:inherit;padding:.45rem .6rem;border:1px solid var(--niebla-2);border-radius:8px;min-width:240px}
+.denue-cifras{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.6rem}
+.denue-cifras>div{background:#fff;border:1px solid var(--niebla-2);border-radius:10px;padding:.6rem .8rem}
+.denue-cifras span{display:block;font-size:.74rem;color:#6E464B}
+.denue-cifras b{font-family:var(--display);font-size:1.35rem;color:var(--rojo)}
+.denue-cuerpo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.2rem}
+.denue-h{font-family:var(--display);font-size:.92rem;margin:.4rem 0 .5rem;color:var(--granate)}
+.denue-barras{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+.denue-barras li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.15rem .6rem;font-size:.78rem}
+.denue-barras .db-et{grid-column:1/-1;color:var(--tinta)}
+.denue-barras .db-barra{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--rojo),var(--granate));width:calc(var(--v) * 1%);min-width:2px;align-self:center}
+.denue-barras .db-n{font-weight:700;color:var(--granate);white-space:nowrap}
+.denue-barras .db-n small{font-weight:500;color:#6E464B}
+.denue-anios li{grid-template-columns:3.2rem minmax(0,1fr) auto}
+.denue-anios .db-et{grid-column:auto}
+.ayuda-denue{margin-top:.35rem;font-size:.72rem;color:#6E464B}
+
+/* ---- Empresas ---- */
+.empresa-carga{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.2rem;align-items:start}
+.zona-archivo{display:flex;align-items:center;gap:1rem;padding:1.6rem;border:2px dashed var(--rojo);border-radius:14px;background:#fff;cursor:pointer;
+  box-shadow:inset 0 0 0 6px #FBF6F3;transition:background .2s}
+.zona-archivo.arrastre,.zona-archivo:hover{background:#FFF0F2}
+.zona-archivo:focus-within{outline:3px solid var(--granate);outline-offset:3px}
+.zona-archivo input{position:absolute;width:1px;height:1px;opacity:0}
+.za-icono{font-size:2rem;color:var(--rojo)}
+.za-sub{font-size:.78rem;font-weight:500;color:#6E464B}
+.empresa-ayuda p{font-size:.85rem;margin-bottom:.4rem}
+.empresa-ayuda code{font-family:var(--mono);font-size:.8rem}
+.empresa-ayuda .btn{margin-top:.6rem}
+.empresa-resultados[hidden]{display:none}
+.empresa-resultados{display:flex;flex-direction:column;gap:1rem}
+.empresa-graficas{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.mc-ecdf .pos{fill:var(--granate)}
+.mc-ecdf .neg{fill:#E2233F}
+@media (max-width:900px){.denue-cuerpo,.empresa-carga,.empresa-graficas{grid-template-columns:1fr}}
+
 /* estilos en línea movidos por el build */
 [data-ei="0"]{margin-top:1.5rem !important}
 [data-ei="1"]{font-family:var(--mono) !important;font-size:.66rem !important;color:#9B6A6E !important;margin-top:.7rem !important}
@@ -829,6 +868,8 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
     <div class="nav-links">
       <a href="#explorar">Explorar</a>
       <a href="#contexto">Contexto</a>
+      <a href="#denue">DENUE</a>
+      <a href="#empresas">Empresas</a>
       <a href="#mapa">Mapa</a>
       <a href="#estrategia">Estrategia</a>
       <a href="#metodologia">Metodología</a>
@@ -984,6 +1025,30 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
 </section>
 
 <!-- ============ 02 SIMULADOR ============ -->
+<!-- ============ 01b DENUE NACIONAL ============ -->
+<section class="seccion" id="denue" aria-labelledby="denue-titulo">
+  <p class="folio">Sección 01b · Directorio Estadístico Nacional de Unidades Económicas</p>
+  <h2 class="titulo" id="denue-titulo">Todo México, establecimiento por establecimiento</h2>
+  <p class="intro">Conteos reales del <strong>DENUE del INEGI</strong> para las 32 entidades y todos sus municipios, sincronizados automáticamente con la descarga oficial. Se publican solo agregados: ningún nombre, dirección ni contacto.</p>
+  <article class="widget widget-claro widget-denue" id="wDenue" data-estado="cargando" aria-labelledby="wDenue-q">
+    <p class="widget-pregunta" id="wDenue-q">¿Cuántos negocios hay en un municipio y de qué tipo son?</p>
+    <div class="denue-controles">
+      <label>Entidad <select id="denueEnt"></select></label>
+      <label>Municipio <select id="denueMun"></select></label>
+      <label>Buscar actividad (SCIAN) <input type="search" id="denueBusca" placeholder="p. ej. cafetería, farmacia, 4611"></label>
+    </div>
+    <div class="denue-cifras" id="denueCifras" aria-live="polite"></div>
+    <div class="denue-cuerpo">
+      <div><h3 class="denue-h">Por sector</h3><ol class="denue-barras" id="denueSectores"></ol></div>
+      <div><h3 class="denue-h">Por tamaño (personal ocupado)</h3><ol class="denue-barras" id="denueEstratos"></ol>
+        <h3 class="denue-h">Año de incorporación al DENUE</h3><p class="nota-widget">Es cuándo el INEGI registró el negocio en el directorio (los picos coinciden con los Censos Económicos), <strong>no</strong> su fecha de apertura.</p><ol class="denue-barras denue-anios" id="denueAltas"></ol></div>
+      <div><h3 class="denue-h">Actividades (clase SCIAN)</h3><ol class="denue-barras" id="denueClases"></ol></div>
+    </div>
+    <p class="nota-widget" id="denueMeta"></p>
+    <p class="widget-estado" role="status" id="wDenue-estado">Cargando datos del DENUE…</p>
+  </article>
+</section>
+
 <section class="banda-oscura" id="simulador">
   <div class="greca invertida" aria-hidden="true"></div>
   <div class="seccion">
@@ -1079,6 +1144,7 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
               <option value="-0.20">Alta (5–8 competidores)</option>
               <option value="-0.35">Saturada (más de 8)</option>
             </select>
+            <p class="ayuda ayuda-denue" id="compDenue" aria-live="polite"></p>
           </div>
           <div class="campo">
             <label for="permisos">Permisos y licencias municipales</label>
@@ -1412,6 +1478,48 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
 </section>
 
 <!-- ============ 03 PLAN DE ACCIÓN FODA ============ -->
+<!-- ============ 03b EMPRESAS ============ -->
+<section class="seccion" id="empresas" aria-labelledby="empresas-titulo">
+  <p class="folio">Sección 03b · Para empresas</p>
+  <h2 class="titulo" id="empresas-titulo">Tus propios datos, sin que salgan de tu computadora</h2>
+  <p class="intro">Sube el historial mensual de tu negocio y COATL proyecta tu año con <strong>tu</strong> variabilidad real en lugar de los supuestos del equipo. El archivo se lee <strong>solo en este navegador</strong>: no se envía a ningún servidor, no se guarda y desaparece al recargar o al pulsar «Borrar».</p>
+  <article class="widget widget-claro widget-empresas" id="wEmpresa" data-estado="vacio" aria-labelledby="wEmpresa-q">
+    <p class="widget-pregunta" id="wEmpresa-q">Con tu historial real, ¿qué tan probable es cerrar el año con utilidad?</p>
+    <div class="empresa-carga">
+      <label class="zona-archivo" for="empArchivo">
+        <span class="za-icono" aria-hidden="true">⇪</span>
+        <span><strong>Elige un archivo CSV o Excel</strong><br><span class="za-sub">o arrástralo aquí · máximo 5 MB · se procesa en tu navegador</span></span>
+        <input type="file" id="empArchivo" accept=".csv,.xlsx,.xls,text/csv">
+      </label>
+      <div class="empresa-ayuda">
+        <p><strong>Columnas esperadas</strong> (una fila por mes, mínimo 6 meses):</p>
+        <table class="tabla-comparar"><thead><tr><th>Columna</th><th>Ejemplo</th></tr></thead><tbody>
+          <tr><td><code>mes</code></td><td>2025-01</td></tr>
+          <tr><td><code>ventas</code> (MXN)</td><td>185000</td></tr>
+          <tr><td><code>clientes</code> (opcional)</td><td>1950</td></tr>
+          <tr><td><code>costo_variable</code> (MXN)</td><td>70300</td></tr>
+          <tr><td><code>costos_fijos</code> (MXN)</td><td>27000</td></tr>
+        </tbody></table>
+        <button type="button" class="btn btn-widget btn-sec" id="empPlantilla">Descargar plantilla CSV</button>
+      </div>
+    </div>
+    <div class="empresa-resultados" id="empResultados" hidden>
+      <div class="denue-cifras" id="empCifras" aria-live="polite"></div>
+      <div class="empresa-graficas">
+        <svg class="mc-ecdf" id="empSerie" viewBox="0 0 360 160" role="img" aria-label="Utilidad mensual del historial"></svg>
+        <svg class="mc-ecdf" id="empDist" viewBox="0 0 360 160" role="img" aria-label="Distribución de la utilidad anual simulada con tu historial"></svg>
+      </div>
+      <table class="tabla-comparar tabla-lectura" id="empTabla"><caption>Tus datos frente a los supuestos de COATL</caption></table>
+      <div class="acciones-widget">
+        <button type="button" class="btn btn-widget" id="empAplicar">Usar mis promedios en el simulador</button>
+        <button type="button" class="btn btn-widget btn-sec" id="empBorrar">Borrar mis datos</button>
+      </div>
+    </div>
+    <p class="nota-widget">Método: bootstrap de tus meses (2,000 años, semilla 20262) y estimadores muestrales de ticket, costo variable y clientes. Con pocos meses la incertidumbre es mayor; COATL lo indica. No es asesoría financiera.</p>
+    <p class="widget-estado" role="status" id="wEmpresa-estado">Aún no hay un archivo cargado.</p>
+  </article>
+</section>
+
 <section class="seccion" id="estrategia">
   <p class="folio">Sección 03 · Estrategia en tiempo real</p>
   <h2 class="titulo">Qué hacer para no perder: análisis FODA y plan de acción</h2>
@@ -1589,6 +1697,8 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
     <article class="metodo" data-num="§4">
       <h3>Privacidad y datos personales</h3>
       <p>Este sitio <strong>no recolecta, almacena ni transmite datos personales</strong>: no utiliza cookies propias, no tiene formularios de registro y todos los cálculos del simulador se ejecutan localmente en tu navegador, sin enviarse a servidor alguno. Al no existir tratamiento de datos personales, no se actualizan los supuestos de la <a href="https://www.diputados.gob.mx/LeyesBiblio/ref/lfpdppp.htm" target="_blank" rel="noopener">LFPDPPP</a>; los proveedores de mapas (OpenStreetMap, Esri) pueden registrar solicitudes técnicas de teselas conforme a sus propias políticas.</p>
+      <p><strong>Archivos de empresas.</strong> Los archivos que cargues en la sección «Para empresas» se leen únicamente en tu navegador: no se envían a ningún servidor (la política de seguridad del sitio lo impide), no se guardan en el dispositivo y se eliminan al recargar la página o al pulsar «Borrar mis datos». COATL no tiene acceso a ellos. Si eliges un archivo de Excel, el navegador descarga el lector SheetJS desde cdnjs; esa descarga no incluye tus datos.</p>
+      <p><strong>DENUE.</strong> Se publican solo conteos agregados del Directorio Estadístico Nacional de Unidades Económicas (INEGI), información pública; no se muestran nombres, direcciones ni contactos de los establecimientos.</p>
     </article>
     <article class="metodo" data-num="§5">
       <h3>Contenido y licencias de terceros</h3>
@@ -2758,6 +2868,253 @@ function pintarExplorar(e,modelo,mc,S){
   if(document.activeElement!==$("demoClientes")) $("demoClientes").value=Math.round(e.muBase||e.mu);
   pintarDemo(); pintarMapa25(); pintarSupervivencia(); pintarMeta(); pintarSuperficie(); pintarTraza();
 }
+
+/* ===== src/ui/denue.js ===== */
+/* ---------- 19. DENUE nacional (datos reales del INEGI, sincronizados) ----------
+   Lee los agregados que genera scripts/denue_sync.py en data/denue/. Solo conteos.
+   Si los archivos no están (p. ej. la versión artifact), el widget muestra «sin datos»
+   y el resto del sitio sigue funcionando. */
+const DENUE={base:"data/denue/", meta:null, nac:null, giros:null, clases:null, ent:{}};
+const fmtN=n=>Number(n).toLocaleString("es-MX");
+const esc=t=>String(t).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"})[c]);
+async function jsonDenue(ruta){
+  const r=await fetch(DENUE.base+ruta,{cache:"no-cache"});
+  if(!r.ok) throw new Error(ruta+" → HTTP "+r.status);
+  return r.json();
+}
+function barras(ol, pares, total, max=12){
+  const top=pares.slice(0,max), mayor=Math.max(1,...top.map(p=>p[1]));
+  ol.innerHTML=top.map(([et,n,extra])=>'<li><span class="db-et">'+esc(et)+'</span><span class="db-barra" data-v="'+(n/mayor*100).toFixed(1)+'"></span><span class="db-n">'+fmtN(n)+(total?' <small>('+(n/total*100).toFixed(1)+' %)</small>':"")+(extra||"")+'</span></li>').join("")||'<li class="vacio">Sin registros.</li>';
+  ol.querySelectorAll(".db-barra").forEach(b=>b.style.setProperty("--v",b.dataset.v));
+}
+const ESTRATOS_ORDEN=["0 a 5 personas","6 a 10 personas","11 a 30 personas","31 a 50 personas","51 a 100 personas","101 a 250 personas","251 y más personas"];
+async function cargarDenue(){
+  try{
+    [DENUE.meta,DENUE.nac,DENUE.giros,DENUE.clases]=await Promise.all(["meta.json","nacional.json","giros.json","clases.json"].map(jsonDenue));
+  }catch(err){
+    console.warn("COATL · DENUE no disponible:",err.message);
+    estadoWidget("wDenue","vacio","Los datos del DENUE no están disponibles en esta versión. Consulta el sitio publicado: https://maikolv.github.io/coatl/#denue");
+    pintarCompetenciaDenue(); return;
+  }
+  const se=$("denueEnt");
+  se.innerHTML=Object.entries(DENUE.nac.entidades).sort((a,b)=>a[0].localeCompare(b[0])).map(([k,v])=>'<option value="'+k+'">'+k+" · "+esc(v.nombre)+"</option>").join("");
+  se.value=DENUE.nac.entidades["15"]?"15":se.options[0].value;
+  const m=DENUE.meta, f=new Date(m.sincronizado);
+  $("denueMeta").innerHTML="Fuente: "+m.fuente+' (<a href="'+m.url+'" target="_blank" rel="noopener">descarga oficial</a>). Sincronizado el '+f.toLocaleDateString("es-MX",{day:"numeric",month:"long",year:"numeric"})+" · "+fmtN(m.total_establecimientos)+" establecimientos en "+fmtN(m.municipios)+" municipios de "+m.entidades+" entidades.";
+  await poblarMunicipios("020");
+  pintarCompetenciaDenue();
+}
+async function poblarMunicipios(prefer){
+  const ee=$("denueEnt").value;
+  const muns=Object.values(DENUE.nac.municipios).filter(x=>x.ent===ee).sort((a,b)=>a.nombre.localeCompare(b.nombre,"es"));
+  $("denueMun").innerHTML='<option value="">Toda la entidad</option>'+muns.map(x=>'<option value="'+x.mun+'">'+esc(x.nombre)+"</option>").join("");
+  if(prefer && muns.some(x=>x.mun===prefer)) $("denueMun").value=prefer;
+  await pintarDenue();
+}
+async function pintarDenue(){
+  const ee=$("denueEnt").value, mm=$("denueMun").value;
+  estadoWidget("wDenue","cargando","Cargando "+(DENUE.nac.entidades[ee]||{}).nombre+"…");
+  try{
+    if(!DENUE.ent[ee]) DENUE.ent[ee]=await jsonDenue("ent/"+ee+".json");
+    const E=DENUE.ent[ee], muns=mm?[E[mm]]:Object.values(E);
+    if(!muns.length||!muns[0]){estadoWidget("wDenue","vacio");return}
+    const suma=k=>{const c={};muns.forEach(x=>Object.entries(x[k]||{}).forEach(([a,n])=>c[a]=(c[a]||0)+n));return c};
+    const clases=suma("clases"), estr=suma("estratos"), altas=suma("altas");
+    const total=Object.values(clases).reduce((a,b)=>a+b,0);
+    const sect={}; Object.entries(clases).forEach(([c,n])=>{const s=DENUE.meta.sectores_scian[c.slice(0,2)]||("Sector "+c.slice(0,2));sect[s]=(sect[s]||0)+n});
+    const lugar=mm?E[mm].nombre+", "+DENUE.nac.entidades[ee].nombre:DENUE.nac.entidades[ee].nombre;
+    const pobl=(ee==="15"&&mm==="020")?' · <span class="proc proc-oficial">293,444 hab. (Censo 2020): '+(total/293444*1000).toFixed(1)+" por cada 1,000</span>":"";
+    $("denueCifras").innerHTML='<div><span>Establecimientos en '+esc(lugar)+'</span><b>'+fmtN(total)+"</b>"+pobl+"</div>"+
+      '<div><span>Actividades distintas (clases SCIAN)</span><b>'+fmtN(Object.keys(clases).length)+"</b></div>"+
+      '<div><span>Micro (0 a 5 personas)</span><b>'+(total?((estr["0 a 5 personas"]||0)/total*100).toFixed(1):0)+" %</b></div>";
+    barras($("denueSectores"),Object.entries(sect).sort((a,b)=>b[1]-a[1]),total,10);
+    barras($("denueEstratos"),ESTRATOS_ORDEN.filter(k=>estr[k]).map(k=>[k,estr[k]]),total,7);
+    const anios=Object.entries(altas).filter(([a])=>/^\d{4}$/.test(a)&&+a>=2010).sort();
+    barras($("denueAltas"),anios.map(([a,n])=>[a,n]),0,20);
+    const q=$("denueBusca").value.trim().toLowerCase();
+    let cl=Object.entries(clases).map(([c,n])=>[c+" · "+(DENUE.clases[c]||"Clase "+c),n]);
+    if(q) cl=cl.filter(([t])=>t.toLowerCase().normalize("NFD").replace(/[̀-ͯ]/g,"").includes(q.normalize("NFD").replace(/[̀-ͯ]/g,"")));
+    barras($("denueClases"),cl.sort((a,b)=>b[1]-a[1]),total,q?40:15);
+    if(q && !cl.length) estadoWidget("wDenue","vacio","Ninguna actividad coincide con «"+q+"».");
+    else estadoWidget("wDenue","listo");
+  }catch(err){ console.warn(err); estadoWidget("wDenue","error"); }
+}
+$("denueEnt").addEventListener("change",()=>poblarMunicipios());
+$("denueMun").addEventListener("change",pintarDenue);
+let tBusca=null; $("denueBusca").addEventListener("input",()=>{clearTimeout(tBusca);tBusca=setTimeout(pintarDenue,200)});
+
+/* Competencia registrada en el DENUE para el giro del simulador (Coacalco = 15020). */
+function pintarCompetenciaDenue(){
+  const el=$("compDenue"); if(!el) return;
+  const g=$("giro").value, codigos=DENUE.meta&&DENUE.meta.giros_scian[g];
+  if(!DENUE.giros||!codigos){ el.textContent=""; return; }
+  if(!codigos.length){ el.innerHTML='DENUE: este giro no tiene una clase SCIAN propia; no hay conteo oficial.'; return; }
+  const n=(DENUE.giros["15020"]||{})[g]||0;
+  const comp=Object.entries(DENUE.meta.clases_compartidas||{}).filter(([c,gs])=>codigos.includes(c)&&gs.length>1).map(([c])=>c);
+  el.innerHTML='DENUE: <strong>'+fmtN(n)+'</strong> establecimientos de este giro en todo Coacalco (SCIAN '+codigos.join(", ")+(comp.length?"; clase compartida con otro giro":"")+'). El selector de arriba es la competencia <em>cercana</em> a tu local.';
+}
+$("giro").addEventListener("change",pintarCompetenciaDenue);
+if("IntersectionObserver" in window){
+  const io=new IntersectionObserver(es=>{ if(es.some(e=>e.isIntersecting)){ io.disconnect(); cargarDenue(); } },{rootMargin:"600px 0px"});
+  io.observe($("denue")); io.observe($("simulador"));
+} else cargarDenue();
+
+/* ===== src/ui/empresas.js ===== */
+/* ---------- 20. Empresas: análisis con datos propios, 100 % local ----------
+   El archivo se lee con FileReader en este navegador. No existe ninguna petición que lo
+   envíe (la CSP solo permite conectar con el propio sitio para leer el DENUE). No se usa
+   localStorage: los datos viven en memoria y se borran al recargar o con «Borrar».
+   Excel se lee con SheetJS (cdnjs, con SRI), cargado solo si eliges un .xlsx/.xls. */
+const XLSX_URL="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js";
+const XLSX_SRI="sha384-vtjasyidUo0kW94K5MXDXntzOJpQgBKXmE7e2Ga4LG0skTTLeBi97eFAXsqewJjw";
+const MAX_BYTES=5*1024*1024, MIN_MESES=6;
+let empresa=null;   // único lugar donde viven los datos de la empresa
+
+function normCol(s){return String(s||"").normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().trim().replace(/[^a-z0-9]+/g,"_").replace(/^_|_$/g,"")}
+const ALIAS={mes:["mes","periodo","fecha","month"],ventas:["ventas","ingresos","venta","ventas_mxn"],clientes:["clientes","tickets","transacciones","clientes_mes"],
+  costo_variable:["costo_variable","costos_variables","cv","costo_de_ventas","costo_ventas"],costos_fijos:["costos_fijos","gastos_fijos","fijos","cf"]};
+function parseCSV(texto){
+  const sep=(texto.split("\n")[0].match(/;/g)||[]).length>(texto.split("\n")[0].match(/,/g)||[]).length?";":",";
+  const filas=[]; let fila=[], campo="", q=false;
+  for(let i=0;i<texto.length;i++){
+    const ch=texto[i];
+    if(q){ if(ch==='"'){ if(texto[i+1]==='"'){campo+='"';i++} else q=false } else campo+=ch; }
+    else if(ch==='"') q=true;
+    else if(ch===sep){ fila.push(campo); campo=""; }
+    else if(ch==="\n"||ch==="\r"){ if(ch==="\r"&&texto[i+1]==="\n") i++; fila.push(campo); campo=""; if(fila.some(c=>c.trim()!=="")) filas.push(fila); fila=[]; }
+    else campo+=ch;
+  }
+  fila.push(campo); if(fila.some(c=>c.trim()!=="")) filas.push(fila);
+  return filas;
+}
+function cargarXLSX(){
+  if(window.XLSX) return Promise.resolve(window.XLSX);
+  return new Promise((ok,mal)=>{
+    const s=document.createElement("script");
+    s.src=XLSX_URL; s.integrity=XLSX_SRI; s.crossOrigin="anonymous"; s.referrerPolicy="no-referrer";
+    s.onload=()=>ok(window.XLSX); s.onerror=()=>mal(new Error("No se pudo cargar el lector de Excel; guarda el archivo como CSV."));
+    document.head.appendChild(s);
+  });
+}
+const numero=v=>{ if(typeof v==="number") return v; const t=String(v??"").replace(/[$\s]/g,"").replace(/,(?=\d{3}(\D|$))/g,""); return t===""?NaN:Number(t.replace(",",".")); };
+
+function interpretar(filas){
+  if(filas.length<2) throw new Error("El archivo no tiene filas de datos.");
+  const cab=filas[0].map(normCol), idx={};
+  for(const [k,als] of Object.entries(ALIAS)) idx[k]=cab.findIndex(c=>als.includes(c));
+  const faltan=["ventas","costo_variable","costos_fijos"].filter(k=>idx[k]<0);
+  if(faltan.length) throw new Error("Faltan columnas: "+faltan.join(", ")+". Usa la plantilla.");
+  const meses=[];
+  filas.slice(1).forEach((f,i)=>{
+    const v=numero(f[idx.ventas]), cv=numero(f[idx.costo_variable]), cf=numero(f[idx.costos_fijos]);
+    const cl=idx.clientes>=0?numero(f[idx.clientes]):NaN;
+    if([v,cv,cf].some(x=>!Number.isFinite(x))) throw new Error("Fila "+(i+2)+": ventas, costo_variable y costos_fijos deben ser números.");
+    if(v<0||cv<0||cf<0) throw new Error("Fila "+(i+2)+": no se admiten valores negativos.");
+    meses.push({mes:idx.mes>=0?String(f[idx.mes]):String(i+1), ventas:v, cv, cf, clientes:Number.isFinite(cl)&&cl>0?cl:null, util:v-cv-cf});
+  });
+  if(meses.length<MIN_MESES) throw new Error("Se necesitan al menos "+MIN_MESES+" meses; el archivo tiene "+meses.length+".");
+  return meses;
+}
+function analizar(meses){
+  const n=meses.length, media=a=>a.reduce((s,x)=>s+x,0)/a.length;
+  const de=a=>{const m=media(a);return Math.sqrt(a.reduce((s,x)=>s+(x-m)**2,0)/(a.length-1))};
+  const ventas=meses.map(m=>m.ventas), util=meses.map(m=>m.util);
+  const conCl=meses.filter(m=>m.clientes);
+  const totV=ventas.reduce((a,b)=>a+b,0);
+  const r={n, ventasMedia:media(ventas), ventasCVrel:de(ventas)/media(ventas), utilMedia:media(util), utilDE:de(util),
+    cv:meses.reduce((s,m)=>s+m.cv,0)/(totV||1), fijos:media(meses.map(m=>m.cf)),
+    ticket:conCl.length?conCl.reduce((s,m)=>s+m.ventas,0)/conCl.reduce((s,m)=>s+m.clientes,0):null,
+    clientesMes:conCl.length?media(conCl.map(m=>m.clientes)):null};
+  // Bootstrap de meses: cada año simulado = suma de 12 meses tomados con reemplazo del historial.
+  const rng=mulberry32(SEMILLA), anios=new Array(N_SIM);
+  for(let i=0;i<N_SIM;i++){ let s=0; for(let k=0;k<12;k++) s+=util[Math.floor(rng()*n)]; anios[i]=s; }
+  anios.sort((a,b)=>a-b);
+  Object.assign(r,{anios, p05:cuantil(anios,.05), p50:cuantil(anios,.5), p95:cuantil(anios,.95), pPos:anios.filter(x=>x>0).length/N_SIM});
+  return r;
+}
+function svgSerie(meses){
+  const W=360,H=160,n=meses.length, mx=Math.max(1,...meses.map(m=>Math.abs(m.util))), y0=H/2, bw=(W-30)/n;
+  return '<line x1="20" y1="'+y0+'" x2="'+(W-6)+'" y2="'+y0+'" class="eje"/>'+meses.map((m,i)=>{
+    const h=Math.abs(m.util)/mx*(H/2-18), x=22+i*bw, y=m.util>=0?y0-h:y0;
+    return '<rect x="'+x.toFixed(1)+'" y="'+y.toFixed(1)+'" width="'+Math.max(1,bw-2).toFixed(1)+'" height="'+h.toFixed(1)+'" class="'+(m.util>=0?"pos":"neg")+'"><title>'+String(m.mes).replace(/[<&>"]/g,"")+": "+mxn.format(Math.round(m.util))+'</title></rect>';
+  }).join("")+'<text x="22" y="12" class="rot">Utilidad mensual de tu historial</text>';
+}
+function svgDist(r){
+  const W=360,H=160,nb=24,lo=r.anios[0],hi=r.anios[r.anios.length-1],paso=(hi-lo)/nb||1,b=new Array(nb).fill(0);
+  r.anios.forEach(x=>b[Math.min(nb-1,Math.floor((x-lo)/paso))]++);
+  const mb=Math.max(...b), bw=(W-30)/nb, px=v=>22+(v-lo)/((hi-lo)||1)*(W-30);
+  return b.map((c,i)=>{const h=c/mb*(H-40);const centro=lo+paso*(i+.5);return '<rect x="'+(22+i*bw).toFixed(1)+'" y="'+(H-20-h).toFixed(1)+'" width="'+(bw-1).toFixed(1)+'" height="'+h.toFixed(1)+'" class="'+(centro<0?"neg":"pos")+'"/>'}).join("")+
+    [["P5",r.p05],["P50",r.p50],["P95",r.p95]].map(([e,v])=>'<line x1="'+px(v).toFixed(1)+'" y1="18" x2="'+px(v).toFixed(1)+'" y2="'+(H-20)+'" class="meta"/><text x="'+px(v).toFixed(1)+'" y="14" text-anchor="middle" class="rot">'+e+'</text>').join("")+
+    '<line x1="20" y1="'+(H-20)+'" x2="'+(W-6)+'" y2="'+(H-20)+'" class="eje"/><text x="'+(W-6)+'" y="'+(H-5)+'" text-anchor="end" class="rot">utilidad anual simulada →</text>';
+}
+function pintarEmpresa(){
+  const r=empresa.r, e=leerEscenario(), g=e.giro;
+  $("empCifras").innerHTML=
+    '<div><span>P(utilidad anual &gt; 0)</span><b>'+pct(r.pPos)+'</b> <span class="proc proc-modelo">tus datos</span></div>'+
+    '<div><span>Utilidad anual P5 · P50 · P95</span><b>'+mxn.format(Math.round(r.p05))+" · "+mxn.format(Math.round(r.p50))+" · "+mxn.format(Math.round(r.p95))+'</b></div>'+
+    '<div><span>Meses analizados</span><b>'+r.n+'</b>'+(r.n<12?' <span class="proc proc-supuesto">menos de 12: más incertidumbre</span>':"")+'</div>';
+  $("empSerie").innerHTML=svgSerie(empresa.meses);
+  $("empDist").innerHTML=svgDist(r);
+  const fila=(k,tuyo,coatl,nota)=>'<tr><th scope="row">'+k+'</th><td>'+tuyo+'</td><td>'+coatl+'</td><td>'+(nota||"")+'</td></tr>';
+  $("empTabla").innerHTML='<caption>Tus datos frente a los supuestos de COATL ('+g.n+')</caption><thead><tr><th scope="col">Indicador</th><th scope="col">Tu historial</th><th scope="col">Supuesto COATL</th><th scope="col">Lectura</th></tr></thead><tbody>'+
+    fila("Ticket promedio", r.ticket?mxn.format(Math.round(r.ticket)):"— (sin columna clientes)", mxn.format(g.ticket), "estimación del equipo")+
+    fila("Costo variable", pct(r.cv), g.cv+" %", "estimación del equipo")+
+    fila("Variabilidad mensual de ventas (DE relativa)", pct(r.ventasCVrel), pct(INCERTIDUMBRE.demandaMensual), "supuesto del Monte Carlo")+
+    fila("Costos fijos mensuales", mxn.format(Math.round(r.fijos)), mxn.format(Math.round(e.fijos)), "escenario actual del simulador")+
+    fila("Utilidad mensual media", mxn.format(Math.round(r.utilMedia)), mxn.format(Math.round(e.utilMes)), "")+"</tbody>";
+  $("empResultados").hidden=false;
+  estadoWidget("wEmpresa","listo","Análisis listo. Tus datos siguen solo en este navegador.");
+}
+async function leerArchivo(file){
+  if(!file) return;
+  estadoWidget("wEmpresa","cargando","Leyendo «"+file.name+"» en tu navegador…");
+  try{
+    if(file.size>MAX_BYTES) throw new Error("El archivo pesa más de 5 MB.");
+    let filas;
+    if(/\.xlsx?$/i.test(file.name)){
+      const X=await cargarXLSX(), wb=X.read(await file.arrayBuffer(),{type:"array"});
+      filas=X.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,raw:true,defval:""});
+    } else filas=parseCSV(await file.text());
+    const meses=interpretar(filas);
+    empresa={meses, r:analizar(meses)};
+    pintarEmpresa();
+  }catch(err){
+    empresa=null; $("empResultados").hidden=true;
+    estadoWidget("wEmpresa","error",err.message);
+  }
+}
+$("empArchivo").addEventListener("change",ev=>leerArchivo(ev.target.files[0]));
+const zona=document.querySelector(".zona-archivo");
+["dragenter","dragover"].forEach(t=>zona.addEventListener(t,ev=>{ev.preventDefault();zona.classList.add("arrastre")}));
+["dragleave","drop"].forEach(t=>zona.addEventListener(t,ev=>{ev.preventDefault();zona.classList.remove("arrastre")}));
+zona.addEventListener("drop",ev=>leerArchivo(ev.dataTransfer.files[0]));
+$("empBorrar").addEventListener("click",()=>{
+  empresa=null; $("empArchivo").value=""; $("empResultados").hidden=true;
+  ["empCifras","empSerie","empDist","empTabla"].forEach(id=>$(id).innerHTML="");
+  estadoWidget("wEmpresa","vacio","Datos borrados de la memoria del navegador.");
+});
+$("empAplicar").addEventListener("click",()=>{
+  if(!empresa) return;
+  const r=empresa.r, e=leerEscenario();
+  $("cvar").value=Math.round(Math.min(90,Math.max(5,r.cv*100))); $("merma").value=0;
+  if(r.ticket) $("ticket").value=Math.round(r.ticket);
+  if(r.clientesMes) $("clientes").value=Math.max(1,Math.round(r.clientesMes/(e.diasSem*4.33)));
+  const otros=r.fijos-(e.rentaEf+e.empleados*e.costoEmpleado+(e.mktGasto||0)+e.interesMes);
+  $("otrosFijos").value=Math.max(0,Math.round(otros/100)*100);
+  ["cvar","merma"].forEach(id=>$(id).dispatchEvent(new Event("input")));
+  calcular();
+  $("simulador").scrollIntoView({behavior:reduceMov()?"auto":"smooth"});
+  toast("Simulador ajustado a tus promedios: ticket, costo variable (merma incluida), clientes/día y otros fijos para igualar tus costos fijos.");
+});
+$("empPlantilla").addEventListener("click",()=>{
+  /* Datos de EJEMPLO (no reales) solo para mostrar el formato. */
+  const filas=["mes,ventas,clientes,costo_variable,costos_fijos"];
+  const base=[178,182,169,190,201,195,188,176,184,199,215,240];
+  base.forEach((v,i)=>filas.push("2025-"+String(i+1).padStart(2,"0")+","+v*1000+","+Math.round(v*1000/95)+","+Math.round(v*1000*0.41)+",27000"));
+  const a=document.createElement("a");
+  a.href=URL.createObjectURL(new Blob(["﻿"+filas.join("\n")],{type:"text/csv"}));
+  a.download="COATL-plantilla-empresa.csv"; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
+});
 
 /* ===== src/ui/app.js ===== */
 /* ---------- 12. Dinámica: aviso, dado y cálculo en vivo ---------- */

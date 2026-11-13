@@ -19,6 +19,8 @@ export const MODULOS_JS = [
   'src/ui/widgets.js',
   'src/mapa/mapa.js',
   'src/ui/explorar.js',
+  'src/ui/denue.js',
+  'src/ui/empresas.js',
   'src/ui/app.js',
 ];
 
@@ -29,7 +31,7 @@ export function construir() {
     .replace('/*@@WORKER@@*/ null', () => JSON.stringify(worker).replace(/</g, '\\u003c'));
   const css = leer('src/ui/estilos.css') + '\n' + leer('src/ui/estilos-explorar.css');
   // Atributos style="" del HTML → reglas [data-ei] con !important (misma precedencia),
-  // para que la CSP no necesite 'unsafe-inline' en style-src (hallazgo de HawkScan).
+  // para que la CSP no necesite 'unsafe-inline' en style-src.
   const reglas = [];
   const plantilla = leer('src/index.html').replace(/ style="([^"]*)"/g, (_, decl) => {
     const n = reglas.length;
@@ -42,7 +44,7 @@ export function construir() {
     .replace('/*@@JS@@*/', () => js)
     .replace('@@FOTO_PALACIO@@', () => fs.readFileSync(path.join(raiz, 'assets/img/palacio-coacalco.webp')).toString('base64'));
   // CSP sin 'unsafe-inline' para scripts: se autoriza solo el script en línea por su hash
-  // (hallazgo de HawkScan «CSP: script-src unsafe-inline»).
+  //.
   const inline = html.match(/<script>([\s\S]*?)<\/script>/);
   if (inline) {
     const hash = crypto.createHash('sha256').update(inline[1], 'utf8').digest('base64');
@@ -58,6 +60,9 @@ export function construir() {
   fs.writeFileSync(path.join(raiz, 'dist', 'index.html'), html);
   fs.writeFileSync(path.join(raiz, 'dist', '.nojekyll'), '');
   fs.writeFileSync(path.join(raiz, 'dist', 'robots.txt'), 'User-agent: *\nAllow: /\n');
+  // Agregados del DENUE (scripts/denue_sync.py): se publican junto al sitio.
+  const datos = path.join(raiz, 'data', 'denue');
+  if (fs.existsSync(datos)) fs.cpSync(datos, path.join(raiz, 'dist', 'data', 'denue'), { recursive: true });
   return html.length;
 }
 

@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -42,6 +42,8 @@
     <div class="nav-links">
       <a href="#explorar">Explorar</a>
       <a href="#contexto">Contexto</a>
+      <a href="#denue">DENUE</a>
+      <a href="#empresas">Empresas</a>
       <a href="#mapa">Mapa</a>
       <a href="#estrategia">Estrategia</a>
       <a href="#metodologia">Metodología</a>
@@ -197,6 +199,30 @@
 </section>
 
 <!-- ============ 02 SIMULADOR ============ -->
+<!-- ============ 01b DENUE NACIONAL ============ -->
+<section class="seccion" id="denue" aria-labelledby="denue-titulo">
+  <p class="folio">Sección 01b · Directorio Estadístico Nacional de Unidades Económicas</p>
+  <h2 class="titulo" id="denue-titulo">Todo México, establecimiento por establecimiento</h2>
+  <p class="intro">Conteos reales del <strong>DENUE del INEGI</strong> para las 32 entidades y todos sus municipios, sincronizados automáticamente con la descarga oficial. Se publican solo agregados: ningún nombre, dirección ni contacto.</p>
+  <article class="widget widget-claro widget-denue" id="wDenue" data-estado="cargando" aria-labelledby="wDenue-q">
+    <p class="widget-pregunta" id="wDenue-q">¿Cuántos negocios hay en un municipio y de qué tipo son?</p>
+    <div class="denue-controles">
+      <label>Entidad <select id="denueEnt"></select></label>
+      <label>Municipio <select id="denueMun"></select></label>
+      <label>Buscar actividad (SCIAN) <input type="search" id="denueBusca" placeholder="p. ej. cafetería, farmacia, 4611"></label>
+    </div>
+    <div class="denue-cifras" id="denueCifras" aria-live="polite"></div>
+    <div class="denue-cuerpo">
+      <div><h3 class="denue-h">Por sector</h3><ol class="denue-barras" id="denueSectores"></ol></div>
+      <div><h3 class="denue-h">Por tamaño (personal ocupado)</h3><ol class="denue-barras" id="denueEstratos"></ol>
+        <h3 class="denue-h">Año de incorporación al DENUE</h3><p class="nota-widget">Es cuándo el INEGI registró el negocio en el directorio (los picos coinciden con los Censos Económicos), <strong>no</strong> su fecha de apertura.</p><ol class="denue-barras denue-anios" id="denueAltas"></ol></div>
+      <div><h3 class="denue-h">Actividades (clase SCIAN)</h3><ol class="denue-barras" id="denueClases"></ol></div>
+    </div>
+    <p class="nota-widget" id="denueMeta"></p>
+    <p class="widget-estado" role="status" id="wDenue-estado">Cargando datos del DENUE…</p>
+  </article>
+</section>
+
 <section class="banda-oscura" id="simulador">
   <div class="greca invertida" aria-hidden="true"></div>
   <div class="seccion">
@@ -292,6 +318,7 @@
               <option value="-0.20">Alta (5–8 competidores)</option>
               <option value="-0.35">Saturada (más de 8)</option>
             </select>
+            <p class="ayuda ayuda-denue" id="compDenue" aria-live="polite"></p>
           </div>
           <div class="campo">
             <label for="permisos">Permisos y licencias municipales</label>
@@ -625,6 +652,48 @@
 </section>
 
 <!-- ============ 03 PLAN DE ACCIÓN FODA ============ -->
+<!-- ============ 03b EMPRESAS ============ -->
+<section class="seccion" id="empresas" aria-labelledby="empresas-titulo">
+  <p class="folio">Sección 03b · Para empresas</p>
+  <h2 class="titulo" id="empresas-titulo">Tus propios datos, sin que salgan de tu computadora</h2>
+  <p class="intro">Sube el historial mensual de tu negocio y COATL proyecta tu año con <strong>tu</strong> variabilidad real en lugar de los supuestos del equipo. El archivo se lee <strong>solo en este navegador</strong>: no se envía a ningún servidor, no se guarda y desaparece al recargar o al pulsar «Borrar».</p>
+  <article class="widget widget-claro widget-empresas" id="wEmpresa" data-estado="vacio" aria-labelledby="wEmpresa-q">
+    <p class="widget-pregunta" id="wEmpresa-q">Con tu historial real, ¿qué tan probable es cerrar el año con utilidad?</p>
+    <div class="empresa-carga">
+      <label class="zona-archivo" for="empArchivo">
+        <span class="za-icono" aria-hidden="true">⇪</span>
+        <span><strong>Elige un archivo CSV o Excel</strong><br><span class="za-sub">o arrástralo aquí · máximo 5 MB · se procesa en tu navegador</span></span>
+        <input type="file" id="empArchivo" accept=".csv,.xlsx,.xls,text/csv">
+      </label>
+      <div class="empresa-ayuda">
+        <p><strong>Columnas esperadas</strong> (una fila por mes, mínimo 6 meses):</p>
+        <table class="tabla-comparar"><thead><tr><th>Columna</th><th>Ejemplo</th></tr></thead><tbody>
+          <tr><td><code>mes</code></td><td>2025-01</td></tr>
+          <tr><td><code>ventas</code> (MXN)</td><td>185000</td></tr>
+          <tr><td><code>clientes</code> (opcional)</td><td>1950</td></tr>
+          <tr><td><code>costo_variable</code> (MXN)</td><td>70300</td></tr>
+          <tr><td><code>costos_fijos</code> (MXN)</td><td>27000</td></tr>
+        </tbody></table>
+        <button type="button" class="btn btn-widget btn-sec" id="empPlantilla">Descargar plantilla CSV</button>
+      </div>
+    </div>
+    <div class="empresa-resultados" id="empResultados" hidden>
+      <div class="denue-cifras" id="empCifras" aria-live="polite"></div>
+      <div class="empresa-graficas">
+        <svg class="mc-ecdf" id="empSerie" viewBox="0 0 360 160" role="img" aria-label="Utilidad mensual del historial"></svg>
+        <svg class="mc-ecdf" id="empDist" viewBox="0 0 360 160" role="img" aria-label="Distribución de la utilidad anual simulada con tu historial"></svg>
+      </div>
+      <table class="tabla-comparar tabla-lectura" id="empTabla"><caption>Tus datos frente a los supuestos de COATL</caption></table>
+      <div class="acciones-widget">
+        <button type="button" class="btn btn-widget" id="empAplicar">Usar mis promedios en el simulador</button>
+        <button type="button" class="btn btn-widget btn-sec" id="empBorrar">Borrar mis datos</button>
+      </div>
+    </div>
+    <p class="nota-widget">Método: bootstrap de tus meses (2,000 años, semilla 20262) y estimadores muestrales de ticket, costo variable y clientes. Con pocos meses la incertidumbre es mayor; COATL lo indica. No es asesoría financiera.</p>
+    <p class="widget-estado" role="status" id="wEmpresa-estado">Aún no hay un archivo cargado.</p>
+  </article>
+</section>
+
 <section class="seccion" id="estrategia">
   <p class="folio">Sección 03 · Estrategia en tiempo real</p>
   <h2 class="titulo">Qué hacer para no perder: análisis FODA y plan de acción</h2>
@@ -802,6 +871,8 @@
     <article class="metodo" data-num="§4">
       <h3>Privacidad y datos personales</h3>
       <p>Este sitio <strong>no recolecta, almacena ni transmite datos personales</strong>: no utiliza cookies propias, no tiene formularios de registro y todos los cálculos del simulador se ejecutan localmente en tu navegador, sin enviarse a servidor alguno. Al no existir tratamiento de datos personales, no se actualizan los supuestos de la <a href="https://www.diputados.gob.mx/LeyesBiblio/ref/lfpdppp.htm" target="_blank" rel="noopener">LFPDPPP</a>; los proveedores de mapas (OpenStreetMap, Esri) pueden registrar solicitudes técnicas de teselas conforme a sus propias políticas.</p>
+      <p><strong>Archivos de empresas.</strong> Los archivos que cargues en la sección «Para empresas» se leen únicamente en tu navegador: no se envían a ningún servidor (la política de seguridad del sitio lo impide), no se guardan en el dispositivo y se eliminan al recargar la página o al pulsar «Borrar mis datos». COATL no tiene acceso a ellos. Si eliges un archivo de Excel, el navegador descarga el lector SheetJS desde cdnjs; esa descarga no incluye tus datos.</p>
+      <p><strong>DENUE.</strong> Se publican solo conteos agregados del Directorio Estadístico Nacional de Unidades Económicas (INEGI), información pública; no se muestran nombres, direcciones ni contactos de los establecimientos.</p>
     </article>
     <article class="metodo" data-num="§5">
       <h3>Contenido y licencias de terceros</h3>
