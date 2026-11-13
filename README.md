@@ -74,7 +74,8 @@ Cada imagen es la página entera, sin cortes (`node scripts/capturas.mjs --sitio
 - **Páginas por apartado**: Inicio, Territorio, DENUE, Simulador, Empresas, Estrategia, Metodología y Legal. Cada uno tiene su propia dirección (`#simulador`, `#denue`…), y `?vista=todo` muestra el sitio completo en una sola página.
 - **Describe tu situación**: escribe o dicta tu negocio y el simulador ajusta los parámetros. El intérprete local funciona sin conexión; Claude es opcional, con tu propia clave.
 - **989 actividades del SCIAN** como giros, cada una con su competencia real del DENUE, más costos fijos propios sin límite.
-- **Modo oscuro** (🌙/☀️), mapa 2.5D con fotos reales de cada zona ([docs/RECURSOS.md](docs/RECURSOS.md)).
+- **Pestañas de apartados**: cada apartado que abres queda como pestaña dentro de COATL (cambiar y cerrar, como en un navegador).
+- Mapa 2.5D con fotos reales de cada zona ([docs/RECURSOS.md](docs/RECURSOS.md)).
 - **Asistente de IA del repositorio**: `npm run asistente` (requiere `ANTHROPIC_API_KEY` o `ant auth login`).
 - **Acceso directo**: `iniciar.bat` levanta el sitio en `http://127.0.0.1:8000`; el ícono está en `assets/icono/coatl.ico`.
 

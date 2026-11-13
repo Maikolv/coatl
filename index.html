@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LzqE/x/97UcXcAQQyq12DTMX5WFzY8pbZRXN7pWOMzQ=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'sha256-77GCMm4gMVT5o+ItLilSJIKYWcfWX3HIoY8yRSXoduY=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-OkjY7AJgFIEymG2bJsTwvV+BLkPA6/Z+ZyZ16FnDIkM=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'sha256-B7Zb6z6ZInXTfNFS6O+sy+FRSKAC2dC03U5+nGbh/7U=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -40,72 +40,6 @@
   --sombra:0 10px 30px rgba(56,7,15,.10);
 }
 
-/* ====== MODO ORÁCULO (tema cyber opcional) ======
-   Reinterpreta la identidad COATL en clave nocturna: negro cósmico,
-   rojo mexicano encendido y blanco matemático. Solo cambia tokens y
-   un puñado de superficies; toda la estructura se conserva intacta. */
-body.oscuro{
-  --rojo:#E2233F;
-  --rojo-vivo:#FF5A6E;
-  --granate:#F06A7B;
-  --tinta:#160407;
-  --tinta-2:#000000;
-  --blanco:#22070C;
-  --hueso:#1A0508;
-  --niebla:#2A0B12;
-  --niebla-2:#3A1219;
-  --gris-texto:#D9BFC3;
-  --ok:#3FBF83;
-  --alerta:#E8A33A;
-  --sombra:0 0 0 1px rgba(226,35,63,.18), 0 14px 40px rgba(0,0,0,.6);
-  background:radial-gradient(1200px 700px at 80% -10%, rgba(226,35,63,.10), transparent 60%), #160407;
-  color:#F7ECEE;
-}
-body.oscuro ::selection{background:#E2233F;color:#000}
-body.oscuro .nav{background:rgba(26,5,8,.86);border-bottom-color:#E2233F}
-body.oscuro .marca-texto strong{color:#FBF1F2}
-body.oscuro .panel,body.oscuro .cifra,body.oscuro .consola,body.oscuro .metodo,
-body.oscuro .veredicto,body.oscuro .kpi,body.oscuro .lectura,body.oscuro .cuad,
-body.oscuro .accion,body.oscuro .esc,body.oscuro .postal,body.oscuro .ranking li,
-body.oscuro .foda-resumen,body.oscuro .limitaciones,body.oscuro .panel-legal{
-  background:#22070C;border-color:#3A1219;color:#F7ECEE;
-}
-body.oscuro .pestanas{background:#1A0508;border-bottom-color:#3A1219}
-body.oscuro .pestana[aria-selected="true"]{background:#22070C}
-body.oscuro .campo select,body.oscuro .campo input[type="number"]{
-  background:#2A0B12;color:#F7ECEE;border-color:#4A1822;
-}
-body.oscuro .pie-consola{background:#1A0508;border-top-color:#3A1219}
-body.oscuro .hero{
-  background:radial-gradient(1100px 520px at 85% -10%, rgba(226,35,63,.4), transparent 60%),
-             radial-gradient(800px 600px at -10% 110%, rgba(40,4,10,.9), transparent 55%), #1A0508;
-}
-body.oscuro .seccion h2.titulo,body.oscuro .panel h3,body.oscuro .metodo h3,
-body.oscuro .cuad h4,body.oscuro .lectura h3{color:#FBF1F2}
-body.oscuro .formula{background:#2A0B12;color:#FF6680;border-color:#4A1822}
-body.oscuro .tabla-zonas tr:hover td,body.oscuro .ranking li:hover{background:#2A0B12}
-body.oscuro .banda-oscura{background:#000}
-body.oscuro .mini-grid .celda{background:#3A1219}
-body.oscuro .mini-grid .celda.viva{background:#E2233F}
-body.oscuro .greca,body.oscuro .greca.invertida{filter:none;opacity:.85}
-body.oscuro .medidor-arco{filter:saturate(1.2) brightness(1.05)}
-body.oscuro .foda-resumen{border-style:dashed}
-body.oscuro .nav-links a{color:#F7ECEE}
-body.oscuro .nav-links a:hover,body.oscuro .nav-links a.activa{background:#2A0B12;color:#FF6680}
-body.oscuro .progreso{background:linear-gradient(90deg,#E2233F,#FF5A6E);box-shadow:0 0 8px #E2233F}
-body.oscuro .et-zona,body.oscuro .et-p{stroke:rgba(0,0,0,.6)}
-body.oscuro 
-/* Botón conmutador de tema */
-.btn-tema{
-  display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;
-  font-family:var(--cuerpo);font-weight:700;font-size:.8rem;
-  padding:.42rem .8rem;border-radius:999px;border:1.5px solid var(--rojo);
-  background:transparent;color:var(--rojo);transition:background .2s,color .2s,border-color .2s;
-}
-.btn-tema:hover{background:var(--niebla)}
-.btn-tema .ojo{font-size:.95rem;line-height:1}
-body.oscuro .btn-tema{border-color:#E2233F;color:#FF5A6E}
-body.oscuro .btn-tema:hover{background:#2A0B12}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){
@@ -629,14 +563,13 @@ img{max-width:100%}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 @media (max-width:1000px){.graficas-sim{grid-template-columns:1fr}}
 @media print{
-  .nav,.progreso,.hero-acciones,#forma,.acciones-widget,.btn-tema,.toast,.confeti-capa,.mapa-cont{display:none!important}
+  .nav,.progreso,.hero-acciones,#forma,.acciones-widget,.toast,.confeti-capa,.mapa-cont{display:none!important}
   body{background:#fff}
   .panel{box-shadow:none;break-inside:avoid}
   .revela{opacity:1!important;transform:none!important}
 }
 .lista-supuestos{margin:.4rem 0 1rem 1.1rem;font-size:.92rem;color:var(--gris-texto)}
 .lista-supuestos li{margin-bottom:.35rem}
-body.oscuro .accion .cuerpo h3{color:#FBF1F2}
 .cuadro:focus-visible,.pestana:focus-visible{outline:3px solid var(--granate);outline-offset:-3px}
 .accion[data-clic]{cursor:pointer}
 
@@ -765,12 +698,6 @@ body.oscuro .accion .cuerpo h3{color:#FBF1F2}
 .traza-pasos .paso{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6E464B}
 .traza-pasos code{font-family:var(--mono);font-size:.8rem}
 
-/* ---- Modo oscuro: mantener contraste ---- */
-body.oscuro .widget{background:#22070C;border-color:#3A1219;color:#FBF1F2}
-body.oscuro .widget-pregunta,body.oscuro .traza-pasos li,body.oscuro .escenario-vigente{color:#FBF1F2}
-body.oscuro .traza-pasos li,body.oscuro .demo-respuesta div,body.oscuro .escenario-vigente,body.oscuro .mc-ecdf{background:#2A0B12;border-color:#3A1219}
-body.oscuro .widget label,body.oscuro .widget-estado,body.oscuro .mapa25-escala,body.oscuro .traza-pasos .paso,body.oscuro .demo-respuesta dt{color:#D9BFC3}
-
 /* ---- Responsive y movimiento reducido ---- */
 @media (max-width:900px){
   .escena-explorar,.mapa25-cuerpo,.explorar-resultados,.superficie-cuerpo,.traza-cuerpo{grid-template-columns:1fr}
@@ -870,7 +797,6 @@ body.oscuro .widget label,body.oscuro .widget-estado,body.oscuro .mapa25-escala,
 @keyframes entraVista{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 body.vista-entra [data-pagina]:not([hidden]){animation:entraVista .35s ease both}
 .nav-links a[aria-current="page"]{background:var(--rojo);color:#fff}
-body.oscuro .nav-links a[aria-current="page"]{background:#E2233F;color:#fff}
 @media (prefers-reduced-motion:reduce){body.vista-entra [data-pagina]:not([hidden]){animation:none}}
 @media print{[data-pagina][hidden]{display:block!important}}
 
@@ -886,7 +812,6 @@ body.oscuro .nav-links a[aria-current="page"]{background:#E2233F;color:#fff}
 .describir-ia{margin-top:.8rem;border-top:1px solid var(--niebla-2);padding-top:.6rem}
 .describir-ia summary{cursor:pointer;font-weight:700;color:var(--granate)}
 .describir-ia input{display:block;width:100%;margin:.3rem 0 .5rem;font:inherit;padding:.45rem .6rem;border:1px solid var(--niebla-2);border-radius:8px}
-body.oscuro #descTexto,body.oscuro .describir-salida,body.oscuro .describir-ia input{background:#2A0B12;color:#F7ECEE;border-color:#3A1219}
 @media (max-width:900px){.describir-cuerpo{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.boton-voz.escuchando{animation:none}}
 
@@ -897,7 +822,6 @@ body.oscuro #descTexto,body.oscuro .describir-salida,body.oscuro .describir-ia i
 .extras-lista li{display:grid;grid-template-columns:minmax(0,1fr) 130px auto;gap:.4rem}
 .extras-lista input{font:inherit;padding:.4rem .55rem;border:1px solid var(--niebla-2);border-radius:8px;min-width:0}
 .extras-lista .quitar{border:none;background:transparent;color:var(--rojo);font-weight:800;cursor:pointer;padding:0 .4rem}
-body.oscuro .extras-lista input,body.oscuro #giroBusca{background:#2A0B12;color:#F7ECEE;border-color:#3A1219}
 /* El mapa real ocupa toda la altura de su fila (sin huecos bajo el mapa) */
 .mapa-grid{align-items:stretch}
 .mapa-cont{display:flex;flex-direction:column;height:100%}
@@ -926,9 +850,27 @@ body.oscuro .extras-lista input,body.oscuro #giroBusca{background:#2A0B12;color:
 .asis-enviar{background:var(--rojo);color:#fff}
 .asis-voz{background:#fff;border:1px solid var(--niebla-2)}
 .asis-voz.escuchando{background:var(--rojo);color:#fff}
-body.oscuro .asis-panel{background:#1E080D;border-color:#3A1219}
-body.oscuro .asis-msj.bot,body.oscuro #asisTexto,body.oscuro .asis-chips button,body.oscuro .asis-voz{background:#2A0B12;color:#F7ECEE;border-color:#3A1219}
 @media print{.asis{display:none}}
+
+/* ---- Pestañas de apartados abiertos (dentro del proyecto) ---- */
+.pestanas-app{position:sticky;z-index:49;display:flex;gap:.3rem;overflow-x:auto;padding:.45rem max(1rem,calc((100vw - 1180px)/2)) 0;background:#F3E9E4;border-bottom:2px solid var(--rojo);scrollbar-width:thin}
+.pestanas-app:empty{display:none}
+.pa-tab{display:flex;align-items:center;flex:none;background:#fff;border:1px solid var(--niebla-2);border-bottom:0;border-radius:10px 10px 0 0;font-size:.82rem}
+.pa-tab a{padding:.45rem .2rem .45rem .8rem;color:var(--tinta);text-decoration:none;font-weight:600;white-space:nowrap}
+.pa-tab button{border:0;background:none;color:var(--gris-texto);cursor:pointer;padding:.45rem .6rem;font-size:.75rem;border-radius:6px}
+.pa-tab button:hover{color:var(--rojo)}
+.pa-tab.activa{background:var(--rojo);border-color:var(--rojo)}
+.pa-tab.activa a,.pa-tab.activa button{color:#fff}
+.pa-tab a:focus-visible,.pa-tab button:focus-visible{outline:3px solid var(--granate);outline-offset:-3px}
+body.vista-todo .pestanas-app{display:none}
+@media print{.pestanas-app{display:none}}
+@media (max-width:760px){
+  .nav-links{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .nav-links::-webkit-scrollbar{display:none}
+  .nav-links a{flex:none}
+  .asis-boton b{display:none}
+  .asis-boton{padding:.8rem}
+}
 
 /* estilos en línea movidos por el build */
 [data-ei="0"]{margin-top:1.5rem !important}
@@ -979,11 +921,11 @@ body.oscuro .asis-msj.bot,body.oscuro #asisTexto,body.oscuro .asis-chips button,
       <a href="#estrategia" data-vista="estrategia">Estrategia</a>
       <a href="#metodologia" data-vista="metodologia">Metodología</a>
       <a href="#legal" data-vista="legal">Legal</a>
-      <button class="btn-tema" id="btnTema" type="button" aria-pressed="false" aria-label="Activar modo oscuro" title="Modo oscuro"><span class="ojo" aria-hidden="true">🌙</span></button>
       <a class="cta" href="#simulador">Abrir simulador</a>
     </div>
   </div>
 </nav>
+<nav class="pestanas-app" id="pestanasApp" aria-label="Apartados abiertos"></nav>
 
 <header class="hero" id="inicio">
   <div class="hero-inner">
@@ -3537,6 +3479,24 @@ const VISTAS=[
 const TODO=new URLSearchParams(location.search).get("vista")==="todo";
 const TITULO_BASE=document.title;
 let vistaActual=null;
+/* Pestañas dentro del proyecto: cada apartado que abres queda como pestaña (cambiar y cerrar,
+   como en un navegador). La lista dura lo que la sesión de esta ventana. */
+let abiertas=[]; try{ abiertas=JSON.parse(sessionStorage.getItem('coatl-pestanas'))||[]; }catch(_){}
+abiertas=abiertas.filter(id=>VISTAS.some(v=>v.id===id));
+function pintarPestanas(){
+  const tira=document.getElementById('pestanasApp'); if(!tira) return;
+  const nav=document.querySelector('.nav'); if(nav) tira.style.top=nav.offsetHeight+'px';
+  try{ sessionStorage.setItem('coatl-pestanas',JSON.stringify(abiertas)); }catch(_){}
+  tira.innerHTML=abiertas.map(id=>{const v=VISTAS.find(x=>x.id===id), act=id===vistaActual;
+    return '<div class="pa-tab'+(act?' activa':'')+'"><a href="#'+id+'"'+(act?' aria-current="page"':'')+'>'+v.titulo+'</a>'+
+      '<button type="button" data-cerrar="'+id+'" aria-label="Cerrar la pestaña '+v.titulo+'">✕</button></div>';}).join('');
+  const act=tira.querySelector('.activa'); if(act) tira.scrollLeft=act.offsetLeft-tira.clientWidth/2+act.offsetWidth/2;
+}
+document.addEventListener('click',ev=>{
+  const b=ev.target.closest('[data-cerrar]'); if(!b) return;
+  const id=b.dataset.cerrar, i=abiertas.indexOf(id); abiertas.splice(i,1);
+  if(id===vistaActual) irA(abiertas[Math.min(i,abiertas.length-1)]||'inicio'); else pintarPestanas();
+});
 VISTAS.forEach(v=>v.secciones.forEach(s=>{const el=$(s); if(el) el.dataset.pagina=v.id}));
 function vistaDe(id){
   const el=id&&document.getElementById(id);
@@ -3547,6 +3507,8 @@ function mostrarVista(v, destino, desplazar){
   if(TODO){ if(destino&&desplazar) destino.scrollIntoView({behavior:reduceMov()?"auto":"smooth"}); return; }
   const cambio=vistaActual!==v.id;
   vistaActual=v.id;
+  if(!abiertas.includes(v.id)) abiertas.push(v.id);
+  pintarPestanas();
   document.querySelectorAll("[data-pagina]").forEach(s=>{ s.hidden=s.dataset.pagina!==v.id; });
   document.querySelectorAll(".nav-links a[data-vista]").forEach(a=>{
     const activo=a.dataset.vista===v.id; a.classList.toggle("activa",activo);
@@ -3990,25 +3952,6 @@ const observarMapa=new IntersectionObserver(([entrada])=>{
   if(!$("mapaReal").hidden) usarReal();
 },{rootMargin:"200px 0px"});
 observarMapa.observe($("mapa"));
-/* ---------- 15. Modo oscuro ---------- */
-(function modoOscuro(){
-  /* Modo oscuro: solo icono (🌙 / ☀️). Respeta la preferencia del sistema y recuerda la
-     elección del visitante en este navegador (comodidad local; si falla, no pasa nada). */
-  const btn=$("btnTema");
-  function aplicar(on, avisar){
-    document.body.classList.toggle("oscuro", on);
-    btn.setAttribute("aria-pressed", on?"true":"false");
-    btn.setAttribute("aria-label", on?"Activar modo claro":"Activar modo oscuro");
-    btn.title = on ? "Modo claro" : "Modo oscuro";
-    btn.querySelector(".ojo").textContent = on ? "☀️" : "🌙";
-    try{ localStorage.setItem("coatl-tema", on?"oscuro":"claro"); }catch(_){}
-    if(avisar && typeof calcular==="function") calcular();   // las gráficas toman los colores del tema
-  }
-  let guardado=null; try{ guardado=localStorage.getItem("coatl-tema"); }catch(_){}
-  const inicial = guardado ? guardado==="oscuro" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-  if(inicial) aplicar(true,false);
-  btn.addEventListener("click",()=>aplicar(!document.body.classList.contains("oscuro"),true));
-})();
 
 /* Escenario inicial: el del enlace compartido (#e=...) o el de referencia. */
 if(!cargarEscenario(location.hash)) calcular();

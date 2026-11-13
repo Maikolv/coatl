@@ -325,25 +325,6 @@ const observarMapa=new IntersectionObserver(([entrada])=>{
   if(!$("mapaReal").hidden) usarReal();
 },{rootMargin:"200px 0px"});
 observarMapa.observe($("mapa"));
-/* ---------- 15. Modo oscuro ---------- */
-(function modoOscuro(){
-  /* Modo oscuro: solo icono (🌙 / ☀️). Respeta la preferencia del sistema y recuerda la
-     elección del visitante en este navegador (comodidad local; si falla, no pasa nada). */
-  const btn=$("btnTema");
-  function aplicar(on, avisar){
-    document.body.classList.toggle("oscuro", on);
-    btn.setAttribute("aria-pressed", on?"true":"false");
-    btn.setAttribute("aria-label", on?"Activar modo claro":"Activar modo oscuro");
-    btn.title = on ? "Modo claro" : "Modo oscuro";
-    btn.querySelector(".ojo").textContent = on ? "☀️" : "🌙";
-    try{ localStorage.setItem("coatl-tema", on?"oscuro":"claro"); }catch(_){}
-    if(avisar && typeof calcular==="function") calcular();   // las gráficas toman los colores del tema
-  }
-  let guardado=null; try{ guardado=localStorage.getItem("coatl-tema"); }catch(_){}
-  const inicial = guardado ? guardado==="oscuro" : window.matchMedia("(prefers-color-scheme: dark)").matches;
-  if(inicial) aplicar(true,false);
-  btn.addEventListener("click",()=>aplicar(!document.body.classList.contains("oscuro"),true));
-})();
 
 /* Escenario inicial: el del enlace compartido (#e=...) o el de referencia. */
 if(!cargarEscenario(location.hash)) calcular();

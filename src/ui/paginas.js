@@ -16,6 +16,24 @@ const VISTAS=[
 const TODO=new URLSearchParams(location.search).get("vista")==="todo";
 const TITULO_BASE=document.title;
 let vistaActual=null;
+/* Pestañas dentro del proyecto: cada apartado que abres queda como pestaña (cambiar y cerrar,
+   como en un navegador). La lista dura lo que la sesión de esta ventana. */
+let abiertas=[]; try{ abiertas=JSON.parse(sessionStorage.getItem('coatl-pestanas'))||[]; }catch(_){}
+abiertas=abiertas.filter(id=>VISTAS.some(v=>v.id===id));
+function pintarPestanas(){
+  const tira=document.getElementById('pestanasApp'); if(!tira) return;
+  const nav=document.querySelector('.nav'); if(nav) tira.style.top=nav.offsetHeight+'px';
+  try{ sessionStorage.setItem('coatl-pestanas',JSON.stringify(abiertas)); }catch(_){}
+  tira.innerHTML=abiertas.map(id=>{const v=VISTAS.find(x=>x.id===id), act=id===vistaActual;
+    return '<div class="pa-tab'+(act?' activa':'')+'"><a href="#'+id+'"'+(act?' aria-current="page"':'')+'>'+v.titulo+'</a>'+
+      '<button type="button" data-cerrar="'+id+'" aria-label="Cerrar la pestaña '+v.titulo+'">✕</button></div>';}).join('');
+  const act=tira.querySelector('.activa'); if(act) tira.scrollLeft=act.offsetLeft-tira.clientWidth/2+act.offsetWidth/2;
+}
+document.addEventListener('click',ev=>{
+  const b=ev.target.closest('[data-cerrar]'); if(!b) return;
+  const id=b.dataset.cerrar, i=abiertas.indexOf(id); abiertas.splice(i,1);
+  if(id===vistaActual) irA(abiertas[Math.min(i,abiertas.length-1)]||'inicio'); else pintarPestanas();
+});
 VISTAS.forEach(v=>v.secciones.forEach(s=>{const el=$(s); if(el) el.dataset.pagina=v.id}));
 function vistaDe(id){
   const el=id&&document.getElementById(id);
@@ -26,6 +44,8 @@ function mostrarVista(v, destino, desplazar){
   if(TODO){ if(destino&&desplazar) destino.scrollIntoView({behavior:reduceMov()?"auto":"smooth"}); return; }
   const cambio=vistaActual!==v.id;
   vistaActual=v.id;
+  if(!abiertas.includes(v.id)) abiertas.push(v.id);
+  pintarPestanas();
   document.querySelectorAll("[data-pagina]").forEach(s=>{ s.hidden=s.dataset.pagina!==v.id; });
   document.querySelectorAll(".nav-links a[data-vista]").forEach(a=>{
     const activo=a.dataset.vista===v.id; a.classList.toggle("activa",activo);

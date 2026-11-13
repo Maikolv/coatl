@@ -1,4 +1,4 @@
-// Páginas por apartado, describir la situación, giros SCIAN, costos propios y modo oscuro.
+// Páginas por apartado, describir la situación, giros SCIAN y costos propios.
 import { test, expect } from '@playwright/test';
 
 const visibles = (page) => page.evaluate(() => [...document.querySelectorAll('[data-pagina]')].filter((s) => !s.hidden).map((s) => s.id));
@@ -56,18 +56,6 @@ test('costos propios ilimitados entran al modelo', async ({ page }) => {
   await expect(page.locator('#probNum')).not.toHaveText('51.6%', { timeout: 5000 });
 });
 
-test('modo oscuro: solo icono, accesible y recordado', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
-  const b = page.locator('#btnTema');
-  await expect(b).toHaveAccessibleName('Activar modo oscuro');
-  await expect(b).toHaveText('🌙');
-  await b.click();
-  await expect(page.locator('body')).toHaveClass(/oscuro/);
-  await expect(b).toHaveText('☀️');
-  await page.reload({ waitUntil: 'domcontentloaded' });
-  await expect(page.locator('body')).toHaveClass(/oscuro/);
-});
-
 test('asistente: siempre visible, responde con el motor y ajusta el simulador', async ({ page }) => {
   for (const ruta of ['/', '/#denue', '/#legal']) {
     await page.goto(ruta, { waitUntil: 'domcontentloaded' });
@@ -93,4 +81,20 @@ test('giro propio con cualquier nombre', async ({ page }) => {
   await page.dispatchEvent('#giroBusca', 'change');
   await expect(page.locator('#giro')).toHaveValue(/^propio_/);
   await expect(page.locator('#giroNota')).toContainText('Giro propio');
+});
+
+test('cada apartado abierto queda como pestaña que se cambia y se cierra', async ({ page }) => {
+  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.click('.nav-links a[data-vista="simulador"]');
+  await page.click('.nav-links a[data-vista="denue"]');
+  const tabs = page.locator('#pestanasApp .pa-tab');
+  await expect(tabs).toHaveCount(3);
+  await expect(page.locator('#pestanasApp .activa')).toHaveText(/DENUE/);
+  await page.click('#pestanasApp a[href="#simulador"]');
+  await expect(page.locator('#simulador')).toBeVisible();
+  await page.click('#pestanasApp [data-cerrar="simulador"]');
+  await expect(tabs).toHaveCount(2);
+  await expect(page.locator('#denue')).toBeVisible();
+  await page.reload({ waitUntil: 'domcontentloaded' });
+  await expect(tabs).toHaveCount(2);
 });

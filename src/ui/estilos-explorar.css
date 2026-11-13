@@ -123,12 +123,6 @@
 .traza-pasos .paso{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6E464B}
 .traza-pasos code{font-family:var(--mono);font-size:.8rem}
 
-/* ---- Modo oscuro: mantener contraste ---- */
-body.oscuro .widget{background:#22070C;border-color:#3A1219;color:#FBF1F2}
-body.oscuro .widget-pregunta,body.oscuro .traza-pasos li,body.oscuro .escenario-vigente{color:#FBF1F2}
-body.oscuro .traza-pasos li,body.oscuro .demo-respuesta div,body.oscuro .escenario-vigente,body.oscuro .mc-ecdf{background:#2A0B12;border-color:#3A1219}
-body.oscuro .widget label,body.oscuro .widget-estado,body.oscuro .mapa25-escala,body.oscuro .traza-pasos .paso,body.oscuro .demo-respuesta dt{color:#D9BFC3}
-
 /* ---- Responsive y movimiento reducido ---- */
 @media (max-width:900px){
   .escena-explorar,.mapa25-cuerpo,.explorar-resultados,.superficie-cuerpo,.traza-cuerpo{grid-template-columns:1fr}
@@ -228,7 +222,6 @@ body.oscuro .widget label,body.oscuro .widget-estado,body.oscuro .mapa25-escala,
 @keyframes entraVista{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
 body.vista-entra [data-pagina]:not([hidden]){animation:entraVista .35s ease both}
 .nav-links a[aria-current="page"]{background:var(--rojo);color:#fff}
-body.oscuro .nav-links a[aria-current="page"]{background:#E2233F;color:#fff}
 @media (prefers-reduced-motion:reduce){body.vista-entra [data-pagina]:not([hidden]){animation:none}}
 @media print{[data-pagina][hidden]{display:block!important}}
 
@@ -244,7 +237,6 @@ body.oscuro .nav-links a[aria-current="page"]{background:#E2233F;color:#fff}
 .describir-ia{margin-top:.8rem;border-top:1px solid var(--niebla-2);padding-top:.6rem}
 .describir-ia summary{cursor:pointer;font-weight:700;color:var(--granate)}
 .describir-ia input{display:block;width:100%;margin:.3rem 0 .5rem;font:inherit;padding:.45rem .6rem;border:1px solid var(--niebla-2);border-radius:8px}
-body.oscuro #descTexto,body.oscuro .describir-salida,body.oscuro .describir-ia input{background:#2A0B12;color:#F7ECEE;border-color:#3A1219}
 @media (max-width:900px){.describir-cuerpo{grid-template-columns:1fr}}
 @media (prefers-reduced-motion:reduce){.boton-voz.escuchando{animation:none}}
 
@@ -255,7 +247,6 @@ body.oscuro #descTexto,body.oscuro .describir-salida,body.oscuro .describir-ia i
 .extras-lista li{display:grid;grid-template-columns:minmax(0,1fr) 130px auto;gap:.4rem}
 .extras-lista input{font:inherit;padding:.4rem .55rem;border:1px solid var(--niebla-2);border-radius:8px;min-width:0}
 .extras-lista .quitar{border:none;background:transparent;color:var(--rojo);font-weight:800;cursor:pointer;padding:0 .4rem}
-body.oscuro .extras-lista input,body.oscuro #giroBusca{background:#2A0B12;color:#F7ECEE;border-color:#3A1219}
 /* El mapa real ocupa toda la altura de su fila (sin huecos bajo el mapa) */
 .mapa-grid{align-items:stretch}
 .mapa-cont{display:flex;flex-direction:column;height:100%}
@@ -284,6 +275,24 @@ body.oscuro .extras-lista input,body.oscuro #giroBusca{background:#2A0B12;color:
 .asis-enviar{background:var(--rojo);color:#fff}
 .asis-voz{background:#fff;border:1px solid var(--niebla-2)}
 .asis-voz.escuchando{background:var(--rojo);color:#fff}
-body.oscuro .asis-panel{background:#1E080D;border-color:#3A1219}
-body.oscuro .asis-msj.bot,body.oscuro #asisTexto,body.oscuro .asis-chips button,body.oscuro .asis-voz{background:#2A0B12;color:#F7ECEE;border-color:#3A1219}
 @media print{.asis{display:none}}
+
+/* ---- Pestañas de apartados abiertos (dentro del proyecto) ---- */
+.pestanas-app{position:sticky;z-index:49;display:flex;gap:.3rem;overflow-x:auto;padding:.45rem max(1rem,calc((100vw - 1180px)/2)) 0;background:#F3E9E4;border-bottom:2px solid var(--rojo);scrollbar-width:thin}
+.pestanas-app:empty{display:none}
+.pa-tab{display:flex;align-items:center;flex:none;background:#fff;border:1px solid var(--niebla-2);border-bottom:0;border-radius:10px 10px 0 0;font-size:.82rem}
+.pa-tab a{padding:.45rem .2rem .45rem .8rem;color:var(--tinta);text-decoration:none;font-weight:600;white-space:nowrap}
+.pa-tab button{border:0;background:none;color:var(--gris-texto);cursor:pointer;padding:.45rem .6rem;font-size:.75rem;border-radius:6px}
+.pa-tab button:hover{color:var(--rojo)}
+.pa-tab.activa{background:var(--rojo);border-color:var(--rojo)}
+.pa-tab.activa a,.pa-tab.activa button{color:#fff}
+.pa-tab a:focus-visible,.pa-tab button:focus-visible{outline:3px solid var(--granate);outline-offset:-3px}
+body.vista-todo .pestanas-app{display:none}
+@media print{.pestanas-app{display:none}}
+@media (max-width:760px){
+  .nav-links{flex-wrap:nowrap!important;overflow-x:auto;scrollbar-width:none;-webkit-overflow-scrolling:touch}
+  .nav-links::-webkit-scrollbar{display:none}
+  .nav-links a{flex:none}
+  .asis-boton b{display:none}
+  .asis-boton{padding:.8rem}
+}

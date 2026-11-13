@@ -86,8 +86,8 @@ test('exportar imagen descarga un PNG', async ({ page }) => {
 
 test('sin desbordamiento horizontal', async ({ page }) => {
   await page.goto('/?vista=todo', { waitUntil: 'domcontentloaded' });
-  const ancho = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
-  expect(ancho).toBeLessThanOrEqual(1);
+  // Se mide ya estable: durante la carga, las animaciones de entrada pueden asomarse un instante.
+  await expect.poll(() => page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth)).toBeLessThanOrEqual(1);
 });
 
 test('un enlace con valores fuera de rango no rompe el cálculo', async ({ page }) => {

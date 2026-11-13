@@ -18,72 +18,6 @@
   --sombra:0 10px 30px rgba(56,7,15,.10);
 }
 
-/* ====== MODO ORÁCULO (tema cyber opcional) ======
-   Reinterpreta la identidad COATL en clave nocturna: negro cósmico,
-   rojo mexicano encendido y blanco matemático. Solo cambia tokens y
-   un puñado de superficies; toda la estructura se conserva intacta. */
-body.oscuro{
-  --rojo:#E2233F;
-  --rojo-vivo:#FF5A6E;
-  --granate:#F06A7B;
-  --tinta:#160407;
-  --tinta-2:#000000;
-  --blanco:#22070C;
-  --hueso:#1A0508;
-  --niebla:#2A0B12;
-  --niebla-2:#3A1219;
-  --gris-texto:#D9BFC3;
-  --ok:#3FBF83;
-  --alerta:#E8A33A;
-  --sombra:0 0 0 1px rgba(226,35,63,.18), 0 14px 40px rgba(0,0,0,.6);
-  background:radial-gradient(1200px 700px at 80% -10%, rgba(226,35,63,.10), transparent 60%), #160407;
-  color:#F7ECEE;
-}
-body.oscuro ::selection{background:#E2233F;color:#000}
-body.oscuro .nav{background:rgba(26,5,8,.86);border-bottom-color:#E2233F}
-body.oscuro .marca-texto strong{color:#FBF1F2}
-body.oscuro .panel,body.oscuro .cifra,body.oscuro .consola,body.oscuro .metodo,
-body.oscuro .veredicto,body.oscuro .kpi,body.oscuro .lectura,body.oscuro .cuad,
-body.oscuro .accion,body.oscuro .esc,body.oscuro .postal,body.oscuro .ranking li,
-body.oscuro .foda-resumen,body.oscuro .limitaciones,body.oscuro .panel-legal{
-  background:#22070C;border-color:#3A1219;color:#F7ECEE;
-}
-body.oscuro .pestanas{background:#1A0508;border-bottom-color:#3A1219}
-body.oscuro .pestana[aria-selected="true"]{background:#22070C}
-body.oscuro .campo select,body.oscuro .campo input[type="number"]{
-  background:#2A0B12;color:#F7ECEE;border-color:#4A1822;
-}
-body.oscuro .pie-consola{background:#1A0508;border-top-color:#3A1219}
-body.oscuro .hero{
-  background:radial-gradient(1100px 520px at 85% -10%, rgba(226,35,63,.4), transparent 60%),
-             radial-gradient(800px 600px at -10% 110%, rgba(40,4,10,.9), transparent 55%), #1A0508;
-}
-body.oscuro .seccion h2.titulo,body.oscuro .panel h3,body.oscuro .metodo h3,
-body.oscuro .cuad h4,body.oscuro .lectura h3{color:#FBF1F2}
-body.oscuro .formula{background:#2A0B12;color:#FF6680;border-color:#4A1822}
-body.oscuro .tabla-zonas tr:hover td,body.oscuro .ranking li:hover{background:#2A0B12}
-body.oscuro .banda-oscura{background:#000}
-body.oscuro .mini-grid .celda{background:#3A1219}
-body.oscuro .mini-grid .celda.viva{background:#E2233F}
-body.oscuro .greca,body.oscuro .greca.invertida{filter:none;opacity:.85}
-body.oscuro .medidor-arco{filter:saturate(1.2) brightness(1.05)}
-body.oscuro .foda-resumen{border-style:dashed}
-body.oscuro .nav-links a{color:#F7ECEE}
-body.oscuro .nav-links a:hover,body.oscuro .nav-links a.activa{background:#2A0B12;color:#FF6680}
-body.oscuro .progreso{background:linear-gradient(90deg,#E2233F,#FF5A6E);box-shadow:0 0 8px #E2233F}
-body.oscuro .et-zona,body.oscuro .et-p{stroke:rgba(0,0,0,.6)}
-body.oscuro 
-/* Botón conmutador de tema */
-.btn-tema{
-  display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;
-  font-family:var(--cuerpo);font-weight:700;font-size:.8rem;
-  padding:.42rem .8rem;border-radius:999px;border:1.5px solid var(--rojo);
-  background:transparent;color:var(--rojo);transition:background .2s,color .2s,border-color .2s;
-}
-.btn-tema:hover{background:var(--niebla)}
-.btn-tema .ojo{font-size:.95rem;line-height:1}
-body.oscuro .btn-tema{border-color:#E2233F;color:#FF5A6E}
-body.oscuro .btn-tema:hover{background:#2A0B12}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){
@@ -607,13 +541,12 @@ img{max-width:100%}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 @media (max-width:1000px){.graficas-sim{grid-template-columns:1fr}}
 @media print{
-  .nav,.progreso,.hero-acciones,#forma,.acciones-widget,.btn-tema,.toast,.confeti-capa,.mapa-cont{display:none!important}
+  .nav,.progreso,.hero-acciones,#forma,.acciones-widget,.toast,.confeti-capa,.mapa-cont{display:none!important}
   body{background:#fff}
   .panel{box-shadow:none;break-inside:avoid}
   .revela{opacity:1!important;transform:none!important}
 }
 .lista-supuestos{margin:.4rem 0 1rem 1.1rem;font-size:.92rem;color:var(--gris-texto)}
 .lista-supuestos li{margin-bottom:.35rem}
-body.oscuro .accion .cuerpo h3{color:#FBF1F2}
 .cuadro:focus-visible,.pestana:focus-visible{outline:3px solid var(--granate);outline-offset:-3px}
 .accion[data-clic]{cursor:pointer}

@@ -89,4 +89,22 @@ Lectura directa del código, `scripts/validar_modelo.py` (Python vía `uv`) y co
 | — | `id="lectura"` duplicado (nuevo) | ✅ El panel pasó a `lecturaPanel` |
 | 15 | SEO | ✅ Open Graph, `og:locale` y favicon SVG |
 
-Sin cambios, a propósito: el «Modo Oráculo» (tema oscuro conmutable) ya existía y se conserva. CLAUDE.md rechaza *rediseños* neón/negro; este modo es opcional y no es el diseño base.
+El tema oscuro se retiró en v7 (ver §7).
+
+## 7. Auditoría de mejora v7 (13 de noviembre de 2026)
+
+Revisión automática de los 8 apartados en escritorio (1366 px) y móvil (375 px): sección visible correcta, ningún lienzo, SVG o imagen sin tamaño, ningún widget en estado de error, sin desbordamiento horizontal y **cero errores de consola**. Suite: 12 unitarias, validador Python y e2e en dos viewports; escenario de referencia intacto (51.6 %, $60,371, ROI 302.9 %, payback 4.1, VPN $912,776).
+
+| # | Hallazgo | Acción |
+|---|---|---|
+| 1 | Los apartados se abrían uno a la vez, sin memoria de lo visitado | ✅ Pestañas dentro del proyecto: cada apartado abierto queda en una tira, se cambia y se cierra; persiste en la sesión |
+| 2 | En móvil la navegación ocupaba tres renglones fijos (≈ 30 % de la pantalla) | ✅ Barra de una línea con desplazamiento horizontal; la pestaña activa se centra sola |
+| 3 | Modo oscuro: doble mantenimiento de estilos (≈ 40 reglas) y contraste no auditado | ✅ Retirado por decisión del equipo; queda solo la identidad visual fija |
+| 4 | El botón del asistente tapaba contenido en móvil | ✅ En móvil se reduce a icono |
+| 5 | Prueba de desbordamiento intermitente (medía durante la animación de entrada) | ✅ Ahora mide con el diseño estable |
+| 6 | Prueba de Empresas fallaba en móvil al aplicar (la app cambia al Simulador) | ✅ Vuelve al apartado antes de borrar |
+
+Mejoras recomendadas, aún no hechas:
+- Auditoría de accesibilidad con un lector de pantalla real (las pruebas cubren nombres accesibles y teclado, no la experiencia completa).
+- Calibrar por giro el ticket, costo variable y demanda con datos de campo: hoy son estimaciones del equipo.
+- Las 6 zonas son composiciones del equipo; polígonos por AGEB del INEGI darían ubicaciones reales.
