@@ -75,6 +75,26 @@ test('asistente: siempre visible, responde con el motor y ajusta el simulador', 
   await expect(page.locator('#denue')).toBeVisible();
 });
 
+test('asistente con clave de Gemini: pregunta libre por REST, sin guardar', async ({ page }) => {
+  let cuerpo = null, clave = null;
+  await page.route('https://generativelanguage.googleapis.com/**', async (ruta) => {
+    cuerpo = ruta.request().postDataJSON(); clave = ruta.request().headers()['x-goog-api-key'];
+    await ruta.fulfill({ json: { steps: [{ type: 'model_output', content: [{ type: 'text', text: 'Respuesta <b>simulada</b> de Gemini.' }] }] } });
+  });
+  await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
+  await page.click('.describir-ia summary');
+  await page.fill('#descClave', 'AIza-prueba');
+  await page.locator('#descClave').dispatchEvent('change');
+  await page.click('#asisAbrir');
+  await page.fill('#asisTexto', '¿Qué opinas de la competencia en mi zona?');
+  await page.press('#asisTexto', 'Enter');
+  await expect(page.locator('#asisLog .bot').last()).toHaveText('Respuesta <b>simulada</b> de Gemini.');  // escapado, no HTML
+  await expect(page.locator('#asisModo')).toHaveText('Gemini (tu clave)');
+  expect(clave).toBe('AIza-prueba');
+  expect(cuerpo.store).toBe(false);
+  expect(cuerpo.system_instruction).toContain('Cafetería');
+});
+
 test('giro propio con cualquier nombre', async ({ page }) => {
   await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
   await page.fill('#giroBusca', 'Vivero de suculentas');

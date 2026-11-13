@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-HK+486462JqUerExTn22w+CYtE0sxVln8swwkJ6122s=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'sha256-4wT5/NwSw15nCQcmyqGfHXgu40OoZSAISq5XVSNobT8=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-V2abQLNkj8AXlLC81Ia7DRtmidaGtKm8kRvIL1IhFI0=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'sha256-4wT5/NwSw15nCQcmyqGfHXgu40OoZSAISq5XVSNobT8=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://generativelanguage.googleapis.com https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -1124,11 +1124,11 @@ body.vista-todo .pestanas-app{display:none}
         <div class="describir-salida">
           <div id="descEntendido" aria-live="polite"><p class="desc-resumen">Aquí verás qué datos entendí y cuáles ajusté.</p></div>
           <details class="describir-ia">
-            <summary>Usar Claude como intérprete (opcional)</summary>
-            <label for="descClave">Tu clave de API de Anthropic</label>
-            <input type="password" id="descClave" autocomplete="off" spellcheck="false" placeholder="sk-ant-…">
+            <summary>Usar IA en línea (opcional)</summary>
+            <label for="descClave">Tu clave de Google AI Studio (gratis) o de Anthropic</label>
+            <input type="password" id="descClave" autocomplete="off" spellcheck="false" placeholder="Clave de Google AI Studio o sk-ant-…">
             <button type="button" class="btn btn-widget btn-sec" id="descOlvidar">Olvidar clave</button>
-            <p class="nota-widget">La clave se queda solo en la memoria de esta pestaña y se envía únicamente a la API de Anthropic. El uso se cobra en tu cuenta de Anthropic. El dictado por voz usa el servicio de reconocimiento de tu navegador.</p>
+            <p class="nota-widget">La clave se queda solo en la memoria de esta pestaña y se envía únicamente a su proveedor. Gemini (aistudio.google.com/apikey) tiene plan gratuito sin tarjeta y con límites; en ese plan Google puede usar lo que escribas para mejorar sus productos, así que no escribas datos personales. Claude cobra por uso en tu cuenta de Anthropic. El dictado por voz usa el servicio de reconocimiento de tu navegador.</p>
           </details>
         </div>
       </div>
@@ -3394,7 +3394,7 @@ asegurarCenso();
    La voz usa el reconocimiento del navegador (Web Speech API); en Chrome/Edge el audio lo
    procesa el proveedor del navegador, y así se avisa en pantalla. */
 const SDK_URL="https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@1.3.0/+esm";
-let claveClaude=null;
+let claveClaude=null, claveGemini=null;  // una sola caja: sk-ant-… es Claude; cualquier otra, Gemini (solo el asistente)
 
 function sinAcentos(t){return String(t).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase()}
 function cantidad(txt){
@@ -3505,9 +3505,10 @@ async function interpretarYAplicar(){
   }
 }
 $("descAplicar").addEventListener("click",interpretarYAplicar);
-$("descClave").addEventListener("change",()=>{ const v=$("descClave").value.trim(); claveClaude=v||null;
-  $("descModo").textContent=claveClaude?"Intérprete: Claude (tu clave, solo en esta pestaña)":"Intérprete: local, sin conexión"; });
-$("descOlvidar").addEventListener("click",()=>{ $("descClave").value=""; claveClaude=null; $("descModo").textContent="Intérprete: local, sin conexión"; });
+$("descClave").addEventListener("change",()=>{ const v=$("descClave").value.trim();
+  claveClaude=v.startsWith("sk-ant-")?v:null; claveGemini=v&&!claveClaude?v:null;
+  $("descModo").textContent=claveClaude?"Intérprete: Claude (tu clave, solo en esta pestaña)":claveGemini?"Intérprete: local · el asistente 💬 responde preguntas libres con Gemini (tu clave, solo en esta pestaña)":"Intérprete: local, sin conexión"; });
+$("descOlvidar").addEventListener("click",()=>{ $("descClave").value=""; claveClaude=null; claveGemini=null; $("descModo").textContent="Intérprete: local, sin conexión"; });
 /* Voz (Web Speech API) */
 (function voz(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition, b=$("descVoz");
@@ -3650,17 +3651,30 @@ enrutar(false);
     const res=interpretarLocal(texto);
     if(res.entendido.length){ aplicarInterpretacion(res.r); return "Ajusté el simulador ("+res.entendido.map(esc).join(", ")+"). "+estado(); }
     if(/(como voy|probabilidad|utilidad|gano|ganancia|resultado|cuanto)/.test(t)) return estado();
+    if(claveGemini) return await preguntarGemini(texto);
     if(claveClaude) return await preguntarClaude(texto);
-    return "No identifiqué una cifra ni una pregunta que pueda calcular. Prueba: «¿cómo voy?», «¿qué zona me conviene?», «cafetería en Los Héroes con 70 clientes al día» o «abre el DENUE». Para preguntas libres, agrega tu clave de Anthropic en «Usar Claude como intérprete» del Simulador.";
+    return "No identifiqué una cifra ni una pregunta que pueda calcular. Prueba: «¿cómo voy?», «¿qué zona me conviene?», «cafetería en Los Héroes con 70 clientes al día» o «abre el DENUE». Para preguntas libres, pega tu clave gratuita de Google AI Studio en «Usar IA en línea» del Simulador.";
+  }
+  function instrucciones(){ const {e,P}=actual();
+    return "Eres el asistente de COATL, simulador académico de supervivencia a 3 años y rentabilidad de negocios en Coacalco de Berriozábal. Responde en español de México, en 2–4 frases, sin inventar cifras: usa solo el escenario dado. No das asesoría financiera. Escenario actual: "+
+      JSON.stringify({giro:e.giro.n, zona:e.zona.n, P_3_anios:pct(P), utilidad_mensual:Math.round(e.utilMes), clientes_dia:e.mu, ticket:e.ticket}); }
+  // Gemini (plan gratuito de Google AI Studio) por REST: sin SDK extra. store:false = Google no guarda la conversación.
+  async function preguntarGemini(texto){
+    const r=await fetch("https://generativelanguage.googleapis.com/v1beta/interactions",{method:"POST",
+      headers:{"Content-Type":"application/json","x-goog-api-key":claveGemini},
+      body:JSON.stringify({model:"gemini-3.8-flash", input:texto, system_instruction:instrucciones(), store:false,
+        generation_config:{max_output_tokens:800}})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok) throw Object.assign(new Error((j.error&&j.error.message)||"HTTP "+r.status),{status:r.status});
+    const salida=(j.steps||[]).filter(s=>s.type==="model_output").flatMap(s=>s.content||[]).filter(c=>c.type==="text").map(c=>c.text).join("");
+    return esc(salida||"Sin respuesta.");
   }
   async function preguntarClaude(texto){
-    const {e,P}=actual();
     const {default:Anthropic}=await import(SDK_URL);
     const client=new Anthropic({apiKey:claveClaude, dangerouslyAllowBrowser:true});
     const r=await client.beta.messages.create({model:"claude-opus-5-5", max_tokens:1500,
       betas:["server-side-fallback-2026-07-01"], fallbacks:"default", output_config:{effort:"low"},
-      system:"Eres el asistente de COATL, simulador académico de supervivencia a 3 años y rentabilidad de negocios en Coacalco de Berriozábal. Responde en español de México, en 2–4 frases, sin inventar cifras: usa solo el escenario dado. No das asesoría financiera. Escenario actual: "+
-        JSON.stringify({giro:e.giro.n, zona:e.zona.n, P_3_anios:pct(P), utilidad_mensual:Math.round(e.utilMes), clientes_dia:e.mu, ticket:e.ticket}),
+      system:instrucciones(),
       messages:[{role:"user",content:texto}]});
     if(r.stop_reason==="refusal") return "No puedo responder esa pregunta.";
     return esc((r.content.find(b=>b.type==="text")||{}).text||"Sin respuesta.");
@@ -3669,8 +3683,8 @@ enrutar(false);
     texto=texto.trim(); if(!texto) return;
     decir(esc(texto),"yo"); inp.value="";
     try{ decir(await responder(texto)); }
-    catch(err){ console.warn(err); decir("Claude no respondió ("+esc(String(err.status||err.message))+"). Sigo disponible en modo local."); }
-    $("asisModo").textContent=claveClaude?"Claude (tu clave)":"local · sin conexión";
+    catch(err){ console.warn(err); decir((claveGemini?"Gemini":"Claude")+" no respondió ("+esc(String(err.status||err.message))+"). Sigo disponible en modo local."); }
+    $("asisModo").textContent=claveGemini?"Gemini (tu clave)":claveClaude?"Claude (tu clave)":"local · sin conexión";
   }
   $("asisForma").addEventListener("submit",ev=>{ ev.preventDefault(); enviar(inp.value); });
   $("asisChips").addEventListener("click",ev=>{ if(ev.target.tagName==="BUTTON") enviar(ev.target.textContent); });

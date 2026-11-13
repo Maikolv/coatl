@@ -6,7 +6,7 @@
    La voz usa el reconocimiento del navegador (Web Speech API); en Chrome/Edge el audio lo
    procesa el proveedor del navegador, y así se avisa en pantalla. */
 const SDK_URL="https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@1.3.0/+esm";
-let claveClaude=null;
+let claveClaude=null, claveGemini=null;  // una sola caja: sk-ant-… es Claude; cualquier otra, Gemini (solo el asistente)
 
 function sinAcentos(t){return String(t).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase()}
 function cantidad(txt){
@@ -117,9 +117,10 @@ async function interpretarYAplicar(){
   }
 }
 $("descAplicar").addEventListener("click",interpretarYAplicar);
-$("descClave").addEventListener("change",()=>{ const v=$("descClave").value.trim(); claveClaude=v||null;
-  $("descModo").textContent=claveClaude?"Intérprete: Claude (tu clave, solo en esta pestaña)":"Intérprete: local, sin conexión"; });
-$("descOlvidar").addEventListener("click",()=>{ $("descClave").value=""; claveClaude=null; $("descModo").textContent="Intérprete: local, sin conexión"; });
+$("descClave").addEventListener("change",()=>{ const v=$("descClave").value.trim();
+  claveClaude=v.startsWith("sk-ant-")?v:null; claveGemini=v&&!claveClaude?v:null;
+  $("descModo").textContent=claveClaude?"Intérprete: Claude (tu clave, solo en esta pestaña)":claveGemini?"Intérprete: local · el asistente 💬 responde preguntas libres con Gemini (tu clave, solo en esta pestaña)":"Intérprete: local, sin conexión"; });
+$("descOlvidar").addEventListener("click",()=>{ $("descClave").value=""; claveClaude=null; claveGemini=null; $("descModo").textContent="Intérprete: local, sin conexión"; });
 /* Voz (Web Speech API) */
 (function voz(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition, b=$("descVoz");

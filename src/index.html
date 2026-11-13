@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://generativelanguage.googleapis.com https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -242,11 +242,11 @@
         <div class="describir-salida">
           <div id="descEntendido" aria-live="polite"><p class="desc-resumen">Aquí verás qué datos entendí y cuáles ajusté.</p></div>
           <details class="describir-ia">
-            <summary>Usar Claude como intérprete (opcional)</summary>
-            <label for="descClave">Tu clave de API de Anthropic</label>
-            <input type="password" id="descClave" autocomplete="off" spellcheck="false" placeholder="sk-ant-…">
+            <summary>Usar IA en línea (opcional)</summary>
+            <label for="descClave">Tu clave de Google AI Studio (gratis) o de Anthropic</label>
+            <input type="password" id="descClave" autocomplete="off" spellcheck="false" placeholder="Clave de Google AI Studio o sk-ant-…">
             <button type="button" class="btn btn-widget btn-sec" id="descOlvidar">Olvidar clave</button>
-            <p class="nota-widget">La clave se queda solo en la memoria de esta pestaña y se envía únicamente a la API de Anthropic. El uso se cobra en tu cuenta de Anthropic. El dictado por voz usa el servicio de reconocimiento de tu navegador.</p>
+            <p class="nota-widget">La clave se queda solo en la memoria de esta pestaña y se envía únicamente a su proveedor. Gemini (aistudio.google.com/apikey) tiene plan gratuito sin tarjeta y con límites; en ese plan Google puede usar lo que escribas para mejorar sus productos, así que no escribas datos personales. Claude cobra por uso en tu cuenta de Anthropic. El dictado por voz usa el servicio de reconocimiento de tu navegador.</p>
           </details>
         </div>
       </div>

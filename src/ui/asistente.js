@@ -44,17 +44,30 @@
     const res=interpretarLocal(texto);
     if(res.entendido.length){ aplicarInterpretacion(res.r); return "Ajusté el simulador ("+res.entendido.map(esc).join(", ")+"). "+estado(); }
     if(/(como voy|probabilidad|utilidad|gano|ganancia|resultado|cuanto)/.test(t)) return estado();
+    if(claveGemini) return await preguntarGemini(texto);
     if(claveClaude) return await preguntarClaude(texto);
-    return "No identifiqué una cifra ni una pregunta que pueda calcular. Prueba: «¿cómo voy?», «¿qué zona me conviene?», «cafetería en Los Héroes con 70 clientes al día» o «abre el DENUE». Para preguntas libres, agrega tu clave de Anthropic en «Usar Claude como intérprete» del Simulador.";
+    return "No identifiqué una cifra ni una pregunta que pueda calcular. Prueba: «¿cómo voy?», «¿qué zona me conviene?», «cafetería en Los Héroes con 70 clientes al día» o «abre el DENUE». Para preguntas libres, pega tu clave gratuita de Google AI Studio en «Usar IA en línea» del Simulador.";
+  }
+  function instrucciones(){ const {e,P}=actual();
+    return "Eres el asistente de COATL, simulador académico de supervivencia a 3 años y rentabilidad de negocios en Coacalco de Berriozábal. Responde en español de México, en 2–4 frases, sin inventar cifras: usa solo el escenario dado. No das asesoría financiera. Escenario actual: "+
+      JSON.stringify({giro:e.giro.n, zona:e.zona.n, P_3_anios:pct(P), utilidad_mensual:Math.round(e.utilMes), clientes_dia:e.mu, ticket:e.ticket}); }
+  // Gemini (plan gratuito de Google AI Studio) por REST: sin SDK extra. store:false = Google no guarda la conversación.
+  async function preguntarGemini(texto){
+    const r=await fetch("https://generativelanguage.googleapis.com/v1beta/interactions",{method:"POST",
+      headers:{"Content-Type":"application/json","x-goog-api-key":claveGemini},
+      body:JSON.stringify({model:"gemini-3.8-flash", input:texto, system_instruction:instrucciones(), store:false,
+        generation_config:{max_output_tokens:800}})});
+    const j=await r.json().catch(()=>({}));
+    if(!r.ok) throw Object.assign(new Error((j.error&&j.error.message)||"HTTP "+r.status),{status:r.status});
+    const salida=(j.steps||[]).filter(s=>s.type==="model_output").flatMap(s=>s.content||[]).filter(c=>c.type==="text").map(c=>c.text).join("");
+    return esc(salida||"Sin respuesta.");
   }
   async function preguntarClaude(texto){
-    const {e,P}=actual();
     const {default:Anthropic}=await import(SDK_URL);
     const client=new Anthropic({apiKey:claveClaude, dangerouslyAllowBrowser:true});
     const r=await client.beta.messages.create({model:"claude-opus-5-5", max_tokens:1500,
       betas:["server-side-fallback-2026-07-01"], fallbacks:"default", output_config:{effort:"low"},
-      system:"Eres el asistente de COATL, simulador académico de supervivencia a 3 años y rentabilidad de negocios en Coacalco de Berriozábal. Responde en español de México, en 2–4 frases, sin inventar cifras: usa solo el escenario dado. No das asesoría financiera. Escenario actual: "+
-        JSON.stringify({giro:e.giro.n, zona:e.zona.n, P_3_anios:pct(P), utilidad_mensual:Math.round(e.utilMes), clientes_dia:e.mu, ticket:e.ticket}),
+      system:instrucciones(),
       messages:[{role:"user",content:texto}]});
     if(r.stop_reason==="refusal") return "No puedo responder esa pregunta.";
     return esc((r.content.find(b=>b.type==="text")||{}).text||"Sin respuesta.");
@@ -63,8 +76,8 @@
     texto=texto.trim(); if(!texto) return;
     decir(esc(texto),"yo"); inp.value="";
     try{ decir(await responder(texto)); }
-    catch(err){ console.warn(err); decir("Claude no respondió ("+esc(String(err.status||err.message))+"). Sigo disponible en modo local."); }
-    $("asisModo").textContent=claveClaude?"Claude (tu clave)":"local · sin conexión";
+    catch(err){ console.warn(err); decir((claveGemini?"Gemini":"Claude")+" no respondió ("+esc(String(err.status||err.message))+"). Sigo disponible en modo local."); }
+    $("asisModo").textContent=claveGemini?"Gemini (tu clave)":claveClaude?"Claude (tu clave)":"local · sin conexión";
   }
   $("asisForma").addEventListener("submit",ev=>{ ev.preventDefault(); enviar(inp.value); });
   $("asisChips").addEventListener("click",ev=>{ if(ev.target.tagName==="BUTTON") enviar(ev.target.textContent); });
