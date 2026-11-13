@@ -32,7 +32,7 @@ export const REF = {
 };
 
 export const FUENTES = [
-  ['INEGI. Nota sobre los indicadores de la Demografía de los Negocios (tabla 1989–2019), 2021.', 'https://www.inegi.org.mx/contenidos/programas/dn/2021/doc/Nota_Demo_Negocios.pdf'],
+  ['INEGI. Tabulado nacional de supervivencia, mortalidad y esperanza de vida de los negocios (1989–2019).', 'https://www.inegi.org.mx/contenidos/programas/dn/2019/tabulados/Nal_Tot_CE2019.xlsx'],
   ['INEGI. Censo de Población y Vivienda 2020.', 'https://www.inegi.org.mx/programas/ccpv/2020/'],
   ['Gobierno de Coacalco de Berriozábal. Datos económicos (unidades económicas y valor agregado 2013–2020).', 'https://coacalco.gob.mx/datos-economicos/'],
   ['CONEVAL. Pobreza a nivel municipio 2010–2020.', 'https://www.coneval.org.mx/InformesPublicaciones/Paginas/Mosaicos/Informe_Pobreza_Municipios_Mexico_2020.aspx'],
