@@ -23,8 +23,10 @@ export const MODULOS_JS = [
 ];
 
 export function construir() {
+  const worker = [leer('src/datos/datos.js'), leer('src/modelo/modelo.js'), leer('src/modelo/worker.js')].join('\n');
   const js = MODULOS_JS.filter((m) => fs.existsSync(path.join(raiz, m)))
-    .map((m) => `/* ===== ${m} ===== */\n${leer(m)}`).join('\n');
+    .map((m) => `/* ===== ${m} ===== */\n${leer(m)}`).join('\n')
+    .replace('/*@@WORKER@@*/ null', () => JSON.stringify(worker).replace(/</g, '\\u003c'));
   const css = leer('src/ui/estilos.css') + '\n' + leer('src/ui/estilos-explorar.css');
   // Atributos style="" del HTML → reglas [data-ei] con !important (misma precedencia),
   // para que la CSP no necesite 'unsafe-inline' en style-src (hallazgo de HawkScan).

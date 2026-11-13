@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-a9+0mD3/p14VwvNgv9+nzWFHI9BGviVpy07Mgqxh5Yg=' https://cdnjs.cloudflare.com; style-src 'self' 'sha256-sdAL61+5hmBqxI/4WC4cR+GkyFHImo+TbG8AEnOWRao=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-EcAkP1QrNXAZynyJTf488eFesG2Xr2eC1xn7Cst1qYo=' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'sha256-sdAL61+5hmBqxI/4WC4cR+GkyFHImo+TbG8AEnOWRao=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -2544,7 +2544,7 @@ $("mapa25Abrir").addEventListener("click",()=>{
 function marcarPendiente(){
   const v=$("escVigente"); if(!v) return;
   v.dataset.estado="pendiente";
-  $("evEstado").textContent="Recalculando… se muestra la última simulación válida";
+  $("evEstado").textContent=ultimoEsc?"Recalculando… se muestra la última simulación válida":"Recalculando…";
 }
 function marcarVigente(e){
   const v=$("escVigente"); if(!v) return;
@@ -2553,7 +2553,6 @@ function marcarVigente(e){
   $("evNombre").textContent=e.giro.n+" · "+CORTOS[e.zonaKey]+" · "+Math.round(e.muBase||e.mu)+" clientes/día";
   $("evHora").textContent="calculado "+new Date().toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
 }
-["input","change"].forEach(t=>$("forma").addEventListener(t,marcarPendiente));
 $("restablecer").addEventListener("click",()=>{
   $("forma").reset();
   /* Las opciones de giro y zona se crean por JS: reset() las deja en la primera; se fijan a la referencia. */
@@ -2719,7 +2718,7 @@ $("trazaLista").addEventListener("keydown",ev=>{
 /* Punto de entrada desde calcular() (tarea diferida, después del mapa). */
 function pintarExplorar(e,modelo,mc,S){
   ultimoEsc=e; ultimoModelo=modelo; ultimoMC=mc; ultimoS=S;
-  marcarVigente(e);
+  if(!tVivo && !solicitudCalculo) marcarVigente(e);
   if(document.activeElement!==$("demoClientes")) $("demoClientes").value=Math.round(e.muBase||e.mu);
   pintarDemo(); pintarMapa25(); pintarSupervivencia(); pintarMeta(); pintarSuperficie(); pintarTraza();
 }
@@ -2758,6 +2757,8 @@ $("dado").addEventListener("click",()=>{
 });
 let tVivo=null;
 ["input","change"].forEach(ev=>$("forma").addEventListener(ev,()=>{
+  solicitudCalculo=null;
+  marcarPendiente();
   clearTimeout(tVivo); tVivo=setTimeout(calcular,220);
 }));
 
@@ -2965,22 +2966,65 @@ function pintarFODA(e, modelo, mc){
 
 /* ---------- 14. Orquestación ---------- */
 $("forma").addEventListener("submit",ev=>ev.preventDefault()); /* sin botón: solo cálculo en vivo */
+let versionCalculo=0, solicitudCalculo=null;
+let workerActivo=crearWorkerCalculo();
+function crearWorkerCalculo(){
+  if(typeof Worker!=="function") return null;
+  let url;
+  try{
+    url=URL.createObjectURL(new Blob(["/* COATL · Datos de anclaje (giros, zonas, S0, estacionalidad). Sin DOM. */\n/* ---------- 1. Parámetros y datos de anclaje ---------- */\nconst GIROS = {\n  abarrotes:    {n:\"Abarrotes / minisúper\",                ticket:65,  cv:72, dem:120, z:-0.10},\n  tortilleria:  {n:\"Tortillería\",                          ticket:22,  cv:55, dem:260, z:-0.02},\n  carniceria:   {n:\"Carnicería / pollería\",                ticket:140, cv:68, dem:75,  z: 0.00},\n  fruteria:     {n:\"Frutería y verdulería\",                ticket:70,  cv:62, dem:95,  z:-0.05},\n  fonda:        {n:\"Fonda / cocina económica\",             ticket:85,  cv:45, dem:70,  z:-0.12},\n  taqueria:     {n:\"Taquería / antojitos\",                 ticket:95,  cv:40, dem:90,  z:-0.10},\n  restaurante:  {n:\"Restaurante\",                          ticket:180, cv:42, dem:55,  z:-0.15},\n  pizzeria:     {n:\"Pizzería\",                             ticket:160, cv:38, dem:45,  z:-0.10},\n  cafeteria:    {n:\"Cafetería\",                            ticket:95,  cv:38, dem:65,  z:-0.08},\n  jugueria:     {n:\"Juguería / licuados\",                  ticket:55,  cv:35, dem:70,  z:-0.06},\n  panaderia:    {n:\"Panadería\",                            ticket:40,  cv:45, dem:140, z:-0.02},\n  pasteleria:   {n:\"Pastelería / repostería\",              ticket:210, cv:38, dem:30,  z: 0.00},\n  papeleria:    {n:\"Papelería\",                            ticket:55,  cv:60, dem:80,  z:-0.10},\n  ciber:        {n:\"Ciber / impresiones\",                  ticket:35,  cv:25, dem:60,  z:-0.05},\n  farmacia:     {n:\"Farmacia\",                             ticket:160, cv:70, dem:90,  z: 0.05},\n  naturista:    {n:\"Tienda naturista / suplementos\",       ticket:170, cv:52, dem:30,  z: 0.03},\n  vinateria:    {n:\"Vinatería / licorería\",                ticket:180, cv:68, dem:55,  z: 0.02},\n  ropa:         {n:\"Ropa y calzado\",                       ticket:320, cv:55, dem:25,  z:-0.18},\n  joyeria:      {n:\"Joyería y bisutería\",                  ticket:350, cv:52, dem:10,  z:-0.08},\n  celulares:    {n:\"Celulares y accesorios\",               ticket:280, cv:55, dem:28,  z:-0.02},\n  tecnologia:   {n:\"Tecnología (venta y reparación)\",      ticket:380, cv:50, dem:18,  z: 0.10},\n  ferreteria:   {n:\"Ferretería / tlapalería\",              ticket:190, cv:62, dem:40,  z: 0.06},\n  refaccionaria:{n:\"Refaccionaria automotriz\",             ticket:260, cv:58, dem:22,  z: 0.08},\n  taller:       {n:\"Taller mecánico\",                      ticket:850, cv:40, dem:8,   z: 0.12},\n  autolavado:   {n:\"Autolavado\",                           ticket:120, cv:25, dem:28,  z: 0.04},\n  estetica:     {n:\"Estética / barbería\",                  ticket:130, cv:18, dem:28,  z: 0.08},\n  spa:          {n:\"Spa / salón de uñas\",                  ticket:260, cv:22, dem:18,  z: 0.06},\n  lavanderia:   {n:\"Lavandería\",                           ticket:90,  cv:30, dem:45,  z: 0.02},\n  gimnasio:     {n:\"Gimnasio (mensualidades)\",             ticket:480, cv:12, dem:12,  z: 0.05},\n  veterinaria:  {n:\"Veterinaria / estética canina\",        ticket:320, cv:30, dem:16,  z: 0.12},\n  dental:       {n:\"Consultorio dental\",                   ticket:750, cv:22, dem:7,   z: 0.22},\n  optica:       {n:\"Óptica\",                               ticket:950, cv:45, dem:7,   z: 0.10},\n  consultorio:  {n:\"Consultorio / despacho profesional\",   ticket:420, cv:15, dem:10,  z: 0.20},\n  educacion:    {n:\"Educación (regularización / idiomas)\", ticket:350, cv:20, dem:15,  z: 0.15},\n  floreria:     {n:\"Florería\",                             ticket:230, cv:45, dem:14,  z:-0.04}\n};\nconst ZONAS = {\n  corredor:  {n:\"Corredor Vía López Portillo\",                       afl:1.35, rm2:280, z: 0.30},\n  centro:    {n:\"San Francisco Coacalco (Centro)\",                   afl:1.15, rm2:170, z: 0.12},\n  flores:    {n:\"Villa de las Flores · Parque Res. · Bosques\",       afl:1.10, rm2:190, z: 0.15},\n  heroes:    {n:\"Los Héroes · Loma Bonita · V. de las Manzanas\",     afl:1.00, rm2:150, z: 0.04},\n  popular:   {n:\"El Potrero · San Rafael · El Olivo\",                afl:0.90, rm2:110, z:-0.10},\n  periferia: {n:\"Zonas habitacionales periféricas\",                  afl:0.78, rm2:90,  z:-0.18}\n};\n/* Supervivencia nacional S0(t), t = 0…10 años.\n   t = 1…5: INEGI, Demografía de los Negocios 1989–2019, S(x+1) = 1 − q(x) con\n   q(0)=0.3092, q(1)=0.5188, q(2)=0.5739, q(3)=0.6129, q(4)=0.6432 (E(0) = 8.4 años).\n   Fuente: «Nota sobre los indicadores de la Demografía de los Negocios», INEGI, 2021.\n   t = 6…10: INTERPOLACIÓN GEOMÉTRICA del equipo entre S(5)=0.3568 y S(32)=1−0.8952=0.1048\n   (la nota publica solo x = 0…4 y 30…34). Marcado como supuesto. */\nconst S0 = [1, 0.6908, 0.4812, 0.4261, 0.3871, 0.3568, 0.3410, 0.3259, 0.3114, 0.2976, 0.2844];\n/* Intercepto calibrado: un escenario neutro reproduce S0(3) nacional → β₀ = logit(0.4261). */\nconst BETA0 = Math.log(S0[3]/(1-S0[3]));\nconst ESTACION = {\n  estable:   [1,1,1,1,1,1,1,1,1,1,1,1],\n  diciembre: [.95,.90,.95,.95,1,1,1,1,1,1.05,1.15,1.35],\n  verano:    [.95,.95,1,1,1.05,1.10,1.20,1.25,1.10,.95,.95,1]\n};\nconst N_SIM = 2000, SEMILLA = 20262;\n\n\n/* Supuestos de incertidumbre del Monte Carlo y del rango de P.\n   Son SUPUESTOS DEL EQUIPO (no estimados con datos); se documentan en\n   docs/METODOLOGIA.md y en la ficha «Supuestos y limitaciones». */\nconst INCERTIDUMBRE = {\n  demandaMensual: 0.22,  // DE relativa de clientes, independiente por mes\n  ticket:         0.08,  // DE relativa del ticket promedio, por mes\n  demandaAnual:   0.15,  // DE (log) del choque común del año\n  costoVariable:  0.02,  // DE absoluta del costo variable efectivo (2 pp)\n  betaRelativa:   0.30,  // DE relativa de cada β para el rango de P\n  intercepto:     0.15   // DE del intercepto para el rango de P\n};\n\n/* COATL · Núcleo estadístico puro (sin DOM): probado en tests/. */\n/* ---------- 2. Utilidades numéricas ---------- */\nfunction mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}\nfunction gaussiana(rng){let u=0,v=0;while(u===0)u=rng();while(v===0)v=rng();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}\nconst sigmoide = z => 1/(1+Math.exp(-z));\nconst acota = (x,a,b)=>Math.min(b,Math.max(a,x));\n\nfunction derivar(e){\n  e.diasMes=e.diasSem*4.33;\n  e.cvEff=acota(e.cv+(e.merma||0),0.02,0.95);\n  e.rentaEf=e.propio?0:e.renta;\n  e.interesMes=e.inversion*e.credPct*e.tasa/12;\n  e.fijos=e.rentaEf + e.empleados*e.costoEmpleado + e.otrosFijos + (e.mktGasto||0) + e.interesMes;\n  e.ventasMes=e.mu*e.diasMes*e.ticket;\n  e.margenUnit=e.ticket*(1-e.cvEff);\n  e.utilMes=e.ventasMes*(1-e.cvEff)-e.fijos;\n  e.peClientesMes=e.margenUnit>0?e.fijos/e.margenUnit:Infinity;\n  e.peDia=e.peClientesMes/e.diasMes;\n  e.pePesos=(1-e.cvEff)>0?e.fijos/(1-e.cvEff):Infinity;\n  e.ms=e.ventasMes>0?(e.ventasMes-e.pePesos)/e.ventasMes:-1;\n  return e;\n}\n\n/* ---------- 6. Modelo logístico con contribuciones etiquetadas ---------- */\nfunction modeloLogistico(e){\n  const msZ = e.ms>=0.30?0.25 : e.ms>=0.15?0.10 : e.ms>=0?-0.10 : -0.50;\n  const deudaZ = e.credPct>=0.6?-0.20 : e.credPct>=0.3?-0.08 : e.credPct>0?0:0.05;\n  const contribs=[\n    [\"Giro (\"+e.giro.n+\")\", e.giro.z],\n    [\"Zona (\"+e.zona.n+\")\", e.zona.z],\n    [\"Experiencia en el giro\", e.expZ],\n    [\"Reserva de capital\", e.resZ],\n    [\"Competencia cercana\", e.compZ],\n    [\"Formalidad fiscal\", e.formZ],\n    [\"Marketing\", e.mktZ],\n    [\"Estructura de deuda\", deudaZ],\n    [\"Local propio\", e.propio?0.10:0],\n    [\"Modelo de negocio\", e.modZ||0],\n    [\"Permisos municipales\", e.permZ||0],\n    [\"Modalidad de venta\", e.modalZ||0],\n    [\"Horario extendido\", e.horZ||0],\n    [\"Margen de seguridad financiero\", msZ]\n  ];\n  const z=BETA0+contribs.reduce((s,c)=>s+c[1],0);\n  return {P:acota(sigmoide(z),0.04,0.93), z, contribs};\n}\n\n/* ---------- 7. Curva de supervivencia personalizada ---------- */\nfunction curvaSupervivencia(P){\n  const h=Math.log(P)/Math.log(S0[3]);\n  return S0.map((s,t)=>t===0?1:Math.pow(s,h));\n}\n\n/* ---------- 8. Monte Carlo (2,000 años simulados) ---------- */\nfunction monteCarlo(e){\n  /* Cada corrida = un año. Fuentes de variación (supuestos del equipo, ver\n     INCERTIDUMBRE en datos.js):\n     · choque anual común de demanda (lognormal de media 1): un \"mal año\" afecta\n       a los 12 meses a la vez, por lo que no se compensa al sumar;\n     · ruido mensual de clientes y de ticket (independiente por mes);\n     · ruido anual en el costo variable (proveedores, merma). */\n  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA), res=new Array(N_SIM);\n  for(let i=0;i\u003cN_SIM;i++){\n    const fAnual=Math.exp(gaussiana(rng)*U.demandaAnual - U.demandaAnual*U.demandaAnual/2);\n    const cvSim=acota(e.cvEff + gaussiana(rng)*U.costoVariable, 0.02, 0.98);\n    let total=0;\n    for(let m=0;m\u003c12;m++){\n      const rampa=Math.pow(1+(e.crec||0), m/12);\n      const muM=e.mu*e.estacion[m]*rampa*fAnual;\n      const cli=Math.max(0, muM + gaussiana(rng)*U.demandaMensual*muM);\n      const tk =Math.max(1, e.ticket + gaussiana(rng)*U.ticket*e.ticket);\n      total += cli*e.diasMes*tk*(1-cvSim) - e.fijos;\n    }\n    res[i]=total;\n  }\n  res.sort((a,b)=>a-b);\n  const media=res.reduce((s,x)=>s+x,0)/N_SIM;\n  const sd=Math.sqrt(res.reduce((s,x)=>s+(x-media)**2,0)/(N_SIM-1));\n  return {res, media, sd, p025:cuantil(res,.025), p05:cuantil(res,.05), p50:cuantil(res,.5),\n          p95:cuantil(res,.95), p975:cuantil(res,.975),\n          pPos:res.filter(x=>x>0).length/N_SIM};\n}\n\n/* Cuantil empírico con interpolación lineal (tipo 7 de Hyndman–Fan, el de R/NumPy). */\nfunction cuantil(ordenados,p){\n  const h=(ordenados.length-1)*p, lo=Math.floor(h), hi=Math.ceil(h);\n  return ordenados[lo]+(ordenados[hi]-ordenados[lo])*(h-lo);\n}\n\n/* ---------- 8-bis. Rango plausible de P (incertidumbre de los β) ----------\n   Los β son supuestos del equipo, no estimaciones con error estándar. Para no\n   presentar P como exacta, se perturba z: cada contribución βᵢ con DE relativa\n   de 30 % y el intercepto con DE 0.15, y se reportan P5–P95 de P.\n   Es un análisis de sensibilidad, NO un intervalo de confianza muestral. */\nfunction rangoP(modelo){\n  if(modelo._rangoP) return modelo._rangoP;   // memo: se consulta varias veces por recálculo\n  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA+1), n=1000, ps=new Array(n);\n  for(let i=0;i\u003cn;i++){\n    let z=BETA0+gaussiana(rng)*U.intercepto;\n    for(const c of modelo.contribs) z+=c[1]*(1+gaussiana(rng)*U.betaRelativa);\n    ps[i]=acota(sigmoide(z),0.04,0.93);\n  }\n  ps.sort((a,b)=>a-b);\n  return (modelo._rangoP={p05:cuantil(ps,.05), p50:cuantil(ps,.5), p95:cuantil(ps,.95)});\n}\n\n\n// El build incluye este código y el motor en el mismo Blob.\nself.onmessage = ({data: {id, e, modelo}}) => {\n  self.postMessage({id, mc: monteCarlo(e), rango: rangoP(modelo)});\n};\n"],{type:"text/javascript"}));
+    const worker=new Worker(url);
+    worker.onmessage=({data:{id,mc,rango}})=>{
+      if(id===solicitudCalculo?.id) terminarCalculo(solicitudCalculo,mc,rango);
+    };
+    worker.onerror=ev=>{
+      ev.preventDefault();
+      usarCalculoSincrono(worker);
+    };
+    worker.onmessageerror=()=>usarCalculoSincrono(worker);
+    return worker;
+  }catch{
+    return null;
+  }finally{
+    if(url) URL.revokeObjectURL(url);
+  }
+}
+function usarCalculoSincrono(worker){
+  worker?.terminate();
+  workerActivo=null;
+  if(solicitudCalculo) terminarCalculo(solicitudCalculo,monteCarlo(solicitudCalculo.e));
+}
 function calcular(){
+  clearTimeout(tVivo);
+  tVivo=null;
   const e=leerEscenario();
   const modelo=modeloLogistico(e);
+  solicitudCalculo={id:++versionCalculo,e,modelo};
+  if(workerActivo){
+    marcarPendiente();
+    try{
+      workerActivo.postMessage(solicitudCalculo);
+      return;
+    }catch{
+      usarCalculoSincrono(workerActivo);
+      return;
+    }
+  }
+  usarCalculoSincrono(null);
+}
+function terminarCalculo({id,e,modelo},mc,rango){
+  solicitudCalculo=null;
+  if(rango) modelo._rangoP=rango;
   const S=curvaSupervivencia(modelo.P);
-  const mc=monteCarlo(e);
   pintarVeredicto(modelo.P);
   const vpn=pintarKPIs(e,mc,S,modelo);
   pintarLectura(e,mc,modelo,vpn);
   ultimoResumen=resumenEscenario(e,modelo,mc,finanzas(e,mc,S));
   /* Lo que está fuera de la vista se pinta en tareas separadas (<50 ms cada una)
      para no bloquear el hilo principal; una versión nueva cancela la anterior. */
-  const v=++versionCalculo;
   [()=>pintarGraficas(e,mc,S,modelo), ()=>pintarMapa(e,modelo), ()=>pintarFODA(e,modelo,mc), ()=>pintarWidgets(e,modelo,mc,S), ()=>pintarExplorar(e,modelo,mc,S)]
-    .forEach(f=>setTimeout(()=>{ if(v===versionCalculo) f(); },0));
+    .forEach(f=>setTimeout(()=>{ if(id===versionCalculo) f(); },0));
 }
-let versionCalculo=0;
 /* ---------- 15. Barra de progreso y navegación activa ---------- */
 (function navViva(){
   const barra=$("progreso");

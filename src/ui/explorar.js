@@ -126,7 +126,7 @@ $("mapa25Abrir").addEventListener("click",()=>{
 function marcarPendiente(){
   const v=$("escVigente"); if(!v) return;
   v.dataset.estado="pendiente";
-  $("evEstado").textContent="Recalculando… se muestra la última simulación válida";
+  $("evEstado").textContent=ultimoEsc?"Recalculando… se muestra la última simulación válida":"Recalculando…";
 }
 function marcarVigente(e){
   const v=$("escVigente"); if(!v) return;
@@ -135,7 +135,6 @@ function marcarVigente(e){
   $("evNombre").textContent=e.giro.n+" · "+CORTOS[e.zonaKey]+" · "+Math.round(e.muBase||e.mu)+" clientes/día";
   $("evHora").textContent="calculado "+new Date().toLocaleTimeString("es-MX",{hour:"2-digit",minute:"2-digit",second:"2-digit"});
 }
-["input","change"].forEach(t=>$("forma").addEventListener(t,marcarPendiente));
 $("restablecer").addEventListener("click",()=>{
   $("forma").reset();
   /* Las opciones de giro y zona se crean por JS: reset() las deja en la primera; se fijan a la referencia. */
@@ -301,7 +300,7 @@ $("trazaLista").addEventListener("keydown",ev=>{
 /* Punto de entrada desde calcular() (tarea diferida, después del mapa). */
 function pintarExplorar(e,modelo,mc,S){
   ultimoEsc=e; ultimoModelo=modelo; ultimoMC=mc; ultimoS=S;
-  marcarVigente(e);
+  if(!tVivo && !solicitudCalculo) marcarVigente(e);
   if(document.activeElement!==$("demoClientes")) $("demoClientes").value=Math.round(e.muBase||e.mu);
   pintarDemo(); pintarMapa25(); pintarSupervivencia(); pintarMeta(); pintarSuperficie(); pintarTraza();
 }

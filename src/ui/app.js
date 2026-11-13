@@ -31,6 +31,8 @@ $("dado").addEventListener("click",()=>{
 });
 let tVivo=null;
 ["input","change"].forEach(ev=>$("forma").addEventListener(ev,()=>{
+  solicitudCalculo=null;
+  marcarPendiente();
   clearTimeout(tVivo); tVivo=setTimeout(calcular,220);
 }));
 
@@ -238,22 +240,65 @@ function pintarFODA(e, modelo, mc){
 
 /* ---------- 14. Orquestación ---------- */
 $("forma").addEventListener("submit",ev=>ev.preventDefault()); /* sin botón: solo cálculo en vivo */
+let versionCalculo=0, solicitudCalculo=null;
+let workerActivo=crearWorkerCalculo();
+function crearWorkerCalculo(){
+  if(typeof Worker!=="function") return null;
+  let url;
+  try{
+    url=URL.createObjectURL(new Blob([/*@@WORKER@@*/ null],{type:"text/javascript"}));
+    const worker=new Worker(url);
+    worker.onmessage=({data:{id,mc,rango}})=>{
+      if(id===solicitudCalculo?.id) terminarCalculo(solicitudCalculo,mc,rango);
+    };
+    worker.onerror=ev=>{
+      ev.preventDefault();
+      usarCalculoSincrono(worker);
+    };
+    worker.onmessageerror=()=>usarCalculoSincrono(worker);
+    return worker;
+  }catch{
+    return null;
+  }finally{
+    if(url) URL.revokeObjectURL(url);
+  }
+}
+function usarCalculoSincrono(worker){
+  worker?.terminate();
+  workerActivo=null;
+  if(solicitudCalculo) terminarCalculo(solicitudCalculo,monteCarlo(solicitudCalculo.e));
+}
 function calcular(){
+  clearTimeout(tVivo);
+  tVivo=null;
   const e=leerEscenario();
   const modelo=modeloLogistico(e);
+  solicitudCalculo={id:++versionCalculo,e,modelo};
+  if(workerActivo){
+    marcarPendiente();
+    try{
+      workerActivo.postMessage(solicitudCalculo);
+      return;
+    }catch{
+      usarCalculoSincrono(workerActivo);
+      return;
+    }
+  }
+  usarCalculoSincrono(null);
+}
+function terminarCalculo({id,e,modelo},mc,rango){
+  solicitudCalculo=null;
+  if(rango) modelo._rangoP=rango;
   const S=curvaSupervivencia(modelo.P);
-  const mc=monteCarlo(e);
   pintarVeredicto(modelo.P);
   const vpn=pintarKPIs(e,mc,S,modelo);
   pintarLectura(e,mc,modelo,vpn);
   ultimoResumen=resumenEscenario(e,modelo,mc,finanzas(e,mc,S));
   /* Lo que está fuera de la vista se pinta en tareas separadas (<50 ms cada una)
      para no bloquear el hilo principal; una versión nueva cancela la anterior. */
-  const v=++versionCalculo;
   [()=>pintarGraficas(e,mc,S,modelo), ()=>pintarMapa(e,modelo), ()=>pintarFODA(e,modelo,mc), ()=>pintarWidgets(e,modelo,mc,S), ()=>pintarExplorar(e,modelo,mc,S)]
-    .forEach(f=>setTimeout(()=>{ if(v===versionCalculo) f(); },0));
+    .forEach(f=>setTimeout(()=>{ if(id===versionCalculo) f(); },0));
 }
-let versionCalculo=0;
 /* ---------- 15. Barra de progreso y navegación activa ---------- */
 (function navViva(){
   const barra=$("progreso");
