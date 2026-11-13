@@ -12,6 +12,7 @@ test('cada apartado se abre como página propia y respeta atrás/adelante', asyn
   await expect(page).toHaveTitle(/^Simulador · /);
   await expect(page.locator('.nav-links a[aria-current="page"]')).toHaveText('Simulador');
   await page.click('.nav-links a[data-vista="metodologia"]');
+  await expect(page.locator('#metodologia')).toBeVisible();
   expect(await visibles(page)).toEqual(['metodologia', 'trazabilidad', 'lectura']);
   await page.goBack();
   await expect(page.locator('#simulador')).toBeVisible();
