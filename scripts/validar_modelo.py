@@ -10,8 +10,8 @@ import math
 import sys
 
 # ---- Constantes copiadas de index.html (sección 1) ----
-# INEGI, Demografía de los Negocios 1989–2019 (t=1..5); t=6..10 interpolación geométrica.
-S0 = [1, 0.6908, 0.4812, 0.4261, 0.3871, 0.3568, 0.3410, 0.3259, 0.3114, 0.2976, 0.2844]
+# INEGI, Demografía de los Negocios 1989–2019, Nal_Tot_CE2019, p(x) redondeada.
+S0 = [1, 0.6908, 0.4812, 0.4261, 0.3871, 0.3568, 0.3320, 0.3111, 0.2930, 0.2770, 0.2627]
 BETA0 = math.log(S0[3] / (1 - S0[3]))
 N_SIM, SEMILLA = 2000, 20262
 GIRO_CAFETERIA_Z = -0.08
@@ -27,7 +27,7 @@ DEF = dict(
     mktGasto=1500, crec=0.08, inf=0.045,
 )
 
-# Referencia v3 (12-nov-2026): S0 oficial INEGI, β₀ = logit(S0(3)), ticket/CV de Cafetería, MC con choque anual.
+# Referencia v5: tabulado nacional completo del INEGI, β₀ = logit(S0(3)).
 REFERENCIA = dict(P=0.5155, util=60371, roi=3.029, payback=4, vpn=912776)
 INC = dict(demandaMensual=0.22, ticket=0.08, demandaAnual=0.15, costoVariable=0.02)
 

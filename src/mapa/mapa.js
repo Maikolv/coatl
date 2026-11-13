@@ -139,9 +139,13 @@ function usarEsquema(){
   $("mapaReal").hidden=true; $("mapaEsquema").hidden=false;
   $("btnMapaEsquema").classList.add("activa"); $("btnMapaReal").classList.remove("activa");
 }
-function usarReal(){
-  if(!initLeaflet()){ toast("El mapa real no está disponible (revisa tu conexión); mostrando el esquema."); usarEsquema(); return; }
+let cargaLeaflet;
+async function usarReal(){
   cayoEsquema=false;
+  cargaLeaflet ??= cargarBiblioteca("libLeaflet");
+  await cargaLeaflet;
+  if(cayoEsquema) return;
+  if(!initLeaflet()){ toast("El mapa real no está disponible (revisa tu conexión); mostrando el esquema."); usarEsquema(); return; }
   $("mapaReal").hidden=false; $("mapaEsquema").hidden=true;
   $("btnMapaReal").classList.add("activa"); $("btnMapaEsquema").classList.remove("activa");
   setTimeout(()=>{mapaL.invalidateSize(); actualizarLeaflet();},60);

@@ -6,7 +6,7 @@ import { cargarModelo, escenarioReferencia } from './cargar.mjs';
 const M = cargarModelo();
 const cerca = (a, b, tol, msj) => assert.ok(Math.abs(a - b) <= tol, `${msj}: ${a} vs ${b}`);
 
-// Escenario de referencia v3 (12-nov-2026): S0 oficial INEGI 1989–2019 y β₀ = logit(S0(3)).
+// Referencia v5: tabulado nacional del INEGI 1989–2019 y β₀ = logit(S0(3)).
 test('escenario de referencia Cafetería · Los Héroes', () => {
   const e = escenarioReferencia(M);
   const m = M.modeloLogistico(e);
@@ -92,8 +92,8 @@ test('los controles de modelo de negocio, permisos, modalidad y horario mueven P
   assert.equal(M.modeloLogistico(escenarioReferencia(M, { modZ: 0, permZ: 0, modalZ: 0, horZ: 0 })).P, base);
 });
 
-test('S0 coincide con la tabla oficial del INEGI 1989–2019 (t = 1…5) y β₀ reproduce S0(3)', () => {
-  const q = [0.3092, 0.5188, 0.5739, 0.6129, 0.6432];
-  q.forEach((qx, x) => cerca(M.S0[x + 1], 1 - qx, 1e-4, 'S0(' + (x + 1) + ')'));
+test('S0 coincide con la tabla oficial del INEGI 1989–2019 (t = 1…10) y β₀ reproduce S0(3)', () => {
+  const p = [0.69084109, 0.48118175, 0.42614088, 0.38708876, 0.35679758, 0.33204789, 0.31112232, 0.29299577, 0.27700701, 0.26270459];
+  assert.deepEqual(Array.from(M.S0), [1, ...p.map(px => Number(px.toFixed(4)))]);
   cerca(1 / (1 + Math.exp(-M.BETA0)), M.S0[3], 1e-12, 'sigmoide(β₀)');
 });

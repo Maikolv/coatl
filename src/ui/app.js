@@ -319,7 +319,12 @@ function terminarCalculo({id,e,modelo},mc,rango){
 })();
 
 /* ---------- 16. Arranque ---------- */
-if(!initLeaflet()) usarEsquema();
+const observarMapa=new IntersectionObserver(([entrada])=>{
+  if(!entrada.isIntersecting) return;
+  observarMapa.disconnect();
+  if(!$("mapaReal").hidden) usarReal();
+},{rootMargin:"200px 0px"});
+observarMapa.observe($("mapa"));
 /* ---------- 15. Modo Oráculo (tema cyber conmutable) ---------- */
 (function modoOraculo(){
   const btn=$("btnTema"), txt=$("temaTexto"), cita=$("oraculoCita");

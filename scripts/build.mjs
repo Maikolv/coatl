@@ -39,7 +39,8 @@ export function construir() {
   const cssFinal = css + '\n/* estilos en línea movidos por el build */\n' + reglas.join('\n') + '\n';
   let html = plantilla
     .replace('/*@@CSS@@*/', () => cssFinal)
-    .replace('/*@@JS@@*/', () => js);
+    .replace('/*@@JS@@*/', () => js)
+    .replace('@@FOTO_PALACIO@@', () => fs.readFileSync(path.join(raiz, 'assets/img/palacio-coacalco.webp')).toString('base64'));
   // CSP sin 'unsafe-inline' para scripts: se autoriza solo el script en línea por su hash
   // (hallazgo de HawkScan «CSP: script-src unsafe-inline»).
   const inline = html.match(/<script>([\s\S]*?)<\/script>/);

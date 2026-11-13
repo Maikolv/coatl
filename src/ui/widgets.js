@@ -89,9 +89,12 @@ $("compartirURL").addEventListener("click",async()=>{
 });
 
 /* Exportar: PNG compuesto (encabezado + KPIs + gráficas) y PDF vía impresión del navegador. */
-$("exportarPDF").addEventListener("click",()=>window.print());
-$("exportarPNG").addEventListener("click",()=>{
-  const W=1400, graf=graficasListas(["graficaSupervivencia","graficaMC","graficaTornado","graficaPE"]), alto=230+Math.ceil(graf.length/2)*420+60;
+$("exportarPDF").addEventListener("click",async()=>{
+  await graficasListas([...PENDIENTES.keys()].map(c=>c.id));
+  window.print();
+});
+$("exportarPNG").addEventListener("click",async()=>{
+  const W=1400, graf=await graficasListas(["graficaSupervivencia","graficaMC","graficaTornado","graficaPE"]), alto=230+Math.ceil(graf.length/2)*420+60;
   const cv=document.createElement("canvas"); cv.width=W; cv.height=alto;
   const x=cv.getContext("2d");
   x.fillStyle=COL.hueso; x.fillRect(0,0,W,alto);

@@ -153,13 +153,13 @@ function pintarSupervivencia(){
     const sb=curvaSupervivencia(rp.p05), sa=curvaSupervivencia(rp.p95);
     $("supAnioV").textContent=t;
     $("supCapas").innerHTML=
-      '<div class="capa25 contexto" data-v="'+S0[t]+'"><span>Nacional (INEGI'+(t>5?", interpolado":"")+')</span><b>'+pct(S0[t])+'</b></div>'+
+      '<div class="capa25 contexto" data-v="'+S0[t]+'"><span>Nacional (INEGI)</span><b>'+pct(S0[t])+'</b></div>'+
       '<div class="capa25 banda" data-a="'+sb[t]+'" data-b="'+sa[t]+'"><span>Sensibilidad P5–P95</span><b>'+pct(sb[t])+' – '+pct(sa[t])+'</b></div>'+
       '<div class="capa25 resultado" data-v="'+ultimoS[t]+'"><span>Tu escenario</span><b>'+pct(ultimoS[t])+'</b></div>';
     $("supCapas").querySelectorAll(".capa25[data-v]").forEach(c=>c.style.setProperty("--v",(+c.dataset.v*100).toFixed(1)));
     const b=$("supCapas").querySelector(".banda"); b.style.setProperty("--a",(sb[t]*100).toFixed(1)); b.style.setProperty("--b",(sa[t]*100).toFixed(1));
     $("supTabla").innerHTML='<caption class="sr-only">Supervivencia por año</caption><thead><tr><th scope="col">Año</th><th scope="col">Tu escenario</th><th scope="col">P5–P95</th><th scope="col">Nacional</th></tr></thead><tbody>'+
-      [1,2,3,5,10].map(a=>'<tr'+(a===t?' class="actual"':"")+'><th scope="row">'+a+'</th><td>'+pct(ultimoS[a])+'</td><td>'+pct(sb[a])+'–'+pct(sa[a])+'</td><td>'+pct(S0[a])+(a>5?"*":"")+'</td></tr>').join("")+"</tbody>";
+      [1,2,3,5,10].map(a=>'<tr'+(a===t?' class="actual"':"")+'><th scope="row">'+a+'</th><td>'+pct(ultimoS[a])+'</td><td>'+pct(sb[a])+'–'+pct(sa[a])+'</td><td>'+pct(S0[a])+'</td></tr>').join("")+"</tbody>";
   });
 }
 $("supAnio").addEventListener("input",pintarSupervivencia);
@@ -259,7 +259,7 @@ const TRAZA=[
   {id:"rango", r:"Rango plausible de P (P5–P95)", v:()=>ultimoModelo?pct(rangoP(ultimoModelo).p05)+" – "+pct(rangoP(ultimoModelo).p95):"—", formula:"βᵢ·(1+0.30ε), β₀+0.15ε; 1,000 sorteos",
    vars:"Los mismos βᵢ del modelo logístico", fuente:"Análisis de sensibilidad del equipo (no es un intervalo muestral)", periodo:"—", tipo:"resultado", sup:"Desviaciones de 30 % y 0.15: estimación del equipo", url:""},
   {id:"S", r:"Curva de supervivencia S(t)", v:()=>ultimoS?"S(5) = "+pct(ultimoS[5]):"—", formula:"S(t) = S₀(t)^h, h = ln P / ln S₀(3)",
-   vars:"P y la tabla nacional S₀(t)", fuente:"INEGI, Demografía de los Negocios (t = 1…5)", periodo:"1989–2019", tipo:"dato oficial + supuesto", sup:"t = 6…10 interpolado por el equipo; sin ajuste municipal", url:"https://www.inegi.org.mx/contenidos/programas/dn/2021/doc/Nota_Demo_Negocios.pdf"},
+   vars:"P y la tabla nacional S₀(t)", fuente:"INEGI, tabulado nacional de supervivencia (t = 1…10)", periodo:"1989–2019", tipo:"dato oficial + supuesto", sup:"Tabla nacional aplicada a Coacalco sin ajuste municipal", url:"https://www.inegi.org.mx/contenidos/programas/dn/2019/tabulados/Nal_Tot_CE2019.xlsx"},
   {id:"U", r:"Utilidad mensual esperada", v:()=>ultimoEsc?mxn.format(Math.round(ultimoEsc.utilMes)):"—", formula:"U = μ·días·t̄·(1−cv′) − CF",
    vars:"Clientes/día, días, ticket, costo variable + merma, renta, nómina, otros fijos, marketing, intereses", fuente:"Entradas del usuario; ticket y CV por giro como valor inicial", periodo:"Mes típico", tipo:"resultado", sup:"Ticket, CV y demanda por giro: estimación del equipo", url:""},
   {id:"MC", r:"Utilidad anual P5 · P50 · P95", v:()=>ultimoMC?mxn.format(Math.round(ultimoMC.p05))+" · "+mxn.format(Math.round(ultimoMC.p50))+" · "+mxn.format(Math.round(ultimoMC.p95)):"—", formula:"2,000 años; F ~ LogN; clientes ~ N(μF,(0.22μF)²); ticket ~ N(t̄,(0.08t̄)²)",

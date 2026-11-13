@@ -46,12 +46,10 @@ const ZONAS = {
   periferia: {n:"Zonas habitacionales periféricas",                  afl:0.78, rm2:90,  z:-0.18}
 };
 /* Supervivencia nacional S0(t), t = 0…10 años.
-   t = 1…5: INEGI, Demografía de los Negocios 1989–2019, S(x+1) = 1 − q(x) con
-   q(0)=0.3092, q(1)=0.5188, q(2)=0.5739, q(3)=0.6129, q(4)=0.6432 (E(0) = 8.4 años).
-   Fuente: «Nota sobre los indicadores de la Demografía de los Negocios», INEGI, 2021.
-   t = 6…10: INTERPOLACIÓN GEOMÉTRICA del equipo entre S(5)=0.3568 y S(32)=1−0.8952=0.1048
-   (la nota publica solo x = 0…4 y 30…34). Marcado como supuesto. */
-const S0 = [1, 0.6908, 0.4812, 0.4261, 0.3871, 0.3568, 0.3410, 0.3259, 0.3114, 0.2976, 0.2844];
+   INEGI, Demografía de los Negocios 1989–2019, tabulado Nal_Tot_CE2019,
+   columna p(x), edades 0…9: S0(x+1) = p(x), redondeada a cuatro decimales.
+   https://www.inegi.org.mx/contenidos/programas/dn/2019/tabulados/Nal_Tot_CE2019.xlsx */
+const S0 = [1, 0.6908, 0.4812, 0.4261, 0.3871, 0.3568, 0.3320, 0.3111, 0.2930, 0.2770, 0.2627];
 /* Intercepto calibrado: un escenario neutro reproduce S0(3) nacional → β₀ = logit(0.4261). */
 const BETA0 = Math.log(S0[3]/(1-S0[3]));
 const ESTACION = {

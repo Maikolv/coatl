@@ -44,8 +44,9 @@ test('mapa: 6 zonas en ranking y comparador', async ({ page }) => {
 
 test('FODA: escenarios P5 / mediana / P95 ordenados', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  const v = await page.locator('#triplete .universo .v').allTextContents();
-  expect(v).toHaveLength(3);
+  const valores = page.locator('#triplete .universo .v');
+  await expect(valores).toHaveCount(3);
+  const v = await valores.allTextContents();
   const n = v.map((t) => Number(t.replace(/[^0-9-]/g, '')));
   expect(n[0]).toBeLessThan(n[1]);
   expect(n[1]).toBeLessThan(n[2]);
@@ -56,8 +57,8 @@ test('compartir por URL reproduce el escenario', async ({ page, context }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
   await page.locator('#giro').selectOption('farmacia', { force: true });
   await page.locator('#reserva').selectOption('0.35', { force: true });
-  await page.waitForTimeout(1500); // recálculo (220 ms) + animación del contador (650 ms)
-  const p = await page.locator('#probNum').textContent();
+  await expect(page.locator('#escVigente')).toHaveAttribute('data-estado', 'vigente');
+  const p = await page.locator('#fodaP').textContent();
   await page.click('#compartirURL');
   const url = page.url();
   expect(url).toContain('#e=');
@@ -69,9 +70,10 @@ test('compartir por URL reproduce el escenario', async ({ page, context }) => {
 
 test('comparar escenarios lado a lado', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#evNombre')).toContainText('Cafetería');
   await page.click('#guardarEsc');
   await page.locator('#zona').selectOption('centro', { force: true });
-  await page.waitForTimeout(400);
+  await expect(page.locator('#evNombre')).toContainText('Centro');
   await page.click('#guardarEsc');
   await expect(page.locator('#tablaComparar thead th')).toHaveCount(3);
 });
