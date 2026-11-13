@@ -10,16 +10,17 @@ await p.screenshot({ path: 'entregables/diagrama-proceso.png', fullPage: true })
 fs.copyFileSync('entregables/diagrama-proceso.png', 'docs/diagrama-proceso.png');
 if (process.argv.includes('--sitio')) {
   fs.mkdirSync('docs/capturas', { recursive: true });
+  // Una captura completa (página entera, sin cortes) por apartado de la navegación.
   await p.setViewportSize({ width: 1366, height: 900 });
-  await p.goto(process.env.COATL_URL || 'http://127.0.0.1:8123/');
-  await p.waitForTimeout(2500);
-  await p.evaluate(() => { document.querySelectorAll('.revela').forEach((e) => e.classList.add('visible')); document.querySelector('.nav').style.position = 'static'; });
-  await p.waitForTimeout(900);
-  await p.screenshot({ path: 'docs/capturas/inicio.png' });
-  for (const [id, archivo] of [['explorar', 'explorar'], ['simulador', 'simulador'], ['analisis', 'analisis'], ['explorarResultados', 'resultados'], ['mapa', 'mapa'], ['estrategia', 'foda'], ['trazabilidad', 'trazabilidad']]) {
-    await p.locator('#' + id).scrollIntoViewIfNeeded();
+  const base = process.env.COATL_URL || 'http://127.0.0.1:8000/';
+  for (const [hash, archivo] of [['inicio', 'inicio'], ['simulador', 'simulador'], ['contexto', 'territorio'], ['denue', 'denue'], ['empresas', 'empresas'], ['estrategia', 'estrategia'], ['metodologia', 'metodologia']]) {
+    await p.goto(base + '#' + hash);
+    await p.waitForTimeout(2500);
+    const alto = await p.evaluate(() => document.documentElement.scrollHeight);
+    for (let y = 0; y < alto; y += 600) { await p.evaluate((v) => scrollTo(0, v), y); await p.waitForTimeout(250); }  // dispara gráficas y animaciones diferidas
+    await p.evaluate(() => { document.querySelectorAll('.revela').forEach((e) => e.classList.add('visible')); document.querySelector('.nav').style.position = 'static'; scrollTo(0, 0); });
     await p.waitForTimeout(1200);
-    await p.locator('#' + id).screenshot({ path: `docs/capturas/${archivo}.png` });
+    await p.screenshot({ path: 'docs/capturas/' + archivo + '.png', fullPage: true });
   }
 }
 await nav.close();

@@ -39,7 +39,7 @@ const CSV = ['mes,ventas,clientes,costo_variable,costos_fijos',
     `2025-${String(i + 1).padStart(2, '0')},${v * 1000},${Math.round(v * 1000 / 95)},${Math.round(v * 410)},27000`)].join('\n');
 
 test('Empresas: analiza un CSV sin hacer ninguna petición de red', async ({ page }) => {
-  await ir(page);
+  await page.goto('/#empresas', { waitUntil: 'domcontentloaded' });
   await page.locator('#empresas').scrollIntoViewIfNeeded();
   await page.waitForTimeout(1500);
   const peticiones = [];
@@ -52,12 +52,13 @@ test('Empresas: analiza un CSV sin hacer ninguna petición de red', async ({ pag
   expect(peticiones).toEqual([]);
   await page.click('#empAplicar');
   await expect(page.locator('#ticket')).toHaveValue('95');
+  await page.evaluate(() => { location.hash = '#empresas'; });  // aplicar abre la página del simulador
   await page.click('#empBorrar');
   await expect(page.locator('#empResultados')).toBeHidden();
 });
 
 test('Empresas: archivo inválido muestra un error claro', async ({ page }) => {
-  await ir(page);
+  await page.goto('/#empresas', { waitUntil: 'domcontentloaded' });
   await page.setInputFiles('#empArchivo', { name: 'malo.csv', mimeType: 'text/csv', buffer: Buffer.from('mes,ventas\n2025-01,10') });
   await expect(page.locator('#wEmpresa')).toHaveAttribute('data-estado', 'error');
   await expect(page.locator('#wEmpresa-estado')).toContainText('Faltan columnas');

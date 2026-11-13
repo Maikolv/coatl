@@ -7,9 +7,7 @@ Simulador estadístico que estima la **probabilidad de que un negocio siga opera
 **Autores:** Miguel Antonio Cruz García · Bruno Alejandro López Bautista · Alonso Arroyo Cortés
 **Materia:** Probabilidad y Estadística · Mtra. Noemí Daniela Palacios Fermín · Jornada Académica Empresarial 2026
 
-![Inicio de COATL](docs/capturas/inicio.png)
-
-![Recorrido exploratorio](docs/capturas/explorar.png)
+![Inicio de COATL: página completa](docs/capturas/inicio.png)
 
 ## Qué hace
 
@@ -26,7 +24,45 @@ Simulador estadístico que estima la **probabilidad de que un negocio siga opera
 | Para empresas | Carga confidencial de CSV/Excel: el análisis corre solo en el navegador, con bootstrap de los meses propios |
 | Herramientas | Comparar 3 escenarios, compartir por URL, exportar PNG/PDF, restablecer referencia |
 
+### Capturas completas por apartado
+
+Cada imagen es la página entera, sin cortes (`node scripts/capturas.mjs --sitio`).
+
+<details><summary><b>Simulador</b> · página completa</summary>
+
 ![Simulador](docs/capturas/simulador.png)
+
+</details>
+
+<details><summary><b>Territorio</b> · página completa</summary>
+
+![Territorio](docs/capturas/territorio.png)
+
+</details>
+
+<details><summary><b>DENUE</b> · página completa</summary>
+
+![DENUE](docs/capturas/denue.png)
+
+</details>
+
+<details><summary><b>Empresas</b> · página completa</summary>
+
+![Empresas](docs/capturas/empresas.png)
+
+</details>
+
+<details><summary><b>Estrategia</b> · página completa</summary>
+
+![Estrategia](docs/capturas/estrategia.png)
+
+</details>
+
+<details><summary><b>Metodología</b> · página completa</summary>
+
+![Metodología](docs/capturas/metodologia.png)
+
+</details>
 
 ## Funciones principales (v6)
 
