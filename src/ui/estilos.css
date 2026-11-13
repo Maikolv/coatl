@@ -609,3 +609,4 @@ img{max-width:100%}
 .lista-supuestos li{margin-bottom:.35rem}
 body.oraculo .accion .cuerpo h3{color:#F3EEFC}
 .cuadro:focus-visible,.pestana:focus-visible{outline:3px solid var(--granate);outline-offset:-3px}
+.accion[data-clic]{cursor:pointer}
