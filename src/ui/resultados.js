@@ -90,7 +90,7 @@ Chart.defaults.animation=false;
       scales:{y:{beginAtZero:true,grid:{color:"#F4E2E1"}},x:{grid:{display:false}}}}});
   new Chart($("graficaSectores"),{type:"doughnut",data:{
     labels:["Comercio al por menor","Servicios","Manufactura","Otros"],
-    datasets:[{data:[48,38,9,5],backgroundColor:["#C8102E","#7A0C1F","#E2233F","#E9B9BE"],borderColor:"#fff",borderWidth:3}]},
+    datasets:[{data:[45.9,45.0,6.0,3.0],backgroundColor:["#C8102E","#7A0C1F","#E2233F","#E9B9BE"],borderColor:"#fff",borderWidth:3}]},
     options:{responsive:true,maintainAspectRatio:false,cutout:"58%",
       plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:c=>c.label+": "+c.parsed+"% del padrón"}}}}});
 })();

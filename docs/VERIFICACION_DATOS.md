@@ -21,7 +21,7 @@ Cada cifra que muestra COATL se cotejó con su fuente primaria.
 | «De cada 100 negocios…» | 31 mueren el primer año; ~36 llegan a 5 años | ✏️ Antes 33 y 35 | Misma nota del INEGI |
 | Esperanza de vida por sector (9.7 / 8.0 / 6.9) | — | ✏️ **Eliminado** | No se encontró en la edición 1989–2019. Las cifras sectoriales que circulan son de otra edición |
 | Supervivencia nacional a 3 años (referencia en la lectura) | 42.6 % | ✏️ Antes 46 % | S₀(3) del INEGI |
-| Distribución sectorial (48 / 38 / 9 / 5 %) | — | ⚠️ | Las fuentes municipales no publican el desglose; queda rotulado como estimación del equipo |
+| Distribución sectorial de Coacalco | 45.9 % comercio al por menor · 45.0 % servicios · 6.0 % manufactura · 3.0 % otros | ✅ Confirmada | INEGI, DENUE 05/2026, CSV del Estado de México |
 | Afluencia y renta por zona, ticket / CV / demanda por giro, coeficientes β | — | ⚠️ | Supuestos del equipo, declarados y editables en el simulador |
 
 ## Impacto en el modelo
@@ -35,4 +35,25 @@ Cada cifra que muestra COATL se cotejó con su fuente primaria.
 1. Abre la [nota del INEGI](https://www.inegi.org.mx/contenidos/programas/dn/2021/doc/Nota_Demo_Negocios.pdf). En la página 1 confirma la tabla q(x): 0.3092, 0.5188, 0.5739, 0.6129, 0.6432; E(0) = 8.4.
 2. Si tu docente pide los años 6–10 exactos, consulta las tablas completas en el sitio de [Demografía de los Negocios del INEGI](https://www.inegi.org.mx/temas/dn/). Reemplaza los valores en `src/datos/datos.js` (`S0`) y en `scripts/validar_modelo.py`, y corre `npm run build && npm test`.
 3. Descarga el CSV de [datos económicos de Coacalco](https://coacalco.gob.mx/datos-economicos/) y confirma 8,517 / 9,710 / 11,018 y 17,179,600.
-4. Para la distribución sectorial, consulta el [DENUE](https://www.inegi.org.mx/app/mapa/denue/) filtrando por municipio 15-020. Con conteos por sector, actualiza `data:[48,38,9,5]` en `src/ui/resultados.js` y quita la marca de «estimación».
+
+## Distribución sectorial de Coacalco
+
+Edición DENUE 05/2026, descargada el 12 de noviembre de 2026. Se filtraron ambos CSV por entidad 15 y municipio 020. El sector se obtuvo de los primeros dos dígitos de `codigo_act`. Cada registro representa un establecimiento.
+
+| Grupo | SCIAN | Parte 1 | Parte 2 | Total | Porcentaje |
+|---|---|---:|---:|---:|---:|
+| Comercio al por menor | 46 | 5,305 | 0 | 5,305 | 45.9 % |
+| Servicios | 51–81 | 305 | 4,899 | 5,204 | 45.0 % |
+| Manufactura | 31–33 | 696 | 0 | 696 | 6.0 % |
+| Otros | Resto | 258 | 91 | 349 | 3.0 % |
+| Total | | 6,564 | 4,990 | 11,554 | 100 % |
+
+Los cuatro porcentajes se redondean por separado y suman 99.9 %. Fuentes: [descarga masiva](https://www.inegi.org.mx/app/descarga/), [CSV 1](https://www.inegi.org.mx/contenidos/masiva/denue/denue_15_1_csv.zip) y [CSV 2](https://www.inegi.org.mx/contenidos/masiva/denue/denue_15_2_csv.zip).
+
+## Fuentes consultadas para giros y zonas
+
+| Variable | Estado | Fuente consultada y alcance |
+|---|---|---|
+| Ticket y demanda por giro | Estimación del equipo | [INEGI, ENIGH 2024](https://www.inegi.org.mx/programas/enigh/nc/2024/). Mide gasto del hogar, sin validar tickets ni clientes diarios por establecimiento. |
+| Costo variable por giro | Estimación del equipo | [INEGI, Censos Económicos (SAIC)](https://www.inegi.org.mx/app/saic/default.html). Los agregados de gastos e ingresos no identifican la proporción variable usada en COATL. |
+| Afluencia y renta comercial por zona | Estimación del equipo | [INEGI, DENUE](https://www.inegi.org.mx/app/mapa/denue/). Identifica establecimientos y actividad, sin mediciones de afluencia ni rentas comerciales por m². |
