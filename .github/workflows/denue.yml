@@ -30,6 +30,8 @@ jobs:
         env:
           DENUE_TOKEN: ${{ secrets.DENUE_TOKEN }}
         run: python scripts/denue_sync.py --salida data/denue
+      - name: Resultado de la validación con la API (token)
+        run: python -c "import json;print(json.load(open('data/denue/meta.json',encoding='utf-8')).get('validacion_api','sin token configurado'))"
       - name: Publicar si cambió
         run: |
           if git diff --quiet -- data/denue ':(exclude)data/denue/meta.json'; then
