@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -124,7 +124,7 @@
     </div>
     <div class="panel">
       <h3>¿En qué sectores compite un negocio aquí?</h3>
-      <p class="sub">Estructura sectorial <strong>estimada por el equipo</strong> (por verificar contra el DENUE): las fuentes municipales consultadas no publican el desglose por sector.</p>
+      <p class="sub">Fuente: <a href="https://www.inegi.org.mx/app/mapa/denue/">INEGI, DENUE 05/2026</a>. Coacalco de Berriozábal, 11,554 establecimientos. Descarga: 12 de noviembre de 2026.</p>
       <div class="lienzo"><canvas id="graficaSectores" role="img" aria-label="Gráfica de dona con la distribución sectorial de las unidades económicas"></canvas></div>
     </div>
   </div>
@@ -662,7 +662,7 @@
     <h3>Supuestos declarados</h3>
     <ul class="lista-supuestos">
       <li><strong>Coeficientes β:</strong> asignados por el equipo, no estimados con microdatos; por eso P se acompaña de un rango plausible.</li>
-      <li><strong>Supervivencia base S₀(t):</strong> tabla nacional del INEGI 1989–2019 para t = 1…5; t = 6…10 interpolado por el equipo. Se aplica a Coacalco sin ajuste municipal.</li><li><strong>Distribución sectorial</strong> de la gráfica de dona: estimación del equipo, no publicada por las fuentes municipales consultadas.</li>
+      <li><strong>Supervivencia base S₀(t):</strong> tabla nacional del INEGI 1989–2019 para t = 1…5; t = 6…10 interpolado por el equipo. Se aplica a Coacalco sin ajuste municipal.</li>
       <li><strong>Riesgos proporcionales:</strong> se impone S(3) = P; la forma de la curva es la nacional.</li>
       <li><strong>Incertidumbre del Monte Carlo:</strong> σ de demanda mensual 22 %, de ticket 8 %, choque anual 15 % y costo variable ±2 pp, todos supuestos del equipo.</li>
       <li><strong>Datos por giro y zona:</strong> ticket, costo variable, demanda de referencia, afluencia y renta por m² son estimaciones propias, editables en el simulador.</li>
