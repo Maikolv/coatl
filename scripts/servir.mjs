@@ -5,7 +5,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 const puerto = Number(process.argv[2] || process.env.PORT || 8000);
 const raiz = path.resolve(process.argv[3] || '.');
-// Cabeceras de seguridad (hallazgos de HawkScan: clickjacking, nosniff). GitHub Pages no permite
+// Cabeceras de seguridad. GitHub Pages no permite
 // cabeceras propias; allí la protección equivalente es la CSP en <meta> del index.html.
 const CABECERAS = {
   'X-Content-Type-Options': 'nosniff',
@@ -20,7 +20,7 @@ http.createServer((req, res) => {
   let ruta;
   try { ruta = decodeURIComponent(new URL(req.url, 'http://x').pathname); }
   catch { res.writeHead(400, CABECERAS).end('Solicitud mal formada'); return; }
-  // Nunca servir archivos ni carpetas ocultas (.git, .env, .claude…): hallazgo de HawkScan «Hidden File Found».
+  // Nunca servir archivos ni carpetas ocultas (.git, .env, .claude…).
   if (ruta.split('/').some((seg) => seg.startsWith('.'))) { res.writeHead(404, CABECERAS).end('No encontrado'); return; }
   if (ruta.endsWith('/')) ruta += 'index.html';
   const archivo = path.join(raiz, path.normalize(ruta));

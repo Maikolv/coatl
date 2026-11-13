@@ -1,0 +1,42 @@
+# Sincroniza el DENUE (INEGI) con la descarga oficial y publica los agregados.
+# Se ejecuta cada semana y a demanda; si los datos cambiaron, hace commit en main y
+# eso dispara «Pruebas y deploy». El INEGI actualiza el DENUE por ediciones (semestral).
+# Opcional: secreto DENUE_TOKEN (token gratuito de la API del DENUE) para validar
+# un conteo contra la API oficial; sin él la sincronización funciona igual.
+name: Sincronizar DENUE
+
+on:
+  schedule:
+    - cron: "17 9 * * 1"   # lunes 03:17 hora del centro de México
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: denue
+  cancel-in-progress: false
+
+jobs:
+  sincronizar:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 90
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - name: Descargar y agregar el DENUE de las 32 entidades
+        env:
+          DENUE_TOKEN: ${{ secrets.DENUE_TOKEN }}
+        run: python scripts/denue_sync.py --salida data/denue
+      - name: Publicar si cambió
+        run: |
+          if git diff --quiet -- data/denue ':(exclude)data/denue/meta.json'; then
+            echo "Sin cambios en los conteos del DENUE."; exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898699+github-actions[bot]@users.noreply.github.com"
+          git add data/denue
+          git commit -m "Datos: sincronización automática del DENUE ($(date -u +%Y-%m-%d))"
+          git push

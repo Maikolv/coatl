@@ -92,6 +92,13 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - **docx / OOXML**: respetar el orden de bordes de párrafo; callouts simples para pasar validación.
 - Flujo de presentación: SVG en Python → Sharp → pptxgenjs → LibreOffice headless a PDF → `pdftoppm` para QA lámina por lámina.
 
+## DENUE y empresas
+
+- `scripts/denue_sync.py` + `.github/workflows/denue.yml` (semanal) generan `data/denue/`; el build lo copia a dist/. Solo conteos, nunca datos de contacto.
+- La API del DENUE requiere token: solo en el secreto `DENUE_TOKEN` de GitHub, nunca en el cliente.
+- `src/ui/empresas.js`: archivos de empresa solo en memoria del navegador; prohibido agregar envío, analítica o localStorage. La CSP es `connect-src 'self'`.
+- Mapeo giro→SCIAN verificado contra `clases.json`; no agregues códigos de memoria.
+
 ## Recorrido exploratorio (v4)
 
 - Profundidad con SVG isométrico, CSS 3D y capas; **sin WebGL/Three.js** (rechazado arriba). Cada widget: pregunta, interacción, respuesta y data-estado (cargando/listo/vacio/error).
@@ -100,7 +107,6 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 
 ## Pendiente
 
-- Seguridad: HawkScan limpio (docs/SEGURIDAD_HAWKSCAN.md); la clave va solo en variable de entorno.
 - Monte Carlo y el rango plausible de P se calculan en un Web Worker desde un Blob generado por el build. Si falla el Worker, se usa el motor síncrono.
 
 - S₀(t) usa el tabulado nacional del INEGI 1989–2019 para t = 1…10. Los datos por giro siguen siendo estimaciones del equipo.

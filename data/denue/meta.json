@@ -1,0 +1,312 @@
+{
+ "fuente": "INEGI, Directorio Estadístico Nacional de Unidades Económicas (DENUE), descarga masiva",
+ "url": "https://www.inegi.org.mx/app/descarga/?ti=6",
+ "sincronizado": "2026-11-13T05:28:11+00:00",
+ "total_establecimientos": 6138075,
+ "entidades": 32,
+ "municipios": 2478,
+ "archivos": [
+  {
+   "archivo": "denue_01_csv.zip",
+   "bytes": 6797877
+  },
+  {
+   "archivo": "denue_02_csv.zip",
+   "bytes": 13720130
+  },
+  {
+   "archivo": "denue_03_csv.zip",
+   "bytes": 3893069
+  },
+  {
+   "archivo": "denue_04_csv.zip",
+   "bytes": 3845263
+  },
+  {
+   "archivo": "denue_05_csv.zip",
+   "bytes": 12113938
+  },
+  {
+   "archivo": "denue_06_csv.zip",
+   "bytes": 3788726
+  },
+  {
+   "archivo": "denue_07_csv.zip",
+   "bytes": 21392585
+  },
+  {
+   "archivo": "denue_08_csv.zip",
+   "bytes": 13749250
+  },
+  {
+   "archivo": "denue_09_csv.zip",
+   "bytes": 45439249
+  },
+  {
+   "archivo": "denue_10_csv.zip",
+   "bytes": 6911602
+  },
+  {
+   "archivo": "denue_11_csv.zip",
+   "bytes": 27962614
+  },
+  {
+   "archivo": "denue_12_csv.zip",
+   "bytes": 15554083
+  },
+  {
+   "archivo": "denue_13_csv.zip",
+   "bytes": 15059273
+  },
+  {
+   "archivo": "denue_14_csv.zip",
+   "bytes": 39432220
+  },
+  {
+   "archivo": "denue_15_1_csv.zip",
+   "bytes": 50572588
+  },
+  {
+   "archivo": "denue_15_2_csv.zip",
+   "bytes": 30236017
+  },
+  {
+   "archivo": "denue_16_csv.zip",
+   "bytes": 26873186
+  },
+  {
+   "archivo": "denue_17_csv.zip",
+   "bytes": 9975747
+  },
+  {
+   "archivo": "denue_18_csv.zip",
+   "bytes": 6601995
+  },
+  {
+   "archivo": "denue_19_csv.zip",
+   "bytes": 21475515
+  },
+  {
+   "archivo": "denue_20_csv.zip",
+   "bytes": 24928890
+  },
+  {
+   "archivo": "denue_21_csv.zip",
+   "bytes": 37421731
+  },
+  {
+   "archivo": "denue_22_csv.zip",
+   "bytes": 10382206
+  },
+  {
+   "archivo": "denue_23_csv.zip",
+   "bytes": 5926665
+  },
+  {
+   "archivo": "denue_24_csv.zip",
+   "bytes": 11881223
+  },
+  {
+   "archivo": "denue_25_csv.zip",
+   "bytes": 12902619
+  },
+  {
+   "archivo": "denue_26_csv.zip",
+   "bytes": 12405139
+  },
+  {
+   "archivo": "denue_27_csv.zip",
+   "bytes": 8348151
+  },
+  {
+   "archivo": "denue_28_csv.zip",
+   "bytes": 13747403
+  },
+  {
+   "archivo": "denue_29_csv.zip",
+   "bytes": 8840434
+  },
+  {
+   "archivo": "denue_30_csv.zip",
+   "bytes": 34453409
+  },
+  {
+   "archivo": "denue_31_csv.zip",
+   "bytes": 10832360
+  },
+  {
+   "archivo": "denue_32_csv.zip",
+   "bytes": 6733922
+  }
+ ],
+ "sectores_scian": {
+  "11": "Agricultura, cría, pesca y forestal",
+  "21": "Minería",
+  "22": "Energía eléctrica, agua y gas",
+  "23": "Construcción",
+  "31": "Industrias manufactureras",
+  "32": "Industrias manufactureras",
+  "33": "Industrias manufactureras",
+  "43": "Comercio al por mayor",
+  "46": "Comercio al por menor",
+  "48": "Transportes, correos y almacenamiento",
+  "49": "Transportes, correos y almacenamiento",
+  "51": "Información en medios masivos",
+  "52": "Servicios financieros y de seguros",
+  "53": "Servicios inmobiliarios y de alquiler",
+  "54": "Servicios profesionales, científicos y técnicos",
+  "55": "Corporativos",
+  "56": "Apoyo a los negocios y manejo de residuos",
+  "61": "Servicios educativos",
+  "62": "Servicios de salud y de asistencia social",
+  "71": "Esparcimiento, cultural y deportivo",
+  "72": "Alojamiento y preparación de alimentos",
+  "81": "Otros servicios (excepto gobierno)",
+  "93": "Actividades legislativas y gubernamentales"
+ },
+ "giros_scian": {
+  "abarrotes": [
+   "461110"
+  ],
+  "tortilleria": [
+   "311830"
+  ],
+  "carniceria": [
+   "461121",
+   "461122",
+   "461123"
+  ],
+  "fruteria": [
+   "461130"
+  ],
+  "fonda": [
+   "722511"
+  ],
+  "taqueria": [
+   "722513",
+   "722514"
+  ],
+  "restaurante": [
+   "722511",
+   "722512"
+  ],
+  "pizzeria": [
+   "722517"
+  ],
+  "cafeteria": [
+   "722515"
+  ],
+  "jugueria": [
+   "722515"
+  ],
+  "panaderia": [
+   "311812"
+  ],
+  "pasteleria": [
+   "311812"
+  ],
+  "papeleria": [
+   "465311"
+  ],
+  "ciber": [
+   "561431",
+   "561432"
+  ],
+  "farmacia": [
+   "464111",
+   "464112"
+  ],
+  "naturista": [
+   "464113"
+  ],
+  "vinateria": [
+   "461211",
+   "461212"
+  ],
+  "ropa": [
+   "463211",
+   "463212",
+   "463213",
+   "463310"
+  ],
+  "joyeria": [
+   "465112",
+   "463215"
+  ],
+  "celulares": [
+   "466212"
+  ],
+  "tecnologia": [
+   "466211",
+   "811211"
+  ],
+  "ferreteria": [
+   "467111"
+  ],
+  "refaccionaria": [
+   "468211",
+   "468213"
+  ],
+  "taller": [
+   "811111",
+   "811112",
+   "811113",
+   "811114",
+   "811115",
+   "811116",
+   "811119"
+  ],
+  "autolavado": [
+   "811192"
+  ],
+  "estetica": [
+   "812110"
+  ],
+  "spa": [],
+  "lavanderia": [
+   "812210"
+  ],
+  "gimnasio": [
+   "713943"
+  ],
+  "veterinaria": [
+   "541941"
+  ],
+  "dental": [
+   "621211",
+   "621212"
+  ],
+  "optica": [
+   "464121",
+   "621320"
+  ],
+  "consultorio": [
+   "621111",
+   "621112",
+   "541110",
+   "541211"
+  ],
+  "educacion": [
+   "611631",
+   "611632",
+   "611691"
+  ],
+  "floreria": [
+   "466312"
+  ]
+ },
+ "clases_compartidas": {
+  "722511": [
+   "fonda",
+   "restaurante"
+  ],
+  "722515": [
+   "cafeteria",
+   "jugueria"
+  ],
+  "311812": [
+   "panaderia",
+   "pasteleria"
+  ]
+ }
+}

@@ -140,3 +140,42 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
   .superficie-rejilla,.celda25,.barra-clientes{transition:none}
   .widget[data-estado="cargando"] .widget-estado::before,.escenario-vigente[data-estado="pendiente"] .ev-punto{animation:none}
 }
+
+/* ---- DENUE nacional ---- */
+.denue-controles{display:flex;flex-wrap:wrap;gap:.8rem 1.2rem;align-items:end}
+.denue-controles label{display:flex;flex-direction:column;gap:.25rem;min-width:200px}
+.denue-controles input[type=search]{font:inherit;padding:.45rem .6rem;border:1px solid var(--niebla-2);border-radius:8px;min-width:240px}
+.denue-cifras{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:.6rem}
+.denue-cifras>div{background:#fff;border:1px solid var(--niebla-2);border-radius:10px;padding:.6rem .8rem}
+.denue-cifras span{display:block;font-size:.74rem;color:#6E464B}
+.denue-cifras b{font-family:var(--display);font-size:1.35rem;color:var(--rojo)}
+.denue-cuerpo{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:1.2rem}
+.denue-h{font-family:var(--display);font-size:.92rem;margin:.4rem 0 .5rem;color:var(--granate)}
+.denue-barras{list-style:none;display:flex;flex-direction:column;gap:.35rem}
+.denue-barras li{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:.15rem .6rem;font-size:.78rem}
+.denue-barras .db-et{grid-column:1/-1;color:var(--tinta)}
+.denue-barras .db-barra{height:8px;border-radius:4px;background:linear-gradient(90deg,var(--rojo),var(--granate));width:calc(var(--v) * 1%);min-width:2px;align-self:center}
+.denue-barras .db-n{font-weight:700;color:var(--granate);white-space:nowrap}
+.denue-barras .db-n small{font-weight:500;color:#6E464B}
+.denue-anios li{grid-template-columns:3.2rem minmax(0,1fr) auto}
+.denue-anios .db-et{grid-column:auto}
+.ayuda-denue{margin-top:.35rem;font-size:.72rem;color:#6E464B}
+
+/* ---- Empresas ---- */
+.empresa-carga{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.2rem;align-items:start}
+.zona-archivo{display:flex;align-items:center;gap:1rem;padding:1.6rem;border:2px dashed var(--rojo);border-radius:14px;background:#fff;cursor:pointer;
+  box-shadow:inset 0 0 0 6px #FBF6F3;transition:background .2s}
+.zona-archivo.arrastre,.zona-archivo:hover{background:#FFF0F2}
+.zona-archivo:focus-within{outline:3px solid var(--granate);outline-offset:3px}
+.zona-archivo input{position:absolute;width:1px;height:1px;opacity:0}
+.za-icono{font-size:2rem;color:var(--rojo)}
+.za-sub{font-size:.78rem;font-weight:500;color:#6E464B}
+.empresa-ayuda p{font-size:.85rem;margin-bottom:.4rem}
+.empresa-ayuda code{font-family:var(--mono);font-size:.8rem}
+.empresa-ayuda .btn{margin-top:.6rem}
+.empresa-resultados[hidden]{display:none}
+.empresa-resultados{display:flex;flex-direction:column;gap:1rem}
+.empresa-graficas{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.mc-ecdf .pos{fill:var(--granate)}
+.mc-ecdf .neg{fill:#E2233F}
+@media (max-width:900px){.denue-cuerpo,.empresa-carga,.empresa-graficas{grid-template-columns:1fr}}
