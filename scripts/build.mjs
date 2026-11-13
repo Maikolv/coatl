@@ -18,13 +18,14 @@ export const MODULOS_JS = [
   'src/ui/resultados.js',
   'src/ui/widgets.js',
   'src/mapa/mapa.js',
+  'src/ui/explorar.js',
   'src/ui/app.js',
 ];
 
 export function construir() {
   const js = MODULOS_JS.filter((m) => fs.existsSync(path.join(raiz, m)))
     .map((m) => `/* ===== ${m} ===== */\n${leer(m)}`).join('\n');
-  const css = leer('src/ui/estilos.css');
+  const css = leer('src/ui/estilos.css') + '\n' + leer('src/ui/estilos-explorar.css');
   // Atributos style="" del HTML → reglas [data-ei] con !important (misma precedencia),
   // para que la CSP no necesite 'unsafe-inline' en style-src (hallazgo de HawkScan).
   const reglas = [];
