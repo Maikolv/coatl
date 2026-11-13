@@ -94,7 +94,7 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 
 ## Pendiente
 
-- Rendimiento (Lighthouse ~50): el Monte Carlo de 2,000 años corre en el hilo principal al cargar; candidato a Web Worker o a diferirlo.
+- Seguridad: HawkScan limpio (ver docs/SEGURIDAD_HAWKSCAN.md). Rendimiento (Lighthouse ~50): el Monte Carlo de 2,000 años corre en el hilo principal al cargar; candidato a Web Worker o a diferirlo.
 
 - S₀(t) ya verificada (INEGI 1989–2019, t=1…5); años 6–10 interpolados. Pendiente: tabla completa del INEGI para t=6…10, datos por giro y distribución sectorial (estimaciones del equipo).
 - Reporte y presentación se generan con `node scripts/reporte_docx.mjs` y `node scripts/presentacion_pptx.mjs` (cifras tomadas del propio modelo). Las fotos de assets/img no estaban en el equipo.

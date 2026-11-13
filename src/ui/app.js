@@ -219,7 +219,7 @@ function pintarFODA(e, modelo, mc){
     const dp=(l.lift*100).toFixed(1);
     const proy=(l.P*100).toFixed(1);
     const accZona = l.esZona ? ' data-irzona="'+l.zonaK+'"' : '';
-    const cursor = l.esZona ? ' style="cursor:pointer"' : '';
+    const cursor = l.esZona ? ' data-clic="1"' : '';   // cursor vía CSS: la CSP no permite style="" en línea
     return '<div class="accion"'+accZona+cursor+'><div class="rank">'+(i+1)+'</div><div class="cuerpo"><h3>'+
       l.titulo+'</h3><p class="que">'+l.que+'</p><p class="base">'+l.base+
       '</p><span class="tasa">Evidencia: '+l.tasa+'</span></div><div class="impacto"><div class="lift">+'+dp+

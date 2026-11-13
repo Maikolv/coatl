@@ -2,6 +2,7 @@
 // Uso: node scripts/build.mjs   ·   Sin dependencias externas.
 import fs from 'node:fs';
 import path from 'node:path';
+import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 
 const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
@@ -24,9 +25,30 @@ export function construir() {
   const js = MODULOS_JS.filter((m) => fs.existsSync(path.join(raiz, m)))
     .map((m) => `/* ===== ${m} ===== */\n${leer(m)}`).join('\n');
   const css = leer('src/ui/estilos.css');
-  const html = leer('src/index.html')
-    .replace('/*@@CSS@@*/', () => css)
+  // Atributos style="" del HTML → reglas [data-ei] con !important (misma precedencia),
+  // para que la CSP no necesite 'unsafe-inline' en style-src (hallazgo de HawkScan).
+  const reglas = [];
+  const plantilla = leer('src/index.html').replace(/ style="([^"]*)"/g, (_, decl) => {
+    const n = reglas.length;
+    reglas.push(`[data-ei="${n}"]{${decl.split(';').filter((d) => d.trim()).map((d) => d.trim() + ' !important').join(';')}}`);
+    return ` data-ei="${n}"`;
+  });
+  const cssFinal = css + '\n/* estilos en línea movidos por el build */\n' + reglas.join('\n') + '\n';
+  let html = plantilla
+    .replace('/*@@CSS@@*/', () => cssFinal)
     .replace('/*@@JS@@*/', () => js);
+  // CSP sin 'unsafe-inline' para scripts: se autoriza solo el script en línea por su hash
+  // (hallazgo de HawkScan «CSP: script-src unsafe-inline»).
+  const inline = html.match(/<script>([\s\S]*?)<\/script>/);
+  if (inline) {
+    const hash = crypto.createHash('sha256').update(inline[1], 'utf8').digest('base64');
+    html = html.replace("script-src 'self' 'unsafe-inline'", `script-src 'self' 'sha256-${hash}'`);
+  }
+  const estilo = html.match(/<style>([\s\S]*?)<\/style>/);
+  if (estilo) {
+    const hash = crypto.createHash('sha256').update(estilo[1], 'utf8').digest('base64');
+    html = html.replace("style-src 'self' 'unsafe-inline'", `style-src 'self' 'sha256-${hash}'`);
+  }
   fs.writeFileSync(path.join(raiz, 'index.html'), html);
   fs.mkdirSync(path.join(raiz, 'dist'), { recursive: true });
   fs.writeFileSync(path.join(raiz, 'dist', 'index.html'), html);

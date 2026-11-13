@@ -39,10 +39,11 @@ function pintarMapa(e,modelo){
   $("ranking").innerHTML=orden.map((d,i)=>{
     const med=i===0?"🥇":i===1?"🥈":i===2?"🥉":(i+1)+"°";
     return '<li data-zona="'+d.k+'" title="Probar esta zona"><span class="medalla">'+med+
-      '</span><span class="punto" style="background:'+colorP(d.P)+'"></span><span class="rz">'+CORTOS[d.k]+
+      '</span><span class="punto" data-color="'+colorP(d.P)+'"></span><span class="rz">'+CORTOS[d.k]+
       '<span class="ru">utilidad esperada '+mxn.format(Math.round(d.util))+'/mes</span></span><span class="rp">'+
       Math.round(d.P*100)+"%</span></li>";
   }).join("");
+  document.querySelectorAll("#ranking .punto[data-color]").forEach(s=>{s.style.background=s.dataset.color});
   const mejor=orden[0], actual=datosMapa.find(d=>d.k===e.zonaKey);
   $("recomendacion").innerHTML = mejor.k===e.zonaKey
     ? "Tu zona actual (<strong>"+CORTOS[mejor.k]+"</strong>) es la de mayor probabilidad para este escenario. Buena ubicación."
