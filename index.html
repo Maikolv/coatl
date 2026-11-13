@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://*.tile.openstreetmap.org https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-cT4jbbWlvkDPgXSQoM6rtVWFwONALVTG39SiZKO5q/I=' https://cdnjs.cloudflare.com; style-src 'self' 'sha256-w1huXZQjAA0q0IfZ/3Q1BpNkelk8/NNJnZMUftCnqfo=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'none'; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -633,6 +633,29 @@ img{max-width:100%}
 .lista-supuestos li{margin-bottom:.35rem}
 body.oraculo .accion .cuerpo h3{color:#F3EEFC}
 .cuadro:focus-visible,.pestana:focus-visible{outline:3px solid var(--granate);outline-offset:-3px}
+.accion[data-clic]{cursor:pointer}
+
+/* estilos en línea movidos por el build */
+[data-ei="0"]{margin-top:1.5rem !important}
+[data-ei="1"]{font-family:var(--mono) !important;font-size:.66rem !important;color:#9B6A6E !important;margin-top:.7rem !important}
+[data-ei="2"]{color:#fff !important}
+[data-ei="3"]{color:#FFC9CF !important}
+[data-ei="4"]{color:#FFC9CF !important}
+[data-ei="5"]{margin-top:1.5rem !important}
+[data-ei="6"]{margin-bottom:0 !important}
+[data-ei="7"]{font-family:var(--display) !important;font-weight:700 !important;font-size:1.25rem !important;margin-bottom:.4rem !important}
+[data-ei="8"]{color:var(--gris-texto) !important;margin-bottom:1rem !important}
+[data-ei="9"]{font-family:var(--display) !important;font-weight:700 !important;font-size:1.25rem !important;margin-bottom:1rem !important}
+[data-ei="10"]{padding-top:0 !important}
+[data-ei="11"]{color:var(--ok) !important}
+[data-ei="12"]{font-size:.92rem !important;color:var(--gris-texto) !important;margin-top:.5rem !important}
+[data-ei="13"]{color:var(--alerta) !important}
+[data-ei="14"]{font-size:.92rem !important;color:var(--gris-texto) !important;margin-top:.5rem !important}
+[data-ei="15"]{color:var(--rojo) !important}
+[data-ei="16"]{font-size:.92rem !important;color:var(--gris-texto) !important;margin-top:.5rem !important}
+[data-ei="17"]{padding-top:0 !important}
+[data-ei="18"]{margin-top:1.5rem !important}
+[data-ei="19"]{font-size:.82rem !important;margin-top:1rem !important;color:#D9A8AE !important}
 
 </style>
 </head>
@@ -740,7 +763,7 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
     </div>
   </div>
 
-  <div class="panel" style="margin-top:1.5rem">
+  <div class="panel" data-ei="0">
     <h3>Seis zonas, seis mercados distintos</h3>
     <p class="sub">Coacalco no es homogéneo: el corredor de la Vía José López Portillo concentra cinco centros comerciales y la mayor afluencia, mientras que las colonias habitacionales ofrecen rentas bajas y demanda de proximidad. El simulador asigna a cada zona un índice de afluencia y un costo de renta de referencia.</p>
     <div class="tabla-envoltura"><table class="tabla-zonas">
@@ -756,7 +779,7 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
         <tr><td><strong>Zonas habitacionales periféricas</strong></td><td>Demanda local, flujo peatonal limitado</td><td>0.78</td><td>$90/m²·mes</td><td><span class="pildora baja">Bajo</span></td></tr>
       </tbody>
     </table></div>
-    <p style="font-family:var(--mono);font-size:.66rem;color:#9B6A6E;margin-top:.7rem">* Índice relativo construido por el equipo (1.00 = promedio municipal) a partir de la caracterización socioeconómica de colonias del municipio y la concentración comercial del corredor López Portillo. Rentas: valores de referencia del mercado local; pueden editarse en el simulador.</p>
+    <p data-ei="1">* Índice relativo construido por el equipo (1.00 = promedio municipal) a partir de la caracterización socioeconómica de colonias del municipio y la concentración comercial del corredor López Portillo. Rentas: valores de referencia del mercado local; pueden editarse en el simulador.</p>
   </div>
 </section>
 
@@ -765,8 +788,8 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
   <div class="greca invertida" aria-hidden="true"></div>
   <div class="seccion">
     <p class="folio">Sección 02 · El instrumento</p>
-    <h2 class="titulo" style="color:#fff">Simulador de éxito y rentabilidad</h2>
-    <p class="intro">Configura las 22 variables del escenario en las cuatro pestañas: <strong style="color:#FFC9CF">el cálculo es en vivo</strong>, cada ajuste mueve al instante el medidor, las gráficas y el mapa de zonas. ¿Sin ideas? Lanza el dado de <strong style="color:#FFC9CF">🎲 Escenario sorpresa</strong>. El modelo devuelve la probabilidad (con un decimal, cálculo determinista y reproducible) de operar con rentabilidad al tercer año, la curva de supervivencia, la distribución de utilidades (Monte Carlo, 2,000 corridas) y los indicadores financieros del proyecto.</p>
+    <h2 class="titulo" data-ei="2">Simulador de éxito y rentabilidad</h2>
+    <p class="intro">Configura las 22 variables del escenario en las cuatro pestañas: <strong data-ei="3">el cálculo es en vivo</strong>, cada ajuste mueve al instante el medidor, las gráficas y el mapa de zonas. ¿Sin ideas? Lanza el dado de <strong data-ei="4">🎲 Escenario sorpresa</strong>. El modelo devuelve la probabilidad (con un decimal, cálculo determinista y reproducible) de operar con rentabilidad al tercer año, la curva de supervivencia, la distribución de utilidades (Monte Carlo, 2,000 corridas) y los indicadores financieros del proyecto.</p>
 
     <div class="simulador">
       <form class="consola" id="forma" novalidate>
@@ -1085,7 +1108,7 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
       </div>
     </div>
 
-    <div class="panel" id="mapa" style="margin-top:1.5rem">
+    <div class="panel" id="mapa" data-ei="5">
       <h3>Mapa de probabilidad por zona</h3>
       <p class="sub">Tu mismo negocio, evaluado en las seis zonas de Coacalco con la renta de referencia y la afluencia de cada una. El color indica la probabilidad de éxito a 3 años. <strong>Haz clic en una zona</strong> (o en el ranking) para trasladar tu escenario ahí. Activa la capa <strong>satélite</strong> para ver la fotografía aérea real del municipio.</p>
       <div class="conmutador" role="group" aria-label="Modo de mapa">
@@ -1145,7 +1168,7 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
   <p class="folio">Sección 03 · Estrategia en tiempo real</p>
   <h2 class="titulo">Qué hacer para no perder: análisis FODA y plan de acción</h2>
   <div class="foda-intro">
-    <p class="intro" style="margin-bottom:0">No basta con saber la probabilidad: hay que poder moverla. Este apartado lee tu escenario <strong>en vivo</strong>, lo clasifica en Fortalezas, Oportunidades, Debilidades y Amenazas, y construye un <strong>plan de acción priorizado</strong>. Cada estrategia muestra cuántos puntos de probabilidad ganarías —calculados volviendo a correr el modelo con esa mejora— y la evidencia real que la respalda.</p>
+    <p class="intro" data-ei="6">No basta con saber la probabilidad: hay que poder moverla. Este apartado lee tu escenario <strong>en vivo</strong>, lo clasifica en Fortalezas, Oportunidades, Debilidades y Amenazas, y construye un <strong>plan de acción priorizado</strong>. Cada estrategia muestra cuántos puntos de probabilidad ganarías —calculados volviendo a correr el modelo con esa mejora— y la evidencia real que la respalda.</p>
     <div class="foda-resumen">
       Probabilidad actual
       <span class="gr" id="fodaP">—</span>
@@ -1153,11 +1176,11 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
     </div>
   </div>
 
-  <h3 style="font-family:var(--display);font-weight:700;font-size:1.25rem;margin-bottom:.4rem">Tres escenarios de tu negocio</h3>
-  <p class="sub" style="color:var(--gris-texto);margin-bottom:1rem">Utilidad anual de los 2,000 años simulados con Monte Carlo: el pesimista (percentil 5), el esperado (mediana) y el optimista (percentil 95).</p>
+  <h3 data-ei="7">Tres escenarios de tu negocio</h3>
+  <p class="sub" data-ei="8">Utilidad anual de los 2,000 años simulados con Monte Carlo: el pesimista (percentil 5), el esperado (mediana) y el optimista (percentil 95).</p>
   <div class="triplete" id="triplete"></div>
 
-  <h3 style="font-family:var(--display);font-weight:700;font-size:1.25rem;margin-bottom:1rem">Matriz FODA de tu escenario</h3>
+  <h3 data-ei="9">Matriz FODA de tu escenario</h3>
   <div class="foda-grid" id="fodaGrid">
     <div class="cuad f"><h4><span class="gl">F</span> Fortalezas</h4><p class="lema">Lo que ya juega a tu favor (interno)</p><ul id="fodaF"></ul></div>
     <div class="cuad o"><h4><span class="gl">O</span> Oportunidades</h4><p class="lema">Palancas del entorno que puedes aprovechar (externo)</p><ul id="fodaO"></ul></div>
@@ -1230,7 +1253,7 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
 </section>
 
 <!-- ============ 04 LECTURA ============ -->
-<section class="seccion" id="lectura" style="padding-top:0">
+<section class="seccion" id="lectura" data-ei="10">
   <p class="folio">Sección 05 · Interpretación y decisión</p>
   <h2 class="titulo">Cómo leer tu resultado</h2>
   <div class="intro-flex">
@@ -1256,16 +1279,16 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
 
   <div class="guia">
     <div class="panel verde">
-      <p class="rango" style="color:var(--ok)">P ≥ 65% · ESCENARIO SÓLIDO</p>
-      <p style="font-size:.92rem;color:var(--gris-texto);margin-top:.5rem">El escenario supera con holgura la supervivencia promedio nacional. Verifica que P(utilidad&gt;0) del Monte Carlo también sea alta (≥80%) y que el payback sea menor a 24 meses antes de comprometer capital. Aun aquí, conserva la reserva de 6 meses: la cola izquierda del histograma existe.</p>
+      <p class="rango" data-ei="11">P ≥ 65% · ESCENARIO SÓLIDO</p>
+      <p data-ei="12">El escenario supera con holgura la supervivencia promedio nacional. Verifica que P(utilidad&gt;0) del Monte Carlo también sea alta (≥80%) y que el payback sea menor a 24 meses antes de comprometer capital. Aun aquí, conserva la reserva de 6 meses: la cola izquierda del histograma existe.</p>
     </div>
     <div class="panel ambar">
-      <p class="rango" style="color:var(--alerta)">45% ≤ P &lt; 65% · ESCENARIO CONDICIONADO</p>
-      <p style="font-size:.92rem;color:var(--gris-texto);margin-top:.5rem">Viable pero sensible. Usa el simulador como análisis de sensibilidad: cambia una variable a la vez (zona, ticket, costo variable, deuda) y observa cuál mueve más la probabilidad. Invierte solo si puedes corregir las dos variables de mayor impacto.</p>
+      <p class="rango" data-ei="13">45% ≤ P &lt; 65% · ESCENARIO CONDICIONADO</p>
+      <p data-ei="14">Viable pero sensible. Usa el simulador como análisis de sensibilidad: cambia una variable a la vez (zona, ticket, costo variable, deuda) y observa cuál mueve más la probabilidad. Invierte solo si puedes corregir las dos variables de mayor impacto.</p>
     </div>
     <div class="panel">
-      <p class="rango" style="color:var(--rojo)">P &lt; 45% · ESCENARIO FRÁGIL</p>
-      <p style="font-size:.92rem;color:var(--gris-texto);margin-top:.5rem">El modelo estima un riesgo mayor al promedio nacional. No significa «imposible»: significa que, de 100 negocios como el tuyo, la mayoría no llega rentable al tercer año. Replantea giro, zona o estructura de costos antes de invertir.</p>
+      <p class="rango" data-ei="15">P &lt; 45% · ESCENARIO FRÁGIL</p>
+      <p data-ei="16">El modelo estima un riesgo mayor al promedio nacional. No significa «imposible»: significa que, de 100 negocios como el tuyo, la mayoría no llega rentable al tercer año. Replantea giro, zona o estructura de costos antes de invertir.</p>
     </div>
   </div>
 
@@ -1284,7 +1307,7 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
   </div>
 </section>
 <!-- ============ 05 AVISO LEGAL Y REFERENCIAS ============ -->
-<section class="seccion" id="legal" style="padding-top:0">
+<section class="seccion" id="legal" data-ei="17">
   <p class="folio">Sección 06 · Marco legal y referencias</p>
   <h2 class="titulo">Aviso legal</h2>
   <p class="intro">Este apartado protege los derechos de los autores del proyecto y delimita con claridad el alcance de la herramienta, conforme a la legislación mexicana aplicable. El uso del sitio implica la aceptación de estos términos.</p>
@@ -1316,7 +1339,7 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
     </article>
   </div>
 
-  <div class="panel" style="margin-top:1.5rem">
+  <div class="panel" data-ei="18">
     <h3>Referencias</h3>
     <p class="sub">Todas las fuentes utilizadas en el proyecto, con hipervínculo directo.</p>
     <ol class="refs">
@@ -1345,7 +1368,7 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
         <li>Bruno Alejandro López Bautista</li>
         <li>Alonso Arroyo Cortés</li>
       </ul>
-      <p style="font-size:.82rem;margin-top:1rem;color:#D9A8AE">Proyecto Especial de Participación · Jornada Académica de Negocios<br>Asignatura: Probabilidad y Estadística<br>Docente: Mtra. Noemí Daniela Palacios Fermín</p>
+      <p data-ei="19">Proyecto Especial de Participación · Jornada Académica de Negocios<br>Asignatura: Probabilidad y Estadística<br>Docente: Mtra. Noemí Daniela Palacios Fermín</p>
     </div>
     <div>
       <h4>Fuentes de datos</h4>
@@ -2032,10 +2055,11 @@ function pintarMapa(e,modelo){
   $("ranking").innerHTML=orden.map((d,i)=>{
     const med=i===0?"🥇":i===1?"🥈":i===2?"🥉":(i+1)+"°";
     return '<li data-zona="'+d.k+'" title="Probar esta zona"><span class="medalla">'+med+
-      '</span><span class="punto" style="background:'+colorP(d.P)+'"></span><span class="rz">'+CORTOS[d.k]+
+      '</span><span class="punto" data-color="'+colorP(d.P)+'"></span><span class="rz">'+CORTOS[d.k]+
       '<span class="ru">utilidad esperada '+mxn.format(Math.round(d.util))+'/mes</span></span><span class="rp">'+
       Math.round(d.P*100)+"%</span></li>";
   }).join("");
+  document.querySelectorAll("#ranking .punto[data-color]").forEach(s=>{s.style.background=s.dataset.color});
   const mejor=orden[0], actual=datosMapa.find(d=>d.k===e.zonaKey);
   $("recomendacion").innerHTML = mejor.k===e.zonaKey
     ? "Tu zona actual (<strong>"+CORTOS[mejor.k]+"</strong>) es la de mayor probabilidad para este escenario. Buena ubicación."
@@ -2364,7 +2388,7 @@ function pintarFODA(e, modelo, mc){
     const dp=(l.lift*100).toFixed(1);
     const proy=(l.P*100).toFixed(1);
     const accZona = l.esZona ? ' data-irzona="'+l.zonaK+'"' : '';
-    const cursor = l.esZona ? ' style="cursor:pointer"' : '';
+    const cursor = l.esZona ? ' data-clic="1"' : '';   // cursor vía CSS: la CSP no permite style="" en línea
     return '<div class="accion"'+accZona+cursor+'><div class="rank">'+(i+1)+'</div><div class="cuerpo"><h3>'+
       l.titulo+'</h3><p class="que">'+l.que+'</p><p class="base">'+l.base+
       '</p><span class="tasa">Evidencia: '+l.tasa+'</span></div><div class="impacto"><div class="lift">+'+dp+
