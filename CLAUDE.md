@@ -98,6 +98,7 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - `src/ui/describir.js`: intérprete local (reglas) + Claude opcional (`@anthropic-ai/sdk` 1.3.0 vía jsDelivr, clave solo en memoria, salida estructurada). Voz con la Web Speech API.
 - `src/ui/giros_scian.js`: actividades del SCIAN con la plantilla del giro COATL más cercano («estimación del equipo»); costos propios ilimitados suman a otros fijos.
 - `scripts/asistente.mjs`: asistente de línea de comandos (Claude Opus 5.5) con herramientas: simular, leer documentos y consultar el DENUE.
+- `src/ui/asistente.js`: asistente flotante en todas las páginas (motor local + Claude opcional con la clave de describir.js). Giros propios con cualquier nombre en giros_scian.js (`usarGiroPropio`).
 - Tema oscuro: clase `body.oscuro` (antes «Modo Oráculo» neón, retirado).
 - Fotos reales en `assets/img/zonas/` con cita mínima; créditos en docs/RECURSOS.md.
 

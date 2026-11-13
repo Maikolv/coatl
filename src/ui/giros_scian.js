@@ -32,7 +32,7 @@ async function usarActividad(codigo){
   return true;
 }
 (async function prepararBuscador(){
-  const opt=document.createElement("optgroup"); opt.label="Actividades del SCIAN agregadas"; opt.id="giroScianGrupo"; $("giro").appendChild(opt);
+  const opt=document.createElement("optgroup"); opt.label="Actividades agregadas (SCIAN y giros propios)"; opt.id="giroScianGrupo"; $("giro").appendChild(opt);
   $("giro").addEventListener("change",()=>{ if(!GIROS[$("giro").value]||!GIROS[$("giro").value].scian) $("giroNota").textContent=""; });
   const inp=$("giroBusca"), lista=$("giroOpciones");
   inp.addEventListener("focus",async()=>{
@@ -41,8 +41,20 @@ async function usarActividad(codigo){
     if(!lista.children.length) lista.innerHTML=Object.entries(cat).map(([c,n])=>'<option value="'+c+' · '+esc(n)+'">').join("");
     $("giroTotal").textContent=Object.keys(cat).length.toLocaleString("es-MX")+" actividades";
   },{once:true});
-  inp.addEventListener("change",async()=>{ const m=/^(\d{6})/.exec(inp.value.trim()); if(m&&await usarActividad(m[1])) inp.value=""; });
+  inp.addEventListener("change",async()=>{ const v=inp.value.trim(), m=/^(\d{6})/.exec(v); if(m?await usarActividad(m[1]):(v.length>2&&usarGiroPropio(v))) inp.value=""; });
 })();
+
+/* Giro con cualquier nombre (sin límite): hereda la plantilla del giro COATL que más se parezca. */
+function usarGiroPropio(nombre){
+  const base=interpretarLocal(nombre).r.giro||"abarrotes", clave="propio_"+sinAcentos(nombre).replace(/[^a-z0-9]+/g,"_").slice(0,40);
+  if(!GIROS[clave]){
+    GIROS[clave]=Object.assign({},GIROS[base],{n:nombre.slice(0,80), base});
+    const o=document.createElement("option"); o.value=clave; o.textContent=nombre.slice(0,80)+" (giro propio)"; $("giroScianGrupo").appendChild(o);
+  }
+  $("giro").value=clave; $("giro").dispatchEvent(new Event("change")); calcular();
+  $("giroNota").innerHTML="Giro propio con parámetros de referencia de <strong>"+esc(GIROS[base].n)+"</strong> <span class=\"proc proc-supuesto\">estimación del equipo</span>; ajústalos en Finanzas y Operación.";
+  return true;
+}
 
 /* Competencia real en Coacalco para una actividad SCIAN agregada (clase exacta). */
 async function competenciaScian(g){

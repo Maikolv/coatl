@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jtQXVezogo83WmcWjK1SAqLnYXpXAG7YsWl8wFwF7ec=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'sha256-p6XaA1XH66FwuscPuoD3oYZQ4xwnNx0rUTmMT/VYjOI=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-LzqE/x/97UcXcAQQyq12DTMX5WFzY8pbZRXN7pWOMzQ=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'sha256-77GCMm4gMVT5o+ItLilSJIKYWcfWX3HIoY8yRSXoduY=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -903,6 +903,33 @@ body.oscuro .extras-lista input,body.oscuro #giroBusca{background:#2A0B12;color:
 .mapa-cont{display:flex;flex-direction:column;height:100%}
 .mapa-cont .mapa-leaflet{flex:1 1 auto;min-height:440px;height:auto}
 
+/* ---- Asistente flotante (siempre disponible) ---- */
+.asis{position:fixed;right:1rem;bottom:1rem;z-index:900;display:flex;flex-direction:column;align-items:flex-end;gap:.6rem}
+.asis-boton{display:flex;align-items:center;gap:.45rem;border:0;border-radius:999px;padding:.75rem 1.1rem;background:var(--rojo);color:#fff;font:inherit;font-weight:700;cursor:pointer;box-shadow:0 10px 28px rgba(122,12,31,.35)}
+.asis-boton:hover{background:var(--granate)}
+.asis-boton:focus-visible,.asis-panel button:focus-visible,#asisTexto:focus-visible{outline:3px solid var(--granate);outline-offset:2px}
+.asis.abierto .asis-boton b{display:none}
+.asis-panel{order:-1;width:min(380px,calc(100vw - 2rem));max-height:min(560px,calc(100vh - 7rem));display:flex;flex-direction:column;background:#FBF6F3;border:1px solid var(--niebla-2);border-top:4px solid var(--rojo);border-radius:16px;box-shadow:0 18px 50px rgba(42,11,18,.28);overflow:hidden}
+.asis-panel[hidden]{display:none}
+.asis-cab{display:flex;align-items:center;gap:.5rem;padding:.7rem .9rem;background:var(--granate);color:#fff}
+.asis-cab span{font-size:.72rem;opacity:.8;margin-right:auto}
+.asis-cerrar{background:none;border:0;color:#fff;font-size:1rem;cursor:pointer}
+.asis-log{flex:1;overflow-y:auto;padding:.8rem;display:flex;flex-direction:column;gap:.5rem;font-size:.86rem}
+.asis-msj{margin:0;padding:.55rem .75rem;border-radius:12px;max-width:90%;line-height:1.45}
+.asis-msj.bot{background:#fff;border:1px solid var(--niebla-2);align-self:flex-start}
+.asis-msj.yo{background:var(--rojo);color:#fff;align-self:flex-end}
+.asis-chips{display:flex;flex-wrap:wrap;gap:.35rem;padding:0 .8rem .6rem}
+.asis-chips button{border:1px solid var(--rojo);background:#fff;color:var(--granate);border-radius:999px;padding:.25rem .65rem;font:inherit;font-size:.75rem;cursor:pointer}
+.asis-forma{display:flex;gap:.35rem;padding:.6rem;border-top:1px solid var(--niebla-2)}
+#asisTexto{flex:1;min-width:0;font:inherit;padding:.5rem .65rem;border:1px solid var(--niebla-2);border-radius:10px}
+.asis-voz,.asis-enviar{border:0;border-radius:10px;padding:0 .7rem;cursor:pointer;font:inherit}
+.asis-enviar{background:var(--rojo);color:#fff}
+.asis-voz{background:#fff;border:1px solid var(--niebla-2)}
+.asis-voz.escuchando{background:var(--rojo);color:#fff}
+body.oscuro .asis-panel{background:#1E080D;border-color:#3A1219}
+body.oscuro .asis-msj.bot,body.oscuro #asisTexto,body.oscuro .asis-chips button,body.oscuro .asis-voz{background:#2A0B12;color:#F7ECEE;border-color:#3A1219}
+@media print{.asis{display:none}}
+
 /* estilos en línea movidos por el build */
 [data-ei="0"]{margin-top:1.5rem !important}
 [data-ei="1"]{font-family:var(--mono) !important;font-size:.66rem !important;color:#9B6A6E !important;margin-top:.7rem !important}
@@ -1172,7 +1199,7 @@ body.oscuro .extras-lista input,body.oscuro #giroBusca{background:#2A0B12;color:
             <select id="giro"></select>
             <span class="ayuda">Cada giro carga su ticket promedio, costo variable y demanda de referencia; puedes ajustarlos después.</span>
             <label for="giroBusca" class="sub-label">…o busca entre <span id="giroTotal">todas las actividades</span> del SCIAN (INEGI)</label>
-            <input type="search" id="giroBusca" list="giroOpciones" placeholder="Escribe: tienda de mascotas, 812110, mueblería…" autocomplete="off">
+            <input type="search" id="giroBusca" list="giroOpciones" placeholder="Cualquier giro: tienda de mascotas, 812110, mueblería, vivero de suculentas…" autocomplete="off">
             <datalist id="giroOpciones"></datalist>
             <span class="ayuda" id="giroNota" aria-live="polite"></span>
           </div>
@@ -3300,7 +3327,7 @@ async function usarActividad(codigo){
   return true;
 }
 (async function prepararBuscador(){
-  const opt=document.createElement("optgroup"); opt.label="Actividades del SCIAN agregadas"; opt.id="giroScianGrupo"; $("giro").appendChild(opt);
+  const opt=document.createElement("optgroup"); opt.label="Actividades agregadas (SCIAN y giros propios)"; opt.id="giroScianGrupo"; $("giro").appendChild(opt);
   $("giro").addEventListener("change",()=>{ if(!GIROS[$("giro").value]||!GIROS[$("giro").value].scian) $("giroNota").textContent=""; });
   const inp=$("giroBusca"), lista=$("giroOpciones");
   inp.addEventListener("focus",async()=>{
@@ -3309,8 +3336,20 @@ async function usarActividad(codigo){
     if(!lista.children.length) lista.innerHTML=Object.entries(cat).map(([c,n])=>'<option value="'+c+' · '+esc(n)+'">').join("");
     $("giroTotal").textContent=Object.keys(cat).length.toLocaleString("es-MX")+" actividades";
   },{once:true});
-  inp.addEventListener("change",async()=>{ const m=/^(\d{6})/.exec(inp.value.trim()); if(m&&await usarActividad(m[1])) inp.value=""; });
+  inp.addEventListener("change",async()=>{ const v=inp.value.trim(), m=/^(\d{6})/.exec(v); if(m?await usarActividad(m[1]):(v.length>2&&usarGiroPropio(v))) inp.value=""; });
 })();
+
+/* Giro con cualquier nombre (sin límite): hereda la plantilla del giro COATL que más se parezca. */
+function usarGiroPropio(nombre){
+  const base=interpretarLocal(nombre).r.giro||"abarrotes", clave="propio_"+sinAcentos(nombre).replace(/[^a-z0-9]+/g,"_").slice(0,40);
+  if(!GIROS[clave]){
+    GIROS[clave]=Object.assign({},GIROS[base],{n:nombre.slice(0,80), base});
+    const o=document.createElement("option"); o.value=clave; o.textContent=nombre.slice(0,80)+" (giro propio)"; $("giroScianGrupo").appendChild(o);
+  }
+  $("giro").value=clave; $("giro").dispatchEvent(new Event("change")); calcular();
+  $("giroNota").innerHTML="Giro propio con parámetros de referencia de <strong>"+esc(GIROS[base].n)+"</strong> <span class=\"proc proc-supuesto\">estimación del equipo</span>; ajústalos en Finanzas y Operación.";
+  return true;
+}
 
 /* Competencia real en Coacalco para una actividad SCIAN agregada (clase exacta). */
 async function competenciaScian(g){
@@ -3538,6 +3577,90 @@ function irA(id){
 window.addEventListener("hashchange",()=>enrutar(true));
 if(TODO) document.body.classList.add("vista-todo");
 enrutar(false);
+
+/* ===== src/ui/asistente.js ===== */
+/* ---------- 25. Asistente COATL: siempre disponible (esquina inferior derecha) ----------
+   Responde con el MISMO motor del simulador: estado actual, mejor zona, palancas (FODA),
+   ajustes por texto o voz (intérprete local) y navegación. Con la clave opcional de
+   Anthropic (la misma del widget «Describe tu negocio») contesta preguntas libres con Claude. */
+(function asistente(){
+  const caja=document.createElement("div"); caja.className="asis"; caja.id="asistente";
+  caja.innerHTML='<button type="button" class="asis-boton" id="asisAbrir" aria-expanded="false" aria-controls="asisPanel" aria-label="Abrir el asistente COATL"><span aria-hidden="true">💬</span><b>Asistente</b></button>'+
+    '<section class="asis-panel" id="asisPanel" role="dialog" aria-label="Asistente COATL" hidden>'+
+      '<header class="asis-cab"><strong>Asistente COATL</strong><span id="asisModo">local · sin conexión</span><button type="button" class="asis-cerrar" id="asisCerrar" aria-label="Cerrar el asistente">✕</button></header>'+
+      '<div class="asis-log" id="asisLog" aria-live="polite"></div>'+
+      '<div class="asis-chips" id="asisChips">'+["¿Cómo voy?","¿Qué zona me conviene?","¿Cómo subo mi probabilidad?","Abrir el DENUE"].map(c=>'<button type="button">'+c+'</button>').join("")+'</div>'+
+      '<form class="asis-forma" id="asisForma"><label class="sr-only" for="asisTexto">Escribe al asistente</label>'+
+        '<input id="asisTexto" autocomplete="off" placeholder="Ej.: farmacia en el Centro con 90 clientes al día">'+
+        '<button type="button" class="asis-voz" id="asisVoz" aria-pressed="false" aria-label="Dictar por voz">🎙️</button>'+
+        '<button type="submit" class="asis-enviar" aria-label="Enviar">➤</button></form>'+
+    '</section>';
+  document.body.appendChild(caja);
+  const panel=$("asisPanel"), log=$("asisLog"), inp=$("asisTexto"), boton=$("asisAbrir");
+  const decir=(html,quien)=>{ const p=document.createElement("p"); p.className="asis-msj "+(quien||"bot"); p.innerHTML=html; log.appendChild(p); log.scrollTop=log.scrollHeight; };
+  const abrir=(si)=>{ panel.hidden=!si; boton.setAttribute("aria-expanded",String(si)); caja.classList.toggle("abierto",si); if(si) inp.focus(); };
+  boton.addEventListener("click",()=>abrir(panel.hidden));
+  $("asisCerrar").addEventListener("click",()=>{ abrir(false); boton.focus(); });
+  document.addEventListener("keydown",ev=>{ if(ev.key==="Escape"&&!panel.hidden){ abrir(false); boton.focus(); } });
+  decir("Hola. Puedo decirte cómo va tu negocio, qué zona te conviene, cómo subir tu probabilidad, ajustar el simulador con lo que me cuentes (escrito o por voz) o llevarte a cualquier apartado.");
+
+  const pct=x=>(x*100).toFixed(1)+"%";
+  const actual=()=>{ const e=leerEscenario(), m=modeloLogistico(e); return {e,P:m.P}; };
+  function estado(){ const {e,P}=actual();
+    return "<b>"+esc(e.giro.n)+"</b> en <b>"+esc(e.zona.n)+"</b>: probabilidad de seguir abierto a 3 años <b>"+pct(P)+"</b>, utilidad mensual esperada <b>"+mxn.format(Math.round(e.utilMes))+"</b> (antes de impuestos)."; }
+  function mejoresZonas(){ const {e}=actual();
+    const L=Object.keys(ZONAS).map(k=>({k,P:probDe(Object.assign({},e,{zona:ZONAS[k],zonaKey:k}))})).sort((a,b)=>b.P-a.P);
+    return "Para este mismo negocio: "+L.slice(0,3).map((d,i)=>(i+1)+". <b>"+esc(ZONAS[d.k].n)+"</b> "+pct(d.P)+(d.k===e.zonaKey?" (la actual)":"")).join(" · ")+". Las zonas son composiciones del equipo; revisa el mapa en el simulador."; }
+  function consejos(){ const {e,P}=actual(), L=palancas(e,P).slice(0,3);
+    if(!L.length) return "Tu escenario ya aprovecha las palancas que el modelo mide. Prueba otra zona o un ticket mayor.";
+    return "Lo que más sube tu probabilidad: "+L.map(l=>"<b>"+esc(l.titulo)+"</b> (+"+(l.lift*100).toFixed(1)+" pts)").join("; ")+". Detalle en Estrategia."; }
+  const DESTINOS=[["denue","denue"],["empresa","empresas"],["estrateg","estrategia"],["foda","estrategia"],["metodolog","metodologia"],["territorio","territorio"],["contexto","territorio"],["legal","legal"],["aviso","legal"],["inicio","inicio"],["simulador","simulador"]];
+
+  async function responder(texto){
+    const t=sinAcentos(texto);
+    const ir=/(abre|abrir|ir a|llevame|muestrame|ver )/.test(t)&&DESTINOS.find(([w])=>t.includes(w));
+    if(ir){ irA(ir[1]); return "Listo, abrí <b>"+esc(VISTAS.find(v=>v.id===ir[1]).titulo)+"</b>."; }
+    if(/zona/.test(t)&&/(mejor|conviene|recomienda|cual|donde)/.test(t)) return mejoresZonas();
+    if(/(subo|subir|mejor|aument|consejo|estrategia|que hago|recomienda)/.test(t)) return consejos();
+    const res=interpretarLocal(texto);
+    if(res.entendido.length){ aplicarInterpretacion(res.r); return "Ajusté el simulador ("+res.entendido.map(esc).join(", ")+"). "+estado(); }
+    if(/(como voy|probabilidad|utilidad|gano|ganancia|resultado|cuanto)/.test(t)) return estado();
+    if(claveClaude) return await preguntarClaude(texto);
+    return "No identifiqué una cifra ni una pregunta que pueda calcular. Prueba: «¿cómo voy?», «¿qué zona me conviene?», «cafetería en Los Héroes con 70 clientes al día» o «abre el DENUE». Para preguntas libres, agrega tu clave de Anthropic en «Usar Claude como intérprete» del Simulador.";
+  }
+  async function preguntarClaude(texto){
+    const {e,P}=actual();
+    const {default:Anthropic}=await import(SDK_URL);
+    const client=new Anthropic({apiKey:claveClaude, dangerouslyAllowBrowser:true});
+    const r=await client.beta.messages.create({model:"claude-opus-5-5", max_tokens:1500,
+      betas:["server-side-fallback-2026-07-01"], fallbacks:"default", output_config:{effort:"low"},
+      system:"Eres el asistente de COATL, simulador académico de supervivencia a 3 años y rentabilidad de negocios en Coacalco de Berriozábal. Responde en español de México, en 2–4 frases, sin inventar cifras: usa solo el escenario dado. No das asesoría financiera. Escenario actual: "+
+        JSON.stringify({giro:e.giro.n, zona:e.zona.n, P_3_anios:pct(P), utilidad_mensual:Math.round(e.utilMes), clientes_dia:e.mu, ticket:e.ticket}),
+      messages:[{role:"user",content:texto}]});
+    if(r.stop_reason==="refusal") return "No puedo responder esa pregunta.";
+    return esc((r.content.find(b=>b.type==="text")||{}).text||"Sin respuesta.");
+  }
+  async function enviar(texto){
+    texto=texto.trim(); if(!texto) return;
+    decir(esc(texto),"yo"); inp.value="";
+    try{ decir(await responder(texto)); }
+    catch(err){ console.warn(err); decir("Claude no respondió ("+esc(String(err.status||err.message))+"). Sigo disponible en modo local."); }
+    $("asisModo").textContent=claveClaude?"Claude (tu clave)":"local · sin conexión";
+  }
+  $("asisForma").addEventListener("submit",ev=>{ ev.preventDefault(); enviar(inp.value); });
+  $("asisChips").addEventListener("click",ev=>{ if(ev.target.tagName==="BUTTON") enviar(ev.target.textContent); });
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition, bv=$("asisVoz");
+  if(!SR){ bv.hidden=true; return; }
+  let rec=null;
+  bv.addEventListener("click",()=>{
+    if(rec){ rec.stop(); return; }
+    rec=new SR(); rec.lang="es-MX"; rec.interimResults=true;
+    rec.onresult=ev=>{ inp.value=[...ev.results].map(x=>x[0].transcript).join(""); };
+    rec.onerror=ev=>decir("Dictado: "+esc(ev.error==="not-allowed"?"permiso de micrófono denegado.":ev.error));
+    rec.onend=()=>{ rec=null; bv.classList.remove("escuchando"); bv.setAttribute("aria-pressed","false"); enviar(inp.value); };
+    rec.start(); bv.classList.add("escuchando"); bv.setAttribute("aria-pressed","true");
+  });
+})();
 
 /* ===== src/ui/app.js ===== */
 /* ---------- 12. Dinámica: aviso, dado y cálculo en vivo ---------- */

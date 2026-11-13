@@ -24,6 +24,7 @@ export const MODULOS_JS = [
   'src/ui/giros_scian.js',
   'src/ui/describir.js',
   'src/ui/paginas.js',
+  'src/ui/asistente.js',
   'src/ui/app.js',
 ];
 

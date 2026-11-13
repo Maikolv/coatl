@@ -67,3 +67,30 @@ test('modo oscuro: solo icono, accesible y recordado', async ({ page }) => {
   await page.reload({ waitUntil: 'domcontentloaded' });
   await expect(page.locator('body')).toHaveClass(/oscuro/);
 });
+
+test('asistente: siempre visible, responde con el motor y ajusta el simulador', async ({ page }) => {
+  for (const ruta of ['/', '/#denue', '/#legal']) {
+    await page.goto(ruta, { waitUntil: 'domcontentloaded' });
+    await expect(page.locator('#asisAbrir')).toBeVisible();
+  }
+  await page.click('#asisAbrir');
+  await page.click('#asisChips button:has-text("¿Cómo voy?")');
+  await expect(page.locator('#asisLog')).toContainText('51.6%');
+  await page.fill('#asisTexto', 'farmacia en Villa de las Flores con 90 clientes al día');
+  await page.press('#asisTexto', 'Enter');
+  await expect(page.locator('#giro')).toHaveValue('farmacia');
+  await expect(page.locator('#clientes')).toHaveValue('90');
+  await page.click('#asisChips button:has-text("zona")');
+  await expect(page.locator('#asisLog .bot').last()).toContainText('1.');
+  await page.fill('#asisTexto', 'abre el DENUE');
+  await page.press('#asisTexto', 'Enter');
+  await expect(page.locator('#denue')).toBeVisible();
+});
+
+test('giro propio con cualquier nombre', async ({ page }) => {
+  await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
+  await page.fill('#giroBusca', 'Vivero de suculentas');
+  await page.dispatchEvent('#giroBusca', 'change');
+  await expect(page.locator('#giro')).toHaveValue(/^propio_/);
+  await expect(page.locator('#giroNota')).toContainText('Giro propio');
+});
