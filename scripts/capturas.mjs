@@ -13,10 +13,10 @@ if (process.argv.includes('--sitio')) {
   await p.setViewportSize({ width: 1366, height: 900 });
   await p.goto(process.env.COATL_URL || 'http://127.0.0.1:8123/');
   await p.waitForTimeout(2500);
-  await p.evaluate(() => document.querySelectorAll('.revela').forEach((e) => e.classList.add('visible')));
+  await p.evaluate(() => { document.querySelectorAll('.revela').forEach((e) => e.classList.add('visible')); document.querySelector('.nav').style.position = 'static'; });
   await p.waitForTimeout(900);
   await p.screenshot({ path: 'docs/capturas/inicio.png' });
-  for (const [id, archivo] of [['simulador', 'simulador'], ['analisis', 'analisis'], ['mapa', 'mapa'], ['estrategia', 'foda']]) {
+  for (const [id, archivo] of [['explorar', 'explorar'], ['simulador', 'simulador'], ['analisis', 'analisis'], ['explorarResultados', 'resultados'], ['mapa', 'mapa'], ['estrategia', 'foda'], ['trazabilidad', 'trazabilidad']]) {
     await p.locator('#' + id).scrollIntoViewIfNeeded();
     await p.waitForTimeout(1200);
     await p.locator('#' + id).screenshot({ path: `docs/capturas/${archivo}.png` });
