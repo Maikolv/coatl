@@ -1,0 +1,406 @@
+{
+ "fuente": "INEGI, Censos Económicos 2019, datos abiertos del Estado de México (año de referencia 2018). Pesos corrientes de 2018.",
+ "url": "https://www.inegi.org.mx/contenidos/programas/ce/2019/Datosabiertos/ce2019_mex_csv.zip",
+ "descargado": "2026-11-13",
+ "nota": "Promedios por unidad económica; el costo directo es mercancías para reventa + insumos de servicios + materias primas.",
+ "giros": {
+  "abarrotes": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "461110"
+   ],
+   "ue": 1007,
+   "ingreso_anual_ue": 531861,
+   "costo_directo_pct": 63.7,
+   "personal_ue": 1.79,
+   "renta_mes_ue": 1003,
+   "remuneracion_mes": 3770
+  },
+  "tortilleria": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "311830"
+   ],
+   "ue": 170,
+   "ingreso_anual_ue": 669029,
+   "costo_directo_pct": 42.8,
+   "personal_ue": 2.33,
+   "renta_mes_ue": 2434,
+   "remuneracion_mes": 4695
+  },
+  "carniceria": {
+   "nivel": "Coacalco · todos los tamaños",
+   "clases": [
+    "461121",
+    "461122",
+    "461123"
+   ],
+   "ue": 290,
+   "ingreso_anual_ue": 808576,
+   "costo_directo_pct": 66.2,
+   "personal_ue": 1.9,
+   "renta_mes_ue": 1711,
+   "remuneracion_mes": 4517
+  },
+  "fruteria": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "461130"
+   ],
+   "ue": 181,
+   "ingreso_anual_ue": 824249,
+   "costo_directo_pct": 57.6,
+   "personal_ue": 1.88,
+   "renta_mes_ue": 3888,
+   "remuneracion_mes": 5682
+  },
+  "fonda": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "722511"
+   ],
+   "ue": 83,
+   "ingreso_anual_ue": 517940,
+   "costo_directo_pct": 32.8,
+   "personal_ue": 3.57,
+   "renta_mes_ue": 3630,
+   "remuneracion_mes": 3536
+  },
+  "taqueria": {
+   "nivel": "Coacalco · todos los tamaños",
+   "clases": [
+    "722513",
+    "722514"
+   ],
+   "ue": 456,
+   "ingreso_anual_ue": 450160,
+   "costo_directo_pct": 50.2,
+   "personal_ue": 2.77,
+   "renta_mes_ue": 1406,
+   "remuneracion_mes": 3746
+  },
+  "restaurante": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "722511",
+    "722512"
+   ],
+   "ue": 106,
+   "ingreso_anual_ue": 531755,
+   "costo_directo_pct": 34.4,
+   "personal_ue": 3.61,
+   "renta_mes_ue": 3406,
+   "remuneracion_mes": 3572
+  },
+  "pizzeria": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "722517"
+   ],
+   "ue": 114,
+   "ingreso_anual_ue": 575140,
+   "costo_directo_pct": 42.9,
+   "personal_ue": 2.44,
+   "renta_mes_ue": 2206,
+   "remuneracion_mes": 4188
+  },
+  "cafeteria": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "722515"
+   ],
+   "ue": 241,
+   "ingreso_anual_ue": 488705,
+   "costo_directo_pct": 48.0,
+   "personal_ue": 2.2,
+   "renta_mes_ue": 3127,
+   "remuneracion_mes": 3300
+  },
+  "jugueria": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "722515"
+   ],
+   "ue": 241,
+   "ingreso_anual_ue": 488705,
+   "costo_directo_pct": 48.0,
+   "personal_ue": 2.2,
+   "renta_mes_ue": 3127,
+   "remuneracion_mes": 3300
+  },
+  "panaderia": {
+   "nivel": "Coacalco · todos los tamaños",
+   "clases": [
+    "311812"
+   ],
+   "ue": 129,
+   "ingreso_anual_ue": 1109775,
+   "costo_directo_pct": 41.8,
+   "personal_ue": 3.49,
+   "renta_mes_ue": 2873,
+   "remuneracion_mes": 4404
+  },
+  "pasteleria": {
+   "nivel": "Coacalco · todos los tamaños",
+   "clases": [
+    "311812"
+   ],
+   "ue": 129,
+   "ingreso_anual_ue": 1109775,
+   "costo_directo_pct": 41.8,
+   "personal_ue": 3.49,
+   "renta_mes_ue": 2873,
+   "remuneracion_mes": 4404
+  },
+  "papeleria": {
+   "nivel": "Coacalco · todos los tamaños",
+   "clases": [
+    "465311"
+   ],
+   "ue": 464,
+   "ingreso_anual_ue": 318358,
+   "costo_directo_pct": 63.6,
+   "personal_ue": 1.71,
+   "renta_mes_ue": 1715,
+   "remuneracion_mes": 4135
+  },
+  "ciber": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "561431",
+    "561432"
+   ],
+   "ue": 150,
+   "ingreso_anual_ue": 152407,
+   "costo_directo_pct": 31.4,
+   "personal_ue": 1.69,
+   "renta_mes_ue": 1431,
+   "remuneracion_mes": 4678
+  },
+  "farmacia": {
+   "nivel": "Coacalco · todos los tamaños",
+   "clases": [
+    "464111",
+    "464112"
+   ],
+   "ue": 187,
+   "ingreso_anual_ue": 2357305,
+   "costo_directo_pct": 74.4,
+   "personal_ue": 3.45,
+   "renta_mes_ue": 7326,
+   "remuneracion_mes": 8799
+  },
+  "naturista": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "464113"
+   ],
+   "ue": 55,
+   "ingreso_anual_ue": 763727,
+   "costo_directo_pct": 47.1,
+   "personal_ue": 1.8,
+   "renta_mes_ue": 4191,
+   "remuneracion_mes": 3667
+  },
+  "vinateria": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "461211",
+    "461212"
+   ],
+   "ue": 37,
+   "ingreso_anual_ue": 2436811,
+   "costo_directo_pct": 76.4,
+   "personal_ue": 2.0,
+   "renta_mes_ue": 4311,
+   "remuneracion_mes": 3750
+  },
+  "ropa": {
+   "nivel": "Coacalco · todos los tamaños",
+   "clases": [
+    "463211",
+    "463212",
+    "463213",
+    "463310"
+   ],
+   "ue": 253,
+   "ingreso_anual_ue": 2948368,
+   "costo_directo_pct": 58.4,
+   "personal_ue": 3.49,
+   "renta_mes_ue": 13248,
+   "remuneracion_mes": 4990
+  },
+  "joyeria": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "465112",
+    "463215"
+   ],
+   "ue": 38,
+   "ingreso_anual_ue": 986474,
+   "costo_directo_pct": 47.9,
+   "personal_ue": 2.0,
+   "renta_mes_ue": 7792,
+   "remuneracion_mes": 4211
+  },
+  "celulares": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "466212"
+   ],
+   "ue": 71,
+   "ingreso_anual_ue": 2379479,
+   "costo_directo_pct": 45.5,
+   "personal_ue": 2.07,
+   "renta_mes_ue": 7805,
+   "remuneracion_mes": 3988
+  },
+  "tecnologia": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "466211",
+    "811211"
+   ],
+   "ue": 58,
+   "ingreso_anual_ue": 1018966,
+   "costo_directo_pct": 64.1,
+   "personal_ue": 1.72,
+   "renta_mes_ue": 6960,
+   "remuneracion_mes": 4762
+  },
+  "ferreteria": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "467111"
+   ],
+   "ue": 119,
+   "ingreso_anual_ue": 703202,
+   "costo_directo_pct": 67.4,
+   "personal_ue": 2.09,
+   "renta_mes_ue": 1557,
+   "remuneracion_mes": 4324
+  },
+  "refaccionaria": {
+   "nivel": "Estado de México · todos los tamaños",
+   "clases": [
+    "468211",
+    "468213"
+   ],
+   "ue": 5943,
+   "ingreso_anual_ue": 2995270,
+   "costo_directo_pct": 61.1,
+   "personal_ue": 3.16,
+   "renta_mes_ue": 5096,
+   "remuneracion_mes": 5352
+  },
+  "taller": {
+   "nivel": "Estado de México · todos los tamaños",
+   "clases": [
+    "811111",
+    "811112",
+    "811113",
+    "811114",
+    "811115",
+    "811116",
+    "811119"
+   ],
+   "ue": 16448,
+   "ingreso_anual_ue": 367192,
+   "costo_directo_pct": 37.9,
+   "personal_ue": 2.1,
+   "renta_mes_ue": 1510,
+   "remuneracion_mes": 5441
+  },
+  "autolavado": {
+   "nivel": "Coacalco · todos los tamaños",
+   "clases": [
+    "811192"
+   ],
+   "ue": 47,
+   "ingreso_anual_ue": 414596,
+   "costo_directo_pct": 18.3,
+   "personal_ue": 5.19,
+   "renta_mes_ue": 1902,
+   "remuneracion_mes": 3539
+  },
+  "estetica": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "812110"
+   ],
+   "ue": 600,
+   "ingreso_anual_ue": 150173,
+   "costo_directo_pct": 25.9,
+   "personal_ue": 1.53,
+   "renta_mes_ue": 2135,
+   "remuneracion_mes": 4545
+  },
+  "lavanderia": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "812210"
+   ],
+   "ue": 169,
+   "ingreso_anual_ue": 175083,
+   "costo_directo_pct": 21.7,
+   "personal_ue": 1.7,
+   "renta_mes_ue": 1802,
+   "remuneracion_mes": 3844
+  },
+  "gimnasio": {
+   "nivel": "Estado de México · 0 a 10 personas",
+   "clases": [
+    "713943"
+   ],
+   "ue": 2989,
+   "ingreso_anual_ue": 246506,
+   "costo_directo_pct": 21.7,
+   "personal_ue": 2.44,
+   "renta_mes_ue": 2551,
+   "remuneracion_mes": 4005
+  },
+  "veterinaria": {
+   "nivel": "Coacalco · 0 a 10 personas",
+   "clases": [
+    "541941"
+   ],
+   "ue": 53,
+   "ingreso_anual_ue": 410302,
+   "costo_directo_pct": 32.5,
+   "personal_ue": 2.13,
+   "renta_mes_ue": 2250,
+   "remuneracion_mes": 7971
+  },
+  "optica": {
+   "nivel": "Coacalco · todos los tamaños",
+   "clases": [
+    "464121",
+    "621320"
+   ],
+   "ue": 68,
+   "ingreso_anual_ue": 1801176,
+   "costo_directo_pct": 59.1,
+   "personal_ue": 2.32,
+   "renta_mes_ue": 6417,
+   "remuneracion_mes": 5135
+  },
+  "floreria": {
+   "nivel": "Coacalco · todos los tamaños",
+   "clases": [
+    "466312"
+   ],
+   "ue": 45,
+   "ingreso_anual_ue": 346111,
+   "costo_directo_pct": 56.5,
+   "personal_ue": 2.09,
+   "renta_mes_ue": 1424,
+   "remuneracion_mes": 4160
+  }
+ },
+ "sin_dato": [
+  "consultorio",
+  "dental",
+  "educacion",
+  "spa"
+ ]
+}

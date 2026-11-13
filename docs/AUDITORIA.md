@@ -104,7 +104,7 @@ Revisión automática de los 8 apartados en escritorio (1366 px) y móvil (375 p
 | 5 | Prueba de desbordamiento intermitente (medía durante la animación de entrada) | ✅ Ahora mide con el diseño estable |
 | 6 | Prueba de Empresas fallaba en móvil al aplicar (la app cambia al Simulador) | ✅ Vuelve al apartado antes de borrar |
 
-Mejoras recomendadas, aún no hechas:
-- Auditoría de accesibilidad con un lector de pantalla real (las pruebas cubren nombres accesibles y teclado, no la experiencia completa).
-- Calibrar por giro el ticket, costo variable y demanda con datos de campo: hoy son estimaciones del equipo.
-- Las 6 zonas son composiciones del equipo; polígonos por AGEB del INEGI darían ubicaciones reales.
+Mejoras recomendadas en v7, ya hechas (v7.1):
+- **Accesibilidad:** axe-core en los 8 apartados y en el asistente, escritorio y móvil, con 0 violaciones WCAG 2.1 AA; correcciones de contraste y teclado. La revisión con lector de pantalla real queda como guía para el equipo en docs/ACCESIBILIDAD.md (no se puede automatizar).
+- **Calibración por giro:** contraste con los Censos Económicos 2019 del INEGI (Coacalco, negocios de 0 a 10 personas) para 31 de 35 giros: ventas anuales, costo directo, personal y renta por negocio, con botón para aplicarlos. Hallazgo: el escenario de referencia de la cafetería vende 3.6 veces lo que vende la cafetería promedio de Coacalco (88,705 al año en 2018). Los valores por defecto no se cambiaron para conservar el escenario de referencia; ver docs/METODOLOGIA.md.
+- **Zonas con límites oficiales:** las 70 AGEB urbanas de Coacalco (INEGI, Marco Geoestadístico dic. 2025; 293,245 habitantes del Censo 2020) se dibujan en el mapa agrupadas en las 6 zonas; la agrupación sigue siendo del equipo.

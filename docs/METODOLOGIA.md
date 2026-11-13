@@ -67,3 +67,20 @@ No incluyen ISR/RESICO, depreciación, sueldo del dueño, capital de trabajo ni 
 Rango plausible de P (v3 y v5): 44.3 %–58.3 %. La v4 incorporó el recorrido exploratorio con el modelo v3. En v5 cambian los puntos de supervivencia de los años 6–10. P y el VPN dependen de los primeros tres años. La utilidad, el ROI y el payback se calculan sin S₀.
 Monte Carlo v2: DE $179,399; P5 $489,097; P50 $744,277; P95 $1,072,698.
 La prueba `compatibilidad` de `tests/modelo.test.mjs` confirma que con las entradas v1 se recuperan la utilidad y el VPN v1. Ninguna de las dos cantidades depende del Monte Carlo.
+
+## Calibración con los Censos Económicos 2019
+
+`scripts/censo_sync.py` descarga los datos abiertos del Estado de México (INEGI, CE 2019, año de referencia 2018) y, con el mismo mapeo giro → clases SCIAN del DENUE, calcula por unidad económica: ventas anuales (M000A), costo directo (K010A + K020A + K030A sobre M000A), personal ocupado (H001A), renta mensual (K050A) y remuneración media (J000A / H010A). Usa primero Coacalco con negocios de 0 a 10 personas, luego Coacalco total, luego el Estado de México. Resultado en `data/censo/giros.json` (31 giros; consultorio, dental, educación y spa sin dato publicable).
+
+| Cafetería | Equipo (referencia) | Censo · Coacalco 0–10 personas |
+|---|---|---|
+| Ventas al año | $1,777,032 | $488,705 (pesos de 2018) |
+| Costo directo | 38 % | 48 % |
+| Personas | 2 | 2.2 |
+| Renta al mes | $7,500 | $3,127 |
+
+**Decisión:** el simulador muestra este contraste en el apartado Negocio y ofrece «Usar la referencia del censo», pero los valores por defecto no cambian, para que el escenario de referencia siga siendo reproducible (51.6 %). El contraste indica que el escenario de referencia describe una cafetería de alto desempeño, no la típica de Coacalco; conviene decirlo al presentar. Las cifras del censo están en pesos de 2018 y no se ajustaron por inflación.
+
+## Zonas con límites oficiales
+
+`scripts/ageb_sync.mjs` descarga las 70 AGEB urbanas de Coacalco (INEGI, servicio wscatgeo, Marco Geoestadístico de diciembre de 2025, con población del Censo 2020) y asigna cada una a la zona del equipo que contiene su centroide (64 AGEB) o a la más cercana (6). El mapa real dibuja esos límites; el modelo no cambia.

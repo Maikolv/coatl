@@ -102,6 +102,12 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - Sin modo oscuro (retirado a petición del equipo, v7). Pestañas de apartados abiertos en paginas.js (#pestanasApp, sessionStorage).
 - Fotos reales en `assets/img/zonas/` con cita mínima; créditos en docs/RECURSOS.md.
 
+## Censo, AGEB y accesibilidad (v7.1)
+
+- `scripts/censo_sync.py` → `data/censo/giros.json` (CE 2019); `src/ui/censo.js` lo contrasta sin cambiar los valores por defecto.
+- `scripts/ageb_sync.mjs` → `data/ageb/coacalco.json` (70 AGEB, wscatgeo del INEGI); el mapa las agrupa por zona y cae a los rectángulos si no hay archivo.
+- `tests/e2e/accesibilidad.spec.js` (axe, WCAG 2.1 AA): mantener en 0 violaciones.
+
 ## DENUE y empresas
 
 - `scripts/denue_sync.py` + `.github/workflows/denue.yml` (semanal) generan `data/denue/`; el build lo copia a dist/. Solo conteos, nunca datos de contacto.

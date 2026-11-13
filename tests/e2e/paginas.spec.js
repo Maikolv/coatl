@@ -98,3 +98,20 @@ test('cada apartado abierto queda como pestaña que se cambia y se cierra', asyn
   await page.reload({ waitUntil: 'domcontentloaded' });
   await expect(tabs).toHaveCount(2);
 });
+
+test('contraste con el censo: dato oficial por giro y opción de aplicarlo', async ({ page }) => {
+  await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
+  const caja = page.locator('#censoRef');
+  await expect(caja).toBeVisible({ timeout: 15000 });
+  await expect(caja).toContainText('241');            // cafeterías de 0 a 10 personas en Coacalco (CE 2019)
+  await expect(page.locator('#probNum')).toHaveText('51.6%');   // los valores por defecto no cambian
+  await page.click('#censoAplicar');
+  await expect(page.locator('#cvar')).toHaveValue('48');
+  await expect(page.locator('#probNum')).not.toHaveText('51.6%');
+});
+
+test('mapa real: límites oficiales de AGEB del INEGI', async ({ page }) => {
+  await page.goto('/#mapa', { waitUntil: 'domcontentloaded' });
+  await page.locator('#mapa').scrollIntoViewIfNeeded();   // el mapa real se carga al entrar en pantalla
+  await expect(page.locator('#mapaReal path.leaflet-interactive')).toHaveCount(70, { timeout: 20000 });
+});

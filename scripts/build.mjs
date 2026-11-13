@@ -22,6 +22,7 @@ export const MODULOS_JS = [
   'src/ui/denue.js',
   'src/ui/empresas.js',
   'src/ui/giros_scian.js',
+  'src/ui/censo.js',
   'src/ui/describir.js',
   'src/ui/paginas.js',
   'src/ui/asistente.js',
@@ -69,6 +70,10 @@ export function construir() {
   if (fs.existsSync(fotos)) fs.cpSync(fotos, path.join(raiz, 'dist', 'assets', 'img', 'zonas'), { recursive: true });
   const datos = path.join(raiz, 'data', 'denue');
   if (fs.existsSync(datos)) fs.cpSync(datos, path.join(raiz, 'dist', 'data', 'denue'), { recursive: true });
+  const censo = path.join(raiz, 'data', 'censo');   // Censos Económicos 2019 (scripts/censo_sync.py)
+  if (fs.existsSync(censo)) fs.cpSync(censo, path.join(raiz, 'dist', 'data', 'censo'), { recursive: true });
+  const ageb = path.join(raiz, 'data', 'ageb');   // AGEB del INEGI (scripts/ageb_sync.mjs)
+  if (fs.existsSync(ageb)) fs.cpSync(ageb, path.join(raiz, 'dist', 'data', 'ageb'), { recursive: true });
   return html.length;
 }
 

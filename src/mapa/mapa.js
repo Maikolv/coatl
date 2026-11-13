@@ -99,7 +99,7 @@ const HITOS=[
   {ll:[19.6253,-99.0906],t:"Power Center Coacalco (referencia aproximada)"},
   {ll:[19.6262,-99.1079],t:"Plaza Cosmopol (referencia aproximada)"}
 ];
-let mapaL=null, capasZona={}, fallosTesela=0, cayoEsquema=false;
+let AGEB_COACALCO=null, mapaL=null, capasZona={}, fallosTesela=0, cayoEsquema=false;
 function initLeaflet(){
   if(typeof L==="undefined"||mapaL) return !!mapaL;
   try{
@@ -110,15 +110,27 @@ function initLeaflet(){
     calles.addTo(mapaL);
     L.control.layers({"Calles (OpenStreetMap)":calles,"Satélite (fotografía Esri)":satelite},null,{position:"topright"}).addTo(mapaL);
     L.control.scale({imperial:false}).addTo(mapaL);
-    for(const k in COORDS_ZONAS){
-      const pol=L.polygon(COORDS_ZONAS[k],{color:"#FFFFFF",weight:2.5,fillColor:"#E9B9BE",fillOpacity:.55});
-      pol.bindTooltip("",{permanent:true,direction:"center",className:"lf-et"});
-      pol.on("click",()=>irAZona(k));
-      pol.on("mouseover",()=>pol.setStyle({weight:4,fillOpacity:.7}));
-      pol.on("mouseout",()=>pol.setStyle({weight:capasZona[k]._activa?4.5:2.5,fillOpacity:.55}));
-      pol.addTo(mapaL);
-      capasZona[k]=pol;
-    }
+    const crearZona=(k,capa,centro)=>{
+      capa.on("click",()=>irAZona(k));
+      capa.on("mouseover",()=>capa.setStyle({weight:4,fillOpacity:.7}));
+      capa.on("mouseout",()=>capa.setStyle({weight:capasZona[k]._activa?4.5:2.5,fillOpacity:.55}));
+      capa.addTo(mapaL);
+      capa.etiqueta=L.tooltip({permanent:true,direction:"center",className:"lf-et"}).setLatLng(centro).setContent(CORTOS[k]).addTo(mapaL);
+      capasZona[k]=capa;
+    };
+    const ESTILO={color:"#FFFFFF",weight:2.5,fillColor:"#E9B9BE",fillOpacity:.55};
+    for(const k in COORDS_ZONAS){ const p=L.polygon(COORDS_ZONAS[k],ESTILO); crearZona(k,p,p.getBounds().getCenter()); }
+    // Límites oficiales: AGEB urbanas del INEGI agrupadas por zona (si el archivo está disponible).
+    fetch("data/ageb/coacalco.json").then(r=>r.ok?r.json():null).then(j=>{
+      if(!j||!j.agebs) return;
+      for(const k in capasZona){ mapaL.removeLayer(capasZona[k]); mapaL.removeLayer(capasZona[k].etiqueta); }
+      for(const k in COORDS_ZONAS){
+        const g=L.featureGroup(j.agebs.filter(a=>a.zona===k).map(a=>L.polygon(a.poligonos,ESTILO).bindTooltip("AGEB "+esc(a.ageb)+" · "+fmtN(a.pob)+" hab. (Censo 2020)")));
+        if(!g.getLayers().length) continue;
+        crearZona(k,g,g.getBounds().getCenter()); g.resumen=j.resumen[k];
+      }
+      AGEB_COACALCO=j; actualizarLeaflet();
+    }).catch(()=>{});
     HITOS.forEach(h=>L.marker(h.ll,{icon:L.divIcon({className:"lf-hito",iconSize:[14,14]}),title:h.t,alt:h.t,keyboard:true}).bindTooltip(h.t).addTo(mapaL).getElement()?.setAttribute("aria-label",h.t));
     setTimeout(()=>mapaL.invalidateSize(),300);
     return true;
@@ -130,8 +142,8 @@ function actualizarLeaflet(){
     const pol=capasZona[d.k]; if(!pol) return;
     pol._activa=(d.k===escZonaActual);
     pol.setStyle({fillColor:colorP(d.P),color:pol._activa?"#38070F":"#FFFFFF",weight:pol._activa?4.5:2.5});
-    pol.setTooltipContent(CORTOS[d.k]+"<br>"+(d.P*100).toFixed(1)+"%");
-    pol.bindPopup("<strong>"+d.z.n+"</strong><br>P(éxito a 3 años): <strong>"+(d.P*100).toFixed(1)+"%</strong><br>Utilidad esperada: "+mxn.format(Math.round(d.util))+"/mes<br>Renta ref.: $"+d.z.rm2+"/m²·mes · Afluencia: "+d.z.afl.toFixed(2)+"<br><em>Clic en la zona para trasladar tu escenario.</em>");
+    pol.etiqueta.setContent(CORTOS[d.k]+"<br>"+(d.P*100).toFixed(1)+"%");
+    pol.bindPopup("<strong>"+d.z.n+"</strong><br>P(éxito a 3 años): <strong>"+(d.P*100).toFixed(1)+"%</strong><br>Utilidad esperada: "+mxn.format(Math.round(d.util))+"/mes<br>Renta ref.: $"+d.z.rm2+"/m²·mes · Afluencia: "+d.z.afl.toFixed(2)+"<br>"+(pol.resumen?"Población 2020 (INEGI): "+fmtN(pol.resumen.pob)+" en "+pol.resumen.agebs+" AGEB<br>":"")+"<em>Clic en la zona para trasladar tu escenario.</em>");
   });
 }
 function usarEsquema(){

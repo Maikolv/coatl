@@ -68,7 +68,7 @@
     </div>
     <aside class="tablero" aria-label="Visualización de frecuencias de supervivencia">
       <h2 id="tablero-titulo">De cada 100 negocios que nacen en México…</h2>
-      <div class="cuadricula" id="cuadricula-hero" role="img" aria-describedby="tablero-titulo"></div>
+      <div class="cuadricula" id="cuadricula-hero" role="img" aria-labelledby="tablero-titulo" aria-describedby="tablero-titulo"></div>
       <div class="tablero-leyenda">
         <span><span class="chip"></span> Siguen operando al año <strong id="anio-tablero">&nbsp;1</strong></span>
         <span><span class="chip r"></span> Ya cerraron</span>
@@ -178,7 +178,7 @@
   <div class="panel" style="margin-top:1.5rem">
     <h3>Seis zonas, seis mercados distintos</h3>
     <p class="sub">Coacalco no es homogéneo: el corredor de la Vía José López Portillo concentra cinco centros comerciales y la mayor afluencia, mientras que las colonias habitacionales ofrecen rentas bajas y demanda de proximidad. El simulador asigna a cada zona un índice de afluencia y un costo de renta de referencia.</p>
-    <div class="tabla-envoltura"><table class="tabla-zonas">
+    <div class="tabla-envoltura" tabindex="0" role="region" aria-label="Tabla de zonas (desplazable)"><table class="tabla-zonas">
       <thead>
         <tr><th>Zona</th><th>Perfil</th><th>Índice de afluencia*</th><th>Renta de referencia</th><th>Costo de entrada</th></tr>
       </thead>
@@ -191,7 +191,7 @@
         <tr><td><strong>Zonas habitacionales periféricas</strong></td><td>Demanda local, flujo peatonal limitado</td><td>0.78</td><td>$90/m²·mes</td><td><span class="pildora baja">Bajo</span></td></tr>
       </tbody>
     </table></div>
-    <p style="font-family:var(--mono);font-size:.66rem;color:#9B6A6E;margin-top:.7rem">* Índice relativo construido por el equipo (1.00 = promedio municipal) a partir de la caracterización socioeconómica de colonias del municipio y la concentración comercial del corredor López Portillo. Rentas: valores de referencia del mercado local; pueden editarse en el simulador.</p>
+    <p style="font-family:var(--mono);font-size:.66rem;color:#855559;margin-top:.7rem">* Índice relativo construido por el equipo (1.00 = promedio municipal) a partir de la caracterización socioeconómica de colonias del municipio y la concentración comercial del corredor López Portillo. Rentas: valores de referencia del mercado local; pueden editarse en el simulador.</p>
   </div>
 </section>
 
@@ -272,6 +272,7 @@
             <datalist id="giroOpciones"></datalist>
             <span class="ayuda" id="giroNota" aria-live="polite"></span>
           </div>
+          <div class="censo-ref" id="censoRef" aria-live="polite" hidden></div>
           <div class="fila-2">
             <div class="campo">
               <label for="experiencia">Experiencia previa en el giro</label>
@@ -667,7 +668,7 @@
             </g>
           </svg>
           <div class="mapa-tooltip" id="mapaTip" role="status"></div>
-          <p class="mapa-nota">Mapa real: cartografía © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · fotografía aérea © Esri y proveedores. La delimitación de zonas es aproximada y fue elaborada por el equipo con fines de análisis; los hitos comerciales se muestran con ubicación aproximada. Cada zona se evalúa con tu escenario actual ajustando renta de referencia y afluencia. Si no hay conexión, se muestra el esquema del equipo.</p>
+          <p class="mapa-nota">Mapa real: cartografía © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · fotografía aérea © Esri y proveedores. Límites de AGEB urbanas: INEGI, Marco Geoestadístico (dic. 2025) y población del Censo 2020; la agrupación de AGEB en seis zonas es del equipo; los hitos comerciales se muestran con ubicación aproximada. Cada zona se evalúa con tu escenario actual ajustando renta de referencia y afluencia. Si no hay conexión, se muestra el esquema del equipo.</p>
         </div>
         <div>
           <p class="ranking-titulo">Ranking de zonas para tu escenario</p>
@@ -767,7 +768,7 @@
     <article class="metodo" data-num="ƒ₁">
       <h3>Modelo logístico de puntaje</h3>
       <p>La probabilidad de éxito a 3 años se obtiene con una función logística: cada variable del escenario aporta un coeficiente β (positivo si protege al negocio, negativo si lo arriesga) y la suma z se transforma en una probabilidad entre 0 y 1.</p>
-      <div class="formula">P(éxito) = 1 / (1 + e^(−z)),&nbsp;&nbsp; z = β₀ + β₁x₁ + β₂x₂ + … + βₖxₖ</div>
+      <div class="formula" tabindex="0">P(éxito) = 1 / (1 + e^(−z)),&nbsp;&nbsp; z = β₀ + β₁x₁ + β₂x₂ + … + βₖxₖ</div>
       <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI 1989–2019 (42.6 %): β₀ = ln(0.4261/0.5739) ≈ −0.298. Los coeficientes de zona, experiencia, reserva de capital, competencia, deuda y margen de seguridad se asignaron por criterio del equipo a partir de la literatura de demografía de negocios. Como ningún β tiene error estándar, el simulador no presenta P como cifra exacta: perturba cada βᵢ con una desviación relativa de 30 % (y β₀ con 0.15) en 1,000 sorteos y reporta el <strong>rango plausible P5–P95</strong>. Es un análisis de sensibilidad, no un intervalo de confianza muestral.</p>
       <p class="uso">Conceptos del curso: probabilidad condicional, función logística, variables explicativas.</p>
     </article>
@@ -775,7 +776,7 @@
     <article class="metodo" data-num="ƒ₂">
       <h3>Tablas de supervivencia y riesgos proporcionales</h3>
       <p>El <a href="https://www.inegi.org.mx/contenidos/programas/dn/2019/tabulados/Nal_Tot_CE2019.xlsx" target="_blank" rel="noopener">tabulado nacional del INEGI (1989–2019)</a> indica que de cada 100 negocios que nacen en México, alrededor de 31 mueren antes de cumplir un año y unos 36 llegan a los 5 años. La esperanza de vida al nacer es de 8.4 años. La curva personalizada eleva la supervivencia nacional a un exponente h (razón de riesgo) derivado de tu probabilidad.</p>
-      <div class="formula">S(t) = S₀(t)^h,&nbsp;&nbsp; h = ln P(éxito) / ln S₀(3)</div>
+      <div class="formula" tabindex="0">S(t) = S₀(t)^h,&nbsp;&nbsp; h = ln P(éxito) / ln S₀(3)</div>
       <table class="tabla-sup">
         <thead><tr><th>Año</th><th>1</th><th>2</th><th>3</th><th>5</th><th>7</th><th>10</th></tr></thead>
         <tbody><tr><td><strong>S₀(t) nacional</strong></td><td>0.691</td><td>0.481</td><td>0.426</td><td>0.357</td><td>0.311</td><td>0.263</td></tr></tbody>
@@ -787,21 +788,21 @@
     <article class="metodo" data-num="ƒ₃">
       <h3>Simulación Monte Carlo</h3>
       <p>La utilidad de un negocio no es fija. Cada corrida simula un año con cuatro fuentes de variación: un <strong>choque anual común de demanda</strong> F (lognormal de media 1 y σ = 0.15: un «mal año» afecta a los doce meses a la vez y no se compensa al sumar), clientes por día Normal(μF, (0.22·μF)²) mes a mes, ticket Normal(t̄, (0.08·t̄)²) y un costo variable que se desvía ±2 puntos porcentuales en el año. Repetimos el año 2,000 veces (números pseudoaleatorios de semilla fija, método Box–Muller) y reportamos la media, la dispersión, los escenarios <strong>P5 · mediana · P95</strong> y la probabilidad empírica de terminar con utilidad positiva. Las desviaciones son supuestos del equipo y se declaran como tales.</p>
-      <div class="formula">F ~ LogN(−σ²/2, 0.15²)&nbsp;·&nbsp;Clientes ~ N(μF, (0.22μF)²)&nbsp;·&nbsp;Ticket ~ N(t̄, (0.08t̄)²)&nbsp;·&nbsp;P(U&gt;0) ≈ #{Uᵢ&gt;0}/2000</div>
+      <div class="formula" tabindex="0">F ~ LogN(−σ²/2, 0.15²)&nbsp;·&nbsp;Clientes ~ N(μF, (0.22μF)²)&nbsp;·&nbsp;Ticket ~ N(t̄, (0.08t̄)²)&nbsp;·&nbsp;P(U&gt;0) ≈ #{Uᵢ&gt;0}/2000</div>
       <p class="uso">Conceptos: distribución normal, teorema central del límite, percentiles, probabilidad empírica.</p>
     </article>
 
     <article class="metodo" data-num="ƒ₄">
       <h3>Punto de equilibrio y margen de seguridad</h3>
       <p>Con el margen de contribución unitario (ticket menos costo variable) se calcula cuántos clientes al mes se necesitan para cubrir los costos fijos. El margen de seguridad —qué tan lejos opera el negocio por encima de su equilibrio— alimenta de regreso al modelo logístico: operar pegado al equilibrio es, estadísticamente, una señal de fragilidad.</p>
-      <div class="formula">PE = CF / (ticket − cv)&nbsp;&nbsp;·&nbsp;&nbsp;MS = (Ventas − PE$) / Ventas</div>
+      <div class="formula" tabindex="0">PE = CF / (ticket − cv)&nbsp;&nbsp;·&nbsp;&nbsp;MS = (Ventas − PE$) / Ventas</div>
       <p class="uso">Conceptos: modelos lineales de costo–volumen, análisis de sensibilidad.</p>
     </article>
 
     <article class="metodo" data-num="ƒ₅">
       <h3>Indicadores de inversión: ROI, payback y VPN</h3>
       <p>Para el inversionista, la probabilidad debe traducirse a dinero. El simulador reporta el retorno anual sobre la inversión, el periodo de recuperación y el valor presente neto a 3 años: los flujos crecen con tu tasa g de adopción de demanda, los costos fijos se encarecen con la inflación π esperada, cada flujo se pondera por la probabilidad de seguir vivo S(t) y todo se descuenta a la tasa que tú definas. El costo variable efectivo cv′ incluye la merma de inventario. Todas las cifras son <strong>antes de impuestos</strong> (ISR/RESICO), sin depreciación ni sueldo del dueño, y el VPN no incluye valor terminal.</p>
-      <div class="formula">VPN = −I₀ + Σₜ S(t)·Uₜ/(1+r)ᵗ,&nbsp; Uₜ = V₁(1+g)ᵗ⁻¹(1−cv′) − CF₁(1+π)ᵗ⁻¹</div>
+      <div class="formula" tabindex="0">VPN = −I₀ + Σₜ S(t)·Uₜ/(1+r)ᵗ,&nbsp; Uₜ = V₁(1+g)ᵗ⁻¹(1−cv′) − CF₁(1+π)ᵗ⁻¹</div>
       <p class="uso">Conceptos: valor esperado, esperanza matemática aplicada a flujos de efectivo.</p>
     </article>
 

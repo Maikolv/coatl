@@ -296,3 +296,12 @@ body.vista-todo .pestanas-app{display:none}
   .asis-boton b{display:none}
   .asis-boton{padding:.8rem}
 }
+
+/* ---- Contraste con el censo (Censos Económicos 2019) ---- */
+.censo-ref{margin:.4rem 0 1rem;padding:.8rem .9rem;border:1px solid var(--niebla-2);border-left:4px solid var(--rojo);border-radius:10px;background:#fff;font-size:.82rem}
+.censo-tit{margin:0 0 .5rem;font-weight:600}
+.censo-tabla{width:100%;border-collapse:collapse;margin-bottom:.5rem}
+.censo-tabla th,.censo-tabla td{padding:.3rem .4rem;border-bottom:1px solid var(--niebla);text-align:right}
+.censo-tabla th[scope=row],.censo-tabla thead th:first-child{text-align:left}
+.censo-tabla thead th{font-size:.72rem;color:var(--gris-texto);font-weight:600}
+.censo-nota{margin:0 0 .6rem;color:var(--gris-texto);font-size:.76rem}

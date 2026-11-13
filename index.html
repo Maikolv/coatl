@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-OkjY7AJgFIEymG2bJsTwvV+BLkPA6/Z+ZyZ16FnDIkM=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'sha256-B7Zb6z6ZInXTfNFS6O+sy+FRSKAC2dC03U5+nGbh/7U=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-HK+486462JqUerExTn22w+CYtE0sxVln8swwkJ6122s=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'sha256-4wT5/NwSw15nCQcmyqGfHXgu40OoZSAISq5XVSNobT8=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -32,7 +32,7 @@
   --niebla-2:#EFD6D4;
   --gris-texto:#4A3A3C;
   --ok:#1F7A4D;
-  --alerta:#B7791F;
+  --alerta:#8F5E12;  /* AA sobre blanco (antes #B7791F, 3.6:1) */
   --display:"Bricolage Grotesque","Hanken Grotesk",Georgia,serif;
   --cuerpo:"Hanken Grotesk","Segoe UI",Arial,sans-serif;
   --mono:"Spline Sans Mono","Courier New",monospace;
@@ -872,9 +872,18 @@ body.vista-todo .pestanas-app{display:none}
   .asis-boton{padding:.8rem}
 }
 
+/* ---- Contraste con el censo (Censos Económicos 2019) ---- */
+.censo-ref{margin:.4rem 0 1rem;padding:.8rem .9rem;border:1px solid var(--niebla-2);border-left:4px solid var(--rojo);border-radius:10px;background:#fff;font-size:.82rem}
+.censo-tit{margin:0 0 .5rem;font-weight:600}
+.censo-tabla{width:100%;border-collapse:collapse;margin-bottom:.5rem}
+.censo-tabla th,.censo-tabla td{padding:.3rem .4rem;border-bottom:1px solid var(--niebla);text-align:right}
+.censo-tabla th[scope=row],.censo-tabla thead th:first-child{text-align:left}
+.censo-tabla thead th{font-size:.72rem;color:var(--gris-texto);font-weight:600}
+.censo-nota{margin:0 0 .6rem;color:var(--gris-texto);font-size:.76rem}
+
 /* estilos en línea movidos por el build */
 [data-ei="0"]{margin-top:1.5rem !important}
-[data-ei="1"]{font-family:var(--mono) !important;font-size:.66rem !important;color:#9B6A6E !important;margin-top:.7rem !important}
+[data-ei="1"]{font-family:var(--mono) !important;font-size:.66rem !important;color:#855559 !important;margin-top:.7rem !important}
 [data-ei="2"]{color:#fff !important}
 [data-ei="3"]{color:#FFC9CF !important}
 [data-ei="4"]{color:#FFC9CF !important}
@@ -941,7 +950,7 @@ body.vista-todo .pestanas-app{display:none}
     </div>
     <aside class="tablero" aria-label="Visualización de frecuencias de supervivencia">
       <h2 id="tablero-titulo">De cada 100 negocios que nacen en México…</h2>
-      <div class="cuadricula" id="cuadricula-hero" role="img" aria-describedby="tablero-titulo"></div>
+      <div class="cuadricula" id="cuadricula-hero" role="img" aria-labelledby="tablero-titulo" aria-describedby="tablero-titulo"></div>
       <div class="tablero-leyenda">
         <span><span class="chip"></span> Siguen operando al año <strong id="anio-tablero">&nbsp;1</strong></span>
         <span><span class="chip r"></span> Ya cerraron</span>
@@ -1051,7 +1060,7 @@ body.vista-todo .pestanas-app{display:none}
   <div class="panel" data-ei="0">
     <h3>Seis zonas, seis mercados distintos</h3>
     <p class="sub">Coacalco no es homogéneo: el corredor de la Vía José López Portillo concentra cinco centros comerciales y la mayor afluencia, mientras que las colonias habitacionales ofrecen rentas bajas y demanda de proximidad. El simulador asigna a cada zona un índice de afluencia y un costo de renta de referencia.</p>
-    <div class="tabla-envoltura"><table class="tabla-zonas">
+    <div class="tabla-envoltura" tabindex="0" role="region" aria-label="Tabla de zonas (desplazable)"><table class="tabla-zonas">
       <thead>
         <tr><th>Zona</th><th>Perfil</th><th>Índice de afluencia*</th><th>Renta de referencia</th><th>Costo de entrada</th></tr>
       </thead>
@@ -1145,6 +1154,7 @@ body.vista-todo .pestanas-app{display:none}
             <datalist id="giroOpciones"></datalist>
             <span class="ayuda" id="giroNota" aria-live="polite"></span>
           </div>
+          <div class="censo-ref" id="censoRef" aria-live="polite" hidden></div>
           <div class="fila-2">
             <div class="campo">
               <label for="experiencia">Experiencia previa en el giro</label>
@@ -1540,7 +1550,7 @@ body.vista-todo .pestanas-app{display:none}
             </g>
           </svg>
           <div class="mapa-tooltip" id="mapaTip" role="status"></div>
-          <p class="mapa-nota">Mapa real: cartografía © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · fotografía aérea © Esri y proveedores. La delimitación de zonas es aproximada y fue elaborada por el equipo con fines de análisis; los hitos comerciales se muestran con ubicación aproximada. Cada zona se evalúa con tu escenario actual ajustando renta de referencia y afluencia. Si no hay conexión, se muestra el esquema del equipo.</p>
+          <p class="mapa-nota">Mapa real: cartografía © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · fotografía aérea © Esri y proveedores. Límites de AGEB urbanas: INEGI, Marco Geoestadístico (dic. 2025) y población del Censo 2020; la agrupación de AGEB en seis zonas es del equipo; los hitos comerciales se muestran con ubicación aproximada. Cada zona se evalúa con tu escenario actual ajustando renta de referencia y afluencia. Si no hay conexión, se muestra el esquema del equipo.</p>
         </div>
         <div>
           <p class="ranking-titulo">Ranking de zonas para tu escenario</p>
@@ -1640,7 +1650,7 @@ body.vista-todo .pestanas-app{display:none}
     <article class="metodo" data-num="ƒ₁">
       <h3>Modelo logístico de puntaje</h3>
       <p>La probabilidad de éxito a 3 años se obtiene con una función logística: cada variable del escenario aporta un coeficiente β (positivo si protege al negocio, negativo si lo arriesga) y la suma z se transforma en una probabilidad entre 0 y 1.</p>
-      <div class="formula">P(éxito) = 1 / (1 + e^(−z)),&nbsp;&nbsp; z = β₀ + β₁x₁ + β₂x₂ + … + βₖxₖ</div>
+      <div class="formula" tabindex="0">P(éxito) = 1 / (1 + e^(−z)),&nbsp;&nbsp; z = β₀ + β₁x₁ + β₂x₂ + … + βₖxₖ</div>
       <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI 1989–2019 (42.6 %): β₀ = ln(0.4261/0.5739) ≈ −0.298. Los coeficientes de zona, experiencia, reserva de capital, competencia, deuda y margen de seguridad se asignaron por criterio del equipo a partir de la literatura de demografía de negocios. Como ningún β tiene error estándar, el simulador no presenta P como cifra exacta: perturba cada βᵢ con una desviación relativa de 30 % (y β₀ con 0.15) en 1,000 sorteos y reporta el <strong>rango plausible P5–P95</strong>. Es un análisis de sensibilidad, no un intervalo de confianza muestral.</p>
       <p class="uso">Conceptos del curso: probabilidad condicional, función logística, variables explicativas.</p>
     </article>
@@ -1648,7 +1658,7 @@ body.vista-todo .pestanas-app{display:none}
     <article class="metodo" data-num="ƒ₂">
       <h3>Tablas de supervivencia y riesgos proporcionales</h3>
       <p>El <a href="https://www.inegi.org.mx/contenidos/programas/dn/2019/tabulados/Nal_Tot_CE2019.xlsx" target="_blank" rel="noopener">tabulado nacional del INEGI (1989–2019)</a> indica que de cada 100 negocios que nacen en México, alrededor de 31 mueren antes de cumplir un año y unos 36 llegan a los 5 años. La esperanza de vida al nacer es de 8.4 años. La curva personalizada eleva la supervivencia nacional a un exponente h (razón de riesgo) derivado de tu probabilidad.</p>
-      <div class="formula">S(t) = S₀(t)^h,&nbsp;&nbsp; h = ln P(éxito) / ln S₀(3)</div>
+      <div class="formula" tabindex="0">S(t) = S₀(t)^h,&nbsp;&nbsp; h = ln P(éxito) / ln S₀(3)</div>
       <table class="tabla-sup">
         <thead><tr><th>Año</th><th>1</th><th>2</th><th>3</th><th>5</th><th>7</th><th>10</th></tr></thead>
         <tbody><tr><td><strong>S₀(t) nacional</strong></td><td>0.691</td><td>0.481</td><td>0.426</td><td>0.357</td><td>0.311</td><td>0.263</td></tr></tbody>
@@ -1660,21 +1670,21 @@ body.vista-todo .pestanas-app{display:none}
     <article class="metodo" data-num="ƒ₃">
       <h3>Simulación Monte Carlo</h3>
       <p>La utilidad de un negocio no es fija. Cada corrida simula un año con cuatro fuentes de variación: un <strong>choque anual común de demanda</strong> F (lognormal de media 1 y σ = 0.15: un «mal año» afecta a los doce meses a la vez y no se compensa al sumar), clientes por día Normal(μF, (0.22·μF)²) mes a mes, ticket Normal(t̄, (0.08·t̄)²) y un costo variable que se desvía ±2 puntos porcentuales en el año. Repetimos el año 2,000 veces (números pseudoaleatorios de semilla fija, método Box–Muller) y reportamos la media, la dispersión, los escenarios <strong>P5 · mediana · P95</strong> y la probabilidad empírica de terminar con utilidad positiva. Las desviaciones son supuestos del equipo y se declaran como tales.</p>
-      <div class="formula">F ~ LogN(−σ²/2, 0.15²)&nbsp;·&nbsp;Clientes ~ N(μF, (0.22μF)²)&nbsp;·&nbsp;Ticket ~ N(t̄, (0.08t̄)²)&nbsp;·&nbsp;P(U&gt;0) ≈ #{Uᵢ&gt;0}/2000</div>
+      <div class="formula" tabindex="0">F ~ LogN(−σ²/2, 0.15²)&nbsp;·&nbsp;Clientes ~ N(μF, (0.22μF)²)&nbsp;·&nbsp;Ticket ~ N(t̄, (0.08t̄)²)&nbsp;·&nbsp;P(U&gt;0) ≈ #{Uᵢ&gt;0}/2000</div>
       <p class="uso">Conceptos: distribución normal, teorema central del límite, percentiles, probabilidad empírica.</p>
     </article>
 
     <article class="metodo" data-num="ƒ₄">
       <h3>Punto de equilibrio y margen de seguridad</h3>
       <p>Con el margen de contribución unitario (ticket menos costo variable) se calcula cuántos clientes al mes se necesitan para cubrir los costos fijos. El margen de seguridad —qué tan lejos opera el negocio por encima de su equilibrio— alimenta de regreso al modelo logístico: operar pegado al equilibrio es, estadísticamente, una señal de fragilidad.</p>
-      <div class="formula">PE = CF / (ticket − cv)&nbsp;&nbsp;·&nbsp;&nbsp;MS = (Ventas − PE$) / Ventas</div>
+      <div class="formula" tabindex="0">PE = CF / (ticket − cv)&nbsp;&nbsp;·&nbsp;&nbsp;MS = (Ventas − PE$) / Ventas</div>
       <p class="uso">Conceptos: modelos lineales de costo–volumen, análisis de sensibilidad.</p>
     </article>
 
     <article class="metodo" data-num="ƒ₅">
       <h3>Indicadores de inversión: ROI, payback y VPN</h3>
       <p>Para el inversionista, la probabilidad debe traducirse a dinero. El simulador reporta el retorno anual sobre la inversión, el periodo de recuperación y el valor presente neto a 3 años: los flujos crecen con tu tasa g de adopción de demanda, los costos fijos se encarecen con la inflación π esperada, cada flujo se pondera por la probabilidad de seguir vivo S(t) y todo se descuenta a la tasa que tú definas. El costo variable efectivo cv′ incluye la merma de inventario. Todas las cifras son <strong>antes de impuestos</strong> (ISR/RESICO), sin depreciación ni sueldo del dueño, y el VPN no incluye valor terminal.</p>
-      <div class="formula">VPN = −I₀ + Σₜ S(t)·Uₜ/(1+r)ᵗ,&nbsp; Uₜ = V₁(1+g)ᵗ⁻¹(1−cv′) − CF₁(1+π)ᵗ⁻¹</div>
+      <div class="formula" tabindex="0">VPN = −I₀ + Σₜ S(t)·Uₜ/(1+r)ᵗ,&nbsp; Uₜ = V₁(1+g)ᵗ⁻¹(1−cv′) − CF₁(1+π)ᵗ⁻¹</div>
       <p class="uso">Conceptos: valor esperado, esperanza matemática aplicada a flujos de efectivo.</p>
     </article>
 
@@ -2615,7 +2625,7 @@ const HITOS=[
   {ll:[19.6253,-99.0906],t:"Power Center Coacalco (referencia aproximada)"},
   {ll:[19.6262,-99.1079],t:"Plaza Cosmopol (referencia aproximada)"}
 ];
-let mapaL=null, capasZona={}, fallosTesela=0, cayoEsquema=false;
+let AGEB_COACALCO=null, mapaL=null, capasZona={}, fallosTesela=0, cayoEsquema=false;
 function initLeaflet(){
   if(typeof L==="undefined"||mapaL) return !!mapaL;
   try{
@@ -2626,15 +2636,27 @@ function initLeaflet(){
     calles.addTo(mapaL);
     L.control.layers({"Calles (OpenStreetMap)":calles,"Satélite (fotografía Esri)":satelite},null,{position:"topright"}).addTo(mapaL);
     L.control.scale({imperial:false}).addTo(mapaL);
-    for(const k in COORDS_ZONAS){
-      const pol=L.polygon(COORDS_ZONAS[k],{color:"#FFFFFF",weight:2.5,fillColor:"#E9B9BE",fillOpacity:.55});
-      pol.bindTooltip("",{permanent:true,direction:"center",className:"lf-et"});
-      pol.on("click",()=>irAZona(k));
-      pol.on("mouseover",()=>pol.setStyle({weight:4,fillOpacity:.7}));
-      pol.on("mouseout",()=>pol.setStyle({weight:capasZona[k]._activa?4.5:2.5,fillOpacity:.55}));
-      pol.addTo(mapaL);
-      capasZona[k]=pol;
-    }
+    const crearZona=(k,capa,centro)=>{
+      capa.on("click",()=>irAZona(k));
+      capa.on("mouseover",()=>capa.setStyle({weight:4,fillOpacity:.7}));
+      capa.on("mouseout",()=>capa.setStyle({weight:capasZona[k]._activa?4.5:2.5,fillOpacity:.55}));
+      capa.addTo(mapaL);
+      capa.etiqueta=L.tooltip({permanent:true,direction:"center",className:"lf-et"}).setLatLng(centro).setContent(CORTOS[k]).addTo(mapaL);
+      capasZona[k]=capa;
+    };
+    const ESTILO={color:"#FFFFFF",weight:2.5,fillColor:"#E9B9BE",fillOpacity:.55};
+    for(const k in COORDS_ZONAS){ const p=L.polygon(COORDS_ZONAS[k],ESTILO); crearZona(k,p,p.getBounds().getCenter()); }
+    // Límites oficiales: AGEB urbanas del INEGI agrupadas por zona (si el archivo está disponible).
+    fetch("data/ageb/coacalco.json").then(r=>r.ok?r.json():null).then(j=>{
+      if(!j||!j.agebs) return;
+      for(const k in capasZona){ mapaL.removeLayer(capasZona[k]); mapaL.removeLayer(capasZona[k].etiqueta); }
+      for(const k in COORDS_ZONAS){
+        const g=L.featureGroup(j.agebs.filter(a=>a.zona===k).map(a=>L.polygon(a.poligonos,ESTILO).bindTooltip("AGEB "+esc(a.ageb)+" · "+fmtN(a.pob)+" hab. (Censo 2020)")));
+        if(!g.getLayers().length) continue;
+        crearZona(k,g,g.getBounds().getCenter()); g.resumen=j.resumen[k];
+      }
+      AGEB_COACALCO=j; actualizarLeaflet();
+    }).catch(()=>{});
     HITOS.forEach(h=>L.marker(h.ll,{icon:L.divIcon({className:"lf-hito",iconSize:[14,14]}),title:h.t,alt:h.t,keyboard:true}).bindTooltip(h.t).addTo(mapaL).getElement()?.setAttribute("aria-label",h.t));
     setTimeout(()=>mapaL.invalidateSize(),300);
     return true;
@@ -2646,8 +2668,8 @@ function actualizarLeaflet(){
     const pol=capasZona[d.k]; if(!pol) return;
     pol._activa=(d.k===escZonaActual);
     pol.setStyle({fillColor:colorP(d.P),color:pol._activa?"#38070F":"#FFFFFF",weight:pol._activa?4.5:2.5});
-    pol.setTooltipContent(CORTOS[d.k]+"<br>"+(d.P*100).toFixed(1)+"%");
-    pol.bindPopup("<strong>"+d.z.n+"</strong><br>P(éxito a 3 años): <strong>"+(d.P*100).toFixed(1)+"%</strong><br>Utilidad esperada: "+mxn.format(Math.round(d.util))+"/mes<br>Renta ref.: $"+d.z.rm2+"/m²·mes · Afluencia: "+d.z.afl.toFixed(2)+"<br><em>Clic en la zona para trasladar tu escenario.</em>");
+    pol.etiqueta.setContent(CORTOS[d.k]+"<br>"+(d.P*100).toFixed(1)+"%");
+    pol.bindPopup("<strong>"+d.z.n+"</strong><br>P(éxito a 3 años): <strong>"+(d.P*100).toFixed(1)+"%</strong><br>Utilidad esperada: "+mxn.format(Math.round(d.util))+"/mes<br>Renta ref.: $"+d.z.rm2+"/m²·mes · Afluencia: "+d.z.afl.toFixed(2)+"<br>"+(pol.resumen?"Población 2020 (INEGI): "+fmtN(pol.resumen.pob)+" en "+pol.resumen.agebs+" AGEB<br>":"")+"<em>Clic en la zona para trasladar tu escenario.</em>");
   });
 }
 function usarEsquema(){
@@ -3321,6 +3343,47 @@ $("extrasAgregar").addEventListener("click",()=>{ agregarExtra("",0); actualizar
 $("extrasLista").addEventListener("input",()=>{ actualizarExtras(); });
 $("forma").addEventListener("reset",()=>{ $("extrasLista").innerHTML=""; actualizarExtras(); });
 $("giro").addEventListener("change",()=>pintarCompetenciaDenue());
+
+/* ===== src/ui/censo.js ===== */
+/* ---------- 24. Referencia censal por giro (INEGI, Censos Económicos 2019) ----------
+   Compara el escenario con los micronegocios reales del mismo giro en Coacalco (datos de
+   data/censo/giros.json, scripts/censo_sync.py) y permite aplicar esa referencia. Los valores por
+   defecto no cambian: así el escenario de referencia sigue siendo reproducible. */
+let CENSO=null, cargaCenso=null;
+function refCenso(){ const g=GIROS[$("giro").value]; return CENSO&&g?CENSO.giros[g.base||$("giro").value]||null:null; }
+function pintarCenso(){
+  const caja=$("censoRef"), r=refCenso();
+  if(!r){ caja.hidden=true; return; }
+  const e=leerEscenario(), ventas=e.ventasMes*12, veces=ventas/r.ingreso_anual_ue;
+  const fila=(c,a,b)=>"<tr><th scope=\"row\">"+c+"</th><td>"+a+"</td><td>"+b+"</td></tr>";
+  caja.hidden=false;
+  caja.innerHTML='<p class="censo-tit">Contraste con el censo: <b>'+fmtN(r.ue)+'</b> negocios reales del giro <span class="proc proc-oficial">dato oficial</span></p>'+
+    '<table class="censo-tabla"><thead><tr><th scope="col">Por negocio</th><th scope="col">Tu escenario</th><th scope="col">Censo · '+esc(r.nivel)+'</th></tr></thead><tbody>'+
+    fila("Ventas al año",mxn.format(Math.round(ventas)),mxn.format(r.ingreso_anual_ue))+
+    fila("Costo directo",Math.round(e.cv*100)+"%",r.costo_directo_pct+"%")+
+    fila("Personas trabajando",(e.empleados+1)+" (con quien lo dirige)",r.personal_ue.toLocaleString("es-MX"))+
+    fila("Renta al mes",mxn.format(Math.round(e.rentaEf)),mxn.format(r.renta_mes_ue))+
+    "</tbody></table>"+
+    '<p class="censo-nota">'+(veces>1.5?"Tus ventas son <b>"+veces.toFixed(1)+" veces</b> las del negocio promedio de este tamaño: revisa clientes y ticket. ":"")+
+    "Censo de 2018 en pesos de ese año (no ajustado por inflación); muchos negocios pequeños no pagan renta o la comparten.</p>"+
+    '<button type="button" class="btn btn-widget btn-sec" id="censoAplicar">Usar la referencia del censo</button>';
+  $("censoAplicar").addEventListener("click",()=>{
+    const ee=leerEscenario();
+    $("cvar").value=Math.min(90,Math.max(5,Math.round(r.costo_directo_pct)));
+    $("clientes").value=Math.max(1,Math.round(r.ingreso_anual_ue/12/ee.diasMes/ee.ticket));
+    $("empleados").value=Math.max(0,Math.round(r.personal_ue-1));
+    if(r.renta_mes_ue>0) $("renta").value=Math.round(r.renta_mes_ue/100)*100;
+    ["cvar","clientes"].forEach(id=>$(id).dispatchEvent(new Event("input")));
+    calcular(); pintarCenso(); toast("Escenario ajustado al promedio censal del giro.");
+  });
+}
+async function asegurarCenso(){
+  cargaCenso ??= fetch("data/censo/giros.json").then(r=>r.ok?r.json():null).catch(()=>null);
+  CENSO=await cargaCenso; pintarCenso();
+}
+$("giro").addEventListener("change",asegurarCenso);
+$("forma").addEventListener("change",()=>{ if(CENSO) pintarCenso(); });
+asegurarCenso();
 
 /* ===== src/ui/describir.js ===== */
 /* ---------- 22. Describe tu situación (texto o voz) → parámetros del simulador ----------
