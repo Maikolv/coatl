@@ -22,6 +22,8 @@ Simulador estadístico que estima la **probabilidad de que un negocio siga opera
 | Mapa | Seis zonas con polígonos, ranking y comparador de zonas |
 | FODA dinámico | Nueve estrategias con ΔP real y plan de acción |
 | Recorrido exploratorio | Widget de inicio, mapa 2.5D por zona, supervivencia por año, meta de Monte Carlo, superficie de sensibilidad y trazabilidad a la fuente ([docs/WIDGETS.md](docs/WIDGETS.md)) |
+| DENUE nacional | 6.1 millones de establecimientos de las 32 entidades, sincronizados cada semana con la descarga oficial del INEGI ([docs/DENUE.md](docs/DENUE.md)) |
+| Para empresas | Carga confidencial de CSV/Excel: el análisis corre solo en el navegador, con bootstrap de los meses propios |
 | Herramientas | Comparar 3 escenarios, compartir por URL, exportar PNG/PDF, restablecer referencia |
 
 ![Simulador](docs/capturas/simulador.png)
