@@ -6,6 +6,11 @@ on:
     branches: [main]
   pull_request:
   workflow_dispatch:
+  # Un push hecho con GITHUB_TOKEN no dispara otros workflows: se publica al terminar la sincronización.
+  workflow_run:
+    workflows: ["Sincronizar DENUE"]
+    types: [completed]
+    branches: [main]
 
 permissions:
   contents: read
