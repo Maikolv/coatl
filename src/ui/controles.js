@@ -82,7 +82,7 @@ function leerEscenario(){
     propio:$("local").value==="propio", superficie:num("superficie"),
     inversion:num("inversion"), credPct:num("credito")/100, tasa:num("tasa")/100,
     renta:num("renta"), ticket:Math.max(1,num("ticket")), cv:num("cvar")/100,
-    otrosFijos:num("otrosFijos"),
+    otrosFijos:num("otrosFijos")+(typeof sumaExtras==="function"?sumaExtras():0),
     mu:Math.max(1,num("clientes")), diasSem:+$("dias").value||6,
     estacion:ESTACION[$("estacionalidad").value]||ESTACION.estable, r:num("descuento")/100,
     merma:num("merma")/100, mktGasto:num("mktGasto"),

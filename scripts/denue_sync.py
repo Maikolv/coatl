@@ -139,12 +139,43 @@ def filas(zp: Path):
                     yield dict(zip(cab, r))
 
 
+def validar_api(meta: dict, total_descarga) -> None:
+    """Validación cruzada con la API oficial del DENUE (requiere DENUE_TOKEN).
+    Suma los conteos de los sectores SCIAN (claves de 2 dígitos) para Coacalco (15020)
+    y los compara con el total de la descarga masiva. El token nunca se guarda."""
+    token = os.environ.get("DENUE_TOKEN")
+    if not token:
+        return
+    try:
+        url = f"https://www.inegi.org.mx/app/api/denue/v1/consulta/Cuantificar/0/15020/0/{token}"
+        with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=90) as r:
+            datos = json.loads(r.read().decode("utf-8"))
+        total_api = sum(int(x["Total"]) for x in datos if len(str(x.get("AE", ""))) == 2)
+        meta["validacion_api"] = {
+            "consulta": "API DENUE · Cuantificar · Coacalco de Berriozábal (15020) · todas las actividades",
+            "fecha": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+            "total_api": total_api, "total_descarga": total_descarga,
+            "coincide": total_api == total_descarga,
+        }
+    except Exception as err:
+        meta["validacion_api"] = {"error": type(err).__name__}
+
+
 def main() -> int:
     ap = argparse.ArgumentParser()
     ap.add_argument("--entidades", default=",".join(f"{i:02d}" for i in range(1, 33)))
     ap.add_argument("--cache", default=".cache/denue")
     ap.add_argument("--salida", default="data/denue")
+    ap.add_argument("--solo-validar", action="store_true", help="solo actualiza la validación contra la API en meta.json")
     a = ap.parse_args()
+    if a.solo_validar:
+        p = Path(a.salida) / "meta.json"
+        meta = json.loads(p.read_text(encoding="utf-8"))
+        nac = json.loads((Path(a.salida) / "nacional.json").read_text(encoding="utf-8"))
+        validar_api(meta, nac["municipios"].get("15020", {}).get("total"))
+        p.write_text(json.dumps(meta, ensure_ascii=False, indent=1), encoding="utf-8")
+        print(json.dumps(meta.get("validacion_api"), ensure_ascii=False))
+        return 0
     cache, salida = Path(a.cache), Path(a.salida)
     cache.mkdir(parents=True, exist_ok=True)
     (salida / "ent").mkdir(parents=True, exist_ok=True)
@@ -202,14 +233,7 @@ def main() -> int:
         "total_establecimientos": total, "entidades": len(entidades), "municipios": len(municipios),
         "archivos": archivos, "sectores_scian": SECTORES, "giros_scian": GIROS_SCIAN, "clases_compartidas": COMPARTIDAS,
     }
-    token = os.environ.get("DENUE_TOKEN")
-    if token and "15" in entidades:
-        try:  # validación cruzada con la API oficial (cuantificar Coacalco, todas las actividades)
-            url = f"https://www.inegi.org.mx/app/api/denue/v1/consulta/Cuantificar/0/15020/0/{token}"
-            with urllib.request.urlopen(urllib.request.Request(url, headers=UA), timeout=60) as r:
-                meta["validacion_api"] = {"consulta": "Cuantificar/0/15020/0", "respuesta": json.loads(r.read().decode("utf-8"))}
-        except Exception as err:
-            meta["validacion_api"] = {"error": str(err)}
+    validar_api(meta, municipios.get("15020", {}).get("total"))
     (salida / "meta.json").write_text(json.dumps(meta, ensure_ascii=False, indent=1), encoding="utf-8")
     (salida / "nacional.json").write_text(json.dumps({"entidades": entidades, "municipios": municipios}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")
     (salida / "giros.json").write_text(json.dumps({k: dict(v) for k, v in giros_mun.items()}, ensure_ascii=False, separators=(",", ":")), encoding="utf-8")

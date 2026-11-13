@@ -325,31 +325,24 @@ const observarMapa=new IntersectionObserver(([entrada])=>{
   if(!$("mapaReal").hidden) usarReal();
 },{rootMargin:"200px 0px"});
 observarMapa.observe($("mapa"));
-/* ---------- 15. Modo Oráculo (tema cyber conmutable) ---------- */
-(function modoOraculo(){
-  const btn=$("btnTema"), txt=$("temaTexto"), cita=$("oraculoCita");
-  const frases=[
-    "«El futuro no es aleatorio. Es calculable.»",
-    "«Lo que los antiguos llamaban destino, nosotros lo llamamos probabilidad.»",
-    "«No adivines. Calcula.»",
-    "«Mil simulaciones. Una decisión. La correcta.»"
-  ];
-  let i=0, rot=null;
-  function aplicar(on){
-    document.body.classList.toggle("oraculo", on);
+/* ---------- 15. Modo oscuro ---------- */
+(function modoOscuro(){
+  /* Modo oscuro: solo icono (🌙 / ☀️). Respeta la preferencia del sistema y recuerda la
+     elección del visitante en este navegador (comodidad local; si falla, no pasa nada). */
+  const btn=$("btnTema");
+  function aplicar(on, avisar){
+    document.body.classList.toggle("oscuro", on);
     btn.setAttribute("aria-pressed", on?"true":"false");
-    txt.textContent = on ? "Modo Claro" : "Modo Oráculo";
-    btn.querySelector(".ojo").textContent = on ? "☼" : "◉";
-    if(on){
-      toast("◉ Modo Oráculo activado: misma estadística, visión nocturna.");
-      if(!rot && !window.matchMedia("(prefers-reduced-motion: reduce)").matches){
-        rot=setInterval(()=>{ i=(i+1)%frases.length; if(cita) cita.textContent=frases[i]; }, 5000);
-      }
-    } else if(rot){ clearInterval(rot); rot=null; if(cita) cita.textContent=frases[0]; }
-    // Repinta gráficas para que tomen los colores del tema
-    if(typeof calcular==="function") calcular();
+    btn.setAttribute("aria-label", on?"Activar modo claro":"Activar modo oscuro");
+    btn.title = on ? "Modo claro" : "Modo oscuro";
+    btn.querySelector(".ojo").textContent = on ? "☀️" : "🌙";
+    try{ localStorage.setItem("coatl-tema", on?"oscuro":"claro"); }catch(_){}
+    if(avisar && typeof calcular==="function") calcular();   // las gráficas toman los colores del tema
   }
-  btn.addEventListener("click",()=>aplicar(!document.body.classList.contains("oraculo")));
+  let guardado=null; try{ guardado=localStorage.getItem("coatl-tema"); }catch(_){}
+  const inicial = guardado ? guardado==="oscuro" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+  if(inicial) aplicar(true,false);
+  btn.addEventListener("click",()=>aplicar(!document.body.classList.contains("oscuro"),true));
 })();
 
 /* Escenario inicial: el del enlace compartido (#e=...) o el de referencia. */

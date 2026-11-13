@@ -85,4 +85,5 @@ $("giro").addEventListener("change",pintarCompetenciaDenue);
 if("IntersectionObserver" in window){
   const io=new IntersectionObserver(es=>{ if(es.some(e=>e.isIntersecting)){ io.disconnect(); cargarDenue(); } },{rootMargin:"600px 0px"});
   io.observe($("denue")); io.observe($("simulador"));
+  window.addEventListener("hashchange",()=>{ if(!DENUE.meta) cargarDenue(); },{once:true});
 } else cargarDenue();

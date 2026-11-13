@@ -92,6 +92,15 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - **docx / OOXML**: respetar el orden de bordes de párrafo; callouts simples para pasar validación.
 - Flujo de presentación: SVG en Python → Sharp → pptxgenjs → LibreOffice headless a PDF → `pdftoppm` para QA lámina por lámina.
 
+## v6: páginas, asistente y giros SCIAN
+
+- `src/ui/paginas.js`: vistas por apartado (secciones con `data-pagina`). Para navegar desde el código usa `irA(id)`, nunca `scrollIntoView` hacia otra página. Las e2e usan `?vista=todo`.
+- `src/ui/describir.js`: intérprete local (reglas) + Claude opcional (`@anthropic-ai/sdk` 1.3.0 vía jsDelivr, clave solo en memoria, salida estructurada). Voz con la Web Speech API.
+- `src/ui/giros_scian.js`: actividades del SCIAN con la plantilla del giro COATL más cercano («estimación del equipo»); costos propios ilimitados suman a otros fijos.
+- `scripts/asistente.mjs`: asistente de línea de comandos (Claude Opus 5.5) con herramientas: simular, leer documentos y consultar el DENUE.
+- Tema oscuro: clase `body.oscuro` (antes «Modo Oráculo» neón, retirado).
+- Fotos reales en `assets/img/zonas/` con cita mínima; créditos en docs/RECURSOS.md.
+
 ## DENUE y empresas
 
 - `scripts/denue_sync.py` + `.github/workflows/denue.yml` (semanal) generan `data/denue/`; el build lo copia a dist/. Solo conteos, nunca datos de contacto.

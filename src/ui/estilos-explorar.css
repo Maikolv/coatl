@@ -123,11 +123,11 @@
 .traza-pasos .paso{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6E464B}
 .traza-pasos code{font-family:var(--mono);font-size:.8rem}
 
-/* ---- Modo Oráculo: mantener contraste ---- */
-body.oraculo .widget{background:#120C1C;border-color:#241B33;color:#F3EEFC}
-body.oraculo .widget-pregunta,body.oraculo .traza-pasos li,body.oraculo .escenario-vigente{color:#F3EEFC}
-body.oraculo .traza-pasos li,body.oraculo .demo-respuesta div,body.oraculo .escenario-vigente,body.oraculo .mc-ecdf{background:#1B1326;border-color:#241B33}
-body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-escala,body.oraculo .traza-pasos .paso,body.oraculo .demo-respuesta dt{color:#B9AEC9}
+/* ---- Modo oscuro: mantener contraste ---- */
+body.oscuro .widget{background:#22070C;border-color:#3A1219;color:#FBF1F2}
+body.oscuro .widget-pregunta,body.oscuro .traza-pasos li,body.oscuro .escenario-vigente{color:#FBF1F2}
+body.oscuro .traza-pasos li,body.oscuro .demo-respuesta div,body.oscuro .escenario-vigente,body.oscuro .mc-ecdf{background:#2A0B12;border-color:#3A1219}
+body.oscuro .widget label,body.oscuro .widget-estado,body.oscuro .mapa25-escala,body.oscuro .traza-pasos .paso,body.oscuro .demo-respuesta dt{color:#D9BFC3}
 
 /* ---- Responsive y movimiento reducido ---- */
 @media (max-width:900px){
@@ -179,3 +179,84 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
 .mc-ecdf .pos{fill:var(--granate)}
 .mc-ecdf .neg{fill:#E2233F}
 @media (max-width:900px){.denue-cuerpo,.empresa-carga,.empresa-graficas{grid-template-columns:1fr}}
+
+/* ---- Fotos reales con cita mínima ---- */
+.foto-cita{position:relative;margin:0;border-radius:14px;overflow:hidden;box-shadow:0 18px 40px -16px rgba(56,7,15,.45)}
+.foto-cita img{display:block;width:100%;height:100%;object-fit:cover}
+.foto-cita figcaption{position:absolute;right:0;bottom:0;padding:.12rem .45rem;font:500 .56rem/1.3 var(--cuerpo);color:#fff;background:rgba(26,5,8,.55);border-top-left-radius:8px}
+.foto-cita figcaption a{color:#fff;text-decoration:none}
+.foto-cita figcaption a:hover,.foto-cita figcaption a:focus-visible{text-decoration:underline}
+.ilustracion.foto-cita{flex:0 0 300px;max-width:300px;aspect-ratio:3/2}
+
+/* ---- Mapa 2.5D con formas reales ---- */
+.mapa25-escena{height:auto;aspect-ratio:760/360;min-height:240px;background:radial-gradient(140% 120% at 30% 0%,#4A0A17 0%,#2A050B 55%,#14020A 100%)}
+.iso .suelo25{fill:#3A1219;stroke:rgba(233,185,190,.25)}
+.iso .sombra25{fill:rgba(0,0,0,.45);filter:blur(0)}
+.iso .zona25{cursor:pointer}
+.iso .foto25{stroke:none}
+.iso .tinte25{opacity:.38;mix-blend-mode:multiply}
+.iso .borde25{fill:none;stroke:rgba(251,246,243,.85);stroke-width:1.6;stroke-linejoin:round}
+.iso .zona25.sel .borde25{stroke:#FBF6F3;stroke-width:4}
+.iso .zona25.actual .borde25{stroke-dasharray:7 5}
+.iso .zona25:hover .tinte25{opacity:.2}
+.iso .rot25{pointer-events:none}
+.iso .rot25 .rot-z{font:700 13px var(--cuerpo);fill:#fff;text-anchor:middle;paint-order:stroke;stroke:rgba(26,5,8,.85);stroke-width:4px}
+.iso .rot25 .rot-p{font:800 16px var(--display);fill:#fff;text-anchor:middle;paint-order:stroke;stroke:rgba(26,5,8,.85);stroke-width:4px}
+.iso .escala line{stroke:#E9B9BE;stroke-width:2.5}
+.iso .escala text,.iso .nota{font:600 11px var(--mono);fill:#E9B9BE}
+.mapa25-cuerpo{grid-template-columns:minmax(0,1.9fr) minmax(0,1fr)}
+.mapa25-ficha{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:1rem;align-items:stretch}
+.ficha-foto{aspect-ratio:3/2;min-height:140px}
+.demo-postal{flex:1;min-height:170px;margin:0}
+.demo-postal .postal-zona{position:absolute;left:.7rem;top:.6rem;font:700 .8rem var(--cuerpo);color:#fff;background:rgba(122,12,31,.82);padding:.2rem .55rem;border-radius:999px}
+#wDemo{justify-content:flex-start}
+@media (max-width:900px){.mapa25-ficha{grid-template-columns:1fr}}
+/* Mapa a todo lo ancho; lista en rejilla debajo (sin desbordes ni huecos) */
+.mapa25-cuerpo{grid-template-columns:1fr}
+.mapa25-cuerpo>*{min-width:0}
+.mapa25-escena{width:100%;overflow:hidden}
+.mapa25-escena svg.iso{display:block;width:100%;height:auto}
+.mapa25-escala{margin:.6rem 0 .4rem}
+.mapa25-lista{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.35rem}
+.mapa25-lista li{background:#fff;border-color:var(--niebla-2)}
+.mapa25-ficha>*{min-width:0}
+.ficha-foto img{position:absolute;inset:0}
+@media (max-width:600px){.mapa25-lista{grid-template-columns:1fr 1fr}}
+.ficha-foto{width:100%;height:auto;align-self:start;min-height:0}
+
+/* ---- Páginas por apartado ---- */
+@keyframes entraVista{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+body.vista-entra [data-pagina]:not([hidden]){animation:entraVista .35s ease both}
+.nav-links a[aria-current="page"]{background:var(--rojo);color:#fff}
+body.oscuro .nav-links a[aria-current="page"]{background:#E2233F;color:#fff}
+@media (prefers-reduced-motion:reduce){body.vista-entra [data-pagina]:not([hidden]){animation:none}}
+@media print{[data-pagina][hidden]{display:block!important}}
+
+/* ---- Describe tu situación ---- */
+.widget-describir{margin-bottom:1.5rem}
+.describir-cuerpo{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:1.2rem}
+#descTexto{width:100%;font:inherit;padding:.75rem .9rem;border:1px solid var(--niebla-2);border-radius:12px;resize:vertical;min-height:110px;background:#fff;color:var(--tinta)}
+#descTexto:focus-visible,#descClave:focus-visible{outline:3px solid var(--granate);outline-offset:2px}
+.boton-voz.escuchando{background:var(--rojo);color:#fff;animation:late 1.2s infinite}
+.describir-salida{background:#fff;border:1px solid var(--niebla-2);border-radius:12px;padding:.8rem 1rem;font-size:.85rem}
+.describir-salida ul{margin:.3rem 0 0 1.1rem}
+.desc-resumen{font-weight:600;color:var(--granate)}
+.describir-ia{margin-top:.8rem;border-top:1px solid var(--niebla-2);padding-top:.6rem}
+.describir-ia summary{cursor:pointer;font-weight:700;color:var(--granate)}
+.describir-ia input{display:block;width:100%;margin:.3rem 0 .5rem;font:inherit;padding:.45rem .6rem;border:1px solid var(--niebla-2);border-radius:8px}
+body.oscuro #descTexto,body.oscuro .describir-salida,body.oscuro .describir-ia input{background:#2A0B12;color:#F7ECEE;border-color:#3A1219}
+@media (max-width:900px){.describir-cuerpo{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.boton-voz.escuchando{animation:none}}
+
+/* ---- Giros SCIAN y costos propios ---- */
+.sub-label{display:block;margin-top:.55rem;font-size:.78rem;font-weight:600;color:inherit}
+#giroBusca{width:100%;margin-top:.25rem}
+.extras-lista{list-style:none;display:flex;flex-direction:column;gap:.35rem;margin:.4rem 0}
+.extras-lista li{display:grid;grid-template-columns:minmax(0,1fr) 130px auto;gap:.4rem}
+.extras-lista input{font:inherit;padding:.4rem .55rem;border:1px solid var(--niebla-2);border-radius:8px;min-width:0}
+.extras-lista .quitar{border:none;background:transparent;color:var(--rojo);font-weight:800;cursor:pointer;padding:0 .4rem}
+body.oscuro .extras-lista input,body.oscuro #giroBusca{background:#2A0B12;color:#F7ECEE;border-color:#3A1219}
+/* El mapa real ocupa toda la altura de su fila (sin huecos bajo el mapa) */
+.mapa-grid{align-items:stretch}
+.mapa-cont{display:flex;flex-direction:column;height:100%}
+.mapa-cont .mapa-leaflet{flex:1 1 auto;min-height:440px;height:auto}

@@ -1,7 +1,7 @@
 // Recorrido exploratorio: ajustar supuesto → ejecutar → interpretar → verificar fuente.
 import { test, expect } from '@playwright/test';
 
-const ir = (page) => page.goto('/', { waitUntil: 'domcontentloaded' });
+const ir = (page) => page.goto('/?vista=todo', { waitUntil: 'domcontentloaded' });
 const WIDGETS = ['wDemo', 'wMapa', 'wSup', 'wMC', 'wSuperficie', 'wTraza'];
 
 test('los seis widgets terminan en estado «listo» y sin errores', async ({ page }) => {

@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -40,19 +40,15 @@
       </span>
     </a>
     <div class="nav-links">
-      <a href="#explorar">Explorar</a>
-      <a href="#contexto">Contexto</a>
-      <a href="#denue">DENUE</a>
-      <a href="#empresas">Empresas</a>
-      <a href="#mapa">Mapa</a>
-      <a href="#estrategia">Estrategia</a>
-      <a href="#metodologia">Metodología</a>
-      <a href="#lectura">Cómo leerlo</a>
-      <a href="#legal">Legal</a>
-      <a href="#creditos">Créditos</a>
-      <button class="btn-tema" id="btnTema" type="button" aria-pressed="false" title="Cambiar entre tema claro y Modo Oráculo">
-        <span class="ojo" aria-hidden="true">◉</span><span id="temaTexto">Modo Oráculo</span>
-      </button>
+      <a href="#inicio" data-vista="inicio">Inicio</a>
+      <a href="#contexto" data-vista="territorio">Territorio</a>
+      <a href="#denue" data-vista="denue">DENUE</a>
+      <a href="#simulador" data-vista="simulador">Simulador</a>
+      <a href="#empresas" data-vista="empresas">Empresas</a>
+      <a href="#estrategia" data-vista="estrategia">Estrategia</a>
+      <a href="#metodologia" data-vista="metodologia">Metodología</a>
+      <a href="#legal" data-vista="legal">Legal</a>
+      <button class="btn-tema" id="btnTema" type="button" aria-pressed="false" aria-label="Activar modo oscuro" title="Modo oscuro"><span class="ojo" aria-hidden="true">🌙</span></button>
       <a class="cta" href="#simulador">Abrir simulador</a>
     </div>
   </div>
@@ -109,6 +105,7 @@
         <div><dt>Punto de equilibrio</dt><dd id="demoPE">—</dd></div>
       </dl>
       <p class="widget-estado" role="status" id="wDemo-estado">Calculando…</p>
+      <figure class="foto-cita demo-postal" id="demoPostal"></figure>
       <button type="button" class="btn btn-widget" id="demoAbrir">Abrir el simulador con este escenario →</button>
     </article>
 
@@ -230,6 +227,32 @@
     <h2 class="titulo" style="color:#fff">Simulador de éxito y rentabilidad</h2>
     <p class="intro">Configura las 22 variables del escenario en las cuatro pestañas: <strong style="color:#FFC9CF">el cálculo es en vivo</strong>, cada ajuste mueve al instante el medidor, las gráficas y el mapa de zonas. ¿Sin ideas? Lanza el dado de <strong style="color:#FFC9CF">🎲 Escenario sorpresa</strong>. El modelo devuelve la probabilidad (con un decimal, cálculo determinista y reproducible) de operar con rentabilidad al tercer año, la curva de supervivencia, la distribución de utilidades (Monte Carlo, 2,000 corridas) y los indicadores financieros del proyecto.</p>
 
+    <article class="widget widget-describir" id="wDescribir" data-estado="vacio" aria-labelledby="wDescribir-q">
+      <p class="widget-pregunta" id="wDescribir-q">Cuéntale a COATL tu negocio y ajusta el simulador por ti</p>
+      <div class="describir-cuerpo">
+        <div class="describir-entrada">
+          <label class="sr-only" for="descTexto">Describe tu negocio</label>
+          <textarea id="descTexto" rows="4" placeholder="Ej.: Quiero abrir una cafetería en Los Héroes, espero 70 clientes al día con un ticket de 90 pesos. La renta es de 8 mil, tendré 2 empleados y voy a invertir 300 mil con 20 % a crédito. Tengo 4 años de experiencia."></textarea>
+          <div class="acciones-widget">
+            <button type="button" class="btn btn-widget" id="descAplicar">Ajustar el simulador</button>
+            <button type="button" class="btn btn-widget btn-sec boton-voz" id="descVoz" aria-pressed="false"><b aria-hidden="true">🎙️</b> <span>Dictar</span></button>
+          </div>
+          <p class="nota-widget" id="descModo">Intérprete: local, sin conexión</p>
+        </div>
+        <div class="describir-salida">
+          <div id="descEntendido" aria-live="polite"><p class="desc-resumen">Aquí verás qué datos entendí y cuáles ajusté.</p></div>
+          <details class="describir-ia">
+            <summary>Usar Claude como intérprete (opcional)</summary>
+            <label for="descClave">Tu clave de API de Anthropic</label>
+            <input type="password" id="descClave" autocomplete="off" spellcheck="false" placeholder="sk-ant-…">
+            <button type="button" class="btn btn-widget btn-sec" id="descOlvidar">Olvidar clave</button>
+            <p class="nota-widget">La clave se queda solo en la memoria de esta pestaña y se envía únicamente a la API de Anthropic. El uso se cobra en tu cuenta de Anthropic. El dictado por voz usa el servicio de reconocimiento de tu navegador.</p>
+          </details>
+        </div>
+      </div>
+      <p class="widget-estado" role="status" id="wDescribir-estado">Escribe o dicta cómo es tu negocio.</p>
+    </article>
+
     <div class="simulador">
       <form class="consola" id="forma" novalidate>
         <div class="pestanas" role="tablist" aria-label="Grupos de variables">
@@ -244,6 +267,10 @@
             <label for="giro">Giro del negocio</label>
             <select id="giro"></select>
             <span class="ayuda">Cada giro carga su ticket promedio, costo variable y demanda de referencia; puedes ajustarlos después.</span>
+            <label for="giroBusca" class="sub-label">…o busca entre <span id="giroTotal">todas las actividades</span> del SCIAN (INEGI)</label>
+            <input type="search" id="giroBusca" list="giroOpciones" placeholder="Escribe: tienda de mascotas, 812110, mueblería…" autocomplete="off">
+            <datalist id="giroOpciones"></datalist>
+            <span class="ayuda" id="giroNota" aria-live="polite"></span>
           </div>
           <div class="fila-2">
             <div class="campo">
@@ -396,6 +423,11 @@
               <span class="ayuda">Luz, agua, internet, software, contador, seguridad, etc.</span>
             </div>
           </div>
+          <div class="campo extras">
+            <p class="sub-label">Costos fijos adicionales (sin límite) · total <strong id="extrasTotal">$0</strong>/mes</p>
+            <ul class="extras-lista" id="extrasLista"></ul>
+            <button type="button" class="btn-dado" id="extrasAgregar">＋ Agregar un costo propio</button>
+          </div>
         </div>
 
         <div class="cuadro" id="c-operacion" role="tabpanel" aria-labelledby="t-operacion" tabindex="0">
@@ -498,7 +530,6 @@
           <p class="ficha-esc" id="fichaEsc"></p>
           <div class="mini-grid" id="miniGrid" role="img" aria-label="Retícula de 100 escenarios según la probabilidad estimada"></div>
           <p class="mini-grid-leyenda" id="miniLeyenda">Cada cuadro = 1 escenario de cada 100.</p>
-          <span class="oraculo-cita" id="oraculoCita">«El futuro no es aleatorio. Es calculable.»</span>
         </div>
         <div class="kpis" id="kpis"></div>
         <div class="lectura" id="lecturaPanel" hidden>
@@ -801,23 +832,7 @@
   <h2 class="titulo">Cómo leer tu resultado</h2>
   <div class="intro-flex">
     <p class="intro">Una probabilidad no es una sentencia: es una medida de riesgo bajo supuestos. Esta guía traduce los rangos del medidor a decisiones de inversión, en línea con los criterios de evaluación de la Jornada Académica.</p>
-    <svg class="ilustracion" viewBox="0 0 240 210" role="img" aria-label="Ilustración de un local comercial con una gráfica creciente en el aparador">
-      <line x1="6" y1="192" x2="234" y2="192" stroke="#38070F" stroke-width="3" stroke-linecap="round"/>
-      <rect x="20" y="76" width="200" height="116" rx="7" fill="#fff" stroke="#38070F" stroke-width="3"/>
-      <path d="M12,76 L228,76 L218,44 L22,44 Z" fill="#C8102E" stroke="#38070F" stroke-width="3" stroke-linejoin="round"/>
-      <g stroke="#38070F" stroke-width="3">
-        <path d="M12,76 a18,15 0 0 0 36,0" fill="#fff"/><path d="M48,76 a18,15 0 0 0 36,0" fill="#C8102E"/>
-        <path d="M84,76 a18,15 0 0 0 36,0" fill="#fff"/><path d="M120,76 a18,15 0 0 0 36,0" fill="#C8102E"/>
-        <path d="M156,76 a18,15 0 0 0 36,0" fill="#fff"/><path d="M192,76 a18,15 0 0 0 36,0" fill="#C8102E"/>
-      </g>
-      <rect x="36" y="106" width="92" height="60" rx="4" fill="#FBF6F3" stroke="#38070F" stroke-width="2.5"/>
-      <polyline points="46,154 62,138 78,144 96,120 116,112" fill="none" stroke="#C8102E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M109,108 h9 v9" fill="none" stroke="#C8102E" stroke-width="3.5" stroke-linecap="round"/>
-      <rect x="150" y="108" width="52" height="84" rx="4" fill="#7A0C1F" stroke="#38070F" stroke-width="3"/>
-      <circle cx="192" cy="152" r="3" fill="#FBF6F3"/>
-      <rect x="156" y="118" width="40" height="16" rx="3" fill="#fff" stroke="#38070F" stroke-width="2"/>
-      <text x="176" y="130" text-anchor="middle" font-family="Spline Sans Mono,monospace" font-size="9" font-weight="700" fill="#7A0C1F">ABIERTO</text>
-    </svg>
+    <figure class="ilustracion foto-cita"><img src="assets/img/zonas/corredor.webp" width="480" height="320" loading="lazy" decoding="async" alt="Estacionamiento y locales de Plaza Coacalco, sobre el corredor comercial de la Vía José López Portillo"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Plaza_Coacalco._-_panoramio.jpg" target="_blank" rel="noopener">ArCaRa</a> · <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a></figcaption></figure>
   </div>
 
   <div class="guia">
@@ -850,7 +865,7 @@
   </div>
 </section>
 <!-- ============ 05 AVISO LEGAL Y REFERENCIAS ============ -->
-<section class="seccion" id="legal" style="padding-top:0">
+<section class="seccion" id="legal">
   <p class="folio">Sección 06 · Marco legal y referencias</p>
   <h2 class="titulo">Aviso legal</h2>
   <p class="intro">Este apartado protege los derechos de los autores del proyecto y delimita con claridad el alcance de la herramienta, conforme a la legislación mexicana aplicable. El uso del sitio implica la aceptación de estos términos.</p>

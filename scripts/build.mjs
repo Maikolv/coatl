@@ -21,6 +21,9 @@ export const MODULOS_JS = [
   'src/ui/explorar.js',
   'src/ui/denue.js',
   'src/ui/empresas.js',
+  'src/ui/giros_scian.js',
+  'src/ui/describir.js',
+  'src/ui/paginas.js',
   'src/ui/app.js',
 ];
 
@@ -61,6 +64,8 @@ export function construir() {
   fs.writeFileSync(path.join(raiz, 'dist', '.nojekyll'), '');
   fs.writeFileSync(path.join(raiz, 'dist', 'robots.txt'), 'User-agent: *\nAllow: /\n');
   // Agregados del DENUE (scripts/denue_sync.py): se publican junto al sitio.
+  const fotos = path.join(raiz, 'assets', 'img', 'zonas');
+  if (fs.existsSync(fotos)) fs.cpSync(fotos, path.join(raiz, 'dist', 'assets', 'img', 'zonas'), { recursive: true });
   const datos = path.join(raiz, 'data', 'denue');
   if (fs.existsSync(datos)) fs.cpSync(datos, path.join(raiz, 'dist', 'data', 'denue'), { recursive: true });
   return html.length;

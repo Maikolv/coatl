@@ -40,46 +40,47 @@ $("demoClientes").addEventListener("input",pintarDemo);
 $("demoAbrir").addEventListener("click",()=>{
   $("clientes").value=$("demoClientes").value;
   calcular();
-  $("simulador").scrollIntoView({behavior:reduceMov()?"auto":"smooth"});
+  irA("simulador");
   $("clientes").focus({preventScroll:true});
   toast("Simulador abierto con "+$("clientes").value+" clientes/día.");
 });
 
-/* ===== Inicio · mapa 2.5D esquemático sincronizado con una lista ===== */
-/* Posición esquemática (columna, fila) de cada zona, aproximada a su ubicación norte–sur
-   en el mapa del equipo. No es geometría catastral. */
-const POS25={periferia:[1,0],flores:[2,1],centro:[1,1],popular:[0,2],heroes:[1,2],corredor:[2,3]};
+/* ===== Inicio · mapa 2.5D con las formas reales de las zonas ===== */
+/* Toma las mismas formas del mapa del equipo (#mapaEsquema), las proyecta en perspectiva
+   oblicua y las extruye: altura = P a 3 años, escala explícita (100 % = ESC_Z px, regla de
+   50 % rotulada). La superficie de cada zona lleva su foto real (Wikimedia Commons). */
 let zona25=null;
-/* Proyección isométrica: (columna, fila, altura) → punto en pantalla. La altura del bloque es
-   P a 3 años con escala explícita: 100 % = ESC_ALTO px (se rotula en la escena). */
-const ISO={w:74,h:37,ox:200,oy:118}, ESC_ALTO=95, SEP=1.45;
-const iso=(c,f,z)=>[ISO.ox+(c-f)*ISO.w/2, ISO.oy+(c+f)*ISO.h/2-z];
-const pos=k=>{const [c,f]=POS25[k];return [c*SEP,f*SEP]};
+const ESC_Z=105, OBL={sx:-0.5, sy:0.58, ox:165, oy:150};
+const ORDEN25=["periferia","heroes","centro","flores","corredor","popular"];   // de fondo a frente
+const ANCLA25={periferia:[390,122],heroes:[206,206],centro:[398,206],flores:[590,204],corredor:[300,286],popular:[212,350]};
+const proy=(x,y,z)=>[x+OBL.sx*y+OBL.ox, OBL.sy*y+OBL.oy-z];
+const matriz=z=>"matrix(1 0 "+OBL.sx+" "+OBL.sy+" "+OBL.ox+" "+(OBL.oy-z).toFixed(1)+")";
 function aclarar(rgb,k){const m=/rgb\((\d+),(\d+),(\d+)\)/.exec(rgb); if(!m) return rgb;
   return "rgb("+[1,2,3].map(i=>Math.max(0,Math.min(255,Math.round(+m[i]*k)))).join(",")+")";}
+function cajaPath(d){ const n=(d.match(/-?\d+(\.\d+)?/g)||[]).map(Number), xs=n.filter((_,i)=>i%2===0), ys=n.filter((_,i)=>i%2===1);
+  return {x:Math.min(...xs), y:Math.min(...ys), w:Math.max(...xs)-Math.min(...xs), h:Math.max(...ys)-Math.min(...ys)}; }
 function svgIsometrico(){
-  const orden=[...datosMapa].sort((p,q)=>{const [c1,f1]=POS25[p.k],[c2,f2]=POS25[q.k];return (c1+f1)-(c2+f2)||(c1-c2)});
-  const pts=a=>a.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
-  let piso="";
-  Object.keys(POS25).forEach(k=>{const [c,f]=pos(k);piso+='<polygon class="piso" points="'+pts([iso(c,f,0),iso(c+1,f,0),iso(c+1,f+1,0),iso(c,f+1,0)])+'"/>'});
-  const cajas=orden.map(d=>{
-    const [c,f]=pos(d.k), z=d.P*ESC_ALTO, col=colorP(d.P), m=0.12;
-    const A=[c+m,f+m],B=[c+1-m,f+m],C=[c+1-m,f+1-m],D=[c+m,f+1-m];
-    const top=[iso(...A,z),iso(...B,z),iso(...C,z),iso(...D,z)];
-    const der=[iso(...B,0),iso(...C,0),iso(...C,z),iso(...B,z)];
-    const izq=[iso(...D,0),iso(...C,0),iso(...C,z),iso(...D,z)];
-    const cx=iso(c+.5,f+.5,z);
-    const sel=d.k===zona25, act=d.k===escZonaActual;
-    return '<g data-zona="'+d.k+'" class="caja'+(sel?" sel":"")+(act?" actual":"")+'">'+
-      '<polygon points="'+pts(izq)+'" fill="'+aclarar(col,.62)+'"/>'+
-      '<polygon points="'+pts(der)+'" fill="'+aclarar(col,.8)+'"/>'+
-      '<polygon class="tapa" points="'+pts(top)+'" fill="'+aclarar(col,1.08)+'"/>'+
-      '<text x="'+cx[0].toFixed(1)+'" y="'+(cx[1]-4).toFixed(1)+'" class="rot-p">'+Math.round(d.P*100)+' %</text>'+
-      '<text x="'+cx[0].toFixed(1)+'" y="'+(cx[1]+9).toFixed(1)+'" class="rot-z">'+CORTOS[d.k]+'</text></g>';
-  }).join("");
-  const e0=iso(4.2,0.2,0), e1=iso(4.2,0.2,ESC_ALTO*.5);
-  const escala='<g class="escala"><line x1="'+e0[0]+'" y1="'+e0[1]+'" x2="'+e1[0]+'" y2="'+e1[1]+'"/><text x="'+(e0[0]+6)+'" y="'+((e0[1]+e1[1])/2)+'">50 %</text></g>';
-  return '<svg viewBox="20 0 360 300" class="iso">'+piso+cajas+escala+'<text x="374" y="294" class="nota" text-anchor="end">esquema · no catastral · N ↑</text></svg>';
+  const formas={}; ORDEN25.forEach(k=>{const p=$("mz-"+k); if(p) formas[k]=p.getAttribute("d")});
+  const defs=ORDEN25.filter(k=>formas[k]&&FOTOS_ZONAS[k]).map(k=>{const c=cajaPath(formas[k]);
+    return '<pattern id="foto25-'+k+'" patternUnits="userSpaceOnUse" x="'+c.x+'" y="'+c.y+'" width="'+c.w+'" height="'+c.h+'"><image href="'+FOTOS_ZONAS[k].src+'" width="'+c.w+'" height="'+c.h+'" preserveAspectRatio="xMidYMid slice"/></pattern>'}).join("");
+  const sierra="M368,312 L706,316 Q690,374 636,416 Q518,440 398,410 Q374,364 368,312 Z";
+  let capas='<path d="'+sierra+'" transform="'+matriz(0)+'" class="suelo25"/>';
+  ORDEN25.forEach(k=>{
+    const d=datosMapa.find(x=>x.k===k); if(!d||!formas[k]) return;
+    const z=d.P*ESC_Z, col=colorP(d.P), sel=k===zona25, act=k===escZonaActual;
+    let muros=""; for(let t=0;t<z;t+=2.5) muros+='<path d="'+formas[k]+'" transform="'+matriz(t)+'" fill="'+aclarar(col,0.42+0.3*t/Math.max(z,1))+'"/>';
+    capas+='<g data-zona="'+k+'" class="zona25'+(sel?" sel":"")+(act?" actual":"")+'"><title>'+d.z.n+': '+pct(d.P)+'</title>'+
+      '<path d="'+formas[k]+'" transform="'+matriz(-3)+'" class="sombra25"/>'+muros+
+      '<path d="'+formas[k]+'" transform="'+matriz(z)+'" fill="url(#foto25-'+k+')" class="foto25"/>'+
+      '<path d="'+formas[k]+'" transform="'+matriz(z)+'" fill="'+col+'" class="tinte25"/>'+
+      '<path d="'+formas[k]+'" transform="'+matriz(z)+'" class="borde25"/></g>';
+  });
+  const rot=ORDEN25.map(k=>{const d=datosMapa.find(x=>x.k===k); if(!d) return ""; const [x,y]=proy(ANCLA25[k][0],ANCLA25[k][1],d.P*ESC_Z);
+    return '<g class="rot25" data-zona="'+k+'"><text x="'+x.toFixed(1)+'" y="'+(y-6).toFixed(1)+'" class="rot-z">'+CORTOS[k]+'</text><text x="'+x.toFixed(1)+'" y="'+(y+10).toFixed(1)+'" class="rot-p">'+pct(d.P)+'</text></g>'}).join("");
+  const [ex,ey]=proy(735,330,0);
+  const regla='<g class="escala"><line x1="'+ex+'" y1="'+ey+'" x2="'+ex+'" y2="'+(ey-ESC_Z*.5)+'"/><line x1="'+(ex-4)+'" y1="'+(ey-ESC_Z*.5)+'" x2="'+(ex+4)+'" y2="'+(ey-ESC_Z*.5)+'"/><text x="'+(ex+7)+'" y="'+(ey-ESC_Z*.25+3)+'">50 %</text></g>';
+  return '<svg viewBox="40 30 760 360" class="iso" preserveAspectRatio="xMidYMid meet"><defs>'+defs+'</defs>'+capas+rot+regla+
+    '<text x="795" y="384" class="nota" text-anchor="end">altura = P a 3 años · formas del esquema del equipo, no catastrales · N ↑</text></svg>';
 }
 function pintarMapa25(){
   seguro("wMapa",()=>{
@@ -87,6 +88,7 @@ function pintarMapa25(){
     if(!zona25 || !ZONAS[zona25]) zona25=escZonaActual;
     $("mapa25").innerHTML=svgIsometrico();
     $("mapa25").querySelectorAll("g[data-zona]").forEach(g=>g.addEventListener("click",()=>elegirZona25(g.dataset.zona)));
+    pintarPostal(zona25);
     const lista=$("mapa25Lista");
     lista.innerHTML=[...datosMapa].sort((a,b)=>b.P-a.P).map(d=>
       '<li role="option" id="z25-'+d.k+'" data-zona="'+d.k+'" aria-selected="'+(d.k===zona25)+'"><span class="punto" data-color="'+colorP(d.P)+'"></span>'+CORTOS[d.k]+'<span class="rp">'+pct(d.P)+'</span></li>').join("");
@@ -98,12 +100,13 @@ function pintarMapa25(){
 function elegirZona25(k){ zona25=k; pintarMapa25(); }
 function pintarFicha25(){
   const d=datosMapa.find(x=>x.k===zona25); if(!d) return;
-  $("mapa25Ficha").innerHTML='<h3>'+d.z.n+'</h3><dl>'+
+  const f=FOTOS_ZONAS[d.k];
+  $("mapa25Ficha").innerHTML=(f?'<figure class="foto-cita ficha-foto"><img src="'+f.src+'" alt="Vista de '+d.z.n+'" loading="lazy"><figcaption><a href="'+f.pagina+'" target="_blank" rel="noopener">'+f.autor+'</a> · <a href="'+f.licenciaUrl+'" target="_blank" rel="noopener">'+f.licencia+'</a></figcaption></figure>':'')+'<div class="ficha-datos"><h3>'+d.z.n+'</h3><dl>'+
     '<div><dt>P a 3 años (este negocio aquí)</dt><dd>'+pct(d.P)+' <span class="proc proc-modelo">resultado del modelo</span></dd></div>'+
     '<div><dt>Utilidad mensual esperada</dt><dd>'+mxn.format(Math.round(d.util))+' <span class="proc proc-modelo">resultado del modelo</span></dd></div>'+
     '<div><dt>Afluencia relativa</dt><dd>'+d.z.afl.toFixed(2)+' (1.00 = promedio) <span class="proc proc-supuesto">estimación del equipo</span></dd></div>'+
     '<div><dt>Renta de referencia</dt><dd>$'+d.z.rm2+'/m²·mes <span class="proc proc-supuesto">estimación del equipo</span></dd></div>'+
-    '<div><dt>Ajuste β de la zona</dt><dd>'+(d.z.z>0?"+":"")+d.z.z.toFixed(2)+' <span class="proc proc-supuesto">estimación del equipo</span></dd></div></dl>';
+    '<div><dt>Ajuste β de la zona</dt><dd>'+(d.z.z>0?"+":"")+d.z.z.toFixed(2)+' <span class="proc proc-supuesto">estimación del equipo</span></dd></div></dl></div>';
   $("mapa25Abrir").textContent=d.k===escZonaActual?"Esta ya es la zona del simulador ↓":"Abrir el simulador en "+CORTOS[d.k]+" →";
 }
 $("mapa25Lista").addEventListener("click",ev=>{const li=ev.target.closest("li[data-zona]"); if(li) elegirZona25(li.dataset.zona)});
@@ -119,8 +122,13 @@ $("mapa25Lista").addEventListener("keydown",ev=>{
 });
 $("mapa25Abrir").addEventListener("click",()=>{
   if(zona25 && zona25!==escZonaActual) irAZona(zona25);
-  $("simulador").scrollIntoView({behavior:reduceMov()?"auto":"smooth"});
+  irA("simulador");
 });
+
+function pintarPostal(k){
+  const el=$("demoPostal"), f=FOTOS_ZONAS[k]; if(!el||!f) return;
+  el.innerHTML='<img src="'+f.src+'" alt="Vista de '+ZONAS[k].n+'" loading="lazy"><span class="postal-zona">'+ZONAS[k].n+'</span><figcaption><a href="'+f.pagina+'" target="_blank" rel="noopener">'+f.autor+'</a> · <a href="'+f.licenciaUrl+'" target="_blank" rel="noopener">'+f.licencia+'</a></figcaption>';
+}
 
 /* ===== Simulador · escenario vigente y restablecer ===== */
 function marcarPendiente(){

@@ -2,7 +2,7 @@
 import { test, expect } from '@playwright/test';
 import fs from 'node:fs';
 
-const ir = (page) => page.goto('/', { waitUntil: 'domcontentloaded' });
+const ir = (page) => page.goto('/?vista=todo', { waitUntil: 'domcontentloaded' });
 const leer = (f) => JSON.parse(fs.readFileSync('dist/data/denue/' + f, 'utf8'));
 
 test('DENUE: Coacalco coincide con los datos sincronizados', async ({ page }) => {
@@ -43,7 +43,8 @@ test('Empresas: analiza un CSV sin hacer ninguna petición de red', async ({ pag
   await page.locator('#empresas').scrollIntoViewIfNeeded();
   await page.waitForTimeout(1500);
   const peticiones = [];
-  page.on('request', (r) => peticiones.push(r.url()));
+  // Lo relevante: nada se envía. Se permiten lecturas (mosaicos del mapa, gráficas) que no llevan datos.
+  page.on('request', (r) => { if (r.method() !== 'GET' || (r.postData() || '').length) peticiones.push(r.method() + ' ' + r.url()); });
   await page.setInputFiles('#empArchivo', { name: 'mi-negocio.csv', mimeType: 'text/csv', buffer: Buffer.from(CSV) });
   await expect(page.locator('#wEmpresa')).toHaveAttribute('data-estado', 'listo');
   await expect(page.locator('#empCifras')).toContainText('100%');

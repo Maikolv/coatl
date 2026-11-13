@@ -8,9 +8,12 @@
     "build": "node scripts/build.mjs",
     "test": "node --test tests/modelo.test.mjs",
     "test:e2e": "playwright test",
-    "servir": "node scripts/servir.mjs"
+    "servir": "node scripts/servir.mjs",
+    "asistente": "node scripts/asistente.mjs",
+    "iniciar": "node scripts/servir.mjs 8000"
   },
   "devDependencies": {
+    "@anthropic-ai/sdk": "^1.3.0",
     "@playwright/test": "^1.56.1",
     "docx": "^9.5.1",
     "pptxgenjs": "^3.12.0"

@@ -141,7 +141,7 @@ $("empAplicar").addEventListener("click",()=>{
   $("otrosFijos").value=Math.max(0,Math.round(otros/100)*100);
   ["cvar","merma"].forEach(id=>$(id).dispatchEvent(new Event("input")));
   calcular();
-  $("simulador").scrollIntoView({behavior:reduceMov()?"auto":"smooth"});
+  irA("simulador");
   toast("Simulador ajustado a tus promedios: ticket, costo variable (merma incluida), clientes/día y otros fijos para igualar tus costos fijos.");
 });
 $("empPlantilla").addEventListener("click",()=>{

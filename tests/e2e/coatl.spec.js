@@ -10,7 +10,7 @@ const erroresDe = (page) => {
 
 test('carga sin errores de consola y muestra el escenario de referencia', async ({ page }) => {
   const errores = erroresDe(page);
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/?vista=todo', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('#probNum')).toHaveText('51.6%', { timeout: 5000 });
   const kpis = page.locator('#kpis');
   await expect(kpis).toContainText('$60,371');
@@ -23,27 +23,27 @@ test('carga sin errores de consola y muestra el escenario de referencia', async 
 });
 
 test('identidad visual: paleta y greca presentes', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/?vista=todo', { waitUntil: 'domcontentloaded' });
   const rojo = await page.evaluate(() => getComputedStyle(document.documentElement).getPropertyValue('--rojo').trim());
   expect(rojo.toUpperCase()).toBe('#C8102E');
   await expect(page.locator('.greca').first()).toBeAttached();
 });
 
 test('el simulador recalcula al cambiar una variable', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/?vista=todo', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('#probNum')).toHaveText('51.6%');
   await page.locator('#experiencia').selectOption('0.38', { force: true });
   await expect(page.locator('#probNum')).not.toHaveText('51.6%', { timeout: 5000 });
 });
 
 test('mapa: 6 zonas en ranking y comparador', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/?vista=todo', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('#ranking li')).toHaveCount(6);
   await expect(page.locator('#comparadorZonas tbody tr')).toHaveCount(6);
 });
 
 test('FODA: escenarios P5 / mediana / P95 ordenados', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/?vista=todo', { waitUntil: 'domcontentloaded' });
   const valores = page.locator('#triplete .universo .v');
   await expect(valores).toHaveCount(3);
   const v = await valores.allTextContents();
@@ -54,7 +54,7 @@ test('FODA: escenarios P5 / mediana / P95 ordenados', async ({ page }) => {
 
 test('compartir por URL reproduce el escenario', async ({ page, context }) => {
   await context.grantPermissions(['clipboard-read', 'clipboard-write']);
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/?vista=todo', { waitUntil: 'domcontentloaded' });
   await page.locator('#giro').selectOption('farmacia', { force: true });
   await page.locator('#reserva').selectOption('0.35', { force: true });
   await expect(page.locator('#escVigente')).toHaveAttribute('data-estado', 'vigente');
@@ -69,7 +69,7 @@ test('compartir por URL reproduce el escenario', async ({ page, context }) => {
 });
 
 test('comparar escenarios lado a lado', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/?vista=todo', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('#evNombre')).toContainText('Cafetería');
   await page.click('#guardarEsc');
   await page.locator('#zona').selectOption('centro', { force: true });
@@ -79,19 +79,19 @@ test('comparar escenarios lado a lado', async ({ page }) => {
 });
 
 test('exportar imagen descarga un PNG', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/?vista=todo', { waitUntil: 'domcontentloaded' });
   const [descarga] = await Promise.all([page.waitForEvent('download'), page.click('#exportarPNG')]);
   expect(descarga.suggestedFilename()).toBe('COATL-escenario.png');
 });
 
 test('sin desbordamiento horizontal', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/?vista=todo', { waitUntil: 'domcontentloaded' });
   const ancho = await page.evaluate(() => document.documentElement.scrollWidth - window.innerWidth);
   expect(ancho).toBeLessThanOrEqual(1);
 });
 
 test('un enlace con valores fuera de rango no rompe el cálculo', async ({ page }) => {
-  await page.goto('/#e=' + encodeURIComponent('crecimiento=-200&descuento=-100&clientes=abc'), { waitUntil: 'domcontentloaded' });
+  await page.goto('/?vista=todo#e=' + encodeURIComponent('crecimiento=-200&descuento=-100&clientes=abc'), { waitUntil: 'domcontentloaded' });
   await page.waitForTimeout(1200);
   const kpis = await page.locator('#kpis').innerText();
   expect(kpis).not.toMatch(/NaN|Infinity|∞/);
@@ -100,7 +100,7 @@ test('un enlace con valores fuera de rango no rompe el cálculo', async ({ page 
 });
 
 test('pestañas navegables con flechas', async ({ page }) => {
-  await page.goto('/', { waitUntil: 'domcontentloaded' });
+  await page.goto('/?vista=todo', { waitUntil: 'domcontentloaded' });
   await page.locator('#t-negocio').focus();
   await page.keyboard.press('ArrowRight');
   await expect(page.locator('#t-ubicacion')).toHaveAttribute('aria-selected', 'true');

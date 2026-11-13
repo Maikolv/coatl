@@ -71,3 +71,50 @@ const INCERTIDUMBRE = {
   betaRelativa:   0.30,  // DE relativa de cada β para el rango de P
   intercepto:     0.15   // DE del intercepto para el rango de P
 };
+
+/* Fotos reales de cada zona: Wikimedia Commons (licencia libre). Recortadas, con contraste y
+   nitidez ajustados y convertidas a WebP; la cita se muestra junto a cada foto. */
+const FOTOS_ZONAS = {
+ "corredor": {
+  "src": "assets/img/zonas/corredor.webp",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Plaza_Coacalco._-_panoramio.jpg"
+ },
+ "centro": {
+  "src": "assets/img/zonas/centro.webp",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:C%C3%BApula_octagonal-San_Francisco-Koakalko._-_panoramio.jpg"
+ },
+ "flores": {
+  "src": "assets/img/zonas/flores.webp",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Jard%C3%ADn_Triangular_en_villa_de_las_flores_cuidado_con_amor_por_dos_entusiastas_mujeres_de_la_comunidad._-_panoramio.jpg"
+ },
+ "periferia": {
+  "src": "assets/img/zonas/periferia.webp",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Ultima_Parcela_en_Coacalco._-_panoramio.jpg"
+ },
+ "heroes": {
+  "src": "assets/img/zonas/heroes.webp",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Los_Heroes-Koakalko._-_panoramio.jpg"
+ },
+ "popular": {
+  "src": "assets/img/zonas/popular.webp",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Andador_Luis_Donaldo_Colosio._-_panoramio.jpg"
+ }
+};

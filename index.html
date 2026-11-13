@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-BBhxYDLJteW27N1yYx/neTkYBPzKNvxZazmnBNzIj7M=' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'sha256-OUXKj7wan3GM8gBakBvKFRKQq9yBr37sbZmH3LknAPE=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self'; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-jtQXVezogo83WmcWjK1SAqLnYXpXAG7YsWl8wFwF7ec=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'sha256-p6XaA1XH66FwuscPuoD3oYZQ4xwnNx0rUTmMT/VYjOI=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -44,58 +44,57 @@
    Reinterpreta la identidad COATL en clave nocturna: negro cósmico,
    rojo mexicano encendido y blanco matemático. Solo cambia tokens y
    un puñado de superficies; toda la estructura se conserva intacta. */
-body.oraculo{
-  --rojo:#FF0033;
-  --rojo-vivo:#FF3355;
-  --granate:#FF1E48;
-  --tinta:#05030A;
+body.oscuro{
+  --rojo:#E2233F;
+  --rojo-vivo:#FF5A6E;
+  --granate:#F06A7B;
+  --tinta:#160407;
   --tinta-2:#000000;
-  --blanco:#0C0A12;
-  --hueso:#070510;
-  --niebla:#15101F;
-  --niebla-2:#241B33;
-  --gris-texto:#B9AEC9;
-  --ok:#22CC88;
-  --alerta:#FFAA22;
-  --sombra:0 0 0 1px rgba(255,0,51,.18), 0 14px 40px rgba(0,0,0,.6);
-  background:radial-gradient(1200px 700px at 80% -10%, rgba(255,0,51,.10), transparent 60%), #05030A;
-  color:#EDE7F5;
+  --blanco:#22070C;
+  --hueso:#1A0508;
+  --niebla:#2A0B12;
+  --niebla-2:#3A1219;
+  --gris-texto:#D9BFC3;
+  --ok:#3FBF83;
+  --alerta:#E8A33A;
+  --sombra:0 0 0 1px rgba(226,35,63,.18), 0 14px 40px rgba(0,0,0,.6);
+  background:radial-gradient(1200px 700px at 80% -10%, rgba(226,35,63,.10), transparent 60%), #160407;
+  color:#F7ECEE;
 }
-body.oraculo ::selection{background:#FF0033;color:#000}
-body.oraculo .nav{background:rgba(7,5,16,.86);border-bottom-color:#FF0033}
-body.oraculo .marca-texto strong{color:#F3EEFC}
-body.oraculo .panel,body.oraculo .cifra,body.oraculo .consola,body.oraculo .metodo,
-body.oraculo .veredicto,body.oraculo .kpi,body.oraculo .lectura,body.oraculo .cuad,
-body.oraculo .accion,body.oraculo .esc,body.oraculo .postal,body.oraculo .ranking li,
-body.oraculo .foda-resumen,body.oraculo .limitaciones,body.oraculo .panel-legal{
-  background:#0C0A12;border-color:#241B33;color:#EDE7F5;
+body.oscuro ::selection{background:#E2233F;color:#000}
+body.oscuro .nav{background:rgba(26,5,8,.86);border-bottom-color:#E2233F}
+body.oscuro .marca-texto strong{color:#FBF1F2}
+body.oscuro .panel,body.oscuro .cifra,body.oscuro .consola,body.oscuro .metodo,
+body.oscuro .veredicto,body.oscuro .kpi,body.oscuro .lectura,body.oscuro .cuad,
+body.oscuro .accion,body.oscuro .esc,body.oscuro .postal,body.oscuro .ranking li,
+body.oscuro .foda-resumen,body.oscuro .limitaciones,body.oscuro .panel-legal{
+  background:#22070C;border-color:#3A1219;color:#F7ECEE;
 }
-body.oraculo .pestanas{background:#070510;border-bottom-color:#241B33}
-body.oraculo .pestana[aria-selected="true"]{background:#0C0A12}
-body.oraculo .campo select,body.oraculo .campo input[type="number"]{
-  background:#15101F;color:#EDE7F5;border-color:#2E2342;
+body.oscuro .pestanas{background:#1A0508;border-bottom-color:#3A1219}
+body.oscuro .pestana[aria-selected="true"]{background:#22070C}
+body.oscuro .campo select,body.oscuro .campo input[type="number"]{
+  background:#2A0B12;color:#F7ECEE;border-color:#4A1822;
 }
-body.oraculo .pie-consola{background:#070510;border-top-color:#241B33}
-body.oraculo .hero{
-  background:radial-gradient(1100px 520px at 85% -10%, rgba(255,0,51,.4), transparent 60%),
-             radial-gradient(800px 600px at -10% 110%, rgba(20,0,8,.9), transparent 55%), #0A0410;
+body.oscuro .pie-consola{background:#1A0508;border-top-color:#3A1219}
+body.oscuro .hero{
+  background:radial-gradient(1100px 520px at 85% -10%, rgba(226,35,63,.4), transparent 60%),
+             radial-gradient(800px 600px at -10% 110%, rgba(40,4,10,.9), transparent 55%), #1A0508;
 }
-body.oraculo .seccion h2.titulo,body.oraculo .panel h3,body.oraculo .metodo h3,
-body.oraculo .cuad h4,body.oraculo .lectura h3{color:#F3EEFC}
-body.oraculo .formula{background:#15101F;color:#FF6680;border-color:#2E2342}
-body.oraculo .tabla-zonas tr:hover td,body.oraculo .ranking li:hover{background:#15101F}
-body.oraculo .banda-oscura{background:#000}
-body.oraculo .mini-grid .celda{background:#241B33}
-body.oraculo .mini-grid .celda.viva{background:#FF0033}
-body.oraculo .greca,body.oraculo .greca.invertida{filter:none;opacity:.85}
-body.oraculo .medidor-arco{filter:saturate(1.2) brightness(1.05)}
-body.oraculo .foda-resumen{border-style:dashed}
-body.oraculo .nav-links a{color:#EDE7F5}
-body.oraculo .nav-links a:hover,body.oraculo .nav-links a.activa{background:#1B1326;color:#FF6680}
-body.oraculo .progreso{background:linear-gradient(90deg,#FF0033,#FF3355);box-shadow:0 0 8px #FF0033}
-body.oraculo .et-zona,body.oraculo .et-p{stroke:rgba(0,0,0,.6)}
-body.oraculo .oraculo-cita{display:block}
-
+body.oscuro .seccion h2.titulo,body.oscuro .panel h3,body.oscuro .metodo h3,
+body.oscuro .cuad h4,body.oscuro .lectura h3{color:#FBF1F2}
+body.oscuro .formula{background:#2A0B12;color:#FF6680;border-color:#4A1822}
+body.oscuro .tabla-zonas tr:hover td,body.oscuro .ranking li:hover{background:#2A0B12}
+body.oscuro .banda-oscura{background:#000}
+body.oscuro .mini-grid .celda{background:#3A1219}
+body.oscuro .mini-grid .celda.viva{background:#E2233F}
+body.oscuro .greca,body.oscuro .greca.invertida{filter:none;opacity:.85}
+body.oscuro .medidor-arco{filter:saturate(1.2) brightness(1.05)}
+body.oscuro .foda-resumen{border-style:dashed}
+body.oscuro .nav-links a{color:#F7ECEE}
+body.oscuro .nav-links a:hover,body.oscuro .nav-links a.activa{background:#2A0B12;color:#FF6680}
+body.oscuro .progreso{background:linear-gradient(90deg,#E2233F,#FF5A6E);box-shadow:0 0 8px #E2233F}
+body.oscuro .et-zona,body.oscuro .et-p{stroke:rgba(0,0,0,.6)}
+body.oscuro 
 /* Botón conmutador de tema */
 .btn-tema{
   display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;
@@ -105,10 +104,8 @@ body.oraculo .oraculo-cita{display:block}
 }
 .btn-tema:hover{background:var(--niebla)}
 .btn-tema .ojo{font-size:.95rem;line-height:1}
-body.oraculo .btn-tema{border-color:#FF0033;color:#FF3355}
-body.oraculo .btn-tema:hover{background:#1B1326}
-.oraculo-cita{display:none;font-family:var(--display);font-style:italic;font-size:.82rem;
-  color:#FF6680;text-align:center;margin-top:1.4rem;letter-spacing:.02em}
+body.oscuro .btn-tema{border-color:#E2233F;color:#FF5A6E}
+body.oscuro .btn-tema:hover{background:#2A0B12}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){
@@ -481,7 +478,8 @@ img{max-width:100%}
 
 .mapa-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:1.8rem;margin-top:1.2rem;align-items:start}
 .mapa-cont{position:relative}
-.mapa-cont svg{width:100%;height:auto;display:block}
+.mapa-cont > svg#mapaEsquema{width:100%;height:auto;display:block}
+[hidden]{display:none!important}
 .zona-mapa{fill:#E9B9BE;cursor:pointer;stroke:#fff;stroke-width:2.5;stroke-linejoin:round;transition:filter .25s,stroke-width .2s,opacity .25s}
 .zona-mapa:hover{filter:brightness(1.14) saturate(1.08)}
 .zona-mapa.activa{stroke:#38070F;stroke-width:4.5}
@@ -638,7 +636,7 @@ img{max-width:100%}
 }
 .lista-supuestos{margin:.4rem 0 1rem 1.1rem;font-size:.92rem;color:var(--gris-texto)}
 .lista-supuestos li{margin-bottom:.35rem}
-body.oraculo .accion .cuerpo h3{color:#F3EEFC}
+body.oscuro .accion .cuerpo h3{color:#FBF1F2}
 .cuadro:focus-visible,.pestana:focus-visible{outline:3px solid var(--granate);outline-offset:-3px}
 .accion[data-clic]{cursor:pointer}
 
@@ -767,11 +765,11 @@ body.oraculo .accion .cuerpo h3{color:#F3EEFC}
 .traza-pasos .paso{display:block;font-size:.68rem;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:#6E464B}
 .traza-pasos code{font-family:var(--mono);font-size:.8rem}
 
-/* ---- Modo Oráculo: mantener contraste ---- */
-body.oraculo .widget{background:#120C1C;border-color:#241B33;color:#F3EEFC}
-body.oraculo .widget-pregunta,body.oraculo .traza-pasos li,body.oraculo .escenario-vigente{color:#F3EEFC}
-body.oraculo .traza-pasos li,body.oraculo .demo-respuesta div,body.oraculo .escenario-vigente,body.oraculo .mc-ecdf{background:#1B1326;border-color:#241B33}
-body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-escala,body.oraculo .traza-pasos .paso,body.oraculo .demo-respuesta dt{color:#B9AEC9}
+/* ---- Modo oscuro: mantener contraste ---- */
+body.oscuro .widget{background:#22070C;border-color:#3A1219;color:#FBF1F2}
+body.oscuro .widget-pregunta,body.oscuro .traza-pasos li,body.oscuro .escenario-vigente{color:#FBF1F2}
+body.oscuro .traza-pasos li,body.oscuro .demo-respuesta div,body.oscuro .escenario-vigente,body.oscuro .mc-ecdf{background:#2A0B12;border-color:#3A1219}
+body.oscuro .widget label,body.oscuro .widget-estado,body.oscuro .mapa25-escala,body.oscuro .traza-pasos .paso,body.oscuro .demo-respuesta dt{color:#D9BFC3}
 
 /* ---- Responsive y movimiento reducido ---- */
 @media (max-width:900px){
@@ -824,6 +822,87 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
 .mc-ecdf .neg{fill:#E2233F}
 @media (max-width:900px){.denue-cuerpo,.empresa-carga,.empresa-graficas{grid-template-columns:1fr}}
 
+/* ---- Fotos reales con cita mínima ---- */
+.foto-cita{position:relative;margin:0;border-radius:14px;overflow:hidden;box-shadow:0 18px 40px -16px rgba(56,7,15,.45)}
+.foto-cita img{display:block;width:100%;height:100%;object-fit:cover}
+.foto-cita figcaption{position:absolute;right:0;bottom:0;padding:.12rem .45rem;font:500 .56rem/1.3 var(--cuerpo);color:#fff;background:rgba(26,5,8,.55);border-top-left-radius:8px}
+.foto-cita figcaption a{color:#fff;text-decoration:none}
+.foto-cita figcaption a:hover,.foto-cita figcaption a:focus-visible{text-decoration:underline}
+.ilustracion.foto-cita{flex:0 0 300px;max-width:300px;aspect-ratio:3/2}
+
+/* ---- Mapa 2.5D con formas reales ---- */
+.mapa25-escena{height:auto;aspect-ratio:760/360;min-height:240px;background:radial-gradient(140% 120% at 30% 0%,#4A0A17 0%,#2A050B 55%,#14020A 100%)}
+.iso .suelo25{fill:#3A1219;stroke:rgba(233,185,190,.25)}
+.iso .sombra25{fill:rgba(0,0,0,.45);filter:blur(0)}
+.iso .zona25{cursor:pointer}
+.iso .foto25{stroke:none}
+.iso .tinte25{opacity:.38;mix-blend-mode:multiply}
+.iso .borde25{fill:none;stroke:rgba(251,246,243,.85);stroke-width:1.6;stroke-linejoin:round}
+.iso .zona25.sel .borde25{stroke:#FBF6F3;stroke-width:4}
+.iso .zona25.actual .borde25{stroke-dasharray:7 5}
+.iso .zona25:hover .tinte25{opacity:.2}
+.iso .rot25{pointer-events:none}
+.iso .rot25 .rot-z{font:700 13px var(--cuerpo);fill:#fff;text-anchor:middle;paint-order:stroke;stroke:rgba(26,5,8,.85);stroke-width:4px}
+.iso .rot25 .rot-p{font:800 16px var(--display);fill:#fff;text-anchor:middle;paint-order:stroke;stroke:rgba(26,5,8,.85);stroke-width:4px}
+.iso .escala line{stroke:#E9B9BE;stroke-width:2.5}
+.iso .escala text,.iso .nota{font:600 11px var(--mono);fill:#E9B9BE}
+.mapa25-cuerpo{grid-template-columns:minmax(0,1.9fr) minmax(0,1fr)}
+.mapa25-ficha{display:grid;grid-template-columns:minmax(0,220px) minmax(0,1fr);gap:1rem;align-items:stretch}
+.ficha-foto{aspect-ratio:3/2;min-height:140px}
+.demo-postal{flex:1;min-height:170px;margin:0}
+.demo-postal .postal-zona{position:absolute;left:.7rem;top:.6rem;font:700 .8rem var(--cuerpo);color:#fff;background:rgba(122,12,31,.82);padding:.2rem .55rem;border-radius:999px}
+#wDemo{justify-content:flex-start}
+@media (max-width:900px){.mapa25-ficha{grid-template-columns:1fr}}
+/* Mapa a todo lo ancho; lista en rejilla debajo (sin desbordes ni huecos) */
+.mapa25-cuerpo{grid-template-columns:1fr}
+.mapa25-cuerpo>*{min-width:0}
+.mapa25-escena{width:100%;overflow:hidden}
+.mapa25-escena svg.iso{display:block;width:100%;height:auto}
+.mapa25-escala{margin:.6rem 0 .4rem}
+.mapa25-lista{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.35rem}
+.mapa25-lista li{background:#fff;border-color:var(--niebla-2)}
+.mapa25-ficha>*{min-width:0}
+.ficha-foto img{position:absolute;inset:0}
+@media (max-width:600px){.mapa25-lista{grid-template-columns:1fr 1fr}}
+.ficha-foto{width:100%;height:auto;align-self:start;min-height:0}
+
+/* ---- Páginas por apartado ---- */
+@keyframes entraVista{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+body.vista-entra [data-pagina]:not([hidden]){animation:entraVista .35s ease both}
+.nav-links a[aria-current="page"]{background:var(--rojo);color:#fff}
+body.oscuro .nav-links a[aria-current="page"]{background:#E2233F;color:#fff}
+@media (prefers-reduced-motion:reduce){body.vista-entra [data-pagina]:not([hidden]){animation:none}}
+@media print{[data-pagina][hidden]{display:block!important}}
+
+/* ---- Describe tu situación ---- */
+.widget-describir{margin-bottom:1.5rem}
+.describir-cuerpo{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:1.2rem}
+#descTexto{width:100%;font:inherit;padding:.75rem .9rem;border:1px solid var(--niebla-2);border-radius:12px;resize:vertical;min-height:110px;background:#fff;color:var(--tinta)}
+#descTexto:focus-visible,#descClave:focus-visible{outline:3px solid var(--granate);outline-offset:2px}
+.boton-voz.escuchando{background:var(--rojo);color:#fff;animation:late 1.2s infinite}
+.describir-salida{background:#fff;border:1px solid var(--niebla-2);border-radius:12px;padding:.8rem 1rem;font-size:.85rem}
+.describir-salida ul{margin:.3rem 0 0 1.1rem}
+.desc-resumen{font-weight:600;color:var(--granate)}
+.describir-ia{margin-top:.8rem;border-top:1px solid var(--niebla-2);padding-top:.6rem}
+.describir-ia summary{cursor:pointer;font-weight:700;color:var(--granate)}
+.describir-ia input{display:block;width:100%;margin:.3rem 0 .5rem;font:inherit;padding:.45rem .6rem;border:1px solid var(--niebla-2);border-radius:8px}
+body.oscuro #descTexto,body.oscuro .describir-salida,body.oscuro .describir-ia input{background:#2A0B12;color:#F7ECEE;border-color:#3A1219}
+@media (max-width:900px){.describir-cuerpo{grid-template-columns:1fr}}
+@media (prefers-reduced-motion:reduce){.boton-voz.escuchando{animation:none}}
+
+/* ---- Giros SCIAN y costos propios ---- */
+.sub-label{display:block;margin-top:.55rem;font-size:.78rem;font-weight:600;color:inherit}
+#giroBusca{width:100%;margin-top:.25rem}
+.extras-lista{list-style:none;display:flex;flex-direction:column;gap:.35rem;margin:.4rem 0}
+.extras-lista li{display:grid;grid-template-columns:minmax(0,1fr) 130px auto;gap:.4rem}
+.extras-lista input{font:inherit;padding:.4rem .55rem;border:1px solid var(--niebla-2);border-radius:8px;min-width:0}
+.extras-lista .quitar{border:none;background:transparent;color:var(--rojo);font-weight:800;cursor:pointer;padding:0 .4rem}
+body.oscuro .extras-lista input,body.oscuro #giroBusca{background:#2A0B12;color:#F7ECEE;border-color:#3A1219}
+/* El mapa real ocupa toda la altura de su fila (sin huecos bajo el mapa) */
+.mapa-grid{align-items:stretch}
+.mapa-cont{display:flex;flex-direction:column;height:100%}
+.mapa-cont .mapa-leaflet{flex:1 1 auto;min-height:440px;height:auto}
+
 /* estilos en línea movidos por el build */
 [data-ei="0"]{margin-top:1.5rem !important}
 [data-ei="1"]{font-family:var(--mono) !important;font-size:.66rem !important;color:#9B6A6E !important;margin-top:.7rem !important}
@@ -843,9 +922,8 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
 [data-ei="15"]{font-size:.92rem !important;color:var(--gris-texto) !important;margin-top:.5rem !important}
 [data-ei="16"]{color:var(--rojo) !important}
 [data-ei="17"]{font-size:.92rem !important;color:var(--gris-texto) !important;margin-top:.5rem !important}
-[data-ei="18"]{padding-top:0 !important}
-[data-ei="19"]{margin-top:1.5rem !important}
-[data-ei="20"]{font-size:.82rem !important;margin-top:1rem !important;color:#D9A8AE !important}
+[data-ei="18"]{margin-top:1.5rem !important}
+[data-ei="19"]{font-size:.82rem !important;margin-top:1rem !important;color:#D9A8AE !important}
 
 </style>
 </head>
@@ -866,19 +944,15 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
       </span>
     </a>
     <div class="nav-links">
-      <a href="#explorar">Explorar</a>
-      <a href="#contexto">Contexto</a>
-      <a href="#denue">DENUE</a>
-      <a href="#empresas">Empresas</a>
-      <a href="#mapa">Mapa</a>
-      <a href="#estrategia">Estrategia</a>
-      <a href="#metodologia">Metodología</a>
-      <a href="#lectura">Cómo leerlo</a>
-      <a href="#legal">Legal</a>
-      <a href="#creditos">Créditos</a>
-      <button class="btn-tema" id="btnTema" type="button" aria-pressed="false" title="Cambiar entre tema claro y Modo Oráculo">
-        <span class="ojo" aria-hidden="true">◉</span><span id="temaTexto">Modo Oráculo</span>
-      </button>
+      <a href="#inicio" data-vista="inicio">Inicio</a>
+      <a href="#contexto" data-vista="territorio">Territorio</a>
+      <a href="#denue" data-vista="denue">DENUE</a>
+      <a href="#simulador" data-vista="simulador">Simulador</a>
+      <a href="#empresas" data-vista="empresas">Empresas</a>
+      <a href="#estrategia" data-vista="estrategia">Estrategia</a>
+      <a href="#metodologia" data-vista="metodologia">Metodología</a>
+      <a href="#legal" data-vista="legal">Legal</a>
+      <button class="btn-tema" id="btnTema" type="button" aria-pressed="false" aria-label="Activar modo oscuro" title="Modo oscuro"><span class="ojo" aria-hidden="true">🌙</span></button>
       <a class="cta" href="#simulador">Abrir simulador</a>
     </div>
   </div>
@@ -935,6 +1009,7 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
         <div><dt>Punto de equilibrio</dt><dd id="demoPE">—</dd></div>
       </dl>
       <p class="widget-estado" role="status" id="wDemo-estado">Calculando…</p>
+      <figure class="foto-cita demo-postal" id="demoPostal"></figure>
       <button type="button" class="btn btn-widget" id="demoAbrir">Abrir el simulador con este escenario →</button>
     </article>
 
@@ -1056,6 +1131,32 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
     <h2 class="titulo" data-ei="2">Simulador de éxito y rentabilidad</h2>
     <p class="intro">Configura las 22 variables del escenario en las cuatro pestañas: <strong data-ei="3">el cálculo es en vivo</strong>, cada ajuste mueve al instante el medidor, las gráficas y el mapa de zonas. ¿Sin ideas? Lanza el dado de <strong data-ei="4">🎲 Escenario sorpresa</strong>. El modelo devuelve la probabilidad (con un decimal, cálculo determinista y reproducible) de operar con rentabilidad al tercer año, la curva de supervivencia, la distribución de utilidades (Monte Carlo, 2,000 corridas) y los indicadores financieros del proyecto.</p>
 
+    <article class="widget widget-describir" id="wDescribir" data-estado="vacio" aria-labelledby="wDescribir-q">
+      <p class="widget-pregunta" id="wDescribir-q">Cuéntale a COATL tu negocio y ajusta el simulador por ti</p>
+      <div class="describir-cuerpo">
+        <div class="describir-entrada">
+          <label class="sr-only" for="descTexto">Describe tu negocio</label>
+          <textarea id="descTexto" rows="4" placeholder="Ej.: Quiero abrir una cafetería en Los Héroes, espero 70 clientes al día con un ticket de 90 pesos. La renta es de 8 mil, tendré 2 empleados y voy a invertir 300 mil con 20 % a crédito. Tengo 4 años de experiencia."></textarea>
+          <div class="acciones-widget">
+            <button type="button" class="btn btn-widget" id="descAplicar">Ajustar el simulador</button>
+            <button type="button" class="btn btn-widget btn-sec boton-voz" id="descVoz" aria-pressed="false"><b aria-hidden="true">🎙️</b> <span>Dictar</span></button>
+          </div>
+          <p class="nota-widget" id="descModo">Intérprete: local, sin conexión</p>
+        </div>
+        <div class="describir-salida">
+          <div id="descEntendido" aria-live="polite"><p class="desc-resumen">Aquí verás qué datos entendí y cuáles ajusté.</p></div>
+          <details class="describir-ia">
+            <summary>Usar Claude como intérprete (opcional)</summary>
+            <label for="descClave">Tu clave de API de Anthropic</label>
+            <input type="password" id="descClave" autocomplete="off" spellcheck="false" placeholder="sk-ant-…">
+            <button type="button" class="btn btn-widget btn-sec" id="descOlvidar">Olvidar clave</button>
+            <p class="nota-widget">La clave se queda solo en la memoria de esta pestaña y se envía únicamente a la API de Anthropic. El uso se cobra en tu cuenta de Anthropic. El dictado por voz usa el servicio de reconocimiento de tu navegador.</p>
+          </details>
+        </div>
+      </div>
+      <p class="widget-estado" role="status" id="wDescribir-estado">Escribe o dicta cómo es tu negocio.</p>
+    </article>
+
     <div class="simulador">
       <form class="consola" id="forma" novalidate>
         <div class="pestanas" role="tablist" aria-label="Grupos de variables">
@@ -1070,6 +1171,10 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
             <label for="giro">Giro del negocio</label>
             <select id="giro"></select>
             <span class="ayuda">Cada giro carga su ticket promedio, costo variable y demanda de referencia; puedes ajustarlos después.</span>
+            <label for="giroBusca" class="sub-label">…o busca entre <span id="giroTotal">todas las actividades</span> del SCIAN (INEGI)</label>
+            <input type="search" id="giroBusca" list="giroOpciones" placeholder="Escribe: tienda de mascotas, 812110, mueblería…" autocomplete="off">
+            <datalist id="giroOpciones"></datalist>
+            <span class="ayuda" id="giroNota" aria-live="polite"></span>
           </div>
           <div class="fila-2">
             <div class="campo">
@@ -1222,6 +1327,11 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
               <span class="ayuda">Luz, agua, internet, software, contador, seguridad, etc.</span>
             </div>
           </div>
+          <div class="campo extras">
+            <p class="sub-label">Costos fijos adicionales (sin límite) · total <strong id="extrasTotal">$0</strong>/mes</p>
+            <ul class="extras-lista" id="extrasLista"></ul>
+            <button type="button" class="btn-dado" id="extrasAgregar">＋ Agregar un costo propio</button>
+          </div>
         </div>
 
         <div class="cuadro" id="c-operacion" role="tabpanel" aria-labelledby="t-operacion" tabindex="0">
@@ -1324,7 +1434,6 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
           <p class="ficha-esc" id="fichaEsc"></p>
           <div class="mini-grid" id="miniGrid" role="img" aria-label="Retícula de 100 escenarios según la probabilidad estimada"></div>
           <p class="mini-grid-leyenda" id="miniLeyenda">Cada cuadro = 1 escenario de cada 100.</p>
-          <span class="oraculo-cita" id="oraculoCita">«El futuro no es aleatorio. Es calculable.»</span>
         </div>
         <div class="kpis" id="kpis"></div>
         <div class="lectura" id="lecturaPanel" hidden>
@@ -1627,23 +1736,7 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
   <h2 class="titulo">Cómo leer tu resultado</h2>
   <div class="intro-flex">
     <p class="intro">Una probabilidad no es una sentencia: es una medida de riesgo bajo supuestos. Esta guía traduce los rangos del medidor a decisiones de inversión, en línea con los criterios de evaluación de la Jornada Académica.</p>
-    <svg class="ilustracion" viewBox="0 0 240 210" role="img" aria-label="Ilustración de un local comercial con una gráfica creciente en el aparador">
-      <line x1="6" y1="192" x2="234" y2="192" stroke="#38070F" stroke-width="3" stroke-linecap="round"/>
-      <rect x="20" y="76" width="200" height="116" rx="7" fill="#fff" stroke="#38070F" stroke-width="3"/>
-      <path d="M12,76 L228,76 L218,44 L22,44 Z" fill="#C8102E" stroke="#38070F" stroke-width="3" stroke-linejoin="round"/>
-      <g stroke="#38070F" stroke-width="3">
-        <path d="M12,76 a18,15 0 0 0 36,0" fill="#fff"/><path d="M48,76 a18,15 0 0 0 36,0" fill="#C8102E"/>
-        <path d="M84,76 a18,15 0 0 0 36,0" fill="#fff"/><path d="M120,76 a18,15 0 0 0 36,0" fill="#C8102E"/>
-        <path d="M156,76 a18,15 0 0 0 36,0" fill="#fff"/><path d="M192,76 a18,15 0 0 0 36,0" fill="#C8102E"/>
-      </g>
-      <rect x="36" y="106" width="92" height="60" rx="4" fill="#FBF6F3" stroke="#38070F" stroke-width="2.5"/>
-      <polyline points="46,154 62,138 78,144 96,120 116,112" fill="none" stroke="#C8102E" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
-      <path d="M109,108 h9 v9" fill="none" stroke="#C8102E" stroke-width="3.5" stroke-linecap="round"/>
-      <rect x="150" y="108" width="52" height="84" rx="4" fill="#7A0C1F" stroke="#38070F" stroke-width="3"/>
-      <circle cx="192" cy="152" r="3" fill="#FBF6F3"/>
-      <rect x="156" y="118" width="40" height="16" rx="3" fill="#fff" stroke="#38070F" stroke-width="2"/>
-      <text x="176" y="130" text-anchor="middle" font-family="Spline Sans Mono,monospace" font-size="9" font-weight="700" fill="#7A0C1F">ABIERTO</text>
-    </svg>
+    <figure class="ilustracion foto-cita"><img src="assets/img/zonas/corredor.webp" width="480" height="320" loading="lazy" decoding="async" alt="Estacionamiento y locales de Plaza Coacalco, sobre el corredor comercial de la Vía José López Portillo"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Plaza_Coacalco._-_panoramio.jpg" target="_blank" rel="noopener">ArCaRa</a> · <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a></figcaption></figure>
   </div>
 
   <div class="guia">
@@ -1676,7 +1769,7 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
   </div>
 </section>
 <!-- ============ 05 AVISO LEGAL Y REFERENCIAS ============ -->
-<section class="seccion" id="legal" data-ei="18">
+<section class="seccion" id="legal">
   <p class="folio">Sección 06 · Marco legal y referencias</p>
   <h2 class="titulo">Aviso legal</h2>
   <p class="intro">Este apartado protege los derechos de los autores del proyecto y delimita con claridad el alcance de la herramienta, conforme a la legislación mexicana aplicable. El uso del sitio implica la aceptación de estos términos.</p>
@@ -1710,7 +1803,7 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
     </article>
   </div>
 
-  <div class="panel" data-ei="19">
+  <div class="panel" data-ei="18">
     <h3>Referencias</h3>
     <p class="sub">Todas las fuentes utilizadas en el proyecto, con hipervínculo directo.</p>
     <ol class="refs">
@@ -1739,7 +1832,7 @@ body.oraculo .widget label,body.oraculo .widget-estado,body.oraculo .mapa25-esca
         <li>Bruno Alejandro López Bautista</li>
         <li>Alonso Arroyo Cortés</li>
       </ul>
-      <p data-ei="20">Proyecto Especial de Participación · Jornada Académica de Negocios<br>Asignatura: Probabilidad y Estadística<br>Docente: Mtra. Noemí Daniela Palacios Fermín</p>
+      <p data-ei="19">Proyecto Especial de Participación · Jornada Académica de Negocios<br>Asignatura: Probabilidad y Estadística<br>Docente: Mtra. Noemí Daniela Palacios Fermín</p>
     </div>
     <div>
       <h4>Fuentes de datos</h4>
@@ -1843,6 +1936,53 @@ const INCERTIDUMBRE = {
   costoVariable:  0.02,  // DE absoluta del costo variable efectivo (2 pp)
   betaRelativa:   0.30,  // DE relativa de cada β para el rango de P
   intercepto:     0.15   // DE del intercepto para el rango de P
+};
+
+/* Fotos reales de cada zona: Wikimedia Commons (licencia libre). Recortadas, con contraste y
+   nitidez ajustados y convertidas a WebP; la cita se muestra junto a cada foto. */
+const FOTOS_ZONAS = {
+ "corredor": {
+  "src": "assets/img/zonas/corredor.webp",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Plaza_Coacalco._-_panoramio.jpg"
+ },
+ "centro": {
+  "src": "assets/img/zonas/centro.webp",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:C%C3%BApula_octagonal-San_Francisco-Koakalko._-_panoramio.jpg"
+ },
+ "flores": {
+  "src": "assets/img/zonas/flores.webp",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Jard%C3%ADn_Triangular_en_villa_de_las_flores_cuidado_con_amor_por_dos_entusiastas_mujeres_de_la_comunidad._-_panoramio.jpg"
+ },
+ "periferia": {
+  "src": "assets/img/zonas/periferia.webp",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Ultima_Parcela_en_Coacalco._-_panoramio.jpg"
+ },
+ "heroes": {
+  "src": "assets/img/zonas/heroes.webp",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Los_Heroes-Koakalko._-_panoramio.jpg"
+ },
+ "popular": {
+  "src": "assets/img/zonas/popular.webp",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Andador_Luis_Donaldo_Colosio._-_panoramio.jpg"
+ }
 };
 
 /* ===== src/modelo/modelo.js ===== */
@@ -2072,7 +2212,7 @@ function leerEscenario(){
     propio:$("local").value==="propio", superficie:num("superficie"),
     inversion:num("inversion"), credPct:num("credito")/100, tasa:num("tasa")/100,
     renta:num("renta"), ticket:Math.max(1,num("ticket")), cv:num("cvar")/100,
-    otrosFijos:num("otrosFijos"),
+    otrosFijos:num("otrosFijos")+(typeof sumaExtras==="function"?sumaExtras():0),
     mu:Math.max(1,num("clientes")), diasSem:+$("dias").value||6,
     estacion:ESTACION[$("estacionalidad").value]||ESTACION.estable, r:num("descuento")/100,
     merma:num("merma")/100, mktGasto:num("mktGasto"),
@@ -2604,46 +2744,47 @@ $("demoClientes").addEventListener("input",pintarDemo);
 $("demoAbrir").addEventListener("click",()=>{
   $("clientes").value=$("demoClientes").value;
   calcular();
-  $("simulador").scrollIntoView({behavior:reduceMov()?"auto":"smooth"});
+  irA("simulador");
   $("clientes").focus({preventScroll:true});
   toast("Simulador abierto con "+$("clientes").value+" clientes/día.");
 });
 
-/* ===== Inicio · mapa 2.5D esquemático sincronizado con una lista ===== */
-/* Posición esquemática (columna, fila) de cada zona, aproximada a su ubicación norte–sur
-   en el mapa del equipo. No es geometría catastral. */
-const POS25={periferia:[1,0],flores:[2,1],centro:[1,1],popular:[0,2],heroes:[1,2],corredor:[2,3]};
+/* ===== Inicio · mapa 2.5D con las formas reales de las zonas ===== */
+/* Toma las mismas formas del mapa del equipo (#mapaEsquema), las proyecta en perspectiva
+   oblicua y las extruye: altura = P a 3 años, escala explícita (100 % = ESC_Z px, regla de
+   50 % rotulada). La superficie de cada zona lleva su foto real (Wikimedia Commons). */
 let zona25=null;
-/* Proyección isométrica: (columna, fila, altura) → punto en pantalla. La altura del bloque es
-   P a 3 años con escala explícita: 100 % = ESC_ALTO px (se rotula en la escena). */
-const ISO={w:74,h:37,ox:200,oy:118}, ESC_ALTO=95, SEP=1.45;
-const iso=(c,f,z)=>[ISO.ox+(c-f)*ISO.w/2, ISO.oy+(c+f)*ISO.h/2-z];
-const pos=k=>{const [c,f]=POS25[k];return [c*SEP,f*SEP]};
+const ESC_Z=105, OBL={sx:-0.5, sy:0.58, ox:165, oy:150};
+const ORDEN25=["periferia","heroes","centro","flores","corredor","popular"];   // de fondo a frente
+const ANCLA25={periferia:[390,122],heroes:[206,206],centro:[398,206],flores:[590,204],corredor:[300,286],popular:[212,350]};
+const proy=(x,y,z)=>[x+OBL.sx*y+OBL.ox, OBL.sy*y+OBL.oy-z];
+const matriz=z=>"matrix(1 0 "+OBL.sx+" "+OBL.sy+" "+OBL.ox+" "+(OBL.oy-z).toFixed(1)+")";
 function aclarar(rgb,k){const m=/rgb\((\d+),(\d+),(\d+)\)/.exec(rgb); if(!m) return rgb;
   return "rgb("+[1,2,3].map(i=>Math.max(0,Math.min(255,Math.round(+m[i]*k)))).join(",")+")";}
+function cajaPath(d){ const n=(d.match(/-?\d+(\.\d+)?/g)||[]).map(Number), xs=n.filter((_,i)=>i%2===0), ys=n.filter((_,i)=>i%2===1);
+  return {x:Math.min(...xs), y:Math.min(...ys), w:Math.max(...xs)-Math.min(...xs), h:Math.max(...ys)-Math.min(...ys)}; }
 function svgIsometrico(){
-  const orden=[...datosMapa].sort((p,q)=>{const [c1,f1]=POS25[p.k],[c2,f2]=POS25[q.k];return (c1+f1)-(c2+f2)||(c1-c2)});
-  const pts=a=>a.map(p=>p[0].toFixed(1)+","+p[1].toFixed(1)).join(" ");
-  let piso="";
-  Object.keys(POS25).forEach(k=>{const [c,f]=pos(k);piso+='<polygon class="piso" points="'+pts([iso(c,f,0),iso(c+1,f,0),iso(c+1,f+1,0),iso(c,f+1,0)])+'"/>'});
-  const cajas=orden.map(d=>{
-    const [c,f]=pos(d.k), z=d.P*ESC_ALTO, col=colorP(d.P), m=0.12;
-    const A=[c+m,f+m],B=[c+1-m,f+m],C=[c+1-m,f+1-m],D=[c+m,f+1-m];
-    const top=[iso(...A,z),iso(...B,z),iso(...C,z),iso(...D,z)];
-    const der=[iso(...B,0),iso(...C,0),iso(...C,z),iso(...B,z)];
-    const izq=[iso(...D,0),iso(...C,0),iso(...C,z),iso(...D,z)];
-    const cx=iso(c+.5,f+.5,z);
-    const sel=d.k===zona25, act=d.k===escZonaActual;
-    return '<g data-zona="'+d.k+'" class="caja'+(sel?" sel":"")+(act?" actual":"")+'">'+
-      '<polygon points="'+pts(izq)+'" fill="'+aclarar(col,.62)+'"/>'+
-      '<polygon points="'+pts(der)+'" fill="'+aclarar(col,.8)+'"/>'+
-      '<polygon class="tapa" points="'+pts(top)+'" fill="'+aclarar(col,1.08)+'"/>'+
-      '<text x="'+cx[0].toFixed(1)+'" y="'+(cx[1]-4).toFixed(1)+'" class="rot-p">'+Math.round(d.P*100)+' %</text>'+
-      '<text x="'+cx[0].toFixed(1)+'" y="'+(cx[1]+9).toFixed(1)+'" class="rot-z">'+CORTOS[d.k]+'</text></g>';
-  }).join("");
-  const e0=iso(4.2,0.2,0), e1=iso(4.2,0.2,ESC_ALTO*.5);
-  const escala='<g class="escala"><line x1="'+e0[0]+'" y1="'+e0[1]+'" x2="'+e1[0]+'" y2="'+e1[1]+'"/><text x="'+(e0[0]+6)+'" y="'+((e0[1]+e1[1])/2)+'">50 %</text></g>';
-  return '<svg viewBox="20 0 360 300" class="iso">'+piso+cajas+escala+'<text x="374" y="294" class="nota" text-anchor="end">esquema · no catastral · N ↑</text></svg>';
+  const formas={}; ORDEN25.forEach(k=>{const p=$("mz-"+k); if(p) formas[k]=p.getAttribute("d")});
+  const defs=ORDEN25.filter(k=>formas[k]&&FOTOS_ZONAS[k]).map(k=>{const c=cajaPath(formas[k]);
+    return '<pattern id="foto25-'+k+'" patternUnits="userSpaceOnUse" x="'+c.x+'" y="'+c.y+'" width="'+c.w+'" height="'+c.h+'"><image href="'+FOTOS_ZONAS[k].src+'" width="'+c.w+'" height="'+c.h+'" preserveAspectRatio="xMidYMid slice"/></pattern>'}).join("");
+  const sierra="M368,312 L706,316 Q690,374 636,416 Q518,440 398,410 Q374,364 368,312 Z";
+  let capas='<path d="'+sierra+'" transform="'+matriz(0)+'" class="suelo25"/>';
+  ORDEN25.forEach(k=>{
+    const d=datosMapa.find(x=>x.k===k); if(!d||!formas[k]) return;
+    const z=d.P*ESC_Z, col=colorP(d.P), sel=k===zona25, act=k===escZonaActual;
+    let muros=""; for(let t=0;t<z;t+=2.5) muros+='<path d="'+formas[k]+'" transform="'+matriz(t)+'" fill="'+aclarar(col,0.42+0.3*t/Math.max(z,1))+'"/>';
+    capas+='<g data-zona="'+k+'" class="zona25'+(sel?" sel":"")+(act?" actual":"")+'"><title>'+d.z.n+': '+pct(d.P)+'</title>'+
+      '<path d="'+formas[k]+'" transform="'+matriz(-3)+'" class="sombra25"/>'+muros+
+      '<path d="'+formas[k]+'" transform="'+matriz(z)+'" fill="url(#foto25-'+k+')" class="foto25"/>'+
+      '<path d="'+formas[k]+'" transform="'+matriz(z)+'" fill="'+col+'" class="tinte25"/>'+
+      '<path d="'+formas[k]+'" transform="'+matriz(z)+'" class="borde25"/></g>';
+  });
+  const rot=ORDEN25.map(k=>{const d=datosMapa.find(x=>x.k===k); if(!d) return ""; const [x,y]=proy(ANCLA25[k][0],ANCLA25[k][1],d.P*ESC_Z);
+    return '<g class="rot25" data-zona="'+k+'"><text x="'+x.toFixed(1)+'" y="'+(y-6).toFixed(1)+'" class="rot-z">'+CORTOS[k]+'</text><text x="'+x.toFixed(1)+'" y="'+(y+10).toFixed(1)+'" class="rot-p">'+pct(d.P)+'</text></g>'}).join("");
+  const [ex,ey]=proy(735,330,0);
+  const regla='<g class="escala"><line x1="'+ex+'" y1="'+ey+'" x2="'+ex+'" y2="'+(ey-ESC_Z*.5)+'"/><line x1="'+(ex-4)+'" y1="'+(ey-ESC_Z*.5)+'" x2="'+(ex+4)+'" y2="'+(ey-ESC_Z*.5)+'"/><text x="'+(ex+7)+'" y="'+(ey-ESC_Z*.25+3)+'">50 %</text></g>';
+  return '<svg viewBox="40 30 760 360" class="iso" preserveAspectRatio="xMidYMid meet"><defs>'+defs+'</defs>'+capas+rot+regla+
+    '<text x="795" y="384" class="nota" text-anchor="end">altura = P a 3 años · formas del esquema del equipo, no catastrales · N ↑</text></svg>';
 }
 function pintarMapa25(){
   seguro("wMapa",()=>{
@@ -2651,6 +2792,7 @@ function pintarMapa25(){
     if(!zona25 || !ZONAS[zona25]) zona25=escZonaActual;
     $("mapa25").innerHTML=svgIsometrico();
     $("mapa25").querySelectorAll("g[data-zona]").forEach(g=>g.addEventListener("click",()=>elegirZona25(g.dataset.zona)));
+    pintarPostal(zona25);
     const lista=$("mapa25Lista");
     lista.innerHTML=[...datosMapa].sort((a,b)=>b.P-a.P).map(d=>
       '<li role="option" id="z25-'+d.k+'" data-zona="'+d.k+'" aria-selected="'+(d.k===zona25)+'"><span class="punto" data-color="'+colorP(d.P)+'"></span>'+CORTOS[d.k]+'<span class="rp">'+pct(d.P)+'</span></li>').join("");
@@ -2662,12 +2804,13 @@ function pintarMapa25(){
 function elegirZona25(k){ zona25=k; pintarMapa25(); }
 function pintarFicha25(){
   const d=datosMapa.find(x=>x.k===zona25); if(!d) return;
-  $("mapa25Ficha").innerHTML='<h3>'+d.z.n+'</h3><dl>'+
+  const f=FOTOS_ZONAS[d.k];
+  $("mapa25Ficha").innerHTML=(f?'<figure class="foto-cita ficha-foto"><img src="'+f.src+'" alt="Vista de '+d.z.n+'" loading="lazy"><figcaption><a href="'+f.pagina+'" target="_blank" rel="noopener">'+f.autor+'</a> · <a href="'+f.licenciaUrl+'" target="_blank" rel="noopener">'+f.licencia+'</a></figcaption></figure>':'')+'<div class="ficha-datos"><h3>'+d.z.n+'</h3><dl>'+
     '<div><dt>P a 3 años (este negocio aquí)</dt><dd>'+pct(d.P)+' <span class="proc proc-modelo">resultado del modelo</span></dd></div>'+
     '<div><dt>Utilidad mensual esperada</dt><dd>'+mxn.format(Math.round(d.util))+' <span class="proc proc-modelo">resultado del modelo</span></dd></div>'+
     '<div><dt>Afluencia relativa</dt><dd>'+d.z.afl.toFixed(2)+' (1.00 = promedio) <span class="proc proc-supuesto">estimación del equipo</span></dd></div>'+
     '<div><dt>Renta de referencia</dt><dd>$'+d.z.rm2+'/m²·mes <span class="proc proc-supuesto">estimación del equipo</span></dd></div>'+
-    '<div><dt>Ajuste β de la zona</dt><dd>'+(d.z.z>0?"+":"")+d.z.z.toFixed(2)+' <span class="proc proc-supuesto">estimación del equipo</span></dd></div></dl>';
+    '<div><dt>Ajuste β de la zona</dt><dd>'+(d.z.z>0?"+":"")+d.z.z.toFixed(2)+' <span class="proc proc-supuesto">estimación del equipo</span></dd></div></dl></div>';
   $("mapa25Abrir").textContent=d.k===escZonaActual?"Esta ya es la zona del simulador ↓":"Abrir el simulador en "+CORTOS[d.k]+" →";
 }
 $("mapa25Lista").addEventListener("click",ev=>{const li=ev.target.closest("li[data-zona]"); if(li) elegirZona25(li.dataset.zona)});
@@ -2683,8 +2826,13 @@ $("mapa25Lista").addEventListener("keydown",ev=>{
 });
 $("mapa25Abrir").addEventListener("click",()=>{
   if(zona25 && zona25!==escZonaActual) irAZona(zona25);
-  $("simulador").scrollIntoView({behavior:reduceMov()?"auto":"smooth"});
+  irA("simulador");
 });
+
+function pintarPostal(k){
+  const el=$("demoPostal"), f=FOTOS_ZONAS[k]; if(!el||!f) return;
+  el.innerHTML='<img src="'+f.src+'" alt="Vista de '+ZONAS[k].n+'" loading="lazy"><span class="postal-zona">'+ZONAS[k].n+'</span><figcaption><a href="'+f.pagina+'" target="_blank" rel="noopener">'+f.autor+'</a> · <a href="'+f.licenciaUrl+'" target="_blank" rel="noopener">'+f.licencia+'</a></figcaption>';
+}
 
 /* ===== Simulador · escenario vigente y restablecer ===== */
 function marcarPendiente(){
@@ -2957,6 +3105,7 @@ $("giro").addEventListener("change",pintarCompetenciaDenue);
 if("IntersectionObserver" in window){
   const io=new IntersectionObserver(es=>{ if(es.some(e=>e.isIntersecting)){ io.disconnect(); cargarDenue(); } },{rootMargin:"600px 0px"});
   io.observe($("denue")); io.observe($("simulador"));
+  window.addEventListener("hashchange",()=>{ if(!DENUE.meta) cargarDenue(); },{once:true});
 } else cargarDenue();
 
 /* ===== src/ui/empresas.js ===== */
@@ -3103,7 +3252,7 @@ $("empAplicar").addEventListener("click",()=>{
   $("otrosFijos").value=Math.max(0,Math.round(otros/100)*100);
   ["cvar","merma"].forEach(id=>$(id).dispatchEvent(new Event("input")));
   calcular();
-  $("simulador").scrollIntoView({behavior:reduceMov()?"auto":"smooth"});
+  irA("simulador");
   toast("Simulador ajustado a tus promedios: ticket, costo variable (merma incluida), clientes/día y otros fijos para igualar tus costos fijos.");
 });
 $("empPlantilla").addEventListener("click",()=>{
@@ -3115,6 +3264,280 @@ $("empPlantilla").addEventListener("click",()=>{
   a.href=URL.createObjectURL(new Blob(["﻿"+filas.join("\n")],{type:"text/csv"}));
   a.download="COATL-plantilla-empresa.csv"; a.click(); setTimeout(()=>URL.revokeObjectURL(a.href),1000);
 });
+
+/* ===== src/ui/giros_scian.js ===== */
+/* ---------- 23. Todas las actividades del SCIAN como giros + costos ilimitados ----------
+   El catálogo viene del DENUE (data/denue/clases.json, más de 900 clases). Una actividad
+   que no es uno de los 35 giros calibrados hereda ticket, costo variable, demanda y β de su
+   giro COATL más cercano (por subsector SCIAN), rotulado «estimación del equipo». Su
+   competencia en Coacalco es el conteo real del DENUE para esa clase. */
+const PLANTILLA_SCIAN=[  // prefijo SCIAN → giro COATL de referencia (más específico primero)
+  ["3118","panaderia"],["3118","tortilleria"],["311","panaderia"],["31","taller"],["32","taller"],["33","taller"],
+  ["4611","abarrotes"],["4612","vinateria"],["461","abarrotes"],["462","abarrotes"],["463","ropa"],["4641","farmacia"],["4642","optica"],["464","farmacia"],
+  ["4651","joyeria"],["465","papeleria"],["4662","celulares"],["466","tecnologia"],["467","ferreteria"],["468","refaccionaria"],["469","celulares"],
+  ["7225","restaurante"],["722","fonda"],["721","consultorio"],["713","gimnasio"],["71","gimnasio"],
+  ["8111","taller"],["811","tecnologia"],["8121","estetica"],["8122","lavanderia"],["812","estetica"],["81","consultorio"],
+  ["62","consultorio"],["61","educacion"],["54","consultorio"],["53","consultorio"],["56","lavanderia"],["51","ciber"],["52","consultorio"],["43","abarrotes"]
+];
+function plantillaDe(codigo){ const p=PLANTILLA_SCIAN.find(([pre])=>codigo.startsWith(pre)); return p?p[1]:"abarrotes"; }
+async function catalogoSCIAN(){
+  if(DENUE.clases) return DENUE.clases;
+  try{ DENUE.clases=await jsonDenue("clases.json"); }catch(_){ DENUE.clases=null; }
+  return DENUE.clases;
+}
+async function usarActividad(codigo){
+  const cat=await catalogoSCIAN(); if(!cat||!cat[codigo]) return false;
+  const propio=Object.entries((DENUE.meta&&DENUE.meta.giros_scian)||{}).find(([,cs])=>cs.length===1&&cs[0]===codigo);
+  if(propio){ $("giro").value=propio[0]; $("giro").dispatchEvent(new Event("change")); calcular(); return true; }
+  const base=plantillaDe(codigo), clave="scian_"+codigo;
+  if(!GIROS[clave]){
+    GIROS[clave]=Object.assign({},GIROS[base],{n:cat[codigo]+" (SCIAN "+codigo+")", scian:codigo, base});
+    const o=document.createElement("option"); o.value=clave; o.textContent="SCIAN "+codigo+" · "+cat[codigo];
+    $("giroScianGrupo").appendChild(o);
+  }
+  $("giro").value=clave; $("giro").dispatchEvent(new Event("change")); calcular();
+  $("giroNota").innerHTML='Parámetros de referencia de <strong>'+esc(GIROS[base].n)+'</strong> <span class="proc proc-supuesto">estimación del equipo</span>; ajústalos en Finanzas y Operación.';
+  return true;
+}
+(async function prepararBuscador(){
+  const opt=document.createElement("optgroup"); opt.label="Actividades del SCIAN agregadas"; opt.id="giroScianGrupo"; $("giro").appendChild(opt);
+  $("giro").addEventListener("change",()=>{ if(!GIROS[$("giro").value]||!GIROS[$("giro").value].scian) $("giroNota").textContent=""; });
+  const inp=$("giroBusca"), lista=$("giroOpciones");
+  inp.addEventListener("focus",async()=>{
+    const cat=await catalogoSCIAN();
+    if(!cat){ $("giroNota").textContent="El catálogo SCIAN no está disponible en esta versión."; return; }
+    if(!lista.children.length) lista.innerHTML=Object.entries(cat).map(([c,n])=>'<option value="'+c+' · '+esc(n)+'">').join("");
+    $("giroTotal").textContent=Object.keys(cat).length.toLocaleString("es-MX")+" actividades";
+  },{once:true});
+  inp.addEventListener("change",async()=>{ const m=/^(\d{6})/.exec(inp.value.trim()); if(m&&await usarActividad(m[1])) inp.value=""; });
+})();
+
+/* Competencia real en Coacalco para una actividad SCIAN agregada (clase exacta). */
+async function competenciaScian(g){
+  if(!g||!g.scian) return null;
+  try{ if(!DENUE.ent["15"]) DENUE.ent["15"]=await jsonDenue("ent/15.json"); }catch(_){ return null; }
+  return ((DENUE.ent["15"]["020"]||{}).clases||{})[g.scian]||0;
+}
+const _pcd=pintarCompetenciaDenue;
+pintarCompetenciaDenue=async function(){
+  const g=GIROS[$("giro").value];
+  if(g&&g.scian){ const n=await competenciaScian(g); if(n!=null) $("compDenue").innerHTML='DENUE: <strong>'+fmtN(n)+'</strong> establecimientos de la clase SCIAN '+g.scian+' en todo Coacalco.'; return; }
+  _pcd();
+};
+
+/* Costos fijos adicionales ilimitados (variables definidas por el usuario). */
+function sumaExtras(){ return [...document.querySelectorAll("#extrasLista input[type=number]")].reduce((s,i)=>s+Math.max(0,Number(i.value)||0),0); }
+function agregarExtra(nombre,monto){
+  const li=document.createElement("li"), id="x"+Math.random().toString(36).slice(2,8);
+  li.innerHTML='<label class="sr-only" for="'+id+'n">Concepto</label><input type="text" id="'+id+'n" placeholder="Concepto (p. ej. licencia de software)" value="'+esc(nombre||"")+'">'+
+    '<label class="sr-only" for="'+id+'m">Monto mensual</label><input type="number" id="'+id+'m" min="0" step="100" value="'+(monto||0)+'" inputmode="numeric">'+
+    '<button type="button" class="quitar" aria-label="Quitar este costo">✕</button>';
+  li.querySelector(".quitar").addEventListener("click",()=>{ li.remove(); actualizarExtras(); calcular(); });
+  $("extrasLista").appendChild(li); li.querySelector("input").focus();
+}
+function actualizarExtras(){ $("extrasTotal").textContent=mxn.format(sumaExtras()); }
+$("extrasAgregar").addEventListener("click",()=>{ agregarExtra("",0); actualizarExtras(); });
+$("extrasLista").addEventListener("input",()=>{ actualizarExtras(); });
+$("forma").addEventListener("reset",()=>{ $("extrasLista").innerHTML=""; actualizarExtras(); });
+$("giro").addEventListener("change",()=>pintarCompetenciaDenue());
+
+/* ===== src/ui/describir.js ===== */
+/* ---------- 22. Describe tu situación (texto o voz) → parámetros del simulador ----------
+   Dos intérpretes:
+   1) Local (por defecto): reglas en español, sin red ni clave. Siempre disponible.
+   2) Claude (opcional): si el usuario pega su propia clave de API, se usa el SDK oficial
+      @anthropic-ai/sdk con salida estructurada. La clave vive solo en memoria de esta pestaña.
+   La voz usa el reconocimiento del navegador (Web Speech API); en Chrome/Edge el audio lo
+   procesa el proveedor del navegador, y así se avisa en pantalla. */
+const SDK_URL="https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@1.3.0/+esm";
+let claveClaude=null;
+
+function sinAcentos(t){return String(t).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase()}
+function cantidad(txt){
+  const m=/(\d+(?:[.,]\d+)?)\s*(mil(?:lones?)?|millon(?:es)?|k\b)?/.exec(txt.replace(/\$/g,"").replace(/(\d),(\d{3})\b/g,"$1$2"));
+  if(!m) return null;
+  let n=Number(m[1].replace(",","."));
+  if(m[2]){ if(/^mil$/.test(m[2])||m[2]==="k") n*=1e3; else n*=1e6; }
+  return n;
+}
+/* Busca una cantidad cerca de alguna palabra clave (antes o después). */
+function cerca(t, claves){
+  for(const c of claves){
+    const re=new RegExp("(?:"+c+")[^.;\\d$]{0,28}(\\$?\\s?\\d[\\d.,]*\\s*(?:mil(?:lones?)?|millon(?:es)?|k\\b)?)|(\\$?\\s?\\d[\\d.,]*\\s*(?:mil(?:lones?)?|millon(?:es)?|k\\b)?)\\s*(?:de\\s+)?(?:"+c+")","i");
+    const m=re.exec(t); if(m) return cantidad(m[1]||m[2]);
+  }
+  return null;
+}
+const ZONAS_CLAVE={corredor:["lopez portillo","corredor","plaza coacalco","power center"],centro:["centro","san francisco","cabecera"],
+  flores:["villa de las flores","flores","parque residencial","bosques"],heroes:["heroes","loma bonita","manzanas"],
+  popular:["potrero","san rafael","olivo"],periferia:["periferia","norte","habitacional"]};
+function interpretarLocal(texto){
+  const t=sinAcentos(texto), r={}, entendido=[];
+  // Giro: nombre exacto del catálogo, o palabra clave
+  let mejor=null;
+  for(const [k,g] of Object.entries(GIROS)){
+    const palabras=sinAcentos(g.n).split(/[^a-z]+/).filter(w=>w.length>4);
+    const pts=palabras.filter(w=>t.includes(w.slice(0,Math.max(5,w.length-2)))).length;
+    if(pts&&(!mejor||pts>mejor.pts)) mejor={k,pts};
+  }
+  if(mejor){ r.giro=mejor.k; entendido.push("giro: "+GIROS[mejor.k].n); }
+  for(const [k,cs] of Object.entries(ZONAS_CLAVE)) if(cs.some(c=>t.includes(c))){ r.zona=k; entendido.push("zona: "+ZONAS[k].n); break; }
+  const num=(campo,claves,et,fmt)=>{const v=cerca(t,claves); if(v!=null&&isFinite(v)){r[campo]=v; entendido.push(et+": "+(fmt?fmt(v):v));}};
+  num("clientes",["clientes al dia","clientes diarios","clientes por dia","clientes","personas al dia","ventas al dia"],"clientes/día");
+  num("ticket",["ticket","por cliente","cada cliente gasta","consumo promedio","precio promedio"],"ticket",v=>mxn.format(v));
+  num("inversion",["inversion","invertir","capital inicial","presupuesto"],"inversión",v=>mxn.format(v));
+  num("renta",["renta","alquiler"],"renta",v=>mxn.format(v));
+  num("empleados",["empleados","trabajadores","ayudantes","personas trabajando"],"empleados");
+  num("costoEmpleado",["sueldo","salario","pago por empleado"],"sueldo por empleado",v=>mxn.format(v));
+  num("superficie",["metros cuadrados","m2","metros"],"superficie (m²)");
+  num("credito",["% de credito","por ciento de credito","financiado","credito","prestamo"],"% a crédito");
+  num("tasa",["tasa","interes"],"tasa anual %");
+  const anios=/(\d+)\s*anos? de experiencia|experiencia de (\d+)\s*anos?/.exec(t);
+  if(anios){const a=+(anios[1]||anios[2]); r.experiencia=a>5?"0.30":a>=3?"0.15":a>=1?"0":"-0.25"; entendido.push("experiencia: "+a+" años");}
+  else if(/sin experiencia|nunca he|primera vez/.test(t)){r.experiencia="-0.25"; entendido.push("experiencia: ninguna");}
+  const dias=/(\d)\s*dias (?:a la|por) semana|abro (\d) dias/.exec(t); if(dias){r.dias=String(Math.min(7,Math.max(5,+(dias[1]||dias[2])))); entendido.push("días/semana: "+r.dias);}
+  if(/local propio|es mio|propiedad propia|sin renta/.test(t)){r.local="propio"; entendido.push("local propio");}
+  if(/mucha competencia|muy competido|saturad/.test(t)){r.competencia="-0.20"; entendido.push("competencia alta");}
+  else if(/poca competencia|sin competencia|no hay competencia/.test(t)){r.competencia="0.15"; entendido.push("competencia baja");}
+  if(/informal|sin factura|sin registro/.test(t)){r.formalidad="-0.06"; entendido.push("operación informal");}
+  if(/redes sociales|facebook|instagram|tiktok|publicidad/.test(t)){r.marketing=/pauta|anuncio|publicidad pagada|whatsapp business/.test(t)?"0.12":"0.05"; entendido.push("marketing en redes");}
+  const reserva=/(\d+)\s*meses? de (?:reserva|gastos|ahorro)/.exec(t);
+  if(reserva){const m=+reserva[1]; r.reserva=m>12?"0.35":m>=6?"0.20":m>=3?"0":"-0.30"; entendido.push("reserva: "+m+" meses");}
+  return {r, entendido};
+}
+/* Aplica lo interpretado a los controles reales del simulador (con sus límites). */
+function aplicarInterpretacion(r){
+  const fija=(id,v)=>{const c=$(id); if(c!=null&&v!=null){ c.value=String(v); }};
+  if(r.giro&&GIROS[r.giro]){ $("giro").value=r.giro; $("giro").dispatchEvent(new Event("change")); }
+  if(r.zona&&ZONAS[r.zona]) $("zona").value=r.zona;
+  fija("clientes",r.clientes!=null?Math.round(r.clientes):null); fija("ticket",r.ticket!=null?Math.round(r.ticket):null);
+  fija("inversion",r.inversion!=null?Math.round(r.inversion/10000)*10000:null); fija("renta",r.renta!=null?Math.round(r.renta):null);
+  fija("empleados",r.empleados); fija("costoEmpleado",r.costoEmpleado); fija("superficie",r.superficie);
+  fija("credito",r.credito!=null?Math.round(r.credito/5)*5:null); fija("tasa",r.tasa);
+  ["experiencia","dias","local","competencia","formalidad","marketing","reserva"].forEach(k=>{ if(r[k]!=null&&[...$(k).options].some(o=>o.value===String(r[k]))) $(k).value=String(r[k]); });
+  ["inversion","credito","cvar","merma"].forEach(id=>$(id).dispatchEvent(new Event("input")));
+  calcular();
+}
+/* Intérprete con Claude (opcional, clave del usuario). */
+const ESQUEMA_ESCENARIO={type:"object",additionalProperties:false,
+  properties:{giro:{type:["string","null"],enum:[...Object.keys(GIROS),null]},zona:{type:["string","null"],enum:[...Object.keys(ZONAS),null]},
+    clientes:{type:["number","null"]},ticket:{type:["number","null"]},inversion:{type:["number","null"]},renta:{type:["number","null"]},
+    empleados:{type:["number","null"]},costoEmpleado:{type:["number","null"]},superficie:{type:["number","null"]},credito:{type:["number","null"]},
+    tasa:{type:["number","null"]},experiencia_anios:{type:["number","null"]},resumen:{type:"string"}},
+  required:["giro","zona","clientes","ticket","inversion","renta","empleados","costoEmpleado","superficie","credito","tasa","experiencia_anios","resumen"]};
+async function interpretarClaude(texto){
+  const {default:Anthropic}=await import(SDK_URL);
+  const client=new Anthropic({apiKey:claveClaude, dangerouslyAllowBrowser:true});
+  const resp=await client.beta.messages.create({
+    model:"claude-opus-5-5", max_tokens:4000,
+    betas:["server-side-fallback-2026-07-01"], fallbacks:"default",
+    output_config:{effort:"low", format:{type:"json_schema", schema:ESQUEMA_ESCENARIO}},
+    system:"Convierte la descripción de un negocio en Coacalco de Berriozábal (México) en parámetros del simulador COATL. "+
+      "Usa solo lo que la persona dijo; deja en null lo que no mencione. Cantidades en pesos mexicanos; clientes por día; crédito en porcentaje de la inversión; tasa anual en porcentaje. "+
+      "Giros válidos: "+Object.entries(GIROS).map(([k,g])=>k+"="+g.n).join("; ")+". Zonas válidas: "+Object.entries(ZONAS).map(([k,z])=>k+"="+z.n).join("; ")+
+      ". En «resumen» explica en una frase, en español, qué entendiste.",
+    messages:[{role:"user",content:texto}]
+  });
+  if(resp.stop_reason==="refusal") throw new Error("Claude no pudo procesar esta descripción.");
+  const bloque=resp.content.find(b=>b.type==="text"); if(!bloque) throw new Error("Respuesta vacía.");
+  const j=JSON.parse(bloque.text), r={}, entendido=[];
+  for(const k of ["giro","zona","clientes","ticket","inversion","renta","empleados","costoEmpleado","superficie","credito","tasa"]) if(j[k]!=null){ r[k]=j[k]; entendido.push(k+": "+j[k]); }
+  if(j.experiencia_anios!=null){const a=j.experiencia_anios; r.experiencia=a>5?"0.30":a>=3?"0.15":a>=1?"0":"-0.25";}
+  return {r, entendido, resumen:j.resumen};
+}
+async function interpretarYAplicar(){
+  const texto=$("descTexto").value.trim();
+  if(!texto){ estadoWidget("wDescribir","vacio","Escribe o dicta cómo es tu negocio."); return; }
+  estadoWidget("wDescribir","cargando", claveClaude?"Claude está interpretando tu descripción…":"Interpretando…");
+  try{
+    const res=claveClaude? await interpretarClaude(texto) : interpretarLocal(texto);
+    if(!res.entendido.length){ estadoWidget("wDescribir","vacio","No identifiqué datos concretos. Prueba con cifras: «cafetería en Los Héroes, 70 clientes al día, ticket de 90 pesos, renta de 8 mil»."); return; }
+    aplicarInterpretacion(res.r);
+    $("descEntendido").innerHTML='<p class="desc-resumen">'+(res.resumen?esc(res.resumen)+" ":"")+'Ajusté:</p><ul>'+res.entendido.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul>";
+    estadoWidget("wDescribir","listo", "Simulador actualizado"+(claveClaude?" con Claude.":" con el intérprete local.")+" Revisa y corrige cualquier campo en las pestañas.");
+  }catch(err){
+    console.warn(err);
+    estadoWidget("wDescribir","error", (claveClaude?"Claude no respondió ("+(err.status||err.message)+"). ":"")+"Puedes usar el intérprete local quitando la clave.");
+  }
+}
+$("descAplicar").addEventListener("click",interpretarYAplicar);
+$("descClave").addEventListener("change",()=>{ const v=$("descClave").value.trim(); claveClaude=v||null;
+  $("descModo").textContent=claveClaude?"Intérprete: Claude (tu clave, solo en esta pestaña)":"Intérprete: local, sin conexión"; });
+$("descOlvidar").addEventListener("click",()=>{ $("descClave").value=""; claveClaude=null; $("descModo").textContent="Intérprete: local, sin conexión"; });
+/* Voz (Web Speech API) */
+(function voz(){
+  const SR=window.SpeechRecognition||window.webkitSpeechRecognition, b=$("descVoz");
+  if(!SR){ b.disabled=true; b.title="Tu navegador no permite dictado; escribe la descripción."; b.querySelector("span").textContent="Dictado no disponible"; return; }
+  let rec=null, base="";
+  b.addEventListener("click",()=>{
+    if(rec){ rec.stop(); return; }
+    rec=new SR(); rec.lang="es-MX"; rec.interimResults=true; rec.continuous=true; base=$("descTexto").value?$("descTexto").value+" ":"";
+    rec.onresult=ev=>{ let txt=""; for(let i=0;i<ev.results.length;i++) txt+=ev.results[i][0].transcript; $("descTexto").value=base+txt; };
+    rec.onerror=ev=>{ estadoWidget("wDescribir","error","Dictado: "+(ev.error==="not-allowed"?"permiso de micrófono denegado.":ev.error)); };
+    rec.onend=()=>{ rec=null; b.classList.remove("escuchando"); b.setAttribute("aria-pressed","false"); b.querySelector("span").textContent="Dictar"; if($("descTexto").value.trim()) interpretarYAplicar(); };
+    rec.start(); b.classList.add("escuchando"); b.setAttribute("aria-pressed","true"); b.querySelector("span").textContent="Escuchando… pulsa para terminar";
+  });
+})();
+
+/* ===== src/ui/paginas.js ===== */
+/* ---------- 21. Páginas: cada apartado se abre como una página propia ----------
+   Una sola app (index.html autocontenido) con vistas por apartado. La dirección usa el
+   identificador del apartado (#simulador, #denue…), así que los enlaces de siempre siguen
+   funcionando y se pueden compartir; «atrás» y «adelante» del navegador también.
+   ?vista=todo muestra todo en una sola página (útil para imprimir y para las pruebas). */
+const VISTAS=[
+  {id:"inicio",      titulo:"Inicio",        secciones:["inicio","explorar"]},
+  {id:"territorio",  titulo:"Territorio",    secciones:["contexto"]},
+  {id:"denue",       titulo:"DENUE nacional",secciones:["denue"]},
+  {id:"simulador",   titulo:"Simulador",     secciones:["simulador"]},
+  {id:"empresas",    titulo:"Para empresas", secciones:["empresas"]},
+  {id:"estrategia",  titulo:"Estrategia",    secciones:["estrategia"]},
+  {id:"metodologia", titulo:"Metodología",   secciones:["metodologia","trazabilidad","lectura"]},
+  {id:"legal",       titulo:"Aviso legal",   secciones:["legal"]}
+];
+const TODO=new URLSearchParams(location.search).get("vista")==="todo";
+const TITULO_BASE=document.title;
+let vistaActual=null;
+VISTAS.forEach(v=>v.secciones.forEach(s=>{const el=$(s); if(el) el.dataset.pagina=v.id}));
+function vistaDe(id){
+  const el=id&&document.getElementById(id);
+  const sec=el&&el.closest("[data-pagina]");
+  return sec?VISTAS.find(v=>v.id===sec.dataset.pagina):null;
+}
+function mostrarVista(v, destino, desplazar){
+  if(TODO){ if(destino&&desplazar) destino.scrollIntoView({behavior:reduceMov()?"auto":"smooth"}); return; }
+  const cambio=vistaActual!==v.id;
+  vistaActual=v.id;
+  document.querySelectorAll("[data-pagina]").forEach(s=>{ s.hidden=s.dataset.pagina!==v.id; });
+  document.querySelectorAll(".nav-links a[data-vista]").forEach(a=>{
+    const activo=a.dataset.vista===v.id; a.classList.toggle("activa",activo);
+    if(activo) a.setAttribute("aria-current","page"); else a.removeAttribute("aria-current");
+  });
+  document.title=(v.id==="inicio"?"":v.titulo+" · ")+TITULO_BASE;
+  if(cambio){
+    document.body.classList.remove("vista-entra"); void document.body.offsetWidth; document.body.classList.add("vista-entra");
+    window.dispatchEvent(new Event("resize"));             // gráficas y mapa recalculan su tamaño
+    if(typeof mapaL!=="undefined"&&mapaL&&mapaL.invalidateSize) setTimeout(()=>mapaL.invalidateSize(),60);
+  }
+  if(desplazar){
+    if(destino&&destino.dataset.pagina!==v.id&&!v.secciones.includes(destino.id)) destino.scrollIntoView({behavior:"auto"});
+    else window.scrollTo({top:0,behavior:"auto"});
+  }
+}
+function enrutar(desplazar){
+  const h=decodeURIComponent(location.hash.slice(1));
+  if(/(^|&)e=/.test(h)){ mostrarVista(VISTAS.find(v=>v.id==="simulador"),null,false); return; }   // escenario compartido
+  const v=vistaDe(h)||VISTAS[0];
+  mostrarVista(v, h?document.getElementById(h):null, desplazar);
+}
+/* Navegar a un apartado desde el código (botones «Abrir el simulador», etc.). */
+function irA(id){
+  if(location.hash==="#"+id) enrutar(true);
+  else location.hash=id;
+}
+window.addEventListener("hashchange",()=>enrutar(true));
+if(TODO) document.body.classList.add("vista-todo");
+enrutar(false);
 
 /* ===== src/ui/app.js ===== */
 /* ---------- 12. Dinámica: aviso, dado y cálculo en vivo ---------- */
@@ -3365,7 +3788,7 @@ function crearWorkerCalculo(){
   if(typeof Worker!=="function") return null;
   let url;
   try{
-    url=URL.createObjectURL(new Blob(["/* COATL · Datos de anclaje (giros, zonas, S0, estacionalidad). Sin DOM. */\n/* ---------- 1. Parámetros y datos de anclaje ---------- */\nconst GIROS = {\n  abarrotes:    {n:\"Abarrotes / minisúper\",                ticket:65,  cv:72, dem:120, z:-0.10},\n  tortilleria:  {n:\"Tortillería\",                          ticket:22,  cv:55, dem:260, z:-0.02},\n  carniceria:   {n:\"Carnicería / pollería\",                ticket:140, cv:68, dem:75,  z: 0.00},\n  fruteria:     {n:\"Frutería y verdulería\",                ticket:70,  cv:62, dem:95,  z:-0.05},\n  fonda:        {n:\"Fonda / cocina económica\",             ticket:85,  cv:45, dem:70,  z:-0.12},\n  taqueria:     {n:\"Taquería / antojitos\",                 ticket:95,  cv:40, dem:90,  z:-0.10},\n  restaurante:  {n:\"Restaurante\",                          ticket:180, cv:42, dem:55,  z:-0.15},\n  pizzeria:     {n:\"Pizzería\",                             ticket:160, cv:38, dem:45,  z:-0.10},\n  cafeteria:    {n:\"Cafetería\",                            ticket:95,  cv:38, dem:65,  z:-0.08},\n  jugueria:     {n:\"Juguería / licuados\",                  ticket:55,  cv:35, dem:70,  z:-0.06},\n  panaderia:    {n:\"Panadería\",                            ticket:40,  cv:45, dem:140, z:-0.02},\n  pasteleria:   {n:\"Pastelería / repostería\",              ticket:210, cv:38, dem:30,  z: 0.00},\n  papeleria:    {n:\"Papelería\",                            ticket:55,  cv:60, dem:80,  z:-0.10},\n  ciber:        {n:\"Ciber / impresiones\",                  ticket:35,  cv:25, dem:60,  z:-0.05},\n  farmacia:     {n:\"Farmacia\",                             ticket:160, cv:70, dem:90,  z: 0.05},\n  naturista:    {n:\"Tienda naturista / suplementos\",       ticket:170, cv:52, dem:30,  z: 0.03},\n  vinateria:    {n:\"Vinatería / licorería\",                ticket:180, cv:68, dem:55,  z: 0.02},\n  ropa:         {n:\"Ropa y calzado\",                       ticket:320, cv:55, dem:25,  z:-0.18},\n  joyeria:      {n:\"Joyería y bisutería\",                  ticket:350, cv:52, dem:10,  z:-0.08},\n  celulares:    {n:\"Celulares y accesorios\",               ticket:280, cv:55, dem:28,  z:-0.02},\n  tecnologia:   {n:\"Tecnología (venta y reparación)\",      ticket:380, cv:50, dem:18,  z: 0.10},\n  ferreteria:   {n:\"Ferretería / tlapalería\",              ticket:190, cv:62, dem:40,  z: 0.06},\n  refaccionaria:{n:\"Refaccionaria automotriz\",             ticket:260, cv:58, dem:22,  z: 0.08},\n  taller:       {n:\"Taller mecánico\",                      ticket:850, cv:40, dem:8,   z: 0.12},\n  autolavado:   {n:\"Autolavado\",                           ticket:120, cv:25, dem:28,  z: 0.04},\n  estetica:     {n:\"Estética / barbería\",                  ticket:130, cv:18, dem:28,  z: 0.08},\n  spa:          {n:\"Spa / salón de uñas\",                  ticket:260, cv:22, dem:18,  z: 0.06},\n  lavanderia:   {n:\"Lavandería\",                           ticket:90,  cv:30, dem:45,  z: 0.02},\n  gimnasio:     {n:\"Gimnasio (mensualidades)\",             ticket:480, cv:12, dem:12,  z: 0.05},\n  veterinaria:  {n:\"Veterinaria / estética canina\",        ticket:320, cv:30, dem:16,  z: 0.12},\n  dental:       {n:\"Consultorio dental\",                   ticket:750, cv:22, dem:7,   z: 0.22},\n  optica:       {n:\"Óptica\",                               ticket:950, cv:45, dem:7,   z: 0.10},\n  consultorio:  {n:\"Consultorio / despacho profesional\",   ticket:420, cv:15, dem:10,  z: 0.20},\n  educacion:    {n:\"Educación (regularización / idiomas)\", ticket:350, cv:20, dem:15,  z: 0.15},\n  floreria:     {n:\"Florería\",                             ticket:230, cv:45, dem:14,  z:-0.04}\n};\nconst ZONAS = {\n  corredor:  {n:\"Corredor Vía López Portillo\",                       afl:1.35, rm2:280, z: 0.30},\n  centro:    {n:\"San Francisco Coacalco (Centro)\",                   afl:1.15, rm2:170, z: 0.12},\n  flores:    {n:\"Villa de las Flores · Parque Res. · Bosques\",       afl:1.10, rm2:190, z: 0.15},\n  heroes:    {n:\"Los Héroes · Loma Bonita · V. de las Manzanas\",     afl:1.00, rm2:150, z: 0.04},\n  popular:   {n:\"El Potrero · San Rafael · El Olivo\",                afl:0.90, rm2:110, z:-0.10},\n  periferia: {n:\"Zonas habitacionales periféricas\",                  afl:0.78, rm2:90,  z:-0.18}\n};\n/* Supervivencia nacional S0(t), t = 0…10 años.\n   INEGI, Demografía de los Negocios 1989–2019, tabulado Nal_Tot_CE2019,\n   columna p(x), edades 0…9: S0(x+1) = p(x), redondeada a cuatro decimales.\n   https://www.inegi.org.mx/contenidos/programas/dn/2019/tabulados/Nal_Tot_CE2019.xlsx */\nconst S0 = [1, 0.6908, 0.4812, 0.4261, 0.3871, 0.3568, 0.3320, 0.3111, 0.2930, 0.2770, 0.2627];\n/* Intercepto calibrado: un escenario neutro reproduce S0(3) nacional → β₀ = logit(0.4261). */\nconst BETA0 = Math.log(S0[3]/(1-S0[3]));\nconst ESTACION = {\n  estable:   [1,1,1,1,1,1,1,1,1,1,1,1],\n  diciembre: [.95,.90,.95,.95,1,1,1,1,1,1.05,1.15,1.35],\n  verano:    [.95,.95,1,1,1.05,1.10,1.20,1.25,1.10,.95,.95,1]\n};\nconst N_SIM = 2000, SEMILLA = 20262;\n\n\n/* Supuestos de incertidumbre del Monte Carlo y del rango de P.\n   Son SUPUESTOS DEL EQUIPO (no estimados con datos); se documentan en\n   docs/METODOLOGIA.md y en la ficha «Supuestos y limitaciones». */\nconst INCERTIDUMBRE = {\n  demandaMensual: 0.22,  // DE relativa de clientes, independiente por mes\n  ticket:         0.08,  // DE relativa del ticket promedio, por mes\n  demandaAnual:   0.15,  // DE (log) del choque común del año\n  costoVariable:  0.02,  // DE absoluta del costo variable efectivo (2 pp)\n  betaRelativa:   0.30,  // DE relativa de cada β para el rango de P\n  intercepto:     0.15   // DE del intercepto para el rango de P\n};\n\n/* COATL · Núcleo estadístico puro (sin DOM): probado en tests/. */\n/* ---------- 2. Utilidades numéricas ---------- */\nfunction mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}\nfunction gaussiana(rng){let u=0,v=0;while(u===0)u=rng();while(v===0)v=rng();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}\nconst sigmoide = z => 1/(1+Math.exp(-z));\nconst acota = (x,a,b)=>Math.min(b,Math.max(a,x));\n\nfunction derivar(e){\n  e.diasMes=e.diasSem*4.33;\n  e.cvEff=acota(e.cv+(e.merma||0),0.02,0.95);\n  e.rentaEf=e.propio?0:e.renta;\n  e.interesMes=e.inversion*e.credPct*e.tasa/12;\n  e.fijos=e.rentaEf + e.empleados*e.costoEmpleado + e.otrosFijos + (e.mktGasto||0) + e.interesMes;\n  e.ventasMes=e.mu*e.diasMes*e.ticket;\n  e.margenUnit=e.ticket*(1-e.cvEff);\n  e.utilMes=e.ventasMes*(1-e.cvEff)-e.fijos;\n  e.peClientesMes=e.margenUnit>0?e.fijos/e.margenUnit:Infinity;\n  e.peDia=e.peClientesMes/e.diasMes;\n  e.pePesos=(1-e.cvEff)>0?e.fijos/(1-e.cvEff):Infinity;\n  e.ms=e.ventasMes>0?(e.ventasMes-e.pePesos)/e.ventasMes:-1;\n  return e;\n}\n\n/* ---------- 6. Modelo logístico con contribuciones etiquetadas ---------- */\nfunction modeloLogistico(e){\n  const msZ = e.ms>=0.30?0.25 : e.ms>=0.15?0.10 : e.ms>=0?-0.10 : -0.50;\n  const deudaZ = e.credPct>=0.6?-0.20 : e.credPct>=0.3?-0.08 : e.credPct>0?0:0.05;\n  const contribs=[\n    [\"Giro (\"+e.giro.n+\")\", e.giro.z],\n    [\"Zona (\"+e.zona.n+\")\", e.zona.z],\n    [\"Experiencia en el giro\", e.expZ],\n    [\"Reserva de capital\", e.resZ],\n    [\"Competencia cercana\", e.compZ],\n    [\"Formalidad fiscal\", e.formZ],\n    [\"Marketing\", e.mktZ],\n    [\"Estructura de deuda\", deudaZ],\n    [\"Local propio\", e.propio?0.10:0],\n    [\"Modelo de negocio\", e.modZ||0],\n    [\"Permisos municipales\", e.permZ||0],\n    [\"Modalidad de venta\", e.modalZ||0],\n    [\"Horario extendido\", e.horZ||0],\n    [\"Margen de seguridad financiero\", msZ]\n  ];\n  const z=BETA0+contribs.reduce((s,c)=>s+c[1],0);\n  return {P:acota(sigmoide(z),0.04,0.93), z, contribs};\n}\n\n/* ---------- 7. Curva de supervivencia personalizada ---------- */\nfunction curvaSupervivencia(P){\n  const h=Math.log(P)/Math.log(S0[3]);\n  return S0.map((s,t)=>t===0?1:Math.pow(s,h));\n}\n\n/* ---------- 8. Monte Carlo (2,000 años simulados) ---------- */\nfunction monteCarlo(e){\n  /* Cada corrida = un año. Fuentes de variación (supuestos del equipo, ver\n     INCERTIDUMBRE en datos.js):\n     · choque anual común de demanda (lognormal de media 1): un \"mal año\" afecta\n       a los 12 meses a la vez, por lo que no se compensa al sumar;\n     · ruido mensual de clientes y de ticket (independiente por mes);\n     · ruido anual en el costo variable (proveedores, merma). */\n  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA), res=new Array(N_SIM);\n  for(let i=0;i\u003cN_SIM;i++){\n    const fAnual=Math.exp(gaussiana(rng)*U.demandaAnual - U.demandaAnual*U.demandaAnual/2);\n    const cvSim=acota(e.cvEff + gaussiana(rng)*U.costoVariable, 0.02, 0.98);\n    let total=0;\n    for(let m=0;m\u003c12;m++){\n      const rampa=Math.pow(1+(e.crec||0), m/12);\n      const muM=e.mu*e.estacion[m]*rampa*fAnual;\n      const cli=Math.max(0, muM + gaussiana(rng)*U.demandaMensual*muM);\n      const tk =Math.max(1, e.ticket + gaussiana(rng)*U.ticket*e.ticket);\n      total += cli*e.diasMes*tk*(1-cvSim) - e.fijos;\n    }\n    res[i]=total;\n  }\n  res.sort((a,b)=>a-b);\n  const media=res.reduce((s,x)=>s+x,0)/N_SIM;\n  const sd=Math.sqrt(res.reduce((s,x)=>s+(x-media)**2,0)/(N_SIM-1));\n  return {res, media, sd, p025:cuantil(res,.025), p05:cuantil(res,.05), p50:cuantil(res,.5),\n          p95:cuantil(res,.95), p975:cuantil(res,.975),\n          pPos:res.filter(x=>x>0).length/N_SIM};\n}\n\n/* Cuantil empírico con interpolación lineal (tipo 7 de Hyndman–Fan, el de R/NumPy). */\nfunction cuantil(ordenados,p){\n  const h=(ordenados.length-1)*p, lo=Math.floor(h), hi=Math.ceil(h);\n  return ordenados[lo]+(ordenados[hi]-ordenados[lo])*(h-lo);\n}\n\n/* ---------- 8-bis. Rango plausible de P (incertidumbre de los β) ----------\n   Los β son supuestos del equipo, no estimaciones con error estándar. Para no\n   presentar P como exacta, se perturba z: cada contribución βᵢ con DE relativa\n   de 30 % y el intercepto con DE 0.15, y se reportan P5–P95 de P.\n   Es un análisis de sensibilidad, NO un intervalo de confianza muestral. */\nfunction rangoP(modelo){\n  if(modelo._rangoP) return modelo._rangoP;   // memo: se consulta varias veces por recálculo\n  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA+1), n=1000, ps=new Array(n);\n  for(let i=0;i\u003cn;i++){\n    let z=BETA0+gaussiana(rng)*U.intercepto;\n    for(const c of modelo.contribs) z+=c[1]*(1+gaussiana(rng)*U.betaRelativa);\n    ps[i]=acota(sigmoide(z),0.04,0.93);\n  }\n  ps.sort((a,b)=>a-b);\n  return (modelo._rangoP={p05:cuantil(ps,.05), p50:cuantil(ps,.5), p95:cuantil(ps,.95)});\n}\n\n\n// El build incluye este código y el motor en el mismo Blob.\nself.onmessage = ({data: {id, e, modelo}}) => {\n  self.postMessage({id, mc: monteCarlo(e), rango: rangoP(modelo)});\n};\n"],{type:"text/javascript"}));
+    url=URL.createObjectURL(new Blob(["/* COATL · Datos de anclaje (giros, zonas, S0, estacionalidad). Sin DOM. */\n/* ---------- 1. Parámetros y datos de anclaje ---------- */\nconst GIROS = {\n  abarrotes:    {n:\"Abarrotes / minisúper\",                ticket:65,  cv:72, dem:120, z:-0.10},\n  tortilleria:  {n:\"Tortillería\",                          ticket:22,  cv:55, dem:260, z:-0.02},\n  carniceria:   {n:\"Carnicería / pollería\",                ticket:140, cv:68, dem:75,  z: 0.00},\n  fruteria:     {n:\"Frutería y verdulería\",                ticket:70,  cv:62, dem:95,  z:-0.05},\n  fonda:        {n:\"Fonda / cocina económica\",             ticket:85,  cv:45, dem:70,  z:-0.12},\n  taqueria:     {n:\"Taquería / antojitos\",                 ticket:95,  cv:40, dem:90,  z:-0.10},\n  restaurante:  {n:\"Restaurante\",                          ticket:180, cv:42, dem:55,  z:-0.15},\n  pizzeria:     {n:\"Pizzería\",                             ticket:160, cv:38, dem:45,  z:-0.10},\n  cafeteria:    {n:\"Cafetería\",                            ticket:95,  cv:38, dem:65,  z:-0.08},\n  jugueria:     {n:\"Juguería / licuados\",                  ticket:55,  cv:35, dem:70,  z:-0.06},\n  panaderia:    {n:\"Panadería\",                            ticket:40,  cv:45, dem:140, z:-0.02},\n  pasteleria:   {n:\"Pastelería / repostería\",              ticket:210, cv:38, dem:30,  z: 0.00},\n  papeleria:    {n:\"Papelería\",                            ticket:55,  cv:60, dem:80,  z:-0.10},\n  ciber:        {n:\"Ciber / impresiones\",                  ticket:35,  cv:25, dem:60,  z:-0.05},\n  farmacia:     {n:\"Farmacia\",                             ticket:160, cv:70, dem:90,  z: 0.05},\n  naturista:    {n:\"Tienda naturista / suplementos\",       ticket:170, cv:52, dem:30,  z: 0.03},\n  vinateria:    {n:\"Vinatería / licorería\",                ticket:180, cv:68, dem:55,  z: 0.02},\n  ropa:         {n:\"Ropa y calzado\",                       ticket:320, cv:55, dem:25,  z:-0.18},\n  joyeria:      {n:\"Joyería y bisutería\",                  ticket:350, cv:52, dem:10,  z:-0.08},\n  celulares:    {n:\"Celulares y accesorios\",               ticket:280, cv:55, dem:28,  z:-0.02},\n  tecnologia:   {n:\"Tecnología (venta y reparación)\",      ticket:380, cv:50, dem:18,  z: 0.10},\n  ferreteria:   {n:\"Ferretería / tlapalería\",              ticket:190, cv:62, dem:40,  z: 0.06},\n  refaccionaria:{n:\"Refaccionaria automotriz\",             ticket:260, cv:58, dem:22,  z: 0.08},\n  taller:       {n:\"Taller mecánico\",                      ticket:850, cv:40, dem:8,   z: 0.12},\n  autolavado:   {n:\"Autolavado\",                           ticket:120, cv:25, dem:28,  z: 0.04},\n  estetica:     {n:\"Estética / barbería\",                  ticket:130, cv:18, dem:28,  z: 0.08},\n  spa:          {n:\"Spa / salón de uñas\",                  ticket:260, cv:22, dem:18,  z: 0.06},\n  lavanderia:   {n:\"Lavandería\",                           ticket:90,  cv:30, dem:45,  z: 0.02},\n  gimnasio:     {n:\"Gimnasio (mensualidades)\",             ticket:480, cv:12, dem:12,  z: 0.05},\n  veterinaria:  {n:\"Veterinaria / estética canina\",        ticket:320, cv:30, dem:16,  z: 0.12},\n  dental:       {n:\"Consultorio dental\",                   ticket:750, cv:22, dem:7,   z: 0.22},\n  optica:       {n:\"Óptica\",                               ticket:950, cv:45, dem:7,   z: 0.10},\n  consultorio:  {n:\"Consultorio / despacho profesional\",   ticket:420, cv:15, dem:10,  z: 0.20},\n  educacion:    {n:\"Educación (regularización / idiomas)\", ticket:350, cv:20, dem:15,  z: 0.15},\n  floreria:     {n:\"Florería\",                             ticket:230, cv:45, dem:14,  z:-0.04}\n};\nconst ZONAS = {\n  corredor:  {n:\"Corredor Vía López Portillo\",                       afl:1.35, rm2:280, z: 0.30},\n  centro:    {n:\"San Francisco Coacalco (Centro)\",                   afl:1.15, rm2:170, z: 0.12},\n  flores:    {n:\"Villa de las Flores · Parque Res. · Bosques\",       afl:1.10, rm2:190, z: 0.15},\n  heroes:    {n:\"Los Héroes · Loma Bonita · V. de las Manzanas\",     afl:1.00, rm2:150, z: 0.04},\n  popular:   {n:\"El Potrero · San Rafael · El Olivo\",                afl:0.90, rm2:110, z:-0.10},\n  periferia: {n:\"Zonas habitacionales periféricas\",                  afl:0.78, rm2:90,  z:-0.18}\n};\n/* Supervivencia nacional S0(t), t = 0…10 años.\n   INEGI, Demografía de los Negocios 1989–2019, tabulado Nal_Tot_CE2019,\n   columna p(x), edades 0…9: S0(x+1) = p(x), redondeada a cuatro decimales.\n   https://www.inegi.org.mx/contenidos/programas/dn/2019/tabulados/Nal_Tot_CE2019.xlsx */\nconst S0 = [1, 0.6908, 0.4812, 0.4261, 0.3871, 0.3568, 0.3320, 0.3111, 0.2930, 0.2770, 0.2627];\n/* Intercepto calibrado: un escenario neutro reproduce S0(3) nacional → β₀ = logit(0.4261). */\nconst BETA0 = Math.log(S0[3]/(1-S0[3]));\nconst ESTACION = {\n  estable:   [1,1,1,1,1,1,1,1,1,1,1,1],\n  diciembre: [.95,.90,.95,.95,1,1,1,1,1,1.05,1.15,1.35],\n  verano:    [.95,.95,1,1,1.05,1.10,1.20,1.25,1.10,.95,.95,1]\n};\nconst N_SIM = 2000, SEMILLA = 20262;\n\n\n/* Supuestos de incertidumbre del Monte Carlo y del rango de P.\n   Son SUPUESTOS DEL EQUIPO (no estimados con datos); se documentan en\n   docs/METODOLOGIA.md y en la ficha «Supuestos y limitaciones». */\nconst INCERTIDUMBRE = {\n  demandaMensual: 0.22,  // DE relativa de clientes, independiente por mes\n  ticket:         0.08,  // DE relativa del ticket promedio, por mes\n  demandaAnual:   0.15,  // DE (log) del choque común del año\n  costoVariable:  0.02,  // DE absoluta del costo variable efectivo (2 pp)\n  betaRelativa:   0.30,  // DE relativa de cada β para el rango de P\n  intercepto:     0.15   // DE del intercepto para el rango de P\n};\n\n/* Fotos reales de cada zona: Wikimedia Commons (licencia libre). Recortadas, con contraste y\n   nitidez ajustados y convertidas a WebP; la cita se muestra junto a cada foto. */\nconst FOTOS_ZONAS = {\n \"corredor\": {\n  \"src\": \"assets/img/zonas/corredor.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Plaza_Coacalco._-_panoramio.jpg\"\n },\n \"centro\": {\n  \"src\": \"assets/img/zonas/centro.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:C%C3%BApula_octagonal-San_Francisco-Koakalko._-_panoramio.jpg\"\n },\n \"flores\": {\n  \"src\": \"assets/img/zonas/flores.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Jard%C3%ADn_Triangular_en_villa_de_las_flores_cuidado_con_amor_por_dos_entusiastas_mujeres_de_la_comunidad._-_panoramio.jpg\"\n },\n \"periferia\": {\n  \"src\": \"assets/img/zonas/periferia.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Ultima_Parcela_en_Coacalco._-_panoramio.jpg\"\n },\n \"heroes\": {\n  \"src\": \"assets/img/zonas/heroes.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Los_Heroes-Koakalko._-_panoramio.jpg\"\n },\n \"popular\": {\n  \"src\": \"assets/img/zonas/popular.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Andador_Luis_Donaldo_Colosio._-_panoramio.jpg\"\n }\n};\n\n/* COATL · Núcleo estadístico puro (sin DOM): probado en tests/. */\n/* ---------- 2. Utilidades numéricas ---------- */\nfunction mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}\nfunction gaussiana(rng){let u=0,v=0;while(u===0)u=rng();while(v===0)v=rng();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}\nconst sigmoide = z => 1/(1+Math.exp(-z));\nconst acota = (x,a,b)=>Math.min(b,Math.max(a,x));\n\nfunction derivar(e){\n  e.diasMes=e.diasSem*4.33;\n  e.cvEff=acota(e.cv+(e.merma||0),0.02,0.95);\n  e.rentaEf=e.propio?0:e.renta;\n  e.interesMes=e.inversion*e.credPct*e.tasa/12;\n  e.fijos=e.rentaEf + e.empleados*e.costoEmpleado + e.otrosFijos + (e.mktGasto||0) + e.interesMes;\n  e.ventasMes=e.mu*e.diasMes*e.ticket;\n  e.margenUnit=e.ticket*(1-e.cvEff);\n  e.utilMes=e.ventasMes*(1-e.cvEff)-e.fijos;\n  e.peClientesMes=e.margenUnit>0?e.fijos/e.margenUnit:Infinity;\n  e.peDia=e.peClientesMes/e.diasMes;\n  e.pePesos=(1-e.cvEff)>0?e.fijos/(1-e.cvEff):Infinity;\n  e.ms=e.ventasMes>0?(e.ventasMes-e.pePesos)/e.ventasMes:-1;\n  return e;\n}\n\n/* ---------- 6. Modelo logístico con contribuciones etiquetadas ---------- */\nfunction modeloLogistico(e){\n  const msZ = e.ms>=0.30?0.25 : e.ms>=0.15?0.10 : e.ms>=0?-0.10 : -0.50;\n  const deudaZ = e.credPct>=0.6?-0.20 : e.credPct>=0.3?-0.08 : e.credPct>0?0:0.05;\n  const contribs=[\n    [\"Giro (\"+e.giro.n+\")\", e.giro.z],\n    [\"Zona (\"+e.zona.n+\")\", e.zona.z],\n    [\"Experiencia en el giro\", e.expZ],\n    [\"Reserva de capital\", e.resZ],\n    [\"Competencia cercana\", e.compZ],\n    [\"Formalidad fiscal\", e.formZ],\n    [\"Marketing\", e.mktZ],\n    [\"Estructura de deuda\", deudaZ],\n    [\"Local propio\", e.propio?0.10:0],\n    [\"Modelo de negocio\", e.modZ||0],\n    [\"Permisos municipales\", e.permZ||0],\n    [\"Modalidad de venta\", e.modalZ||0],\n    [\"Horario extendido\", e.horZ||0],\n    [\"Margen de seguridad financiero\", msZ]\n  ];\n  const z=BETA0+contribs.reduce((s,c)=>s+c[1],0);\n  return {P:acota(sigmoide(z),0.04,0.93), z, contribs};\n}\n\n/* ---------- 7. Curva de supervivencia personalizada ---------- */\nfunction curvaSupervivencia(P){\n  const h=Math.log(P)/Math.log(S0[3]);\n  return S0.map((s,t)=>t===0?1:Math.pow(s,h));\n}\n\n/* ---------- 8. Monte Carlo (2,000 años simulados) ---------- */\nfunction monteCarlo(e){\n  /* Cada corrida = un año. Fuentes de variación (supuestos del equipo, ver\n     INCERTIDUMBRE en datos.js):\n     · choque anual común de demanda (lognormal de media 1): un \"mal año\" afecta\n       a los 12 meses a la vez, por lo que no se compensa al sumar;\n     · ruido mensual de clientes y de ticket (independiente por mes);\n     · ruido anual en el costo variable (proveedores, merma). */\n  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA), res=new Array(N_SIM);\n  for(let i=0;i\u003cN_SIM;i++){\n    const fAnual=Math.exp(gaussiana(rng)*U.demandaAnual - U.demandaAnual*U.demandaAnual/2);\n    const cvSim=acota(e.cvEff + gaussiana(rng)*U.costoVariable, 0.02, 0.98);\n    let total=0;\n    for(let m=0;m\u003c12;m++){\n      const rampa=Math.pow(1+(e.crec||0), m/12);\n      const muM=e.mu*e.estacion[m]*rampa*fAnual;\n      const cli=Math.max(0, muM + gaussiana(rng)*U.demandaMensual*muM);\n      const tk =Math.max(1, e.ticket + gaussiana(rng)*U.ticket*e.ticket);\n      total += cli*e.diasMes*tk*(1-cvSim) - e.fijos;\n    }\n    res[i]=total;\n  }\n  res.sort((a,b)=>a-b);\n  const media=res.reduce((s,x)=>s+x,0)/N_SIM;\n  const sd=Math.sqrt(res.reduce((s,x)=>s+(x-media)**2,0)/(N_SIM-1));\n  return {res, media, sd, p025:cuantil(res,.025), p05:cuantil(res,.05), p50:cuantil(res,.5),\n          p95:cuantil(res,.95), p975:cuantil(res,.975),\n          pPos:res.filter(x=>x>0).length/N_SIM};\n}\n\n/* Cuantil empírico con interpolación lineal (tipo 7 de Hyndman–Fan, el de R/NumPy). */\nfunction cuantil(ordenados,p){\n  const h=(ordenados.length-1)*p, lo=Math.floor(h), hi=Math.ceil(h);\n  return ordenados[lo]+(ordenados[hi]-ordenados[lo])*(h-lo);\n}\n\n/* ---------- 8-bis. Rango plausible de P (incertidumbre de los β) ----------\n   Los β son supuestos del equipo, no estimaciones con error estándar. Para no\n   presentar P como exacta, se perturba z: cada contribución βᵢ con DE relativa\n   de 30 % y el intercepto con DE 0.15, y se reportan P5–P95 de P.\n   Es un análisis de sensibilidad, NO un intervalo de confianza muestral. */\nfunction rangoP(modelo){\n  if(modelo._rangoP) return modelo._rangoP;   // memo: se consulta varias veces por recálculo\n  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA+1), n=1000, ps=new Array(n);\n  for(let i=0;i\u003cn;i++){\n    let z=BETA0+gaussiana(rng)*U.intercepto;\n    for(const c of modelo.contribs) z+=c[1]*(1+gaussiana(rng)*U.betaRelativa);\n    ps[i]=acota(sigmoide(z),0.04,0.93);\n  }\n  ps.sort((a,b)=>a-b);\n  return (modelo._rangoP={p05:cuantil(ps,.05), p50:cuantil(ps,.5), p95:cuantil(ps,.95)});\n}\n\n\n// El build incluye este código y el motor en el mismo Blob.\nself.onmessage = ({data: {id, e, modelo}}) => {\n  self.postMessage({id, mc: monteCarlo(e), rango: rangoP(modelo)});\n};\n"],{type:"text/javascript"}));
     const worker=new Worker(url);
     worker.onmessage=({data:{id,mc,rango}})=>{
       if(id===solicitudCalculo?.id) terminarCalculo(solicitudCalculo,mc,rango);
@@ -3444,31 +3867,24 @@ const observarMapa=new IntersectionObserver(([entrada])=>{
   if(!$("mapaReal").hidden) usarReal();
 },{rootMargin:"200px 0px"});
 observarMapa.observe($("mapa"));
-/* ---------- 15. Modo Oráculo (tema cyber conmutable) ---------- */
-(function modoOraculo(){
-  const btn=$("btnTema"), txt=$("temaTexto"), cita=$("oraculoCita");
-  const frases=[
-    "«El futuro no es aleatorio. Es calculable.»",
-    "«Lo que los antiguos llamaban destino, nosotros lo llamamos probabilidad.»",
-    "«No adivines. Calcula.»",
-    "«Mil simulaciones. Una decisión. La correcta.»"
-  ];
-  let i=0, rot=null;
-  function aplicar(on){
-    document.body.classList.toggle("oraculo", on);
+/* ---------- 15. Modo oscuro ---------- */
+(function modoOscuro(){
+  /* Modo oscuro: solo icono (🌙 / ☀️). Respeta la preferencia del sistema y recuerda la
+     elección del visitante en este navegador (comodidad local; si falla, no pasa nada). */
+  const btn=$("btnTema");
+  function aplicar(on, avisar){
+    document.body.classList.toggle("oscuro", on);
     btn.setAttribute("aria-pressed", on?"true":"false");
-    txt.textContent = on ? "Modo Claro" : "Modo Oráculo";
-    btn.querySelector(".ojo").textContent = on ? "☼" : "◉";
-    if(on){
-      toast("◉ Modo Oráculo activado: misma estadística, visión nocturna.");
-      if(!rot && !window.matchMedia("(prefers-reduced-motion: reduce)").matches){
-        rot=setInterval(()=>{ i=(i+1)%frases.length; if(cita) cita.textContent=frases[i]; }, 5000);
-      }
-    } else if(rot){ clearInterval(rot); rot=null; if(cita) cita.textContent=frases[0]; }
-    // Repinta gráficas para que tomen los colores del tema
-    if(typeof calcular==="function") calcular();
+    btn.setAttribute("aria-label", on?"Activar modo claro":"Activar modo oscuro");
+    btn.title = on ? "Modo claro" : "Modo oscuro";
+    btn.querySelector(".ojo").textContent = on ? "☀️" : "🌙";
+    try{ localStorage.setItem("coatl-tema", on?"oscuro":"claro"); }catch(_){}
+    if(avisar && typeof calcular==="function") calcular();   // las gráficas toman los colores del tema
   }
-  btn.addEventListener("click",()=>aplicar(!document.body.classList.contains("oraculo")));
+  let guardado=null; try{ guardado=localStorage.getItem("coatl-tema"); }catch(_){}
+  const inicial = guardado ? guardado==="oscuro" : window.matchMedia("(prefers-color-scheme: dark)").matches;
+  if(inicial) aplicar(true,false);
+  btn.addEventListener("click",()=>aplicar(!document.body.classList.contains("oscuro"),true));
 })();
 
 /* Escenario inicial: el del enlace compartido (#e=...) o el de referencia. */

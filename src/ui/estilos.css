@@ -22,58 +22,57 @@
    Reinterpreta la identidad COATL en clave nocturna: negro cósmico,
    rojo mexicano encendido y blanco matemático. Solo cambia tokens y
    un puñado de superficies; toda la estructura se conserva intacta. */
-body.oraculo{
-  --rojo:#FF0033;
-  --rojo-vivo:#FF3355;
-  --granate:#FF1E48;
-  --tinta:#05030A;
+body.oscuro{
+  --rojo:#E2233F;
+  --rojo-vivo:#FF5A6E;
+  --granate:#F06A7B;
+  --tinta:#160407;
   --tinta-2:#000000;
-  --blanco:#0C0A12;
-  --hueso:#070510;
-  --niebla:#15101F;
-  --niebla-2:#241B33;
-  --gris-texto:#B9AEC9;
-  --ok:#22CC88;
-  --alerta:#FFAA22;
-  --sombra:0 0 0 1px rgba(255,0,51,.18), 0 14px 40px rgba(0,0,0,.6);
-  background:radial-gradient(1200px 700px at 80% -10%, rgba(255,0,51,.10), transparent 60%), #05030A;
-  color:#EDE7F5;
+  --blanco:#22070C;
+  --hueso:#1A0508;
+  --niebla:#2A0B12;
+  --niebla-2:#3A1219;
+  --gris-texto:#D9BFC3;
+  --ok:#3FBF83;
+  --alerta:#E8A33A;
+  --sombra:0 0 0 1px rgba(226,35,63,.18), 0 14px 40px rgba(0,0,0,.6);
+  background:radial-gradient(1200px 700px at 80% -10%, rgba(226,35,63,.10), transparent 60%), #160407;
+  color:#F7ECEE;
 }
-body.oraculo ::selection{background:#FF0033;color:#000}
-body.oraculo .nav{background:rgba(7,5,16,.86);border-bottom-color:#FF0033}
-body.oraculo .marca-texto strong{color:#F3EEFC}
-body.oraculo .panel,body.oraculo .cifra,body.oraculo .consola,body.oraculo .metodo,
-body.oraculo .veredicto,body.oraculo .kpi,body.oraculo .lectura,body.oraculo .cuad,
-body.oraculo .accion,body.oraculo .esc,body.oraculo .postal,body.oraculo .ranking li,
-body.oraculo .foda-resumen,body.oraculo .limitaciones,body.oraculo .panel-legal{
-  background:#0C0A12;border-color:#241B33;color:#EDE7F5;
+body.oscuro ::selection{background:#E2233F;color:#000}
+body.oscuro .nav{background:rgba(26,5,8,.86);border-bottom-color:#E2233F}
+body.oscuro .marca-texto strong{color:#FBF1F2}
+body.oscuro .panel,body.oscuro .cifra,body.oscuro .consola,body.oscuro .metodo,
+body.oscuro .veredicto,body.oscuro .kpi,body.oscuro .lectura,body.oscuro .cuad,
+body.oscuro .accion,body.oscuro .esc,body.oscuro .postal,body.oscuro .ranking li,
+body.oscuro .foda-resumen,body.oscuro .limitaciones,body.oscuro .panel-legal{
+  background:#22070C;border-color:#3A1219;color:#F7ECEE;
 }
-body.oraculo .pestanas{background:#070510;border-bottom-color:#241B33}
-body.oraculo .pestana[aria-selected="true"]{background:#0C0A12}
-body.oraculo .campo select,body.oraculo .campo input[type="number"]{
-  background:#15101F;color:#EDE7F5;border-color:#2E2342;
+body.oscuro .pestanas{background:#1A0508;border-bottom-color:#3A1219}
+body.oscuro .pestana[aria-selected="true"]{background:#22070C}
+body.oscuro .campo select,body.oscuro .campo input[type="number"]{
+  background:#2A0B12;color:#F7ECEE;border-color:#4A1822;
 }
-body.oraculo .pie-consola{background:#070510;border-top-color:#241B33}
-body.oraculo .hero{
-  background:radial-gradient(1100px 520px at 85% -10%, rgba(255,0,51,.4), transparent 60%),
-             radial-gradient(800px 600px at -10% 110%, rgba(20,0,8,.9), transparent 55%), #0A0410;
+body.oscuro .pie-consola{background:#1A0508;border-top-color:#3A1219}
+body.oscuro .hero{
+  background:radial-gradient(1100px 520px at 85% -10%, rgba(226,35,63,.4), transparent 60%),
+             radial-gradient(800px 600px at -10% 110%, rgba(40,4,10,.9), transparent 55%), #1A0508;
 }
-body.oraculo .seccion h2.titulo,body.oraculo .panel h3,body.oraculo .metodo h3,
-body.oraculo .cuad h4,body.oraculo .lectura h3{color:#F3EEFC}
-body.oraculo .formula{background:#15101F;color:#FF6680;border-color:#2E2342}
-body.oraculo .tabla-zonas tr:hover td,body.oraculo .ranking li:hover{background:#15101F}
-body.oraculo .banda-oscura{background:#000}
-body.oraculo .mini-grid .celda{background:#241B33}
-body.oraculo .mini-grid .celda.viva{background:#FF0033}
-body.oraculo .greca,body.oraculo .greca.invertida{filter:none;opacity:.85}
-body.oraculo .medidor-arco{filter:saturate(1.2) brightness(1.05)}
-body.oraculo .foda-resumen{border-style:dashed}
-body.oraculo .nav-links a{color:#EDE7F5}
-body.oraculo .nav-links a:hover,body.oraculo .nav-links a.activa{background:#1B1326;color:#FF6680}
-body.oraculo .progreso{background:linear-gradient(90deg,#FF0033,#FF3355);box-shadow:0 0 8px #FF0033}
-body.oraculo .et-zona,body.oraculo .et-p{stroke:rgba(0,0,0,.6)}
-body.oraculo .oraculo-cita{display:block}
-
+body.oscuro .seccion h2.titulo,body.oscuro .panel h3,body.oscuro .metodo h3,
+body.oscuro .cuad h4,body.oscuro .lectura h3{color:#FBF1F2}
+body.oscuro .formula{background:#2A0B12;color:#FF6680;border-color:#4A1822}
+body.oscuro .tabla-zonas tr:hover td,body.oscuro .ranking li:hover{background:#2A0B12}
+body.oscuro .banda-oscura{background:#000}
+body.oscuro .mini-grid .celda{background:#3A1219}
+body.oscuro .mini-grid .celda.viva{background:#E2233F}
+body.oscuro .greca,body.oscuro .greca.invertida{filter:none;opacity:.85}
+body.oscuro .medidor-arco{filter:saturate(1.2) brightness(1.05)}
+body.oscuro .foda-resumen{border-style:dashed}
+body.oscuro .nav-links a{color:#F7ECEE}
+body.oscuro .nav-links a:hover,body.oscuro .nav-links a.activa{background:#2A0B12;color:#FF6680}
+body.oscuro .progreso{background:linear-gradient(90deg,#E2233F,#FF5A6E);box-shadow:0 0 8px #E2233F}
+body.oscuro .et-zona,body.oscuro .et-p{stroke:rgba(0,0,0,.6)}
+body.oscuro 
 /* Botón conmutador de tema */
 .btn-tema{
   display:inline-flex;align-items:center;gap:.4rem;cursor:pointer;
@@ -83,10 +82,8 @@ body.oraculo .oraculo-cita{display:block}
 }
 .btn-tema:hover{background:var(--niebla)}
 .btn-tema .ojo{font-size:.95rem;line-height:1}
-body.oraculo .btn-tema{border-color:#FF0033;color:#FF3355}
-body.oraculo .btn-tema:hover{background:#1B1326}
-.oraculo-cita{display:none;font-family:var(--display);font-style:italic;font-size:.82rem;
-  color:#FF6680;text-align:center;margin-top:1.4rem;letter-spacing:.02em}
+body.oscuro .btn-tema{border-color:#E2233F;color:#FF5A6E}
+body.oscuro .btn-tema:hover{background:#2A0B12}
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
 @media (prefers-reduced-motion:reduce){
@@ -459,7 +456,8 @@ img{max-width:100%}
 
 .mapa-grid{display:grid;grid-template-columns:1.5fr 1fr;gap:1.8rem;margin-top:1.2rem;align-items:start}
 .mapa-cont{position:relative}
-.mapa-cont svg{width:100%;height:auto;display:block}
+.mapa-cont > svg#mapaEsquema{width:100%;height:auto;display:block}
+[hidden]{display:none!important}
 .zona-mapa{fill:#E9B9BE;cursor:pointer;stroke:#fff;stroke-width:2.5;stroke-linejoin:round;transition:filter .25s,stroke-width .2s,opacity .25s}
 .zona-mapa:hover{filter:brightness(1.14) saturate(1.08)}
 .zona-mapa.activa{stroke:#38070F;stroke-width:4.5}
@@ -616,6 +614,6 @@ img{max-width:100%}
 }
 .lista-supuestos{margin:.4rem 0 1rem 1.1rem;font-size:.92rem;color:var(--gris-texto)}
 .lista-supuestos li{margin-bottom:.35rem}
-body.oraculo .accion .cuerpo h3{color:#F3EEFC}
+body.oscuro .accion .cuerpo h3{color:#FBF1F2}
 .cuadro:focus-visible,.pestana:focus-visible{outline:3px solid var(--granate);outline-offset:-3px}
 .accion[data-clic]{cursor:pointer}
