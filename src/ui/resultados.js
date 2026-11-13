@@ -74,49 +74,55 @@ function pintarLectura(e,mc,modelo,vpn){
 }
 
 /* ---------- 10. Gráficas ---------- */
-Chart.defaults.font.family='"Hanken Grotesk",Arial,sans-serif';
-Chart.defaults.color="#4A3A3C";
-Chart.defaults.plugins.legend.labels.boxWidth=14;
-/* Sin animaciones de Chart.js: eran la mayor parte del tiempo de bloqueo (Lighthouse). */
-Chart.defaults.animation=false;
+let cargaChart;
+function cargarChart(){
+  return cargaChart ??= cargarBiblioteca("libChart").then(ok=>{
+    if(!ok) return false;
+    Chart.defaults.font.family='"Hanken Grotesk",Arial,sans-serif';
+    Chart.defaults.color="#4A3A3C";
+    Chart.defaults.plugins.legend.labels.boxWidth=14;
+    Chart.defaults.animation=false;
+    return true;
+  });
+}
 
-(function graficasContexto(){
-  new Chart($("graficaUE"),{type:"bar",data:{
+function graficasContexto(){
+  graficar($("graficaUE"),{type:"bar",data:{
     labels:["2013","2018","2020"],
     datasets:[{label:"Unidades económicas",data:[8517,9710,11018],
       backgroundColor:["#E9B9BE","#C8102E","#7A0C1F"],borderRadius:8,maxBarThickness:90}]},
     options:{responsive:true,maintainAspectRatio:false,
       plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>c.parsed.y.toLocaleString("es-MX")+" unidades"}}},
       scales:{y:{beginAtZero:true,grid:{color:"#F4E2E1"}},x:{grid:{display:false}}}}});
-  new Chart($("graficaSectores"),{type:"doughnut",data:{
+  graficar($("graficaSectores"),{type:"doughnut",data:{
     labels:["Comercio al por menor","Servicios","Manufactura","Otros"],
     datasets:[{data:[45.9,45.0,6.0,3.0],backgroundColor:["#C8102E","#7A0C1F","#E2233F","#E9B9BE"],borderColor:"#fff",borderWidth:3}]},
     options:{responsive:true,maintainAspectRatio:false,cutout:"58%",
       plugins:{legend:{position:"bottom"},tooltip:{callbacks:{label:c=>c.label+": "+c.parsed+"% del padrón"}}}}});
-})();
+}
 
 /* Plugin de Chart.js: líneas verticales en los percentiles del Monte Carlo. */
 /* Crea la gráfica una vez y después solo actualiza datos y opciones (sin animación):
    recrear las 6 gráficas en cada recálculo dominaba el tiempo de bloqueo. */
 const GRAF={}, PENDIENTES=new Map();
-const ioGraficas=("IntersectionObserver" in window)?new IntersectionObserver(es=>es.forEach(en=>{
-  if(!en.isIntersecting) return;
-  ioGraficas.unobserve(en.target);
-  const cfg=PENDIENTES.get(en.target); PENDIENTES.delete(en.target);
-  if(cfg) GRAF[en.target.id]=new Chart(en.target,cfg);
-}),{rootMargin:"200px 0px"}):null;
+const ioGraficas=new IntersectionObserver(es=>{
+  const visibles=es.filter(en=>en.isIntersecting).map(en=>en.target.id);
+  if(visibles.length) graficasListas(visibles);
+},{rootMargin:"200px 0px"});
 /* La primera vez la gráfica se crea solo cuando su lienzo se acerca a la vista. */
 function graficar(lienzo,cfg){
   const prev=GRAF[lienzo.id];
   if(prev && prev.config.type===cfg.type){ prev.data=cfg.data; prev.options=cfg.options; prev.update("none"); return prev; }
   if(prev){ prev.destroy(); delete GRAF[lienzo.id]; }
-  if(ioGraficas){ if(!PENDIENTES.has(lienzo)) ioGraficas.observe(lienzo); PENDIENTES.set(lienzo,cfg); return null; }
-  return (GRAF[lienzo.id]=new Chart(lienzo,cfg));
+  if(!PENDIENTES.has(lienzo)) ioGraficas.observe(lienzo);
+  PENDIENTES.set(lienzo,cfg);
 }
 /* Para exportar: crea en el acto las gráficas pendientes. */
-function graficasListas(ids){
-  return ids.map(id=>{const c=$(id); if(!GRAF[id]&&PENDIENTES.has(c)){ioGraficas.unobserve(c);GRAF[id]=new Chart(c,PENDIENTES.get(c));PENDIENTES.delete(c)} return GRAF[id]}).filter(Boolean);
+async function graficasListas(ids){
+  const disponible=await cargarChart();
+  return ids.map(id=>{const c=$(id); if(!GRAF[id]&&PENDIENTES.has(c)){ioGraficas.unobserve(c);if(disponible)GRAF[id]=new Chart(c,PENDIENTES.get(c));PENDIENTES.delete(c)} return GRAF[id]}).filter(Boolean);
 }
+graficasContexto();
 const PLUGIN_PERCENTILES={id:"lineasPercentil",afterDatasetsDraw(ch,_a,o){
     const marcas=o.marcas||[], lo=o.lo, paso=o.paso;
     const {ctx,chartArea:a,scales:{x}}=ch, n=ch.data.labels.length;

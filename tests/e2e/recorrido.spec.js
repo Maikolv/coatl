@@ -48,6 +48,29 @@ test('escenario vigente y restablecer referencia', async ({ page }) => {
   await expect(page.locator('#escVigente')).toHaveAttribute('data-estado', 'vigente');
 });
 
+test('el Worker y el respaldo síncrono reproducen la misma simulación', async ({ page }) => {
+  const leer = async () => {
+    await expect(page.locator('#wMC')).toHaveAttribute('data-estado', 'listo');
+    await expect(page.locator('#escVigente')).toHaveAttribute('data-estado', 'vigente');
+    return page.evaluate(() => ({
+      p: ultimoModelo.P,
+      vpn: finanzas(ultimoEsc, ultimoMC, ultimoS).vpn,
+      rango: rangoP(ultimoModelo),
+      mc: ultimoMC,
+    }));
+  };
+  const arranqueWorker = page.waitForEvent('worker');
+  await ir(page);
+  const worker = await arranqueWorker;
+  expect(worker.url()).toMatch(/^blob:/);
+  await expect.poll(() => page.evaluate(() => Boolean(workerActivo))).toBe(true);
+  const paralelo = await leer();
+
+  await page.addInitScript(() => { window.Worker = undefined; });
+  await ir(page);
+  expect(await leer()).toStrictEqual(paralelo);
+});
+
 test('supervivencia por año y meta de Monte Carlo responden', async ({ page }) => {
   await ir(page);
   await expect(page.locator('#supTabla')).toContainText('51.6%');

@@ -44,7 +44,7 @@ Funciones núcleo: `modeloLogistico`, `rangoP`, `monteCarlo`, `curvaSupervivenci
 
 Alcance funcional: 35 giros de negocio, 32 variables en 4 pestañas, 6 zonas con polígonos de color en el mapa.
 
-### Escenario de referencia (prueba de regresión) — v3 desde 12-nov-2026 (S₀ oficial INEGI)
+### Escenario de referencia (prueba de regresión) — v5 (S₀ oficial INEGI hasta el año 10)
 
 **Cafetería · Los Héroes** (valores por defecto: ticket 95, CV 38 %) debe dar:
 
@@ -101,8 +101,8 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 ## Pendiente
 
 - Seguridad: HawkScan limpio (docs/SEGURIDAD_HAWKSCAN.md); la clave va solo en variable de entorno.
-- Rendimiento (Lighthouse ~50): el Monte Carlo de 2,000 años corre en el hilo principal al cargar; candidato a Web Worker o a diferirlo.
+- Monte Carlo y el rango plausible de P se calculan en un Web Worker desde un Blob generado por el build. Si falla el Worker, se usa el motor síncrono.
 
-- S₀(t) ya verificada (INEGI 1989–2019, t=1…5); años 6–10 interpolados. Pendiente: tabla completa del INEGI para t=6…10 y datos por giro (estimaciones del equipo).
-- Reporte y presentación se generan con `node scripts/reporte_docx.mjs` y `node scripts/presentacion_pptx.mjs` (cifras tomadas del propio modelo). Las fotos de assets/img no estaban en el equipo.
+- S₀(t) usa el tabulado nacional del INEGI 1989–2019 para t = 1…10. Los datos por giro siguen siendo estimaciones del equipo.
+- Reporte y presentación se generan con `node scripts/reporte_docx.mjs` y `node scripts/presentacion_pptx.mjs` (cifras tomadas del propio modelo). La foto de contexto es obra de ProtoplasmaKid, publicada en Wikimedia Commons bajo CC BY-SA 4.0. [Ficha de la foto](https://commons.wikimedia.org/wiki/File:Coacalco_Estado_Mexico.JPG).
 - Diagrama UML de 6 carriles: hecho (`scripts/diagrama_uml.mjs` → docs/ y entregables/).

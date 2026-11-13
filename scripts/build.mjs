@@ -23,8 +23,10 @@ export const MODULOS_JS = [
 ];
 
 export function construir() {
+  const worker = [leer('src/datos/datos.js'), leer('src/modelo/modelo.js'), leer('src/modelo/worker.js')].join('\n');
   const js = MODULOS_JS.filter((m) => fs.existsSync(path.join(raiz, m)))
-    .map((m) => `/* ===== ${m} ===== */\n${leer(m)}`).join('\n');
+    .map((m) => `/* ===== ${m} ===== */\n${leer(m)}`).join('\n')
+    .replace('/*@@WORKER@@*/ null', () => JSON.stringify(worker).replace(/</g, '\\u003c'));
   const css = leer('src/ui/estilos.css') + '\n' + leer('src/ui/estilos-explorar.css');
   // Atributos style="" del HTML → reglas [data-ei] con !important (misma precedencia),
   // para que la CSP no necesite 'unsafe-inline' en style-src (hallazgo de HawkScan).
@@ -37,7 +39,8 @@ export function construir() {
   const cssFinal = css + '\n/* estilos en línea movidos por el build */\n' + reglas.join('\n') + '\n';
   let html = plantilla
     .replace('/*@@CSS@@*/', () => cssFinal)
-    .replace('/*@@JS@@*/', () => js);
+    .replace('/*@@JS@@*/', () => js)
+    .replace('@@FOTO_PALACIO@@', () => fs.readFileSync(path.join(raiz, 'assets/img/palacio-coacalco.webp')).toString('base64'));
   // CSP sin 'unsafe-inline' para scripts: se autoriza solo el script en línea por su hash
   // (hallazgo de HawkScan «CSP: script-src unsafe-inline»).
   const inline = html.match(/<script>([\s\S]*?)<\/script>/);
