@@ -42,6 +42,7 @@
       </span>
     </a>
     <div class="nav-links">
+      <a href="#explorar">Explorar</a>
       <a href="#contexto">Contexto</a>
       <a href="#mapa">Mapa</a>
       <a href="#estrategia">Estrategia</a>
@@ -84,6 +85,49 @@
 
 <main>
 <!-- ============ 01 CONTEXTO ============ -->
+<!-- ============ 00 EXPLORAR ============ -->
+<section class="seccion explorar" id="explorar" aria-labelledby="explorar-titulo">
+  <p class="folio">Sección 00 · Experimenta antes de leer</p>
+  <h2 class="titulo" id="explorar-titulo">Mueve un supuesto y mira qué cambia</h2>
+  <p class="intro">Dos atajos al simulador. Ambos usan el mismo motor que el resto de la página (misma semilla y mismas fórmulas): lo que ves aquí es lo que verás al abrirlo.</p>
+  <div class="escena-explorar">
+    <article class="widget" id="wDemo" data-estado="cargando" aria-labelledby="wDemo-q">
+      <p class="widget-pregunta" id="wDemo-q">¿Cuántos clientes al día necesita tu escenario para sostenerse?</p>
+      <div class="demo-control">
+        <label for="demoClientes">Clientes por día: <output id="demoClientesV" for="demoClientes">60</output></label>
+        <input type="range" id="demoClientes" min="5" max="200" step="1" value="60" aria-describedby="demoNota">
+        <p class="nota-widget" id="demoNota">El resto de los valores sale del simulador (por defecto: cafetería en Los Héroes).</p>
+      </div>
+      <div class="demo-escena" aria-hidden="true">
+        <div class="capa capa-fondo"></div>
+        <div class="capa capa-barra"><span class="barra-clientes" id="demoBarra"></span><span class="barra-equilibrio" id="demoBarraPE"></span></div>
+        <div class="capa capa-anotacion"><span id="demoMarcaPE">equilibrio</span></div>
+      </div>
+      <dl class="demo-respuesta" aria-live="polite">
+        <div><dt>Probabilidad a 3 años</dt><dd id="demoP">—</dd></div>
+        <div><dt>Utilidad mensual</dt><dd id="demoU">—</dd></div>
+        <div><dt>Punto de equilibrio</dt><dd id="demoPE">—</dd></div>
+      </dl>
+      <p class="widget-estado" role="status" id="wDemo-estado">Calculando…</p>
+      <button type="button" class="btn btn-widget" id="demoAbrir">Abrir el simulador con este escenario →</button>
+    </article>
+
+    <article class="widget widget-mapa" id="wMapa" data-estado="cargando" aria-labelledby="wMapa-q">
+      <p class="widget-pregunta" id="wMapa-q">¿En qué zona de Coacalco le iría mejor a este mismo negocio?</p>
+      <div class="mapa25-cuerpo">
+        <div class="mapa25-escena" id="mapa25" aria-hidden="true"></div>
+        <div>
+          <p class="mapa25-escala">Altura de cada bloque = <strong>P a 3 años</strong> (escala 0–100 %). Composición <strong>esquemática</strong>, no geometría catastral.</p>
+          <ul class="mapa25-lista" id="mapa25Lista" role="listbox" aria-label="Zonas de Coacalco" tabindex="0"></ul>
+        </div>
+      </div>
+      <div class="mapa25-ficha" id="mapa25Ficha" aria-live="polite"></div>
+      <p class="widget-estado" role="status" id="wMapa-estado">Calculando zonas…</p>
+      <button type="button" class="btn btn-widget" id="mapa25Abrir">Abrir el simulador en esta zona →</button>
+    </article>
+  </div>
+</section>
+
 <section class="seccion" id="contexto">
   <p class="folio">Sección 01 · El territorio en cifras</p>
   <h2 class="titulo">Coacalco de Berriozábal: un mercado de 293 mil personas</h2>
@@ -124,7 +168,7 @@
     </div>
     <div class="panel">
       <h3>¿En qué sectores compite un negocio aquí?</h3>
-      <p class="sub">Fuente: <a href="https://www.inegi.org.mx/app/mapa/denue/">INEGI, DENUE 05/2026</a>. Coacalco de Berriozábal, 11,554 establecimientos. Descarga: 12 de noviembre de 2026.</p>
+      <p class="sub">Fuente: <a href="https://www.inegi.org.mx/app/mapa/denue/" target="_blank" rel="noopener">INEGI, DENUE 05/2026</a>. Coacalco de Berriozábal, 11,554 establecimientos (descarga: 12-nov-2026). Es el directorio vigente; difiere de las 11,018 unidades de 2020 porque mide otro año con otra fuente.</p>
       <div class="lienzo"><canvas id="graficaSectores" role="img" aria-label="Gráfica de dona con la distribución sectorial de las unidades económicas"></canvas></div>
     </div>
   </div>
@@ -401,11 +445,17 @@
 
         <div class="pie-consola">
           <span class="vivo">Cálculo en vivo · cada cambio recalcula al instante</span>
+          <button type="button" class="btn-dado" id="restablecer">↺ Restablecer referencia</button>
           <button type="button" class="btn-dado" id="dado"><span class="ic">🎲</span> Escenario sorpresa</button>
         </div>
       </form>
 
       <div class="resultados" id="resultados" aria-live="polite">
+        <div class="escenario-vigente" id="escVigente" data-estado="vigente">
+          <span class="ev-punto" aria-hidden="true"></span>
+          <span><strong id="evEstado">Escenario vigente</strong> · <span id="evNombre">—</span></span>
+          <span class="ev-hora" id="evHora"></span>
+        </div>
         <div class="veredicto">
           <div class="confeti-capa" id="confeti" aria-hidden="true"></div>
           <div class="medidor" aria-hidden="true">
@@ -472,6 +522,48 @@
         </div>
         <p class="nota-widget" id="notaCompartir" aria-live="polite"></p>
       </div>
+    </div>
+
+    <div class="explorar-resultados" id="explorarResultados">
+      <article class="widget widget-claro" id="wSup" data-estado="cargando" aria-labelledby="wSup-q">
+        <p class="widget-pregunta" id="wSup-q">¿Qué tan probable es que siga abierto al año <output id="supAnioV" for="supAnio">3</output>?</p>
+        <label class="sr-only" for="supAnio">Año</label>
+        <input type="range" id="supAnio" min="1" max="10" step="1" value="3">
+        <div class="sup-capas" id="supCapas" aria-hidden="true"></div>
+        <table class="tabla-comparar tabla-lectura" id="supTabla"><caption class="sr-only">Supervivencia por año</caption></table>
+        <p class="nota-widget">La banda es <strong>sensibilidad</strong> a los β (P5–P95), no un intervalo de confianza. Los años 6–10 de S₀ son una interpolación del equipo.</p>
+        <p class="widget-estado" role="status" id="wSup-estado">Calculando…</p>
+      </article>
+      <article class="widget widget-claro" id="wMC" data-estado="cargando" aria-labelledby="wMC-q">
+        <p class="widget-pregunta" id="wMC-q">¿Con qué probabilidad la utilidad anual supera una meta?</p>
+        <label for="mcMeta">Meta de utilidad anual (MXN)</label>
+        <input type="number" id="mcMeta" min="-5000000" max="20000000" step="10000" value="0" inputmode="numeric">
+        <svg class="mc-ecdf" id="mcEcdf" viewBox="0 0 320 150" role="img" aria-labelledby="mcRespuesta"></svg>
+        <p class="widget-respuesta" id="mcRespuesta" aria-live="polite">—</p>
+        <p class="nota-widget">Frecuencia en las 2,000 corridas del Monte Carlo (semilla 20262); cifras antes de impuestos.</p>
+        <p class="widget-estado" role="status" id="wMC-estado">Calculando…</p>
+      </article>
+      <article class="widget widget-claro widget-ancho" id="wSuperficie" data-estado="cargando" aria-labelledby="wSup3-q">
+        <p class="widget-pregunta" id="wSup3-q">¿Cómo responde el resultado a dos supuestos a la vez?</p>
+        <div class="superficie-controles">
+          <label>Resultado
+            <select id="supSalida"><option value="U">Utilidad mensual (MXN)</option><option value="P">Probabilidad a 3 años</option></select></label>
+          <label>Eje horizontal
+            <select id="supEjeX"><option value="mu">Clientes por día</option><option value="ticket">Ticket promedio (MXN)</option><option value="cv">Costo variable (%)</option><option value="renta">Renta mensual (MXN)</option></select></label>
+          <label>Eje vertical
+            <select id="supEjeY"><option value="ticket">Ticket promedio (MXN)</option><option value="mu">Clientes por día</option><option value="cv">Costo variable (%)</option><option value="renta">Renta mensual (MXN)</option></select></label>
+          <label class="check"><input type="checkbox" id="supPlano"> Vista plana (2D)</label>
+        </div>
+        <div class="superficie-cuerpo">
+          <div class="superficie-escena" id="supEscena"><div class="superficie-rejilla" id="supRejilla" role="grid" aria-label="Superficie de sensibilidad: selecciona una celda para leer el valor exacto"></div></div>
+          <div>
+            <p class="widget-respuesta" id="supLectura" aria-live="polite">Selecciona una celda.</p>
+            <table class="tabla-comparar tabla-lectura" id="supCorte"><caption>Corte en el valor actual del eje vertical</caption></table>
+          </div>
+        </div>
+        <p class="nota-widget">Cada celda recalcula el modelo con la misma función del simulador (±40 % alrededor del valor actual). La probabilidad cambia por escalones porque el margen de seguridad entra al modelo por tramos.</p>
+        <p class="widget-estado" role="status" id="wSuperficie-estado">Calculando…</p>
+      </article>
     </div>
 
     <div class="panel" id="mapa" style="margin-top:1.5rem">
@@ -616,6 +708,19 @@
       <p class="uso">Principio rector: separar dato oficial, supuesto del equipo y resultado del modelo.</p>
     </article>
   </div>
+</section>
+
+<section class="seccion" id="trazabilidad" style="padding-top:0" aria-labelledby="traza-titulo">
+  <p class="folio">Sección 04b · De dónde sale cada número</p>
+  <h2 class="titulo" id="traza-titulo">Trazabilidad: del resultado a su fuente</h2>
+  <article class="widget widget-claro widget-traza" id="wTraza" data-estado="cargando" aria-labelledby="wTraza-q">
+    <p class="widget-pregunta" id="wTraza-q">¿De dónde sale este número?</p>
+    <div class="traza-cuerpo">
+      <ul class="traza-lista" id="trazaLista" role="listbox" aria-label="Resultados del modelo" tabindex="0"></ul>
+      <div class="traza-ruta" id="trazaRuta" aria-live="polite"></div>
+    </div>
+    <p class="widget-estado" role="status" id="wTraza-estado">Cargando…</p>
+  </article>
 </section>
 
 <!-- ============ 04 LECTURA ============ -->

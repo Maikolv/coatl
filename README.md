@@ -9,6 +9,8 @@ Simulador estadístico que estima la **probabilidad de que un negocio siga opera
 
 ![Inicio de COATL](docs/capturas/inicio.png)
 
+![Recorrido exploratorio](docs/capturas/explorar.png)
+
 ## Qué hace
 
 | Bloque | Resultado |
@@ -19,7 +21,8 @@ Simulador estadístico que estima la **probabilidad de que un negocio siga opera
 | Finanzas | Utilidad, punto de equilibrio, ROI, payback y VPN a 3 años (antes de impuestos) |
 | Mapa | Seis zonas con polígonos, ranking y comparador de zonas |
 | FODA dinámico | Nueve estrategias con ΔP real y plan de acción |
-| Herramientas | Comparar 3 escenarios, compartir por URL, exportar PNG/PDF |
+| Recorrido exploratorio | Widget de inicio, mapa 2.5D por zona, supervivencia por año, meta de Monte Carlo, superficie de sensibilidad y trazabilidad a la fuente ([docs/WIDGETS.md](docs/WIDGETS.md)) |
+| Herramientas | Comparar 3 escenarios, compartir por URL, exportar PNG/PDF, restablecer referencia |
 
 ![Simulador](docs/capturas/simulador.png)
 
@@ -38,9 +41,9 @@ npm run servir       # http://127.0.0.1:8000
 ## Cómo probar
 
 ```bash
-npm test                                  # 10 pruebas unitarias del modelo (node:test)
+npm test                                  # 12 pruebas unitarias del modelo (node:test)
 python scripts/validar_modelo.py          # reimplementación independiente en Python
-npx playwright install chromium && npm run test:e2e   # 9 pruebas e2e × escritorio y móvil
+npx playwright install chromium && npm run test:e2e   # 19 pruebas e2e × escritorio y móvil
 ```
 
 En Windows, las e2e usan Microsoft Edge (`COATL_CANAL=msedge`) porque el Chromium descargado puede estar bloqueado por el sistema. En CI usan Chromium.

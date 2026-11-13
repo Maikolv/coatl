@@ -72,8 +72,9 @@ const cuerpo = [
     ['Población en pobreza', '28.6 % (26.1 % moderada, 2.5 % extrema)', 'CONEVAL (2020)'],
     ['Supervivencia nacional a 3 años', pct(REF.M.S0[3]), 'INEGI, tabla 1989–2019'],
     ['Esperanza de vida al nacer de un negocio', '8.4 años', 'INEGI, tabla 1989–2019'],
+    ['Distribución por sector', '45.9 % comercio · 45.0 % servicios · 6.0 % manufactura · 3.0 % otros', 'INEGI, DENUE 05/2026'],
   ], [3000, 3200, 3160]),
-  p([new TextRun({ text: 'La distribución de unidades económicas por sector que muestra el sitio es una estimación del equipo: las fuentes municipales consultadas no publican ese desglose. Las afluencias y rentas por zona también son estimaciones propias, editables en el simulador.', italics: true, color: GRIS, size: 20 })], { spacing: { before: 120, after: 200 } }),
+  p([new TextRun({ text: 'Distribución sectorial (INEGI, DENUE 05/2026, 11,554 establecimientos): 45.9 % comercio al por menor, 45.0 % servicios, 6.0 % manufactura y 3.0 % otros. El DENUE (directorio vigente en 2026) y las unidades económicas de 2020 (Censos Económicos/IGECEM) son fuentes y años distintos, por eso sus totales difieren. Las afluencias y rentas por zona son estimaciones del equipo, editables en el simulador.', italics: true, color: GRIS, size: 20 })], { spacing: { before: 120, after: 200 } }),
 
   new Paragraph({ children: [new PageBreak()] }),
   h1('3. Metodología'),

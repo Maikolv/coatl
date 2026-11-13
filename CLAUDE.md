@@ -14,7 +14,7 @@ Idioma del proyecto: **español (México)** en UI, comentarios, commits y docume
 ```
 src/datos/            Giros, zonas, S₀(t), supuestos de incertidumbre (sin DOM)
 src/modelo/            modelo.js (logístico, rangoP, Cox, Monte Carlo) y finanzas.js — puros y probados
-src/ui/  src/mapa/     Formulario, resultados, widgets, estilos y mapa
+src/ui/  src/mapa/     Formulario, resultados, widgets, estilos y mapa; explorar.js + estilos-explorar.css = recorrido exploratorio (docs/WIDGETS.md)
 src/index.html         Plantilla; scripts/build.mjs la llena
 index.html             GENERADO por `npm run build` (no editar a mano); también dist/index.html
 tests/                 modelo.test.mjs (node:test) y e2e/ (Playwright)
@@ -92,8 +92,15 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - **docx / OOXML**: respetar el orden de bordes de párrafo; callouts simples para pasar validación.
 - Flujo de presentación: SVG en Python → Sharp → pptxgenjs → LibreOffice headless a PDF → `pdftoppm` para QA lámina por lámina.
 
+## Recorrido exploratorio (v4)
+
+- Profundidad con SVG isométrico, CSS 3D y capas; **sin WebGL/Three.js** (rechazado arriba). Cada widget: pregunta, interacción, respuesta y data-estado (cargando/listo/vacio/error).
+- Los widgets llaman a las mismas funciones del motor: nunca dupliques fórmulas en la UI.
+- La CSP usa hashes calculados por el build: no agregues style="" en HTML generado por JS (usa CSSOM o clases).
+
 ## Pendiente
 
+- Seguridad: HawkScan limpio (docs/SEGURIDAD_HAWKSCAN.md); la clave va solo en variable de entorno.
 - Rendimiento (Lighthouse ~50): el Monte Carlo de 2,000 años corre en el hilo principal al cargar; candidato a Web Worker o a diferirlo.
 
 - S₀(t) ya verificada (INEGI 1989–2019, t=1…5); años 6–10 interpolados. Pendiente: tabla completa del INEGI para t=6…10 y datos por giro (estimaciones del equipo).
