@@ -6,7 +6,7 @@
    La voz usa el reconocimiento del navegador (Web Speech API); en Chrome/Edge el audio lo
    procesa el proveedor del navegador, y así se avisa en pantalla. */
 const SDK_URL="https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@1.3.0/+esm";
-let claveClaude=null, claveGemini=null;  // una sola caja: sk-ant-… es Claude; cualquier otra, Gemini (solo el asistente)
+let claveClaude=null, claveGemini=null;  // una sola caja: sk-ant-… es Claude; cualquier otra, Gemini
 
 function sinAcentos(t){return String(t).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase()}
 function cantidad(txt){
@@ -74,7 +74,17 @@ function aplicarInterpretacion(r){
   ["inversion","credito","cvar","merma"].forEach(id=>$(id).dispatchEvent(new Event("input")));
   calcular();
 }
-/* Intérprete con Claude (opcional, clave del usuario). */
+/* Gemini (plan gratuito de Google AI Studio) por REST, sin SDK; store:false = Google no guarda la conversación.
+   Lo usan este intérprete y el asistente. */
+async function gemini(instrucciones, texto, max){
+  const r=await fetch("https://generativelanguage.googleapis.com/v1beta/interactions",{method:"POST",
+    headers:{"Content-Type":"application/json","x-goog-api-key":claveGemini},
+    body:JSON.stringify({model:"gemini-3.8-flash", input:texto, system_instruction:instrucciones, store:false, generation_config:{max_output_tokens:max}})});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok) throw Object.assign(new Error((j.error&&j.error.message)||"HTTP "+r.status),{status:r.status});
+  return (j.steps||[]).filter(s=>s.type==="model_output").flatMap(s=>s.content||[]).filter(c=>c.type==="text").map(c=>c.text).join("");
+}
+/* Intérpretes en línea (opcionales, clave del usuario): Claude con esquema estricto, Gemini con JSON pedido en las instrucciones. */
 const ESQUEMA_ESCENARIO={type:"object",additionalProperties:false,
   properties:{giro:{type:["string","null"],enum:[...Object.keys(GIROS),null]},zona:{type:["string","null"],enum:[...Object.keys(ZONAS),null]},
     clientes:{type:["number","null"]},ticket:{type:["number","null"]},inversion:{type:["number","null"]},renta:{type:["number","null"]},
@@ -88,38 +98,51 @@ async function interpretarClaude(texto){
     model:"claude-opus-5-5", max_tokens:4000,
     betas:["server-side-fallback-2026-07-01"], fallbacks:"default",
     output_config:{effort:"low", format:{type:"json_schema", schema:ESQUEMA_ESCENARIO}},
-    system:"Convierte la descripción de un negocio en Coacalco de Berriozábal (México) en parámetros del simulador COATL. "+
-      "Usa solo lo que la persona dijo; deja en null lo que no mencione. Cantidades en pesos mexicanos; clientes por día; crédito en porcentaje de la inversión; tasa anual en porcentaje. "+
-      "Giros válidos: "+Object.entries(GIROS).map(([k,g])=>k+"="+g.n).join("; ")+". Zonas válidas: "+Object.entries(ZONAS).map(([k,z])=>k+"="+z.n).join("; ")+
-      ". En «resumen» explica en una frase, en español, qué entendiste.",
+    system:instruccionesInterprete(),
     messages:[{role:"user",content:texto}]
   });
   if(resp.stop_reason==="refusal") throw new Error("Claude no pudo procesar esta descripción.");
   const bloque=resp.content.find(b=>b.type==="text"); if(!bloque) throw new Error("Respuesta vacía.");
-  const j=JSON.parse(bloque.text), r={}, entendido=[];
-  for(const k of ["giro","zona","clientes","ticket","inversion","renta","empleados","costoEmpleado","superficie","credito","tasa"]) if(j[k]!=null){ r[k]=j[k]; entendido.push(k+": "+j[k]); }
-  if(j.experiencia_anios!=null){const a=j.experiencia_anios; r.experiencia=a>5?"0.30":a>=3?"0.15":a>=1?"0":"-0.25";}
-  return {r, entendido, resumen:j.resumen};
+  return deJSON(JSON.parse(bloque.text));
 }
+async function interpretarGemini(texto){
+  const t=await gemini(instruccionesInterprete()+" Responde únicamente con un objeto JSON (sin texto adicional) con las claves: "+ESQUEMA_ESCENARIO.required.join(", ")+".", texto, 1500);
+  const m=/\{[\s\S]*\}/.exec(t); if(!m) throw new Error("Gemini no devolvió datos.");
+  return deJSON(JSON.parse(m[0]));
+}
+const instruccionesInterprete=()=>"Convierte la descripción de un negocio en Coacalco de Berriozábal (México) en parámetros del simulador COATL. "+
+      "Usa solo lo que la persona dijo; deja en null lo que no mencione. Cantidades en pesos mexicanos; clientes por día; crédito en porcentaje de la inversión; tasa anual en porcentaje. "+
+      "Giros válidos: "+Object.entries(GIROS).map(([k,g])=>k+"="+g.n).join("; ")+". Zonas válidas: "+Object.entries(ZONAS).map(([k,z])=>k+"="+z.n).join("; ")+
+      ". En «resumen» explica en una frase, en español, qué entendiste.";
+// Sin esquema estricto (Gemini) el JSON puede traer tipos raros: solo se aceptan textos en giro/zona y números finitos en lo demás.
+function deJSON(j){
+  const r={}, entendido=[];
+  for(const k of ["giro","zona","clientes","ticket","inversion","renta","empleados","costoEmpleado","superficie","credito","tasa"]){
+    const ok=k==="giro"||k==="zona"? typeof j[k]==="string" : Number.isFinite(j[k]);
+    if(ok){ r[k]=j[k]; entendido.push(k+": "+j[k]); } }
+  if(Number.isFinite(j.experiencia_anios)){const a=j.experiencia_anios; r.experiencia=a>5?"0.30":a>=3?"0.15":a>=1?"0":"-0.25";}
+  return {r, entendido, resumen:typeof j.resumen==="string"?j.resumen:""};
+}
+const ia=()=>claveClaude?"Claude":claveGemini?"Gemini":"";
 async function interpretarYAplicar(){
   const texto=$("descTexto").value.trim();
   if(!texto){ estadoWidget("wDescribir","vacio","Escribe o dicta cómo es tu negocio."); return; }
-  estadoWidget("wDescribir","cargando", claveClaude?"Claude está interpretando tu descripción…":"Interpretando…");
+  estadoWidget("wDescribir","cargando", ia()?ia()+" está interpretando tu descripción…":"Interpretando…");
   try{
-    const res=claveClaude? await interpretarClaude(texto) : interpretarLocal(texto);
+    const res=claveClaude? await interpretarClaude(texto) : claveGemini? await interpretarGemini(texto) : interpretarLocal(texto);
     if(!res.entendido.length){ estadoWidget("wDescribir","vacio","No identifiqué datos concretos. Prueba con cifras: «cafetería en Los Héroes, 70 clientes al día, ticket de 90 pesos, renta de 8 mil»."); return; }
     aplicarInterpretacion(res.r);
     $("descEntendido").innerHTML='<p class="desc-resumen">'+(res.resumen?esc(res.resumen)+" ":"")+'Ajusté:</p><ul>'+res.entendido.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul>";
-    estadoWidget("wDescribir","listo", "Simulador actualizado"+(claveClaude?" con Claude.":" con el intérprete local.")+" Revisa y corrige cualquier campo en las pestañas.");
+    estadoWidget("wDescribir","listo", "Simulador actualizado"+(ia()?" con "+ia()+".":" con el intérprete local.")+" Revisa y corrige cualquier campo en las pestañas.");
   }catch(err){
     console.warn(err);
-    estadoWidget("wDescribir","error", (claveClaude?"Claude no respondió ("+(err.status||err.message)+"). ":"")+"Puedes usar el intérprete local quitando la clave.");
+    estadoWidget("wDescribir","error", (ia()?ia()+" no respondió ("+(err.status||err.message)+"). ":"")+"Puedes usar el intérprete local quitando la clave.");
   }
 }
 $("descAplicar").addEventListener("click",interpretarYAplicar);
 $("descClave").addEventListener("change",()=>{ const v=$("descClave").value.trim();
   claveClaude=v.startsWith("sk-ant-")?v:null; claveGemini=v&&!claveClaude?v:null;
-  $("descModo").textContent=claveClaude?"Intérprete: Claude (tu clave, solo en esta pestaña)":claveGemini?"Intérprete: local · el asistente 💬 responde preguntas libres con Gemini (tu clave, solo en esta pestaña)":"Intérprete: local, sin conexión"; });
+  $("descModo").textContent=claveClaude?"Intérprete: Claude (tu clave, solo en esta pestaña)":claveGemini?"Intérprete: Gemini (tu clave, solo en esta pestaña)":"Intérprete: local, sin conexión"; });
 $("descOlvidar").addEventListener("click",()=>{ $("descClave").value=""; claveClaude=null; claveGemini=null; $("descModo").textContent="Intérprete: local, sin conexión"; });
 /* Voz (Web Speech API) */
 (function voz(){

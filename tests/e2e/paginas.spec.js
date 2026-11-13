@@ -95,6 +95,31 @@ test('asistente con clave de Gemini: pregunta libre por REST, sin guardar', asyn
   expect(cuerpo.system_instruction).toContain('Cafetería');
 });
 
+test('describe tu negocio con clave de Gemini: JSON validado ajusta el simulador', async ({ page }) => {
+  let cuerpo = null;
+  await page.route('https://generativelanguage.googleapis.com/**', async (ruta) => {
+    cuerpo = ruta.request().postDataJSON();
+    const j = { giro: 'farmacia', zona: 'no_existe', clientes: 90, ticket: '120', inversion: null, renta: 9000, empleados: null,
+      costoEmpleado: null, superficie: null, credito: null, tasa: null, experiencia_anios: 4, resumen: 'Farmacia con 90 clientes.' };
+    await ruta.fulfill({ json: { steps: [{ type: 'model_output', content: [{ type: 'text', text: '```json\n' + JSON.stringify(j) + '\n```' }] }] } });
+  });
+  await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
+  await page.click('.describir-ia summary');
+  await page.fill('#descClave', 'AIza-prueba');
+  await page.locator('#descClave').dispatchEvent('change');
+  await expect(page.locator('#descModo')).toContainText('Gemini');
+  await page.fill('#descTexto', 'Una farmacia con 90 clientes al día');
+  await page.click('#descAplicar');
+  await expect(page.locator('#giro')).toHaveValue('farmacia');
+  await expect(page.locator('#clientes')).toHaveValue('90');
+  await expect(page.locator('#renta')).toHaveValue('9000');
+  await expect(page.locator('#descEntendido')).not.toContainText('ticket');   // "120" como texto se descarta
+  await expect(page.locator('#ticket')).not.toHaveValue('120');
+  await expect(page.locator('#wDescribir-estado')).toContainText('con Gemini');
+  expect(cuerpo.store).toBe(false);
+  expect(cuerpo.system_instruction).toContain('JSON');
+});
+
 test('giro propio con cualquier nombre', async ({ page }) => {
   await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
   await page.fill('#giroBusca', 'Vivero de suculentas');
