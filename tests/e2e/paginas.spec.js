@@ -95,6 +95,29 @@ test('asistente con clave de Gemini: pregunta libre por REST, sin guardar', asyn
   expect(cuerpo.system_instruction).toContain('Cafetería');
 });
 
+test('Gemini: cambia de modelo si no está disponible y explica el límite gratuito', async ({ page }) => {
+  const modelos = []; let limite = false;
+  await page.route('https://generativelanguage.googleapis.com/**', async (ruta) => {
+    const m = ruta.request().postDataJSON().model; modelos.push(m);
+    if (limite) return ruta.fulfill({ status: 429, json: { error: { message: 'Resource exhausted' } } });
+    if (m === 'gemini-3.8-flash') return ruta.fulfill({ status: 404, json: { error: { message: 'not found' } } });
+    await ruta.fulfill({ json: { steps: [{ type: 'model_output', content: [{ type: 'text', text: 'Hola desde el modelo de respaldo.' }] }] } });
+  });
+  await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
+  await page.click('.describir-ia summary');
+  await page.fill('#descClave', 'AIza-prueba');
+  await page.locator('#descClave').dispatchEvent('change');
+  await page.click('#asisAbrir');
+  await page.fill('#asisTexto', '¿Qué opinas de mi competencia?');
+  await page.press('#asisTexto', 'Enter');
+  await expect(page.locator('#asisLog .bot').last()).toHaveText('Hola desde el modelo de respaldo.');
+  expect(modelos).toEqual(['gemini-3.8-flash', 'gemini-3.5-flash-lite']);
+  limite = true;
+  await page.fill('#asisTexto', '¿Y la demanda?');
+  await page.press('#asisTexto', 'Enter');
+  await expect(page.locator('#asisLog .bot').last()).toContainText('límite del plan gratuito');
+});
+
 test('describe tu negocio con clave de Gemini: JSON validado ajusta el simulador', async ({ page }) => {
   let cuerpo = null;
   await page.route('https://generativelanguage.googleapis.com/**', async (ruta) => {

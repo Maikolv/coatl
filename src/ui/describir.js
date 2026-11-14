@@ -76,12 +76,18 @@ function aplicarInterpretacion(r){
 }
 /* Gemini (plan gratuito de Google AI Studio) por REST, sin SDK; store:false = Google no guarda la conversación.
    Lo usan este intérprete y el asistente. */
-async function gemini(instrucciones, texto, max){
-  const r=await fetch("https://generativelanguage.googleapis.com/v1beta/interactions",{method:"POST",
+const MODELOS_GEMINI=["gemini-3.8-flash","gemini-3.5-flash-lite"];  // si el primero no está disponible en la cuenta (404), se usa el segundo
+const ERRORES_GEMINI={400:"la clave no es válida; cópiala de nuevo desde AI Studio",401:"la clave no es válida; cópiala de nuevo desde AI Studio",
+  403:"la clave no tiene permiso para la API de Gemini; en AI Studio créala para la API de Gemini",429:"se alcanzó el límite del plan gratuito; espera un minuto e intenta de nuevo"};
+async function gemini(instrucciones, texto, max, modelo=0){
+  let r;
+  try{ r=await fetch("https://generativelanguage.googleapis.com/v1beta/interactions",{method:"POST", signal:AbortSignal.timeout(45000),
     headers:{"Content-Type":"application/json","x-goog-api-key":claveGemini},
-    body:JSON.stringify({model:"gemini-3.8-flash", input:texto, system_instruction:instrucciones, store:false, generation_config:{max_output_tokens:max}})});
+    body:JSON.stringify({model:MODELOS_GEMINI[modelo], input:texto, system_instruction:instrucciones, store:false, generation_config:{max_output_tokens:max}})}); }
+  catch(e){ throw new Error(e.name==="TimeoutError"?"tardó demasiado; revisa tu conexión":"sin conexión con Google"); }
   const j=await r.json().catch(()=>({}));
-  if(!r.ok) throw Object.assign(new Error((j.error&&j.error.message)||"HTTP "+r.status),{status:r.status});
+  if(r.status===404&&modelo+1<MODELOS_GEMINI.length) return gemini(instrucciones, texto, max, modelo+1);
+  if(!r.ok) throw Object.assign(new Error(ERRORES_GEMINI[r.status]||(j.error&&j.error.message)||"HTTP "+r.status),{status:r.status});
   return (j.steps||[]).filter(s=>s.type==="model_output").flatMap(s=>s.content||[]).filter(c=>c.type==="text").map(c=>c.text).join("");
 }
 /* Intérpretes en línea (opcionales, clave del usuario): Claude con esquema estricto, Gemini con JSON pedido en las instrucciones. */
@@ -136,7 +142,7 @@ async function interpretarYAplicar(){
     estadoWidget("wDescribir","listo", "Simulador actualizado"+(ia()?" con "+ia()+".":" con el intérprete local.")+" Revisa y corrige cualquier campo en las pestañas.");
   }catch(err){
     console.warn(err);
-    estadoWidget("wDescribir","error", (ia()?ia()+" no respondió ("+(err.status||err.message)+"). ":"")+"Puedes usar el intérprete local quitando la clave.");
+    estadoWidget("wDescribir","error", (ia()?ia()+" no respondió: "+(claveGemini?err.message:(err.status||err.message))+". ":"")+"Puedes usar el intérprete local quitando la clave.");
   }
 }
 $("descAplicar").addEventListener("click",interpretarYAplicar);

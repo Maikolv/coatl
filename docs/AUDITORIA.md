@@ -108,3 +108,19 @@ Mejoras recomendadas en v7, ya hechas (v7.1):
 - **Accesibilidad:** axe-core en los 8 apartados y en el asistente, escritorio y móvil, con 0 violaciones WCAG 2.1 AA; correcciones de contraste y teclado. La revisión con lector de pantalla real queda como guía para el equipo en docs/ACCESIBILIDAD.md (no se puede automatizar).
 - **Calibración por giro:** contraste con los Censos Económicos 2019 del INEGI (Coacalco, negocios de 0 a 10 personas) para 31 de 35 giros: ventas anuales, costo directo, personal y renta por negocio, con botón para aplicarlos. Hallazgo: el escenario de referencia de la cafetería vende 3.6 veces lo que vende la cafetería promedio de Coacalco (88,705 al año en 2018). Los valores por defecto no se cambiaron para conservar el escenario de referencia; ver docs/METODOLOGIA.md.
 - **Zonas con límites oficiales:** las 70 AGEB urbanas de Coacalco (INEGI, Marco Geoestadístico dic. 2025; 293,245 habitantes del Censo 2020) se dibujan en el mapa agrupadas en las 6 zonas; la agrupación sigue siendo del equipo.
+
+## 8. Auditoría v7.3 (13 de noviembre de 2026)
+
+Verificación: build idéntico, 12 unitarias, validador Python, e2e completas en escritorio y móvil (incluye axe), CI verde, sitio publicado y DENUE con token válido (API 11,557 frente a 11,554 de la descarga).
+
+| # | Hallazgo | Acción |
+|---|---|---|
+| 1 | La IA de pago (Claude) era la única opción para preguntas libres | ✅ Gemini gratuito en el asistente y en «Describe tu negocio» (REST, `store:false`) |
+| 2 | Errores de Gemini mostraban solo el código HTTP | ✅ Mensajes claros (clave inválida, sin permiso, límite gratuito, sin conexión) y tiempo límite de 45 s |
+| 3 | Si `gemini-3.8-flash` no está disponible en la cuenta, fallaba | ✅ Respaldo automático a `gemini-3.5-flash-lite` ante 404 |
+| 4 | Sin JSON estricto, Gemini podía mandar tipos inválidos | ✅ `deJSON` acepta solo textos en giro/zona y números finitos |
+| 5 | `docs/SEGURIDAD.md` y `CLAUDE.md` decían `connect-src 'self'`, ya falso | ✅ Corregidos: qué destinos se permiten y qué se envía a la IA |
+| 6 | Acciones de GitHub sobre Node 20, ya obsoleto | ✅ `checkout@v5`, `setup-node@v5`, `setup-python@v6` |
+| 7 | Vulnerabilidad alta en `image-size` (vía `pptxgenjs` 3.12, solo desarrollo) | ⏳ Pendiente: cambiar de versión mayor; propuesta pedida a Codex (docs/PROMPT_CODEX.md) |
+| 8 | Dependencias de desarrollo atrasadas (Playwright, axe, docx) | ⏳ Pendiente, mismo prompt |
+| 9 | Gemini solo probado con respuestas simuladas | ⏳ Falta una prueba manual con una clave real (docs/GEMINI.md) |

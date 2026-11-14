@@ -112,7 +112,7 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 
 - `scripts/denue_sync.py` + `.github/workflows/denue.yml` (semanal) generan `data/denue/`; el build lo copia a dist/. Solo conteos, nunca datos de contacto.
 - La API del DENUE requiere token: solo en el secreto `DENUE_TOKEN` de GitHub, nunca en el cliente.
-- `src/ui/empresas.js`: archivos de empresa solo en memoria del navegador; prohibido agregar envío, analítica o localStorage. La CSP es `connect-src 'self'`.
+- `src/ui/empresas.js`: archivos de empresa solo en memoria del navegador; prohibido agregar envío, analítica o localStorage, y nunca mandarlos a Gemini/Claude. La CSP solo abre `connect-src` a Gemini, Anthropic y jsDelivr para la IA opcional.
 - Mapeo giro→SCIAN verificado contra `clases.json`; no agregues códigos de memoria.
 
 ## Recorrido exploratorio (v4)

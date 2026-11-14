@@ -66,7 +66,7 @@
     texto=texto.trim(); if(!texto) return;
     decir(esc(texto),"yo"); inp.value="";
     try{ decir(await responder(texto)); }
-    catch(err){ console.warn(err); decir((claveGemini?"Gemini":"Claude")+" no respondió ("+esc(String(err.status||err.message))+"). Sigo disponible en modo local."); }
+    catch(err){ console.warn(err); decir((claveGemini?"Gemini":"Claude")+" no respondió: "+esc(String(claveGemini?err.message:(err.status||err.message)))+". Sigo disponible en modo local."); }
     $("asisModo").textContent=claveGemini?"Gemini (tu clave)":claveClaude?"Claude (tu clave)":"local · sin conexión";
   }
   $("asisForma").addEventListener("submit",ev=>{ ev.preventDefault(); enviar(inp.value); });

@@ -70,7 +70,7 @@ Cada imagen es la página entera, sin cortes (`node scripts/capturas.mjs --sitio
 - **Mapa con límites oficiales**: las 70 AGEB urbanas del INEGI agrupadas en las seis zonas.
 - **Accesibilidad verificada**: axe-core WCAG 2.1 AA sin violaciones en todos los apartados ([docs/ACCESIBILIDAD.md](docs/ACCESIBILIDAD.md)).
 
-- **Asistente siempre disponible** (botón 💬 en la esquina inferior derecha de todas las páginas): dice cómo vas, qué zona conviene y qué palancas suben tu probabilidad con el mismo motor; ajusta el simulador por texto o voz y te lleva a cualquier apartado. Responde preguntas libres con una clave gratuita de Google AI Studio (Gemini, sin tarjeta) o, si prefieres, con una clave de Anthropic.
+- **Asistente siempre disponible** (botón 💬 en la esquina inferior derecha de todas las páginas): dice cómo vas, qué zona conviene y qué palancas suben tu probabilidad con el mismo motor; ajusta el simulador por texto o voz y te lleva a cualquier apartado. Responde preguntas libres con una clave gratuita de Google AI Studio (Gemini, sin tarjeta) o, si prefieres, con una clave de Anthropic. Cómo sacar la clave: [docs/GEMINI.md](docs/GEMINI.md).
 - **Giros sin límite**: los 35 calibrados, las 989 actividades del SCIAN o cualquier nombre que escribas (giro propio con la plantilla más parecida, rotulada «estimación del equipo»).
 
 ![Asistente](docs/capturas/asistente.png)
