@@ -121,6 +121,8 @@ Verificación: build idéntico, 12 unitarias, validador Python, e2e completas en
 | 4 | Sin JSON estricto, Gemini podía mandar tipos inválidos | ✅ `deJSON` acepta solo textos en giro/zona y números finitos |
 | 5 | `docs/SEGURIDAD.md` y `CLAUDE.md` decían `connect-src 'self'`, ya falso | ✅ Corregidos: qué destinos se permiten y qué se envía a la IA |
 | 6 | Acciones de GitHub sobre Node 20, ya obsoleto | ✅ `checkout@v5`, `setup-node@v5`, `setup-python@v6` |
-| 7 | Vulnerabilidad alta en `image-size` (vía `pptxgenjs` 3.12, solo desarrollo) | ⏳ Pendiente: cambiar de versión mayor; propuesta pedida a Codex (docs/PROMPT_CODEX.md) |
-| 8 | Dependencias de desarrollo atrasadas (Playwright, axe, docx) | ⏳ Pendiente, mismo prompt |
+| 7 | Vulnerabilidad alta en `image-size` (vía `pptxgenjs` 3.12, solo desarrollo) | ✅ `overrides` acotado a `pptxgenjs` → `image-size` 2.1.0; `npm audit` en 0 vulnerabilidades; la presentación sigue generando 10 láminas (Fase 4 en `docs/REVISION_CODEX.md`) |
+| 8 | Dependencias de desarrollo atrasadas (Playwright, axe, docx) | ✅ Playwright 1.65.1, axe 4.14.0 y docx 9.15.3. La nueva regla de axe `label-content-name-mismatch` detectó que el logo se anunciaba «COATL, inicio» aunque muestra otro texto; ahora su nombre es el texto visible |
 | 9 | Gemini solo probado con respuestas simuladas | ⏳ Falta una prueba manual con una clave real (docs/GEMINI.md) |
+
+Privacidad de Empresas: se agregó `tests/e2e/privacidad-ia.spec.js`, con clave y respuesta simuladas de Gemini. Comprueba que la petición del asistente excluya el nombre del archivo, el CSV completo y todos sus valores. Los puntos 7 y 8 se completaron después fuera del entorno de Codex; ver «Cierre de la Fase 4» en `docs/REVISION_CODEX.md`.
