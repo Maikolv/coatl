@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "build": "node scripts/build.mjs",
-    "test": "node --test tests/modelo.test.mjs",
+    "test": "node --test tests/modelo.test.mjs tests/ia.test.mjs",
     "test:e2e": "playwright test",
     "servir": "node scripts/servir.mjs",
     "asistente": "node scripts/asistente.mjs",

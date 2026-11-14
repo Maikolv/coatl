@@ -328,3 +328,15 @@ observarMapa.observe($("mapa"));
 
 /* Escenario inicial: el del enlace compartido (#e=...) o el de referencia. */
 if(!cargarEscenario(location.hash)) calcular();
+
+/* Formulario fijo (sticky) junto a los resultados: si cabe, se pega debajo de la barra; si es más alto que
+   la pantalla, se pega por su borde inferior. Así nunca se ve una columna vacía al recorrer los resultados. */
+(function formaFija(){
+  const forma=$("forma"), nav=document.querySelector(".nav"), tira=$("pestanasApp");
+  const ajustar=()=>{
+    const arriba=(nav&&getComputedStyle(nav).position==="sticky"?nav.offsetHeight:0)+(tira?tira.offsetHeight:0)+16;
+    document.documentElement.style.setProperty("--tope-forma",Math.min(arriba,innerHeight-forma.offsetHeight-16)+"px");
+  };
+  new ResizeObserver(ajustar).observe(forma);
+  addEventListener("resize",ajustar); ajustar();
+})();

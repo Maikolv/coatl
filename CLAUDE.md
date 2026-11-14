@@ -95,10 +95,10 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 ## v6: páginas, asistente y giros SCIAN
 
 - `src/ui/paginas.js`: vistas por apartado (secciones con `data-pagina`). Para navegar desde el código usa `irA(id)`, nunca `scrollIntoView` hacia otra página. Las e2e usan `?vista=todo`.
-- `src/ui/describir.js`: intérprete local (reglas) + Gemini gratuito (REST, JSON validado en `deJSON`) o Claude opcional (`@anthropic-ai/sdk` 1.3.0 vía jsDelivr, clave solo en memoria, salida estructurada). Voz con la Web Speech API.
+- `src/ui/describir.js`: IA de COATL (`iaProyecto`) → intermediario `servicios/ia/api/coatl.js` en Vercel (`coatl-ia.vercel.app`) con la clave del proyecto en `GEMINI_API_KEY`; respaldo local por reglas. El visitante nunca pone clave. JSON validado en `deJSON`. La IA se activa en `*.github.io` o con `?ia=1`. Voz con la Web Speech API.
 - `src/ui/giros_scian.js`: actividades del SCIAN con la plantilla del giro COATL más cercano («estimación del equipo»); costos propios ilimitados suman a otros fijos.
 - `scripts/asistente.mjs`: asistente de línea de comandos (Claude Opus 5.5) con herramientas: simular, leer documentos y consultar el DENUE.
-- `src/ui/asistente.js`: asistente flotante en todas las páginas (motor local + Gemini gratuito por REST o Claude, con la clave de describir.js: `sk-ant-…` es Claude, otra cualquiera es Gemini; `store:false`). Giros propios con cualquier nombre en giros_scian.js (`usarGiroPropio`).
+- `src/ui/asistente.js`: asistente flotante en todas las páginas (motor local + IA de COATL vía `iaProyecto`; solo envía la pregunta y un resumen del escenario). Giros propios con cualquier nombre en giros_scian.js (`usarGiroPropio`).
 - Sin modo oscuro (retirado a petición del equipo, v7). Pestañas de apartados abiertos en paginas.js (#pestanasApp, sessionStorage).
 - Fotos reales en `assets/img/zonas/` con cita mínima; créditos en docs/RECURSOS.md.
 
@@ -112,11 +112,12 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 
 - `scripts/denue_sync.py` + `.github/workflows/denue.yml` (semanal) generan `data/denue/`; el build lo copia a dist/. Solo conteos, nunca datos de contacto.
 - La API del DENUE requiere token: solo en el secreto `DENUE_TOKEN` de GitHub, nunca en el cliente.
-- `src/ui/empresas.js`: archivos de empresa solo en memoria del navegador; prohibido agregar envío, analítica o localStorage, y nunca mandarlos a Gemini/Claude. La CSP solo abre `connect-src` a Gemini, Anthropic y jsDelivr para la IA opcional.
+- `src/ui/empresas.js`: archivos de empresa solo en memoria del navegador; prohibido agregar envío, analítica o localStorage, y nunca mandarlos a Gemini/Claude. La CSP solo abre `connect-src` al intermediario de IA (origen de `COATL_IA_URL`, inyectado por el build).
 - Mapeo giro→SCIAN verificado contra `clases.json`; no agregues códigos de memoria.
 
 ## Recorrido exploratorio (v4)
 
+- v8: Inicio y Simulador usan el mismo mapa real (`crearMapaZonas`, 70 AGEB del INEGI por zona); el esquema del equipo se retiró. Fotos de escenarios con `@@FOTO:id:clase@@` (build, créditos en `assets/img/escenarios/creditos.json`); el build falla si una foto se repite.
 - Profundidad con SVG isométrico, CSS 3D y capas; **sin WebGL/Three.js** (rechazado arriba). Cada widget: pregunta, interacción, respuesta y data-estado (cargando/listo/vacio/error).
 - Los widgets llaman a las mismas funciones del motor: nunca dupliques fórmulas en la UI.
 - La CSP usa hashes calculados por el build: no agregues style="" en HTML generado por JS (usa CSSOM o clases).

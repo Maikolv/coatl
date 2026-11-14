@@ -1,8 +1,14 @@
 // Genera entregables/COATL_Presentacion.pptx (16:9) con cifras del propio modelo.
 // Uso: node scripts/presentacion_pptx.mjs
 import fs from 'node:fs';
+import os from 'node:os';
+import path from 'node:path';
 import PptxGenJS from 'pptxgenjs';
 import { REF, FUENTES, AUTORES } from './datos_reporte.mjs';
+import { execSync } from 'node:child_process';
+// Conteos reales de pruebas al generar (no a mano).
+const UNITARIAS = ['tests/modelo.test.mjs', 'tests/ia.test.mjs'].map((t) => (fs.readFileSync(t, 'utf8').match(/^test\(/gm) || []).length).reduce((a, x) => a + x, 0);
+const E2E = +(/Total: (\d+) tests?/.exec(execSync('npx playwright test --list', { encoding: 'utf8' })) || [])[1] || 0;
 
 const C = { rojo: 'C8102E', granate: '7A0C1F', hueso: 'FBF6F3', tinta: '38070F', gris: '6E464B', rosa: 'E9B9BE', blanco: 'FFFFFF' };
 const { e, mc, f, rp, mxn, pct, modelo, M } = REF;
@@ -10,7 +16,7 @@ const pres = new PptxGenJS();
 pres.layout = 'LAYOUT_WIDE'; // 13.33 × 7.5 in
 pres.title = 'COATL · Presentación';
 pres.author = AUTORES.join(', ');
-const FT = 'Georgia', FC = 'Calibri';
+const FT = 'Bricolage Grotesque', FC = 'Hanken Grotesk';   // tipografías del sitio (assets/fuentes, OFL)
 
 // Greca escalonada (xicalcoliuhqui simplificada) como borde superior/inferior.
 function greca(s, y, color = C.rojo) {
@@ -36,7 +42,7 @@ const kpi = (s, x, y, v, k, w = 2.9) => {
 };
 const formula = (s, t, y) => {
   s.addShape(pres.shapes.RECTANGLE, { x: 0.6, y, w: 0.07, h: 0.55, fill: { color: C.rojo }, line: { color: C.rojo } });
-  s.addText(t, { x: 0.8, y, w: 11.9, h: 0.55, fontFace: 'Consolas', fontSize: 16, color: C.tinta, fill: { color: C.blanco } });
+  s.addText(t, { x: 0.8, y, w: 11.9, h: 0.55, fontFace: 'Spline Sans Mono', fontSize: 16, color: C.tinta, fill: { color: C.blanco } });
 };
 const img = (ruta) => 'data:image/png;base64,' + fs.readFileSync(ruta).toString('base64');
 const tam = (ruta) => { const b = fs.readFileSync(ruta); return [b.readUInt32BE(16), b.readUInt32BE(20)]; };
@@ -132,7 +138,7 @@ function imagen(s, ruta, x, y, wMax, hMax) {
   imagen(s, 'docs/capturas/mapa.png', 7.0, 1.8, 5.8, 5.0);
   vinetas(s, [
     'El tornado muestra el aporte β de cada variable; el margen de seguridad (+0.25) es el que más suma.',
-    'El mapa evalúa el mismo negocio en las 6 zonas, con su renta y afluencia.',
+    'El mapa real (70 AGEB oficiales del INEGI) evalúa el mismo negocio en las 6 zonas, con su renta y afluencia.',
     'El FODA mide el ΔP real de cada palanca y arma un plan de 3 acciones.',
   ], { x: 0.6, y: 4.65, w: 6.2, h: 2.3, fontSize: 14 });
 }
@@ -145,22 +151,54 @@ function imagen(s, ruta, x, y, wMax, hMax) {
     'Dato oficial: población, unidades económicas, valor agregado, pobreza y tabla de supervivencia del INEGI.',
     'Supuesto del equipo: coeficientes β, afluencia y renta por zona, ticket y costo por giro, desviaciones del Monte Carlo y años 6–10 de la tabla.',
     'Resultado del modelo: P con su rango plausible, la distribución de la utilidad y los indicadores financieros.',
-    'Mejora propuesta: estimar los β con microdatos de la Demografía de los Negocios y validar rentas en campo.',
+    'Ruta de precisión: estimar los β con el panel del DENUE (riesgo en tiempo discreto), demanda con el modelo de Huff, y validar con Brier, calibración y TRIPOD (docs/METODOS_PRECISION.md).',
   ], { x: 0.6, y: 2.6, w: 12.1, h: 4.2 });
 }
 
 // 9 · Calidad
 {
   const s = lamina('Calidad verificable', '06 · VALIDACIÓN');
-  kpi(s, 0.6, 1.9, '12 + 22', 'pruebas unitarias y de extremo a extremo', 2.9);
+  kpi(s, 0.6, 1.9, `${UNITARIAS} + ${E2E}`, 'pruebas unitarias y en navegador (computadora y teléfono)', 2.9);
   kpi(s, 3.65, 1.9, 'JS = Python', 'reimplementación independiente, idéntica bit a bit', 2.9);
   kpi(s, 6.7, 1.9, '8 / 8', 'hallazgos de la revisión con Codex corregidos', 2.9);
-  kpi(s, 9.75, 1.9, '100 · 100', 'Lighthouse: Accesibilidad y Buenas prácticas', 2.9);
+  kpi(s, 9.75, 1.9, '0 · 0', 'violaciones WCAG 2.1 AA (axe) y vulnerabilidades (npm audit)', 2.9);
   vinetas(s, [
     'Integración continua: cada cambio se prueba antes de publicarse en GitHub Pages.',
     'Datos verificados contra INEGI, CONEVAL y el Gobierno de Coacalco el 12-nov-2026.',
     'Sin datos personales, sin cookies ni analítica (LFPDPPP). Obra protegida (LFDA, arts. 11–13).',
   ], { x: 0.6, y: 3.6, w: 12.1, h: 3.2 });
+}
+
+// 9b · Novedades v8
+{
+  const s = lamina('Nuevo en la versión 8', '07 · EVOLUCIÓN');
+  imagen(s, 'docs/capturas/asistente.png', 0.6, 1.8, 6.4, 4.9);
+  vinetas(s, [
+    'IA de COATL: el asistente y «Describe tu negocio» usan Gemini con la clave del proyecto, guardada en un servidor intermedio; el visitante no pone ninguna clave.',
+    'Mapa real en Inicio y en el Simulador con las 70 AGEB del INEGI; se retiró el esquema hecho a mano.',
+    'Pestañas de apartados que se reordenan arrastrando o con el teclado.',
+    'Teléfono vertical y horizontal sin pérdida de información (probado).',
+  ], { x: 7.3, y: 1.9, w: 5.5, h: 4.9, fontSize: 15 });
+}
+
+// 9c · Coacalco en imágenes
+{
+  const s = lamina('Coacalco en imágenes: los escenarios del modelo', '07 · TERRITORIO');
+  const fotos = [['mexibus', 'Movilidad'], ['power-center', 'Comercio regional'], ['calle-chiapas', 'Comercio de barrio'], ['cafeteria', 'Escenario de referencia']];
+  const cred = JSON.parse(fs.readFileSync('assets/img/escenarios/creditos.json', 'utf8'));
+  fotos.forEach(([id, t], i) => {
+    const x = 0.6 + i * 3.08;
+    // PowerPoint no garantiza WebP: copia JPG temporal (ffmpeg)
+    const jpg = path.join(os.tmpdir(), `coatl-${id}.jpg`);
+    execSync(`ffmpeg -loglevel error -y -i assets/img/escenarios/${id}.webp -q:v 3 "${jpg}"`);
+    s.addImage({ path: jpg, x, y: 1.9, w: 2.9, h: 1.93 });
+    s.addText(t, { x, y: 3.9, w: 2.9, h: 0.4, fontFace: FT, fontSize: 15, bold: true, color: C.rojo });
+    s.addText(`${cred[id].titulo} · ${cred[id].autor} · ${cred[id].licencia}`, { x, y: 4.3, w: 2.9, h: 0.7, fontFace: FC, fontSize: 9, color: C.gris, valign: 'top' });
+  });
+  vinetas(s, [
+    'Fotografías reales de Wikimedia Commons con su licencia; en el sitio ninguna se repite.',
+    'Cada zona del modelo tiene un perfil de demanda y renta distinto: el mismo negocio no rinde igual en todas.',
+  ], { x: 0.6, y: 5.2, w: 12.1, h: 1.6, fontSize: 15 });
 }
 
 // 10 · Cierre
@@ -175,4 +213,4 @@ function imagen(s, ruta, x, y, wMax, hMax) {
 }
 
 await pres.writeFile({ fileName: 'entregables/COATL_Presentacion.pptx' });
-console.log('entregables/COATL_Presentacion.pptx generado (10 láminas)');
+console.log('entregables/COATL_Presentacion.pptx generado (' + pres.slides.length + ' láminas)');

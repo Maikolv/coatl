@@ -19,7 +19,7 @@ Cada widget declara su estado en `data-estado`: `cargando` · `listo` · `vacio`
 
 - **Sin WebGL ni Three.js.** CLAUDE.md los rechaza, así que la profundidad se logra con SVG isométrico, CSS 3D y capas. No existe un modo «WebGL falla»: el único modo es el accesible, y la «Vista plana (2D)» de la superficie se activa sola con movimiento reducido.
 - **Extrusión solo con escala explícita:** en el mapa, la altura es P (0–100 %) con una regla de 50 % rotulada; en la superficie, la altura es relativa (mín.–máx. de la rejilla), y el valor exacto se lee en la tabla.
-- **Mapa esquemático:** no existen geometrías verificadas de las zonas, por eso la escena se rotula «esquema · no catastral».
+- **Mapa real (v8):** el bloque isométrico se reemplazó por el mapa real de Leaflet con las 70 AGEB oficiales del INEGI agrupadas por zona (mismo mapa que el Simulador).
 
 ## Mediciones (móvil emulado 390×844, CPU 4× más lenta, Edge)
 

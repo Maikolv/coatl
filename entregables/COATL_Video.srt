@@ -83,117 +83,133 @@ una simulación Monte Carlo reproducible para el riesgo;
 y el análisis financiero con VPN, ROI y recuperación de la inversión.
 
 22
-00:01:24,636 --> 00:01:28,738
-El análisis es territorial: el mapa divide Coacalco en seis zonas
+00:01:24,636 --> 00:01:29,296
+El apartado Territorio reúne los indicadores oficiales del municipio y
 
 23
-00:01:28,738 --> 00:01:32,209
-construidas sobre las setenta AGEB oficiales del INEGI,
+00:01:29,296 --> 00:01:32,291
+fotografías reales de Coacalco: su movilidad,
 
 24
-00:01:32,209 --> 00:01:35,744
-y compara la probabilidad del mismo negocio en cada una.
+00:01:32,291 --> 00:01:35,818
+su comercio regional y de barrio, y su vida cultural.
 
 25
-00:01:37,144 --> 00:01:41,694
-La competencia sale del Directorio Estadístico Nacional de Unidades
+00:01:37,218 --> 00:01:41,223
+El mapa real divide Coacalco en seis zonas construidas sobre las
 
 26
-00:01:41,694 --> 00:01:45,701
-Económicas, el DENUE, que se actualiza cada semana de forma
+00:01:41,223 --> 00:01:45,540
+setenta AGEB oficiales del INEGI, y compara la probabilidad del mismo
 
 27
-00:01:45,701 --> 00:01:49,980
-automática. En Coacalco hay más de once mil quinientos negocios
+00:01:45,540 --> 00:01:46,791
+negocio en cada una.
 
 28
-00:01:49,980 --> 00:01:50,795
-registrados.
+00:01:48,191 --> 00:01:52,741
+La competencia sale del Directorio Estadístico Nacional de Unidades
 
 29
-00:01:52,195 --> 00:01:56,672
-Con esos resultados, el FODA dinámico propone nueve estrategias y mide
+00:01:52,741 --> 00:01:56,749
+Económicas, el DENUE, que se actualiza cada semana de forma
 
 30
-00:01:56,672 --> 00:01:59,551
-cuántos puntos sube la probabilidad cada una,
+00:01:56,749 --> 00:02:01,028
+automática. En Coacalco hay más de once mil quinientos negocios
 
 31
-00:01:59,551 --> 00:02:02,813
-para convertir el diagnóstico en un plan de acción.
+00:02:01,028 --> 00:02:01,843
+registrados.
 
 32
-00:02:04,213 --> 00:02:08,956
-Un asistente siempre disponible responde preguntas como cómo voy o qué
+00:02:03,243 --> 00:02:07,720
+Con esos resultados, el FODA dinámico propone nueve estrategias y mide
 
 33
-00:02:08,956 --> 00:02:11,666
-zona me conviene, usando el mismo motor.
+00:02:07,720 --> 00:02:10,598
+cuántos puntos sube la probabilidad cada una,
 
 34
-00:02:11,666 --> 00:02:14,783
-De forma opcional puede conectarse con Gemini,
+00:02:10,598 --> 00:02:13,860
+para convertir el diagnóstico en un plan de acción.
 
 35
-00:02:14,783 --> 00:02:17,629
-con una clave gratuita del propio usuario.
+00:02:15,260 --> 00:02:20,024
+Un asistente siempre disponible responde preguntas como cómo voy o qué
 
 36
-00:02:19,029 --> 00:02:23,056
-Ningún dato se inventa. La información proviene del INEGI,
+00:02:20,024 --> 00:02:22,746
+zona me conviene, usando el mismo motor.
 
 37
-00:02:23,056 --> 00:02:26,111
-de los Censos Económicos dos mil diecinueve,
+00:02:22,746 --> 00:02:25,332
+Para preguntas libres, la IA de COATL,
 
 38
-00:02:26,111 --> 00:02:28,750
-del Censo de Población dos mil veinte,
+00:02:25,332 --> 00:02:29,824
+basada en Gemini, responde sin pedirle ninguna clave al visitante:
 
 39
-00:02:28,750 --> 00:02:33,541
-del CONEVAL y de Data México. Lo que es supuesto del equipo se rotula
+00:02:29,824 --> 00:02:33,430
+la clave del proyecto vive en un servidor intermedio.
 
 40
-00:02:33,541 --> 00:02:35,415
-como estimación del equipo.
+00:02:34,830 --> 00:02:38,858
+Ningún dato se inventa. La información proviene del INEGI,
 
 41
-00:02:36,815 --> 00:02:39,976
-El proyecto se programó en Visual Studio Code,
+00:02:38,858 --> 00:02:41,913
+de los Censos Económicos dos mil diecinueve,
 
 42
-00:02:39,976 --> 00:02:42,794
-con control de versiones en Git y GitHub.
+00:02:41,913 --> 00:02:44,551
+del Censo de Población dos mil veinte,
 
 43
-00:02:42,794 --> 00:02:47,329
-El motor se escribió en módulos independientes y se validó con una
+00:02:44,551 --> 00:02:49,342
+del CONEVAL y de Data México. Lo que es supuesto del equipo se rotula
 
 44
-00:02:47,329 --> 00:02:51,453
-réplica en Python. Cada cambio pasa ciento cincuenta pruebas
+00:02:49,342 --> 00:02:51,217
+como estimación del equipo.
 
 45
-00:02:51,453 --> 00:02:54,476
-automáticas, incluidas las de accesibilidad,
+00:02:52,617 --> 00:02:55,751
+El proyecto se programó en Visual Studio Code,
 
 46
-00:02:54,476 --> 00:02:55,851
-antes de publicarse.
+00:02:55,751 --> 00:02:58,544
+con control de versiones en Git y GitHub.
 
 47
-00:02:57,251 --> 00:03:01,411
-La interfaz se adapta al teléfono, tanto en vertical como en
+00:02:58,544 --> 00:03:03,041
+El motor se escribió en módulos independientes y se validó con una
 
 48
-00:03:01,411 --> 00:03:03,839
-horizontal, sin perder información.
+00:03:03,041 --> 00:03:07,606
+réplica en Python. Cada cambio pasa más de ciento cincuenta pruebas
 
 49
-00:03:05,239 --> 00:03:09,736
-COATL convierte datos oficiales en una decisión informada.
+00:03:07,606 --> 00:03:10,604
+automáticas, incluidas las de accesibilidad,
 
 50
-00:03:09,736 --> 00:03:11,597
+00:03:10,604 --> 00:03:11,967
+antes de publicarse.
+
+51
+00:03:13,367 --> 00:03:17,528
+La interfaz se adapta al teléfono, tanto en vertical como en
+
+52
+00:03:17,528 --> 00:03:19,955
+horizontal, sin perder información.
+
+53
+00:03:21,355 --> 00:03:25,852
+COATL convierte datos oficiales en una decisión informada.
+
+54
+00:03:25,852 --> 00:03:27,713
 Gracias por su atención.

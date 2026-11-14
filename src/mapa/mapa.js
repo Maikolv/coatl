@@ -29,19 +29,13 @@ function pintarMapa(e,modelo){
     return {k,z:ZONAS[k],P:modeloLogistico(c).P,util:c.utilMes};
   });
   escZonaActual=e.zonaKey;
-  datosMapa.forEach(d=>{
-    const p=$("mz-"+d.k);
-    p.style.fill=colorP(d.P);
-    p.classList.toggle("activa",d.k===e.zonaKey);
-    $("pl-"+d.k).textContent=(d.P*100).toFixed(1)+"%";
-  });
   const orden=[...datosMapa].sort((a,b)=>b.P-a.P);
   $("ranking").innerHTML=orden.map((d,i)=>{
     const med=i===0?"🥇":i===1?"🥈":i===2?"🥉":(i+1)+"°";
-    return '<li data-zona="'+d.k+'" title="Probar esta zona"><span class="medalla">'+med+
+    return '<li data-zona="'+d.k+'"><button type="button" class="rk-zona" title="Trasladar el escenario a esta zona"><span class="medalla">'+med+
       '</span><span class="punto" data-color="'+colorP(d.P)+'"></span><span class="rz">'+CORTOS[d.k]+
       '<span class="ru">utilidad esperada '+mxn.format(Math.round(d.util))+'/mes</span></span><span class="rp">'+
-      Math.round(d.P*100)+"%</span></li>";
+      Math.round(d.P*100)+"%</span></button></li>";
   }).join("");
   document.querySelectorAll("#ranking .punto[data-color]").forEach(s=>{s.style.background=s.dataset.color});
   const mejor=orden[0], actual=datosMapa.find(d=>d.k===e.zonaKey);
@@ -59,33 +53,15 @@ function irAZona(k){
   calcular();
   toast("Escenario trasladado a "+CORTOS[k]+": renta y demanda ajustadas a la zona.");
 }
-(function mapaInteractivo(){
-  const cont=document.querySelector(".mapa-cont"), tip=$("mapaTip");
-  document.querySelectorAll(".zona-mapa").forEach(p=>{
-    const k=p.dataset.zona;
-    p.setAttribute("tabindex","0");
-    p.setAttribute("role","button");
-    p.setAttribute("aria-label","Evaluar escenario en "+ZONAS[k].n);
-    p.addEventListener("mousemove",ev=>{
-      const d=datosMapa.find(x=>x.k===k); if(!d)return;
-      const r=cont.getBoundingClientRect();
-      tip.style.left=Math.max(6,Math.min(r.width-236,ev.clientX-r.left+14))+"px";
-      tip.style.top=(ev.clientY-r.top+12)+"px";
-      tip.innerHTML="<strong>"+d.z.n+"</strong><br>P(éxito a 3 años): <strong>"+Math.round(d.P*100)+
-        "%</strong><br>Utilidad esperada: "+mxn.format(Math.round(d.util))+"/mes<br>Renta ref.: $"+d.z.rm2+
-        "/m²·mes · Afluencia: "+d.z.afl.toFixed(2);
-      tip.style.opacity=1;
-    });
-    p.addEventListener("mouseleave",()=>tip.style.opacity=0);
-    p.addEventListener("click",()=>irAZona(k));
-    p.addEventListener("keydown",ev=>{if(ev.key==="Enter"||ev.key===" "){ev.preventDefault();irAZona(k)}});
-  });
-  $("ranking").addEventListener("click",ev=>{
-    const li=ev.target.closest("li[data-zona]"); if(li)irAZona(li.dataset.zona);
-  });
-})();
+$("ranking").addEventListener("click",ev=>{
+  const li=ev.target.closest("li[data-zona]"); if(li)irAZona(li.dataset.zona);
+});
 
-/* ---------- 11-bis. Mapa real (Leaflet + OpenStreetMap / Esri satélite) ---------- */
+/* ---------- 11-bis. Mapa real de zonas (Leaflet + OpenStreetMap / Esri satélite) ----------
+   Una sola función dibuja el mapa en cualquier contenedor: las 70 AGEB urbanas oficiales del INEGI
+   (data/ageb/coacalco.json, scripts/ageb_sync.mjs) agrupadas en las seis zonas y coloreadas por P.
+   La usan el Simulador (#mapaReal) e Inicio (#mapa25). COORDS_ZONAS solo asigna cada AGEB a una zona
+   (ageb_sync.mjs las lee) y sirve de respaldo si el archivo de AGEB no carga. */
 const COORDS_ZONAS={
   popular:  [[19.617,-99.130],[19.617,-99.104],[19.648,-99.104],[19.650,-99.118],[19.640,-99.130]],
   centro:   [[19.629,-99.104],[19.629,-99.084],[19.650,-99.084],[19.648,-99.104]],
@@ -99,69 +75,66 @@ const HITOS=[
   {ll:[19.6253,-99.0906],t:"Power Center Coacalco (referencia aproximada)"},
   {ll:[19.6262,-99.1079],t:"Plaza Cosmopol (referencia aproximada)"}
 ];
-let AGEB_COACALCO=null, mapaL=null, capasZona={}, fallosTesela=0, cayoEsquema=false;
-function initLeaflet(){
-  if(typeof L==="undefined"||mapaL) return !!mapaL;
-  try{
-    mapaL=L.map("mapaReal",{scrollWheelZoom:false,center:[19.644,-99.090],zoom:13});
-    const calles=L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"© Colaboradores de OpenStreetMap"});
-    const satelite=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:18,attribution:"Imágenes © Esri, Maxar, Earthstar Geographics"});
-    calles.on("tileerror",()=>{fallosTesela++; if(fallosTesela>7 && !cayoEsquema){usarEsquema(); toast("Sin conexión a los mapas: mostrando el esquema del equipo.");}});
-    calles.addTo(mapaL);
-    L.control.layers({"Calles (OpenStreetMap)":calles,"Satélite (fotografía Esri)":satelite},null,{position:"topright"}).addTo(mapaL);
-    L.control.scale({imperial:false}).addTo(mapaL);
-    const crearZona=(k,capa,centro)=>{
-      capa.on("click",()=>irAZona(k));
-      capa.on("mouseover",()=>capa.setStyle({weight:4,fillOpacity:.7}));
-      capa.on("mouseout",()=>capa.setStyle({weight:capasZona[k]._activa?4.5:2.5,fillOpacity:.55}));
-      capa.addTo(mapaL);
-      capa.etiqueta=L.tooltip({permanent:true,direction:"center",className:"lf-et"}).setLatLng(centro).setContent(CORTOS[k]).addTo(mapaL);
-      capasZona[k]=capa;
-    };
-    const ESTILO={color:"#FFFFFF",weight:2.5,fillColor:"#E9B9BE",fillOpacity:.55};
-    for(const k in COORDS_ZONAS){ const p=L.polygon(COORDS_ZONAS[k],ESTILO); crearZona(k,p,p.getBounds().getCenter()); }
-    // Límites oficiales: AGEB urbanas del INEGI agrupadas por zona (si el archivo está disponible).
-    fetch("data/ageb/coacalco.json").then(r=>r.ok?r.json():null).then(j=>{
-      if(!j||!j.agebs) return;
-      for(const k in capasZona){ mapaL.removeLayer(capasZona[k]); mapaL.removeLayer(capasZona[k].etiqueta); }
-      for(const k in COORDS_ZONAS){
-        const g=L.featureGroup(j.agebs.filter(a=>a.zona===k).map(a=>L.polygon(a.poligonos,ESTILO).bindTooltip("AGEB "+esc(a.ageb)+" · "+fmtN(a.pob)+" hab. (Censo 2020)")));
-        if(!g.getLayers().length) continue;
-        crearZona(k,g,g.getBounds().getCenter()); g.resumen=j.resumen[k];
-      }
-      AGEB_COACALCO=j; actualizarLeaflet();
-    }).catch(()=>{});
-    HITOS.forEach(h=>L.marker(h.ll,{icon:L.divIcon({className:"lf-hito",iconSize:[14,14]}),title:h.t,alt:h.t,keyboard:true}).bindTooltip(h.t).addTo(mapaL).getElement()?.setAttribute("aria-label",h.t));
-    setTimeout(()=>mapaL.invalidateSize(),300);
-    return true;
-  }catch(err){ mapaL=null; return false; }
+let AGEB_COACALCO=null, cargaLeaflet=null, cargaAgeb=null;
+const MAPAS=[];   // instancias activas: {mapa, capas, alClic, seleccion}
+const ESTILO_ZONA={color:"#FFFFFF",weight:2.5,fillColor:"#E9B9BE",fillOpacity:.55};
+function crearMapaZonas(id, alClic, opciones={}){
+  if(typeof L==="undefined") return null;
+  const cont=$(id); if(!cont||cont._mapa) return cont&&cont._mapa;
+  const mapa=L.map(id,{scrollWheelZoom:false,center:[19.644,-99.090],zoom:opciones.zoom||13});
+  const calles=L.tileLayer("https://tile.openstreetmap.org/{z}/{x}/{y}.png",{maxZoom:18,attribution:"© Colaboradores de OpenStreetMap"});
+  const satelite=L.tileLayer("https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}",{maxZoom:18,attribution:"Imágenes © Esri, Maxar, Earthstar Geographics"});
+  calles.addTo(mapa);
+  L.control.layers({"Calles (OpenStreetMap)":calles,"Satélite (fotografía Esri)":satelite},null,{position:"topright"}).addTo(mapa);
+  L.control.scale({imperial:false}).addTo(mapa);
+  const inst={mapa, capas:{}, alClic, seleccion:opciones.seleccion||(()=>escZonaActual)};
+  const crearZona=(k,capa,centro)=>{
+    capa.on("click",()=>inst.alClic(k));
+    capa.on("mouseover",()=>capa.setStyle({weight:4,fillOpacity:.72}));
+    capa.on("mouseout",()=>capa.setStyle({weight:capa._activa?4.5:2.5,fillOpacity:.55}));
+    capa.addTo(mapa);
+    capa.etiqueta=L.tooltip({permanent:true,direction:"center",className:"lf-et"}).setLatLng(centro).setContent(CORTOS[k]).addTo(mapa);
+    inst.capas[k]=capa;
+  };
+  const dibujar=()=>{
+    for(const k in inst.capas){ mapa.removeLayer(inst.capas[k]); mapa.removeLayer(inst.capas[k].etiqueta); }
+    inst.capas={};
+    for(const k in COORDS_ZONAS){
+      const lista=AGEB_COACALCO?AGEB_COACALCO.agebs.filter(a=>a.zona===k):[];
+      if(lista.length){
+        const g=L.featureGroup(lista.map(a=>L.polygon(a.poligonos,ESTILO_ZONA).bindTooltip("AGEB "+esc(a.ageb)+" · "+fmtN(a.pob)+" hab. (Censo 2020)")));
+        crearZona(k,g,g.getBounds().getCenter()); g.resumen=AGEB_COACALCO.resumen[k];
+      } else { const p=L.polygon(COORDS_ZONAS[k],ESTILO_ZONA); crearZona(k,p,p.getBounds().getCenter()); }
+    }
+    actualizarMapa(inst);
+    mapa.fitBounds(L.featureGroup(Object.values(inst.capas)).getBounds(),{padding:[14,14]});   // encuadre: solo Coacalco
+  };
+  dibujar();
+  cargaAgeb ??= fetch("data/ageb/coacalco.json").then(r=>r.ok?r.json():null).catch(()=>null);
+  cargaAgeb.then(j=>{ if(j&&j.agebs){ AGEB_COACALCO=j; dibujar(); } });
+  HITOS.forEach(h=>L.marker(h.ll,{icon:L.divIcon({className:"lf-hito",iconSize:[14,14]}),title:h.t,alt:h.t,keyboard:true}).bindTooltip(h.t).addTo(mapa).getElement()?.setAttribute("aria-label",h.t));
+  setTimeout(()=>mapa.invalidateSize(),300);
+  cont._mapa=inst; MAPAS.push(inst);
+  return inst;
 }
-function actualizarLeaflet(){
-  if(!mapaL) return;
+function actualizarMapa(inst){
+  const sel=inst.seleccion();
   datosMapa.forEach(d=>{
-    const pol=capasZona[d.k]; if(!pol) return;
-    pol._activa=(d.k===escZonaActual);
+    const pol=inst.capas[d.k]; if(!pol) return;
+    pol._activa=(d.k===sel);
     pol.setStyle({fillColor:colorP(d.P),color:pol._activa?"#38070F":"#FFFFFF",weight:pol._activa?4.5:2.5});
     pol.etiqueta.setContent(CORTOS[d.k]+"<br>"+(d.P*100).toFixed(1)+"%");
-    pol.bindPopup("<strong>"+d.z.n+"</strong><br>P(éxito a 3 años): <strong>"+(d.P*100).toFixed(1)+"%</strong><br>Utilidad esperada: "+mxn.format(Math.round(d.util))+"/mes<br>Renta ref.: $"+d.z.rm2+"/m²·mes · Afluencia: "+d.z.afl.toFixed(2)+"<br>"+(pol.resumen?"Población 2020 (INEGI): "+fmtN(pol.resumen.pob)+" en "+pol.resumen.agebs+" AGEB<br>":"")+"<em>Clic en la zona para trasladar tu escenario.</em>");
+    pol.bindPopup("<strong>"+d.z.n+"</strong><br>P(éxito a 3 años): <strong>"+(d.P*100).toFixed(1)+"%</strong><br>Utilidad esperada: "+mxn.format(Math.round(d.util))+"/mes<br>Renta ref.: $"+d.z.rm2+"/m²·mes · Afluencia: "+d.z.afl.toFixed(2)+"<br>"+(pol.resumen?"Población 2020 (INEGI): "+fmtN(pol.resumen.pob)+" en "+pol.resumen.agebs+" AGEB<br>":""));
   });
 }
-function usarEsquema(){
-  cayoEsquema=true;
-  $("mapaReal").hidden=true; $("mapaEsquema").hidden=false;
-  $("btnMapaEsquema").classList.add("activa"); $("btnMapaReal").classList.remove("activa");
-}
-let cargaLeaflet;
-async function usarReal(){
-  cayoEsquema=false;
+function actualizarLeaflet(){ MAPAS.forEach(actualizarMapa); }
+/* Carga Leaflet una sola vez y dibuja el mapa; sin conexión, el contenedor explica que el ranking sigue disponible. */
+async function montarMapa(id, alClic, opciones){
   cargaLeaflet ??= cargarBiblioteca("libLeaflet");
-  await cargaLeaflet;
-  if(cayoEsquema) return;
-  if(!initLeaflet()){ toast("El mapa real no está disponible (revisa tu conexión); mostrando el esquema."); usarEsquema(); return; }
-  $("mapaReal").hidden=false; $("mapaEsquema").hidden=true;
-  $("btnMapaReal").classList.add("activa"); $("btnMapaEsquema").classList.remove("activa");
-  setTimeout(()=>{mapaL.invalidateSize(); actualizarLeaflet();},60);
+  const ok=await cargaLeaflet;
+  const inst=ok?crearMapaZonas(id, alClic, opciones):null;
+  if(!inst){ $(id).classList.add("mapa-sin-red"); $(id).textContent="Sin conexión al mapa: la lista de zonas de al lado conserva los mismos resultados."; return null; }
+  setTimeout(()=>{inst.mapa.invalidateSize(); actualizarMapa(inst);},60);
+  return inst;
 }
-$("btnMapaReal").addEventListener("click",usarReal);
-$("btnMapaEsquema").addEventListener("click",usarEsquema);
-
+function usarReal(){ return montarMapa("mapaReal", irAZona); }

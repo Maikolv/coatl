@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://generativelanguage.googleapis.com https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' @@IA_ORIGEN@@; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -48,11 +48,11 @@
       <a href="#estrategia" data-vista="estrategia">Estrategia</a>
       <a href="#metodologia" data-vista="metodologia">Metodología</a>
       <a href="#legal" data-vista="legal">Legal</a>
-      <a class="cta" href="#simulador">Abrir simulador</a>
     </div>
   </div>
 </nav>
 <nav class="pestanas-app" id="pestanasApp" aria-label="Apartados abiertos"></nav>
+<p class="sr-only" id="avisoPestanas" aria-live="polite"></p>
 
 <header class="hero" id="inicio">
   <div class="hero-inner">
@@ -105,16 +105,16 @@
         <div><dt>Punto de equilibrio</dt><dd id="demoPE">—</dd></div>
       </dl>
       <p class="widget-estado" role="status" id="wDemo-estado">Calculando…</p>
-      <figure class="foto-cita demo-postal" id="demoPostal"></figure>
+      @@FOTO:cafeteria:demo-postal@@
       <button type="button" class="btn btn-widget" id="demoAbrir">Abrir el simulador con este escenario →</button>
     </article>
 
     <article class="widget widget-mapa" id="wMapa" data-estado="cargando" aria-labelledby="wMapa-q">
       <p class="widget-pregunta" id="wMapa-q">¿En qué zona de Coacalco le iría mejor a este mismo negocio?</p>
       <div class="mapa25-cuerpo">
-        <div class="mapa25-escena" id="mapa25" aria-hidden="true"></div>
+        <div class="mapa-leaflet mapa25-escena" id="mapa25" role="application" aria-label="Mapa real de Coacalco con las seis zonas sobre las AGEB oficiales del INEGI, coloreadas según la probabilidad de éxito"></div>
         <div>
-          <p class="mapa25-escala">Altura de cada bloque = <strong>P a 3 años</strong> (escala 0–100 %). Composición <strong>esquemática</strong>, no geometría catastral.</p>
+          <p class="mapa25-escala">Color = <strong>P a 3 años</strong> de este negocio en cada zona. Límites: 70 AGEB urbanas del INEGI (Marco Geoestadístico 2025); su agrupación en seis zonas es del equipo.</p>
           <ul class="mapa25-lista" id="mapa25Lista" role="listbox" aria-label="Zonas de Coacalco" tabindex="0"></ul>
         </div>
       </div>
@@ -130,10 +130,16 @@
   <h2 class="titulo">Coacalco de Berriozábal: un mercado de 293 mil personas</h2>
   <p class="intro">Antes de modelar probabilidades hay que conocer la población de estudio. Estos indicadores oficiales —tomados del <a href="https://www.inegi.org.mx/programas/ccpv/2020/" target="_blank" rel="noopener">Censo 2020 del INEGI</a>, del <a href="https://coacalco.gob.mx/datos-economicos/" target="_blank" rel="noopener">portal de datos económicos del municipio</a> (IGECEM/DENUE) y de la <a href="https://www.coneval.org.mx/Medicion/Paginas/Pobreza-municipal.aspx" target="_blank" rel="noopener">medición municipal del CONEVAL</a>— describen el tamaño del mercado, su tejido empresarial y su poder de compra, y son los parámetros base que alimentan al simulador.</p>
 
-  <figure class="foto-contexto">
+  <div class="galeria-territorio">
+    <figure class="foto-contexto galeria-principal">
     <img src="data:image/webp;base64,@@FOTO_PALACIO@@" width="960" height="720" loading="lazy" decoding="async" alt="Fachada del Palacio Municipal de Coacalco con arcos y la estatua de Felipe Berriozábal al frente">
     <figcaption><a href="https://commons.wikimedia.org/wiki/File:Coacalco_Estado_Mexico.JPG">ProtoplasmaKid / Wikimedia Commons</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/">CC BY-SA 4.0</a> · 2010 · Redimensionada y convertida a WebP</figcaption>
   </figure>
+    @@FOTO:mexibus:galeria-escena@@
+    @@FOTO:power-center:galeria-escena@@
+    @@FOTO:calle-chiapas:galeria-escena@@
+    @@FOTO:museo-mamut:galeria-escena@@
+  </div>
 
   <div class="cifras">
     <div class="cifra">
@@ -200,7 +206,10 @@
 <section class="seccion" id="denue" aria-labelledby="denue-titulo">
   <p class="folio">Sección 01b · Directorio Estadístico Nacional de Unidades Económicas</p>
   <h2 class="titulo" id="denue-titulo">Todo México, establecimiento por establecimiento</h2>
-  <p class="intro">Conteos reales del <strong>DENUE del INEGI</strong> para las 32 entidades y todos sus municipios, sincronizados automáticamente con la descarga oficial. Se publican solo agregados: ningún nombre, dirección ni contacto.</p>
+  <div class="intro-flex">
+    <p class="intro">Conteos reales del <strong>DENUE del INEGI</strong> para las 32 entidades y todos sus municipios, sincronizados automáticamente con la descarga oficial. Se publican solo agregados: ningún nombre, dirección ni contacto.</p>
+    @@FOTO:zentralia:ilustracion@@
+  </div>
   <article class="widget widget-claro widget-denue" id="wDenue" data-estado="cargando" aria-labelledby="wDenue-q">
     <p class="widget-pregunta" id="wDenue-q">¿Cuántos negocios hay en un municipio y de qué tipo son?</p>
     <div class="denue-controles">
@@ -225,7 +234,10 @@
   <div class="seccion">
     <p class="folio">Sección 02 · El instrumento</p>
     <h2 class="titulo" style="color:#fff">Simulador de éxito y rentabilidad</h2>
-    <p class="intro">Configura las 32 variables del escenario en las cuatro pestañas: <strong style="color:#FFC9CF">el cálculo es en vivo</strong>, cada ajuste mueve al instante el medidor, las gráficas y el mapa de zonas. ¿Sin ideas? Lanza el dado de <strong style="color:#FFC9CF">🎲 Escenario sorpresa</strong>. El modelo devuelve la probabilidad (con un decimal, cálculo determinista y reproducible) de operar con rentabilidad al tercer año, la curva de supervivencia, la distribución de utilidades (Monte Carlo, 2,000 corridas) y los indicadores financieros del proyecto.</p>
+    <div class="intro-flex">
+      <p class="intro">Configura las 32 variables del escenario en las cuatro pestañas: <strong style="color:#FFC9CF">el cálculo es en vivo</strong>, cada ajuste mueve al instante el medidor, las gráficas y el mapa de zonas. ¿Sin ideas? Lanza el dado de <strong style="color:#FFC9CF">🎲 Escenario sorpresa</strong>. El modelo devuelve la probabilidad (con un decimal, cálculo determinista y reproducible) de operar con rentabilidad al tercer año, la curva de supervivencia, la distribución de utilidades (Monte Carlo, 2,000 corridas) y los indicadores financieros del proyecto.</p>
+      @@FOTO:la-era:ilustracion@@
+    </div>
 
     <article class="widget widget-describir" id="wDescribir" data-estado="vacio" aria-labelledby="wDescribir-q">
       <p class="widget-pregunta" id="wDescribir-q">Cuéntale a COATL tu negocio y ajusta el simulador por ti</p>
@@ -241,13 +253,6 @@
         </div>
         <div class="describir-salida">
           <div id="descEntendido" aria-live="polite"><p class="desc-resumen">Aquí verás qué datos entendí y cuáles ajusté.</p></div>
-          <details class="describir-ia">
-            <summary>Usar IA en línea (opcional)</summary>
-            <label for="descClave">Tu clave de Google AI Studio (gratis) o de Anthropic</label>
-            <input type="password" id="descClave" autocomplete="off" spellcheck="false" placeholder="Clave de Google AI Studio o sk-ant-…">
-            <button type="button" class="btn btn-widget btn-sec" id="descOlvidar">Olvidar clave</button>
-            <p class="nota-widget">La clave se queda solo en la memoria de esta pestaña y se envía únicamente a su proveedor. Gemini (<a href="https://aistudio.google.com/apikey" target="_blank" rel="noopener">saca tu clave gratis en AI Studio</a>) tiene plan gratuito sin tarjeta y con límites; en ese plan Google puede usar lo que escribas para mejorar sus productos, así que no escribas datos personales. Claude cobra por uso en tu cuenta de Anthropic. El dictado por voz usa el servicio de reconocimiento de tu navegador.</p>
-          </details>
         </div>
       </div>
       <p class="widget-estado" role="status" id="wDescribir-estado">Escribe o dicta cómo es tu negocio.</p>
@@ -631,44 +636,10 @@
     <div class="panel" id="mapa" style="margin-top:1.5rem">
       <h3>Mapa de probabilidad por zona</h3>
       <p class="sub">Tu mismo negocio, evaluado en las seis zonas de Coacalco con la renta de referencia y la afluencia de cada una. El color indica la probabilidad de éxito a 3 años. <strong>Haz clic en una zona</strong> (o en el ranking) para trasladar tu escenario ahí. Activa la capa <strong>satélite</strong> para ver la fotografía aérea real del municipio.</p>
-      <div class="conmutador" role="group" aria-label="Modo de mapa">
-        <button type="button" id="btnMapaReal" class="activa">🗺️ Mapa real (calles / satélite)</button>
-        <button type="button" id="btnMapaEsquema">✏️ Esquema del equipo</button>
-      </div>
       <div class="mapa-grid">
         <div class="mapa-cont">
           <div class="mapa-leaflet" id="mapaReal" role="application" aria-label="Mapa real de Coacalco de Berriozábal con las seis zonas de análisis coloreadas según su probabilidad de éxito"></div>
-          <svg viewBox="0 0 760 470" id="mapaEsquema" hidden role="group" aria-label="Mapa esquemático de Coacalco de Berriozábal dividido en seis zonas coloreadas según su probabilidad de éxito">
-            <rect x="2" y="2" width="756" height="466" rx="14" fill="#FBF6F3" stroke="#EFD6D4"/>
-            <!-- Zonas (norte arriba) -->
-            <path class="zona-mapa" id="mz-periferia" data-zona="periferia" d="M98,88 L380,74 L660,80 Q702,86 708,146 L96,160 Q82,122 98,88 Z"><title>Zonas habitacionales periféricas</title></path>
-            <path class="zona-mapa" id="mz-heroes" data-zona="heroes" d="M96,160 L330,153 L327,258 L86,257 Q78,206 96,160 Z"><title>Los Héroes · Loma Bonita · Villa de las Manzanas</title></path>
-            <path class="zona-mapa" id="mz-centro" data-zona="centro" d="M330,153 L472,150 L470,259 L327,258 Z"><title>San Francisco Coacalco (Centro)</title></path>
-            <path class="zona-mapa" id="mz-flores" data-zona="flores" d="M472,150 L708,146 Q716,204 712,262 L470,259 Z"><title>Villa de las Flores · Parque Residencial · Bosques</title></path>
-            <path class="zona-mapa" id="mz-corredor" data-zona="corredor" d="M86,257 L327,258 L470,259 L712,262 L706,316 L78,308 Q74,282 86,257 Z"><title>Corredor Vía López Portillo</title></path>
-            <path class="zona-mapa" id="mz-popular" data-zona="popular" d="M78,308 L368,312 L358,386 Q222,396 106,378 Q86,346 78,308 Z"><title>El Potrero · San Rafael · El Olivo</title></path>
-            <!-- Sierra de Guadalupe (decorativa) -->
-            <path d="M368,312 L706,316 Q690,374 636,416 Q518,440 398,410 Q374,364 368,312 Z" fill="#E7D8D1" stroke="#fff" stroke-width="2.5" stroke-linejoin="round"/>
-            <path d="M470,372 l14,-22 l14,22 Z M520,384 l16,-26 l16,26 Z M580,372 l14,-22 l14,22 Z" fill="#CBB3A9"/>
-            <text class="et-geo" x="535" y="408">SIERRA DE GUADALUPE · ÁREA NATURAL</text>
-            <!-- Vía José López Portillo -->
-            <path d="M84,284 C 240,278 520,294 704,290" fill="none" stroke="#fff" stroke-width="4" stroke-dasharray="14 9" opacity=".85"/>
-            <!-- Etiquetas -->
-            <text class="et-zona" x="390" y="120">Periferia norte</text><text class="et-p" id="pl-periferia" x="390" y="138">—</text>
-            <text class="et-zona" x="206" y="200">Héroes · Loma Bonita</text><text class="et-p" id="pl-heroes" x="206" y="218">—</text>
-            <text class="et-zona" x="398" y="200">Centro S. Fco.</text><text class="et-p" id="pl-centro" x="398" y="218">—</text>
-            <text class="et-zona" x="590" y="198">V. de las Flores</text><text class="et-p" id="pl-flores" x="590" y="216">—</text>
-            <text class="et-zona" x="262" y="291">Corredor López Portillo</text><text class="et-p" id="pl-corredor" x="560" y="291">—</text>
-            <text class="et-zona" x="212" y="348">Potrero · S. Rafael</text><text class="et-p" id="pl-popular" x="212" y="366">—</text>
-            <!-- Rosa de los vientos -->
-            <g transform="translate(712,44)" aria-hidden="true">
-              <line x1="0" y1="14" x2="0" y2="-12" stroke="#7A0C1F" stroke-width="2"/>
-              <path d="M0,-16 L6,-4 L0,-7 L-6,-4 Z" fill="#C8102E"/>
-              <text x="0" y="30" text-anchor="middle" font-family="Spline Sans Mono,monospace" font-size="11" fill="#7A0C1F" font-weight="700">N</text>
-            </g>
-          </svg>
-          <div class="mapa-tooltip" id="mapaTip" role="status"></div>
-          <p class="mapa-nota">Mapa real: cartografía © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · fotografía aérea © Esri y proveedores. Límites de AGEB urbanas: INEGI, Marco Geoestadístico (dic. 2025) y población del Censo 2020; la agrupación de AGEB en seis zonas es del equipo; los hitos comerciales se muestran con ubicación aproximada. Cada zona se evalúa con tu escenario actual ajustando renta de referencia y afluencia. Si no hay conexión, se muestra el esquema del equipo.</p>
+          <p class="mapa-nota">Mapa real: cartografía © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> · fotografía aérea © Esri y proveedores. Límites de AGEB urbanas: INEGI, Marco Geoestadístico (dic. 2025) y población del Censo 2020; la agrupación de AGEB en seis zonas es del equipo; los hitos comerciales se muestran con ubicación aproximada. Cada zona se evalúa con tu escenario actual ajustando renta de referencia y afluencia. Si no hay conexión, el ranking y el comparador conservan los mismos resultados.</p>
         </div>
         <div>
           <p class="ranking-titulo">Ranking de zonas para tu escenario</p>
@@ -688,7 +659,10 @@
 <section class="seccion" id="empresas" aria-labelledby="empresas-titulo">
   <p class="folio">Sección 03b · Para empresas</p>
   <h2 class="titulo" id="empresas-titulo">Tus propios datos, sin que salgan de tu computadora</h2>
-  <p class="intro">Sube el historial mensual de tu negocio y COATL proyecta tu año con <strong>tu</strong> variabilidad real en lugar de los supuestos del equipo. El archivo se lee <strong>solo en este navegador</strong>: no se envía a ningún servidor, no se guarda y desaparece al recargar o al pulsar «Borrar».</p>
+  <div class="intro-flex">
+    <p class="intro">Sube el historial mensual de tu negocio y COATL proyecta tu año con <strong>tu</strong> variabilidad real en lugar de los supuestos del equipo. El archivo se lee <strong>solo en este navegador</strong>: no se envía a ningún servidor, no se guarda y desaparece al recargar o al pulsar «Borrar».</p>
+    @@FOTO:plaza-flores:ilustracion@@
+  </div>
   <article class="widget widget-claro widget-empresas" id="wEmpresa" data-estado="vacio" aria-labelledby="wEmpresa-q">
     <p class="widget-pregunta" id="wEmpresa-q">Con tu historial real, ¿qué tan probable es cerrar el año con utilidad?</p>
     <div class="empresa-carga">
@@ -731,6 +705,7 @@
   <h2 class="titulo">Qué hacer para no perder: análisis FODA y plan de acción</h2>
   <div class="foda-intro">
     <p class="intro" style="margin-bottom:0">No basta con saber la probabilidad: hay que poder moverla. Este apartado lee tu escenario <strong>en vivo</strong>, lo clasifica en Fortalezas, Oportunidades, Debilidades y Amenazas, y construye un <strong>plan de acción priorizado</strong>. Cada estrategia muestra cuántos puntos de probabilidad ganarías —calculados volviendo a correr el modelo con esa mejora— y la evidencia real que la respalda.</p>
+    @@FOTO:san-rafael:foda-foto@@
     <div class="foda-resumen">
       Probabilidad actual
       <span class="gr" id="fodaP">—</span>
@@ -833,7 +808,7 @@
   <h2 class="titulo">Cómo leer tu resultado</h2>
   <div class="intro-flex">
     <p class="intro">Una probabilidad no es una sentencia: es una medida de riesgo bajo supuestos. Esta guía traduce los rangos del medidor a decisiones de inversión, en línea con los criterios de evaluación de la Jornada Académica.</p>
-    <figure class="ilustracion foto-cita"><img src="assets/img/zonas/corredor.webp" width="480" height="320" loading="lazy" decoding="async" alt="Estacionamiento y locales de Plaza Coacalco, sobre el corredor comercial de la Vía José López Portillo"><figcaption><a href="https://commons.wikimedia.org/wiki/File:Plaza_Coacalco._-_panoramio.jpg" target="_blank" rel="noopener">ArCaRa</a> · <a href="https://creativecommons.org/licenses/by/3.0/" target="_blank" rel="noopener">CC BY 3.0</a></figcaption></figure>
+    @@FOTO:plaza-coacalco:ilustracion@@
   </div>
 
   <div class="guia">
@@ -869,7 +844,10 @@
 <section class="seccion" id="legal">
   <p class="folio">Sección 06 · Marco legal y referencias</p>
   <h2 class="titulo">Aviso legal</h2>
-  <p class="intro">Este apartado protege los derechos de los autores del proyecto y delimita con claridad el alcance de la herramienta, conforme a la legislación mexicana aplicable. El uso del sitio implica la aceptación de estos términos.</p>
+  <div class="intro-flex">
+    <p class="intro">Este apartado protege los derechos de los autores del proyecto y delimita con claridad el alcance de la herramienta, conforme a la legislación mexicana aplicable. El uso del sitio implica la aceptación de estos términos.</p>
+    @@FOTO:valle:ilustracion@@
+  </div>
 
   <div class="metodos">
     <article class="metodo" data-num="§1">

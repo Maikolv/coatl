@@ -1,0 +1,7 @@
+{
+  "name": "coatl-ia",
+  "private": true,
+  "type": "module",
+  "description": "Intermediario de IA de COATL: guarda la clave de Gemini en el servidor (Vercel).",
+  "engines": { "node": "22.x" }
+}

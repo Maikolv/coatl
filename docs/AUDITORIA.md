@@ -144,3 +144,21 @@ Nueva prueba `tests/e2e/orientacion.spec.js`: revisa los 8 apartados en teléfon
 | 9 | No había un documento que explicara la construcción ni un video para evaluadores | ✅ `entregables/COATL_Documento_Tecnico.docx` y `entregables/COATL_Video.mp4` (con subtítulos `.srt`) |
 | 10 | La pestaña «Territorio» de la tira y la orden al asistente «abre el territorio» llevaban a Inicio: `vistaDe()` solo buscaba elementos por id y la vista `territorio` no tiene uno | ✅ Primero reconoce el nombre de la vista; nueva prueba «cada apartado abre por su nombre» |
 | 11 | Al corregir el desborde, las tablas de escenarios y de zonas se desplazan dentro de su caja en el teléfono, pero esa caja no se alcanzaba con teclado (axe: `scrollable-region-focusable`) | ✅ `tabindex="0"`, `role="region"` y nombre accesible, como las demás tablas |
+
+## 10. v8: IA del proyecto, mapa real, fotos y simulador sin huecos (14 de noviembre de 2026)
+
+| # | Hallazgo o petición | Acción |
+|---|---|---|
+| 1 | El asistente de IA exigía que cada visitante pusiera su propia clave | ✅ Intermediario `servicios/ia` en Vercel con la clave del proyecto (`GEMINI_API_KEY`); el sitio ya no pide clave. Reglas de origen, instrucciones fijas, `store:false`, tope de tokens y límite por IP, con pruebas (`tests/ia.test.mjs`). Respaldo local si no responde |
+| 2 | Inicio usaba un mapa isométrico hecho por el equipo («composición esquemática») | ✅ Mapa real de Leaflet con las 70 AGEB del INEGI, el mismo del Simulador (`crearMapaZonas`) |
+| 3 | El Simulador tenía un botón «Esquema del equipo» con un SVG dibujado a mano | ✅ Retirado; el ranking de zonas ahora se opera con teclado |
+| 4 | La foto de Los Héroes aparecía dos veces en la misma pantalla de Inicio, y la del corredor en dos apartados | ✅ Once fotos nuevas de Wikimedia Commons, una por lugar; el build falla si una se repite |
+| 5 | Territorio: la foto ocupaba media fila y dejaba la otra mitad en blanco | ✅ Galería: Palacio + cuatro escenas (Mexibús, Power Center, Calle Chiapas, Museo del Mamut) |
+| 6 | Simulador: la columna del formulario terminaba 684 px antes que la de resultados | ✅ Formulario fijo (*sticky*) que acompaña a los resultados |
+| 7 | Simulador: la tarjeta VPN dejaba media fila vacía; Comparar y Exportar quedaban con espacio sobrante junto al tornado | ✅ VPN a todo lo ancho; tornado a la izquierda y las dos tarjetas apiladas a la derecha |
+| 8 | Tornado: «Margen de seguridad financiero» se cortaba («gen de seguridad…») | ✅ Etiquetas largas en varias líneas |
+| 9 | Encabezados de DENUE, Simulador, Empresas, Estrategia y Aviso legal: solo texto, con espacio libre a la derecha | ✅ Una foto real de Coacalco en cada uno |
+| 10 | Botón «Abrir simulador» en la barra superior (pedido del equipo) | ✅ Retirado |
+| 11 | Las pestañas no se podían reordenar | ✅ Asa ⠿ para arrastrar (ratón o dedo) y flechas ←/→ con anuncio para lector de pantalla |
+| 12 | Precisión: β y afluencia son estimaciones del equipo | 📄 Ruta con métodos y datos reales en `docs/METODOS_PRECISION.md` (panel del DENUE, Shumway, Kaplan–Meier, Huff, calibración, conformal) |
+| 13 | El README no mostraba la salida real de las verificaciones | ✅ Sección «Capturas de la terminal» generada por `scripts/capturas_terminal.mjs` |

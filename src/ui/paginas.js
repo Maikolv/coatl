@@ -29,10 +29,42 @@ function pintarPestanas(){
   fijarTope();
   try{ sessionStorage.setItem('coatl-pestanas',JSON.stringify(abiertas)); }catch(_){}
   tira.innerHTML=abiertas.map(id=>{const v=VISTAS.find(x=>x.id===id), act=id===vistaActual;
-    return '<div class="pa-tab'+(act?' activa':'')+'"><a href="#'+id+'"'+(act?' aria-current="page"':'')+'>'+v.titulo+'</a>'+
+    return '<div class="pa-tab'+(act?' activa':'')+'" data-id="'+id+'"><button type="button" class="pa-mover" data-mover="'+id+'" aria-label="Mover la pestaña '+v.titulo+' (flechas izquierda y derecha, o arrastrar)" title="Arrastra para cambiar el orden">⠿</button><a href="#'+id+'"'+(act?' aria-current="page"':'')+'>'+v.titulo+'</a>'+
       '<button type="button" data-cerrar="'+id+'" aria-label="Cerrar la pestaña '+v.titulo+'">✕</button></div>';}).join('');
   const act=tira.querySelector('.activa'); if(act) tira.scrollLeft=act.offsetLeft-tira.clientWidth/2+act.offsetWidth/2;
 }
+/* Reordenar pestañas: arrastrar el asa ⠿ (ratón o dedo, pointer events) o flechas ←/→ con el asa enfocada.
+   El orden se guarda en la sesión junto con la lista. */
+function moverPestana(id, destino){
+  const i=abiertas.indexOf(id); if(i<0) return;
+  destino=Math.max(0,Math.min(abiertas.length-1,destino)); if(destino===i){ pintarPestanas(); return; }
+  abiertas.splice(i,1); abiertas.splice(destino,0,id); pintarPestanas();
+  document.querySelector('[data-mover="'+id+'"]')?.focus();
+  const aviso=$("avisoPestanas"); if(aviso) aviso.textContent=VISTAS.find(v=>v.id===id).titulo+": posición "+(destino+1)+" de "+abiertas.length;
+}
+(function arrastrePestanas(){
+  const tira=$("pestanasApp"); if(!tira) return;
+  let arr=null;
+  const destinoEn=x=>[...tira.querySelectorAll(".pa-tab")].filter(t=>t!==arr.el).filter(t=>{const r=t.getBoundingClientRect(); return x>r.left+r.width/2;}).length;
+  tira.addEventListener("pointerdown",ev=>{
+    const h=ev.target.closest("[data-mover]"); if(!h) return;
+    ev.preventDefault(); h.setPointerCapture(ev.pointerId);
+    arr={id:h.dataset.mover, x0:ev.clientX, el:h.closest(".pa-tab")}; arr.el.classList.add("arrastrando");
+  });
+  tira.addEventListener("pointermove",ev=>{
+    if(!arr) return; arr.el.style.transform="translateX("+(ev.clientX-arr.x0)+"px)";
+    const d=destinoEn(ev.clientX); tira.querySelectorAll(".pa-tab").forEach(t=>t.classList.remove("destino"));
+    const otros=[...tira.querySelectorAll(".pa-tab")].filter(t=>t!==arr.el); (otros[d]||otros[otros.length-1])?.classList.add("destino");
+  });
+  const soltar=ev=>{ if(!arr) return; const {id}=arr, d=ev.type==="pointerup"?destinoEn(ev.clientX):abiertas.indexOf(id); arr=null; moverPestana(id,d); };
+  tira.addEventListener("pointerup",soltar); tira.addEventListener("pointercancel",soltar);
+  tira.addEventListener("keydown",ev=>{
+    const h=ev.target.closest("[data-mover]"); if(!h) return;
+    const i=abiertas.indexOf(h.dataset.mover);
+    if(ev.key==="ArrowLeft"){ ev.preventDefault(); moverPestana(h.dataset.mover,i-1); }
+    else if(ev.key==="ArrowRight"){ ev.preventDefault(); moverPestana(h.dataset.mover,i+1); }
+  });
+})();
 document.addEventListener('click',ev=>{
   const b=ev.target.closest('[data-cerrar]'); if(!b) return;
   const id=b.dataset.cerrar, i=abiertas.indexOf(id); abiertas.splice(i,1);

@@ -29,7 +29,25 @@ export const MODULOS_JS = [
   'src/ui/app.js',
 ];
 
+// Fotos de escenarios (scripts/fotos_sync.mjs): figura con su cita exacta de Wikimedia Commons.
+// Regla del proyecto: ninguna foto se repite en el sitio; el build falla si un id aparece dos veces.
+const usadas = new Set();
+function figuraFoto(id, clase) {
+  const cred = JSON.parse(fs.readFileSync(path.join(raiz, 'assets/img/escenarios/creditos.json'), 'utf8'))[id];
+  if (!cred) throw new Error('Foto sin créditos: ' + id);
+  if (usadas.has(id)) throw new Error('Foto repetida en el sitio: ' + id);
+  usadas.add(id);
+  const e = (t) => String(t).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/"/g, '&quot;');
+  return `<figure class="foto-cita foto-escena ${clase}"><img src="assets/img/escenarios/${id}.webp" width="1200" height="800" loading="lazy" decoding="async" alt="${e(cred.titulo)}">` +
+    `<figcaption><span class="foto-titulo">${e(cred.titulo)}</span> <a href="${e(cred.pagina)}" target="_blank" rel="noopener">${e(cred.autor)}</a> · <a href="${e(cred.licenciaUrl)}" target="_blank" rel="noopener">${e(cred.licencia)}</a></figcaption></figure>`;
+}
+
+// Intermediario de IA del proyecto (servicios/ia en Vercel): la clave de Gemini vive allá, nunca en el sitio.
+// Se puede cambiar con COATL_IA_URL; vacío desactiva la IA y deja solo el motor local.
+const IA_URL = process.env.COATL_IA_URL ?? 'https://coatl-ia.vercel.app/api/coatl';
+
 export function construir() {
+  usadas.clear();
   const worker = [leer('src/datos/datos.js'), leer('src/modelo/modelo.js'), leer('src/modelo/worker.js')].join('\n');
   const js = MODULOS_JS.filter((m) => fs.existsSync(path.join(raiz, m)))
     .map((m) => `/* ===== ${m} ===== */\n${leer(m)}`).join('\n')
@@ -47,6 +65,9 @@ export function construir() {
   let html = plantilla
     .replace('/*@@CSS@@*/', () => cssFinal)
     .replace('/*@@JS@@*/', () => js)
+    .replace('@@IA_URL@@', () => IA_URL)
+    .replace('@@IA_ORIGEN@@', () => (IA_URL ? new URL(IA_URL).origin : ''))
+    .replace(/@@FOTO:([a-z-]+):([a-z-]+)@@/g, (_, id, clase) => figuraFoto(id, clase))
     .replace('@@FOTO_PALACIO@@', () => fs.readFileSync(path.join(raiz, 'assets/img/palacio-coacalco.webp')).toString('base64'));
   // CSP sin 'unsafe-inline' para scripts: se autoriza solo el script en línea por su hash
   //.
@@ -66,8 +87,10 @@ export function construir() {
   fs.writeFileSync(path.join(raiz, 'dist', '.nojekyll'), '');
   fs.writeFileSync(path.join(raiz, 'dist', 'robots.txt'), 'User-agent: *\nAllow: /\n');
   // Agregados del DENUE (scripts/denue_sync.py): se publican junto al sitio.
-  const fotos = path.join(raiz, 'assets', 'img', 'zonas');
-  if (fs.existsSync(fotos)) fs.cpSync(fotos, path.join(raiz, 'dist', 'assets', 'img', 'zonas'), { recursive: true });
+  for (const sub of ['zonas', 'escenarios']) {   // fotos de zonas y de escenarios (scripts/fotos_sync.mjs)
+    const fotos = path.join(raiz, 'assets', 'img', sub);
+    if (fs.existsSync(fotos)) fs.cpSync(fotos, path.join(raiz, 'dist', 'assets', 'img', sub), { recursive: true });
+  }
   const datos = path.join(raiz, 'data', 'denue');
   if (fs.existsSync(datos)) fs.cpSync(datos, path.join(raiz, 'dist', 'data', 'denue'), { recursive: true });
   const censo = path.join(raiz, 'data', 'censo');   // Censos Económicos 2019 (scripts/censo_sync.py)

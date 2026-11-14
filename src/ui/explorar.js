@@ -45,50 +45,20 @@ $("demoAbrir").addEventListener("click",()=>{
   toast("Simulador abierto con "+$("clientes").value+" clientes/día.");
 });
 
-/* ===== Inicio · mapa 2.5D con las formas reales de las zonas ===== */
-/* Toma las mismas formas del mapa del equipo (#mapaEsquema), las proyecta en perspectiva
-   oblicua y las extruye: altura = P a 3 años, escala explícita (100 % = ESC_Z px, regla de
-   50 % rotulada). La superficie de cada zona lleva su foto real (Wikimedia Commons). */
-let zona25=null;
-const ESC_Z=105, OBL={sx:-0.5, sy:0.58, ox:165, oy:150};
-const ORDEN25=["periferia","heroes","centro","flores","corredor","popular"];   // de fondo a frente
-const ANCLA25={periferia:[390,122],heroes:[206,206],centro:[398,206],flores:[590,204],corredor:[300,286],popular:[212,350]};
-const proy=(x,y,z)=>[x+OBL.sx*y+OBL.ox, OBL.sy*y+OBL.oy-z];
-const matriz=z=>"matrix(1 0 "+OBL.sx+" "+OBL.sy+" "+OBL.ox+" "+(OBL.oy-z).toFixed(1)+")";
-function aclarar(rgb,k){const m=/rgb\((\d+),(\d+),(\d+)\)/.exec(rgb); if(!m) return rgb;
-  return "rgb("+[1,2,3].map(i=>Math.max(0,Math.min(255,Math.round(+m[i]*k)))).join(",")+")";}
-function cajaPath(d){ const n=(d.match(/-?\d+(\.\d+)?/g)||[]).map(Number), xs=n.filter((_,i)=>i%2===0), ys=n.filter((_,i)=>i%2===1);
-  return {x:Math.min(...xs), y:Math.min(...ys), w:Math.max(...xs)-Math.min(...xs), h:Math.max(...ys)-Math.min(...ys)}; }
-function svgIsometrico(){
-  const formas={}; ORDEN25.forEach(k=>{const p=$("mz-"+k); if(p) formas[k]=p.getAttribute("d")});
-  const defs=ORDEN25.filter(k=>formas[k]&&FOTOS_ZONAS[k]).map(k=>{const c=cajaPath(formas[k]);
-    return '<pattern id="foto25-'+k+'" patternUnits="userSpaceOnUse" x="'+c.x+'" y="'+c.y+'" width="'+c.w+'" height="'+c.h+'"><image href="'+FOTOS_ZONAS[k].src+'" width="'+c.w+'" height="'+c.h+'" preserveAspectRatio="xMidYMid slice"/></pattern>'}).join("");
-  const sierra="M368,312 L706,316 Q690,374 636,416 Q518,440 398,410 Q374,364 368,312 Z";
-  let capas='<path d="'+sierra+'" transform="'+matriz(0)+'" class="suelo25"/>';
-  ORDEN25.forEach(k=>{
-    const d=datosMapa.find(x=>x.k===k); if(!d||!formas[k]) return;
-    const z=d.P*ESC_Z, col=colorP(d.P), sel=k===zona25, act=k===escZonaActual;
-    let muros=""; for(let t=0;t<z;t+=2.5) muros+='<path d="'+formas[k]+'" transform="'+matriz(t)+'" fill="'+aclarar(col,0.42+0.3*t/Math.max(z,1))+'"/>';
-    capas+='<g data-zona="'+k+'" class="zona25'+(sel?" sel":"")+(act?" actual":"")+'"><title>'+d.z.n+': '+pct(d.P)+'</title>'+
-      '<path d="'+formas[k]+'" transform="'+matriz(-3)+'" class="sombra25"/>'+muros+
-      '<path d="'+formas[k]+'" transform="'+matriz(z)+'" fill="url(#foto25-'+k+')" class="foto25"/>'+
-      '<path d="'+formas[k]+'" transform="'+matriz(z)+'" fill="'+col+'" class="tinte25"/>'+
-      '<path d="'+formas[k]+'" transform="'+matriz(z)+'" class="borde25"/></g>';
-  });
-  const rot=ORDEN25.map(k=>{const d=datosMapa.find(x=>x.k===k); if(!d) return ""; const [x,y]=proy(ANCLA25[k][0],ANCLA25[k][1],d.P*ESC_Z);
-    return '<g class="rot25" data-zona="'+k+'"><text x="'+x.toFixed(1)+'" y="'+(y-6).toFixed(1)+'" class="rot-z">'+CORTOS[k]+'</text><text x="'+x.toFixed(1)+'" y="'+(y+10).toFixed(1)+'" class="rot-p">'+pct(d.P)+'</text></g>'}).join("");
-  const [ex,ey]=proy(735,330,0);
-  const regla='<g class="escala"><line x1="'+ex+'" y1="'+ey+'" x2="'+ex+'" y2="'+(ey-ESC_Z*.5)+'"/><line x1="'+(ex-4)+'" y1="'+(ey-ESC_Z*.5)+'" x2="'+(ex+4)+'" y2="'+(ey-ESC_Z*.5)+'"/><text x="'+(ex+7)+'" y="'+(ey-ESC_Z*.25+3)+'">50 %</text></g>';
-  return '<svg viewBox="40 30 760 360" class="iso" preserveAspectRatio="xMidYMid meet"><defs>'+defs+'</defs>'+capas+rot+regla+
-    '<text x="795" y="384" class="nota" text-anchor="end">altura = P a 3 años · formas del esquema del equipo, no catastrales · N ↑</text></svg>';
-}
+/* ===== Inicio · mapa real de zonas ===== */
+/* El mismo mapa del Simulador (crearMapaZonas, mapa.js): AGEB oficiales del INEGI agrupadas en seis zonas,
+   coloreadas por P a 3 años. Aquí un clic elige la zona para la ficha; el botón la lleva al simulador. */
+let zona25=null, mapaInicio=null;
+const observarMapaInicio=new IntersectionObserver(async ([e])=>{
+  if(!e.isIntersecting) return; observarMapaInicio.disconnect();
+  mapaInicio=await montarMapa("mapa25", elegirZona25, {seleccion:()=>zona25, zoom:12});
+},{rootMargin:"300px 0px"});
+observarMapaInicio.observe($("mapa25"));
 function pintarMapa25(){
   seguro("wMapa",()=>{
     if(!datosMapa.length) { estadoWidget("wMapa","vacio"); return false; }
     if(!zona25 || !ZONAS[zona25]) zona25=escZonaActual;
-    $("mapa25").innerHTML=svgIsometrico();
-    $("mapa25").querySelectorAll("g[data-zona]").forEach(g=>g.addEventListener("click",()=>elegirZona25(g.dataset.zona)));
-    pintarPostal(zona25);
+    if(mapaInicio) actualizarMapa(mapaInicio);
     const lista=$("mapa25Lista");
     lista.innerHTML=[...datosMapa].sort((a,b)=>b.P-a.P).map(d=>
       '<li role="option" id="z25-'+d.k+'" data-zona="'+d.k+'" aria-selected="'+(d.k===zona25)+'"><span class="punto" data-color="'+colorP(d.P)+'"></span>'+CORTOS[d.k]+'<span class="rp">'+pct(d.P)+'</span></li>').join("");
@@ -125,10 +95,6 @@ $("mapa25Abrir").addEventListener("click",()=>{
   irA("simulador");
 });
 
-function pintarPostal(k){
-  const el=$("demoPostal"), f=FOTOS_ZONAS[k]; if(!el||!f) return;
-  el.innerHTML='<img src="'+f.src+'" alt="Vista de '+ZONAS[k].n+'" loading="lazy"><span class="postal-zona">'+ZONAS[k].n+'</span><figcaption><a href="'+f.pagina+'" target="_blank" rel="noopener">'+f.autor+'</a> · <a href="'+f.licenciaUrl+'" target="_blank" rel="noopener">'+f.licencia+'</a></figcaption>';
-}
 
 /* ===== Simulador · escenario vigente y restablecer ===== */
 function marcarPendiente(){

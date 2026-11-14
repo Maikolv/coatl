@@ -17,9 +17,9 @@ Simulador estadístico que estima la **probabilidad de que un negocio siga opera
 | Supervivencia tipo Cox | Curva S(t) a 10 años con banda, comparada con la nacional del INEGI |
 | Monte Carlo (2,000 años, semilla fija) | Histograma con P5 · mediana · P95 y P(utilidad > 0) |
 | Finanzas | Utilidad, punto de equilibrio, ROI, payback y VPN a 3 años (antes de impuestos) |
-| Mapa | Seis zonas con polígonos, ranking y comparador de zonas |
+| Mapa | Mapa real (Leaflet) con las 70 AGEB oficiales del INEGI agrupadas en seis zonas, ranking y comparador |
 | FODA dinámico | Nueve estrategias con ΔP real y plan de acción |
-| Recorrido exploratorio | Widget de inicio, mapa 2.5D por zona, supervivencia por año, meta de Monte Carlo, superficie de sensibilidad y trazabilidad a la fuente ([docs/WIDGETS.md](docs/WIDGETS.md)) |
+| Recorrido exploratorio | Widget de inicio, mapa real por zona, supervivencia por año, meta de Monte Carlo, superficie de sensibilidad y trazabilidad a la fuente ([docs/WIDGETS.md](docs/WIDGETS.md)) |
 | DENUE nacional | 6.1 millones de establecimientos de las 32 entidades, sincronizados cada semana con la descarga oficial del INEGI ([docs/DENUE.md](docs/DENUE.md)) |
 | Para empresas | Carga confidencial de CSV/Excel: el análisis corre solo en el navegador, con bootstrap de los meses propios |
 | Herramientas | Comparar 3 escenarios, compartir por URL, exportar PNG/PDF, restablecer referencia |
@@ -64,13 +64,20 @@ Cada imagen es la página entera, sin cortes (`node scripts/capturas.mjs --sitio
 
 </details>
 
-## Funciones principales (v6)
+## Funciones principales (v8)
+
+- **IA de COATL sin clave para el visitante**: el asistente y «Describe tu negocio» usan Gemini con la clave del proyecto, guardada en un intermediario de Vercel ([docs/GEMINI.md](docs/GEMINI.md)); sin red, responde el motor local.
+- **Mapa real en Inicio y en el Simulador**: el esquema del equipo se retiró; ambos usan las AGEB oficiales del INEGI.
+- **Fotos reales de Coacalco por escenario**: once fotos nuevas de Wikimedia Commons con su licencia, ninguna repetida (el build lo impide).
+- **Pestañas reordenables**: arrastra el asa ⠿ o usa ← → para ordenar los apartados abiertos.
+- **Simulador sin huecos**: el formulario acompaña a los resultados al desplazarte y los paneles se acomodan en rejilla.
+- **Ruta hacia mayor precisión**: métodos con datos reales y referencias verificadas en [docs/METODOS_PRECISION.md](docs/METODOS_PRECISION.md).
 
 - **Contraste con el censo**: cada giro se compara con los negocios reales de Coacalco (INEGI, Censos Económicos 2019) y se puede aplicar esa referencia.
 - **Mapa con límites oficiales**: las 70 AGEB urbanas del INEGI agrupadas en las seis zonas.
 - **Accesibilidad verificada**: axe-core WCAG 2.1 AA sin violaciones en todos los apartados ([docs/ACCESIBILIDAD.md](docs/ACCESIBILIDAD.md)).
 
-- **Asistente siempre disponible** (botón 💬 en la esquina inferior derecha de todas las páginas): dice cómo vas, qué zona conviene y qué palancas suben tu probabilidad con el mismo motor; ajusta el simulador por texto o voz y te lleva a cualquier apartado. Responde preguntas libres con una clave gratuita de Google AI Studio (Gemini, sin tarjeta) o, si prefieres, con una clave de Anthropic. Cómo sacar la clave: [docs/GEMINI.md](docs/GEMINI.md).
+- **Asistente siempre disponible** (botón 💬 en la esquina inferior derecha de todas las páginas): dice cómo vas, qué zona conviene y qué palancas suben tu probabilidad con el mismo motor; ajusta el simulador por texto o voz y te lleva a cualquier apartado. Responde preguntas libres con la **IA de COATL** (Gemini, con la clave del proyecto guardada en un intermediario de Vercel; el visitante no pone ninguna clave). Detalles en [docs/GEMINI.md](docs/GEMINI.md).
 - **Giros sin límite**: los 35 calibrados, las 989 actividades del SCIAN o cualquier nombre que escribas (giro propio con la plantilla más parecida, rotulada «estimación del equipo»).
 
 ![Asistente](docs/capturas/asistente.png)
@@ -79,7 +86,7 @@ Cada imagen es la página entera, sin cortes (`node scripts/capturas.mjs --sitio
 - **Describe tu situación**: escribe o dicta tu negocio y el simulador ajusta los parámetros. El intérprete local funciona sin conexión; Claude es opcional, con tu propia clave.
 - **989 actividades del SCIAN** como giros, cada una con su competencia real del DENUE, más costos fijos propios sin límite.
 - **Pestañas de apartados**: cada apartado que abres queda como pestaña dentro de COATL (cambiar y cerrar, como en un navegador).
-- Mapa 2.5D con fotos reales de cada zona ([docs/RECURSOS.md](docs/RECURSOS.md)).
+- Fotos reales de cada zona y de escenarios de Coacalco ([docs/RECURSOS.md](docs/RECURSOS.md)).
 - **Asistente de IA del repositorio**: `npm run asistente` (requiere `ANTHROPIC_API_KEY` o `ant auth login`).
 - **Acceso directo**: `iniciar.bat` levanta el sitio en `http://127.0.0.1:8000`; el ícono está en `assets/icono/coatl.ico`.
 
@@ -112,6 +119,30 @@ En Windows, las e2e usan Microsoft Edge (`COATL_CANAL=msedge`) porque el Chromiu
 | 51.6 % | 44.3 %–58.3 % | $60,371 | 302.9 % | 4 meses | $912,776 |
 
 Los cambios frente a las versiones anteriores están en [docs/METODOLOGIA.md](docs/METODOLOGIA.md#escenario-de-referencia). Las fuentes de cada dato se verificaron en [docs/VERIFICACION_DATOS.md](docs/VERIFICACION_DATOS.md).
+
+## Capturas de la terminal
+
+Salida real de los comandos de verificación, sin editar; las generan `node scripts/capturas_terminal.mjs` al ejecutar cada comando. Las pruebas en navegador muestran solo su final.
+
+**Construcción del sitio** · `npm run build`
+
+![Construcción del sitio](docs/capturas/terminal/1-build.png)
+
+**Pruebas unitarias del modelo y del intermediario de IA** · `npm test`
+
+![Pruebas unitarias](docs/capturas/terminal/2-pruebas-unitarias.png)
+
+**Validación cruzada del modelo en Python** · `python scripts/validar_modelo.py`
+
+![Validación en Python](docs/capturas/terminal/3-validador-python.png)
+
+**Auditoría de dependencias** · `npm audit`
+
+![Auditoría de dependencias](docs/capturas/terminal/4-auditoria-dependencias.png)
+
+**Pruebas en navegador: computadora, teléfono y accesibilidad** · `npm run test:e2e`
+
+![Pruebas en navegador](docs/capturas/terminal/5-pruebas-navegador.png)
 
 ## Estructura
 

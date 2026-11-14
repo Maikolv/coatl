@@ -1,12 +1,8 @@
 /* ---------- 22. Describe tu situación (texto o voz) → parámetros del simulador ----------
    Dos intérpretes:
-   1) Local (por defecto): reglas en español, sin red ni clave. Siempre disponible.
-   2) Claude (opcional): si el usuario pega su propia clave de API, se usa el SDK oficial
-      @anthropic-ai/sdk con salida estructurada. La clave vive solo en memoria de esta pestaña.
-   La voz usa el reconocimiento del navegador (Web Speech API); en Chrome/Edge el audio lo
-   procesa el proveedor del navegador, y así se avisa en pantalla. */
-const SDK_URL="https://cdn.jsdelivr.net/npm/@anthropic-ai/sdk@1.3.0/+esm";
-let claveClaude=null, claveGemini=null;  // una sola caja: sk-ant-… es Claude; cualquier otra, Gemini
+   1) IA de COATL (Gemini, clave del proyecto en el servidor): por defecto en el sitio publicado.
+   2) Local: reglas en español, sin red. Respaldo automático si la IA no responde.
+   La voz usa el reconocimiento del navegador (Web Speech API). */
 
 function sinAcentos(t){return String(t).normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase()}
 function cantidad(txt){
@@ -74,53 +70,30 @@ function aplicarInterpretacion(r){
   ["inversion","credito","cvar","merma"].forEach(id=>$(id).dispatchEvent(new Event("input")));
   calcular();
 }
-/* Gemini (plan gratuito de Google AI Studio) por REST, sin SDK; store:false = Google no guarda la conversación.
-   Lo usan este intérprete y el asistente. */
-const MODELOS_GEMINI=["gemini-3.8-flash","gemini-3.5-flash-lite"];  // si el primero no está disponible en la cuenta (404), se usa el segundo
-const ERRORES_GEMINI={400:"la clave no es válida; cópiala de nuevo desde AI Studio",401:"la clave no es válida; cópiala de nuevo desde AI Studio",
-  403:"la clave no tiene permiso para la API de Gemini; en AI Studio créala para la API de Gemini",429:"se alcanzó el límite del plan gratuito; espera un minuto e intenta de nuevo"};
-async function gemini(instrucciones, texto, max, modelo=0){
+/* IA del proyecto (Gemini) a través del intermediario de COATL (servicios/ia, Vercel).
+   La clave es del proyecto y vive en el servidor: el visitante no necesita ninguna.
+   IA_URL la inyecta el build; fuera del sitio publicado (pruebas, copia local) la IA se activa con ?ia=1. */
+const IA_URL="@@IA_URL@@";
+const IA_ACTIVA=!!IA_URL && (location.hostname.endsWith("github.io") || new URLSearchParams(location.search).has("ia"));
+async function iaProyecto(modo, texto, contexto){
   let r;
-  try{ r=await fetch("https://generativelanguage.googleapis.com/v1beta/interactions",{method:"POST", signal:AbortSignal.timeout(45000),
-    headers:{"Content-Type":"application/json","x-goog-api-key":claveGemini},
-    body:JSON.stringify({model:MODELOS_GEMINI[modelo], input:texto, system_instruction:instrucciones, store:false, generation_config:{max_output_tokens:max}})}); }
-  catch(e){ throw new Error(e.name==="TimeoutError"?"tardó demasiado; revisa tu conexión":"sin conexión con Google"); }
+  try{ r=await fetch(IA_URL,{method:"POST", signal:AbortSignal.timeout(30000), headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({modo, texto, contexto})}); }
+  catch(e){ throw new Error(e.name==="TimeoutError"?"tardó demasiado; revisa tu conexión":"sin conexión con el servicio de IA"); }
   const j=await r.json().catch(()=>({}));
-  if(r.status===404&&modelo+1<MODELOS_GEMINI.length) return gemini(instrucciones, texto, max, modelo+1);
-  if(!r.ok) throw Object.assign(new Error(ERRORES_GEMINI[r.status]||(j.error&&j.error.message)||"HTTP "+r.status),{status:r.status});
-  return (j.steps||[]).filter(s=>s.type==="model_output").flatMap(s=>s.content||[]).filter(c=>c.type==="text").map(c=>c.text).join("");
+  if(!r.ok) throw Object.assign(new Error(j.error||"error "+r.status),{status:r.status});
+  return String(j.texto||"");
 }
-/* Intérpretes en línea (opcionales, clave del usuario): Claude con esquema estricto, Gemini con JSON pedido en las instrucciones. */
-const ESQUEMA_ESCENARIO={type:"object",additionalProperties:false,
-  properties:{giro:{type:["string","null"],enum:[...Object.keys(GIROS),null]},zona:{type:["string","null"],enum:[...Object.keys(ZONAS),null]},
-    clientes:{type:["number","null"]},ticket:{type:["number","null"]},inversion:{type:["number","null"]},renta:{type:["number","null"]},
-    empleados:{type:["number","null"]},costoEmpleado:{type:["number","null"]},superficie:{type:["number","null"]},credito:{type:["number","null"]},
-    tasa:{type:["number","null"]},experiencia_anios:{type:["number","null"]},resumen:{type:"string"}},
-  required:["giro","zona","clientes","ticket","inversion","renta","empleados","costoEmpleado","superficie","credito","tasa","experiencia_anios","resumen"]};
-async function interpretarClaude(texto){
-  const {default:Anthropic}=await import(SDK_URL);
-  const client=new Anthropic({apiKey:claveClaude, dangerouslyAllowBrowser:true});
-  const resp=await client.beta.messages.create({
-    model:"claude-opus-5-5", max_tokens:4000,
-    betas:["server-side-fallback-2026-07-01"], fallbacks:"default",
-    output_config:{effort:"low", format:{type:"json_schema", schema:ESQUEMA_ESCENARIO}},
-    system:instruccionesInterprete(),
-    messages:[{role:"user",content:texto}]
-  });
-  if(resp.stop_reason==="refusal") throw new Error("Claude no pudo procesar esta descripción.");
-  const bloque=resp.content.find(b=>b.type==="text"); if(!bloque) throw new Error("Respuesta vacía.");
-  return deJSON(JSON.parse(bloque.text));
-}
-async function interpretarGemini(texto){
-  const t=await gemini(instruccionesInterprete()+" Responde únicamente con un objeto JSON (sin texto adicional) con las claves: "+ESQUEMA_ESCENARIO.required.join(", ")+".", texto, 1500);
-  const m=/\{[\s\S]*\}/.exec(t); if(!m) throw new Error("Gemini no devolvió datos.");
+/* Intérprete con Gemini: JSON pedido en las instrucciones y validado aquí (deJSON) antes de tocar el simulador. */
+const CLAVES_ESCENARIO=["giro","zona","clientes","ticket","inversion","renta","empleados","costoEmpleado","superficie","credito","tasa","experiencia_anios","resumen"];
+async function interpretarIA(texto){
+  const catalogo="Giros válidos: "+Object.entries(GIROS).map(([k,g])=>k+"="+g.n).join("; ")+". Zonas válidas: "+Object.entries(ZONAS).map(([k,z])=>k+"="+z.n).join("; ")+
+    ". Claves del JSON: "+CLAVES_ESCENARIO.join(", ")+".";
+  const t=await iaProyecto("interprete", texto, catalogo);
+  const m=/\{[\s\S]*\}/.exec(t); if(!m) throw new Error("la IA no devolvió datos");
   return deJSON(JSON.parse(m[0]));
 }
-const instruccionesInterprete=()=>"Convierte la descripción de un negocio en Coacalco de Berriozábal (México) en parámetros del simulador COATL. "+
-      "Usa solo lo que la persona dijo; deja en null lo que no mencione. Cantidades en pesos mexicanos; clientes por día; crédito en porcentaje de la inversión; tasa anual en porcentaje. "+
-      "Giros válidos: "+Object.entries(GIROS).map(([k,g])=>k+"="+g.n).join("; ")+". Zonas válidas: "+Object.entries(ZONAS).map(([k,z])=>k+"="+z.n).join("; ")+
-      ". En «resumen» explica en una frase, en español, qué entendiste.";
-// Sin esquema estricto (Gemini) el JSON puede traer tipos raros: solo se aceptan textos en giro/zona y números finitos en lo demás.
+// Sin esquema estricto el JSON puede traer tipos raros: solo se aceptan textos en giro/zona y números finitos en lo demás.
 function deJSON(j){
   const r={}, entendido=[];
   for(const k of ["giro","zona","clientes","ticket","inversion","renta","empleados","costoEmpleado","superficie","credito","tasa"]){
@@ -129,27 +102,23 @@ function deJSON(j){
   if(Number.isFinite(j.experiencia_anios)){const a=j.experiencia_anios; r.experiencia=a>5?"0.30":a>=3?"0.15":a>=1?"0":"-0.25";}
   return {r, entendido, resumen:typeof j.resumen==="string"?j.resumen:""};
 }
-const ia=()=>claveClaude?"Claude":claveGemini?"Gemini":"";
 async function interpretarYAplicar(){
   const texto=$("descTexto").value.trim();
   if(!texto){ estadoWidget("wDescribir","vacio","Escribe o dicta cómo es tu negocio."); return; }
-  estadoWidget("wDescribir","cargando", ia()?ia()+" está interpretando tu descripción…":"Interpretando…");
-  try{
-    const res=claveClaude? await interpretarClaude(texto) : claveGemini? await interpretarGemini(texto) : interpretarLocal(texto);
-    if(!res.entendido.length){ estadoWidget("wDescribir","vacio","No identifiqué datos concretos. Prueba con cifras: «cafetería en Los Héroes, 70 clientes al día, ticket de 90 pesos, renta de 8 mil»."); return; }
-    aplicarInterpretacion(res.r);
-    $("descEntendido").innerHTML='<p class="desc-resumen">'+(res.resumen?esc(res.resumen)+" ":"")+'Ajusté:</p><ul>'+res.entendido.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul>";
-    estadoWidget("wDescribir","listo", "Simulador actualizado"+(ia()?" con "+ia()+".":" con el intérprete local.")+" Revisa y corrige cualquier campo en las pestañas.");
-  }catch(err){
-    console.warn(err);
-    estadoWidget("wDescribir","error", (ia()?ia()+" no respondió: "+(claveGemini?err.message:(err.status||err.message))+". ":"")+"Puedes usar el intérprete local quitando la clave.");
+  estadoWidget("wDescribir","cargando", IA_ACTIVA?"La IA de COATL está interpretando tu descripción…":"Interpretando…");
+  let res, conIA=IA_ACTIVA, aviso="";
+  if(IA_ACTIVA){
+    try{ res=await interpretarIA(texto); }
+    catch(err){ console.warn(err); conIA=false; aviso="La IA no respondió ("+err.message+"); usé el intérprete local. "; }
   }
+  if(!res || !res.entendido.length){ res=interpretarLocal(texto); conIA=false; }   // respaldo: reglas locales
+  if(!res.entendido.length){ estadoWidget("wDescribir","vacio",aviso+"No identifiqué datos concretos. Prueba con cifras: «cafetería en Los Héroes, 70 clientes al día, ticket de 90 pesos, renta de 8 mil»."); return; }
+  aplicarInterpretacion(res.r);
+  $("descEntendido").innerHTML='<p class="desc-resumen">'+(res.resumen?esc(res.resumen)+" ":"")+'Ajusté:</p><ul>'+res.entendido.map(x=>"<li>"+esc(x)+"</li>").join("")+"</ul>";
+  estadoWidget("wDescribir","listo", aviso+"Simulador actualizado"+(conIA?" con la IA de COATL (Gemini).":" con el intérprete local.")+" Revisa y corrige cualquier campo en las pestañas.");
 }
 $("descAplicar").addEventListener("click",interpretarYAplicar);
-$("descClave").addEventListener("change",()=>{ const v=$("descClave").value.trim();
-  claveClaude=v.startsWith("sk-ant-")?v:null; claveGemini=v&&!claveClaude?v:null;
-  $("descModo").textContent=claveClaude?"Intérprete: Claude (tu clave, solo en esta pestaña)":claveGemini?"Intérprete: Gemini (tu clave, solo en esta pestaña)":"Intérprete: local, sin conexión"; });
-$("descOlvidar").addEventListener("click",()=>{ $("descClave").value=""; claveClaude=null; claveGemini=null; $("descModo").textContent="Intérprete: local, sin conexión"; });
+$("descModo").textContent=IA_ACTIVA?"Intérprete: IA de COATL (Gemini) · respaldo local sin conexión":"Intérprete: local, sin conexión";
 /* Voz (Web Speech API) */
 (function voz(){
   const SR=window.SpeechRecognition||window.webkitSpeechRecognition, b=$("descVoz");

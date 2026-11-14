@@ -1,12 +1,16 @@
 /* ---------- 17. Widgets de análisis (todos derivados del propio modelo) ---------- */
 const COL={rojo:"#C8102E",granate:"#7A0C1F",rosa:"#E9B9BE",hueso:"#FBF6F3",tinta:"#38070F"};
 
+/* Etiquetas largas en varias líneas (Chart.js acepta arreglos) para que no se corten a la izquierda. */
+function partirEtiqueta(t,max=16){ const out=[]; let l="";
+  for(const w of t.split(" ")){ if((l+" "+w).trim().length>max&&l){ out.push(l); l=w; } else l=(l+" "+w).trim(); }
+  if(l) out.push(l); return out.length>1?out:t; }
 /* Tornado: contribución βᵢ de cada variable a z, ordenada por magnitud. */
 function pintarTornado(modelo){
   const c=[...modelo.contribs].filter(x=>x[1]!==0).sort((a,b)=>Math.abs(b[1])-Math.abs(a[1]));
   const datos=c.length?c:[["Todas las variables en posición neutra",0]];
   graficar($("graficaTornado"),{type:"bar",data:{
-    labels:datos.map(x=>x[0].replace(/ \(.+\)$/,"")),
+    labels:datos.map(x=>partirEtiqueta(x[0].replace(/ \(.+\)$/,""))),
     datasets:[{label:"β (aporte a z)",data:datos.map(x=>+x[1].toFixed(2)),
       backgroundColor:datos.map(x=>x[1]<0?COL.rojo:COL.granate),borderRadius:4}]},
     options:{indexAxis:"y",responsive:true,maintainAspectRatio:false,

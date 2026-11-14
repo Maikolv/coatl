@@ -7,6 +7,8 @@ import { spawn, execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 
+// Conteo real de pruebas en navegador al generar el video.
+const E2E = +(/Total: (\d+) tests?/.exec(execFileSync(process.platform === 'win32' ? 'npx.cmd' : 'npx', ['playwright', 'test', '--list'], { encoding: 'utf8', shell: true })) || [])[1] || 0;
 const RAIZ = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Za-z]:)/, '$1')), '..');
 const TMP = path.join(RAIZ, '.herramientas', 'video');
 const PUERTO = 8131, BASE = `http://127.0.0.1:${PUERTO}/`;
@@ -25,14 +27,15 @@ const ESCENAS = [
   { id: 'simulador', tipo: 'sitio', hash: 'simulador', accion: 'simular', voz: 'En el simulador se configuran treinta y dos variables en cuatro pestañas: giro, zona, clientes, ticket, renta, empleados e inversión. Cada cambio recalcula al instante la probabilidad, la utilidad y los indicadores financieros.' },
   { id: 'modelo', tipo: 'tarjeta', voz: 'El motor combina cuatro técnicas de la materia: una regresión logística para la probabilidad base; una curva de supervivencia tipo Cox con datos oficiales del INEGI; una simulación Monte Carlo reproducible para el riesgo; y el análisis financiero con VPN, ROI y recuperación de la inversión.',
     html: { fondo: 'hueso', kicker: 'El modelo estadístico', titulo: 'Cuatro técnicas, un solo motor', lista: ['Regresión logística → P = 1 / (1 + e^−(β·x))', 'Supervivencia tipo Cox → S(t) = S₀(t)^HR', 'Monte Carlo → 2,000 años, P5 · P50 · P95', 'Finanzas → VPN, ROI, payback'] } },
-  { id: 'territorio', tipo: 'sitio', hash: 'contexto', accion: 'mapa', voz: 'El análisis es territorial: el mapa divide Coacalco en seis zonas construidas sobre las setenta AGEB oficiales del INEGI, y compara la probabilidad del mismo negocio en cada una.' },
+  { id: 'territorio', tipo: 'sitio', hash: 'territorio', accion: 'recorrer', voz: 'El apartado Territorio reúne los indicadores oficiales del municipio y fotografías reales de Coacalco: su movilidad, su comercio regional y de barrio, y su vida cultural.' },
+  { id: 'mapa', tipo: 'sitio', hash: 'mapa', accion: 'mapa', voz: 'El mapa real divide Coacalco en seis zonas construidas sobre las setenta AGEB oficiales del INEGI, y compara la probabilidad del mismo negocio en cada una.' },
   { id: 'denue', tipo: 'sitio', hash: 'denue', accion: 'recorrer', voz: 'La competencia sale del Directorio Estadístico Nacional de Unidades Económicas, el DENUE, que se actualiza cada semana de forma automática. En Coacalco hay más de once mil quinientos negocios registrados.' },
   { id: 'estrategia', tipo: 'sitio', hash: 'estrategia', accion: 'recorrer', voz: 'Con esos resultados, el FODA dinámico propone nueve estrategias y mide cuántos puntos sube la probabilidad cada una, para convertir el diagnóstico en un plan de acción.' },
-  { id: 'asistente', tipo: 'sitio', hash: 'simulador', accion: 'asistente', voz: 'Un asistente siempre disponible responde preguntas como cómo voy o qué zona me conviene, usando el mismo motor. De forma opcional puede conectarse con Gemini, con una clave gratuita del propio usuario.' },
+  { id: 'asistente', tipo: 'sitio', hash: 'simulador', accion: 'asistente', voz: 'Un asistente siempre disponible responde preguntas como cómo voy o qué zona me conviene, usando el mismo motor. Para preguntas libres, la IA de COATL, basada en Gemini, responde sin pedirle ninguna clave al visitante: la clave del proyecto vive en un servidor intermedio.' },
   { id: 'fuentes', tipo: 'tarjeta', voz: 'Ningún dato se inventa. La información proviene del INEGI, de los Censos Económicos dos mil diecinueve, del Censo de Población dos mil veinte, del CONEVAL y de Data México. Lo que es supuesto del equipo se rotula como estimación del equipo.',
     html: { fondo: 'granate', kicker: 'De dónde sale la información', titulo: 'Datos oficiales, citados', lista: ['INEGI · supervivencia de negocios 1989–2019', 'INEGI · DENUE y Censos Económicos 2019', 'INEGI · Marco Geoestadístico y Censo 2020', 'CONEVAL · Data México · OpenStreetMap'] } },
-  { id: 'construccion', tipo: 'tarjeta', voz: 'El proyecto se programó en Visual Studio Code, con control de versiones en Git y GitHub. El motor se escribió en módulos independientes y se validó con una réplica en Python. Cada cambio pasa ciento cincuenta pruebas automáticas, incluidas las de accesibilidad, antes de publicarse.',
-    html: { fondo: 'hueso', kicker: 'Cómo se construyó', titulo: 'Programado, probado y publicado', lista: ['Visual Studio Code · Git · GitHub', 'JavaScript + validación cruzada en Python', '150 pruebas automáticas en navegador', 'Accesibilidad WCAG 2.1 AA · 0 violaciones'] } },
+  { id: 'construccion', tipo: 'tarjeta', voz: 'El proyecto se programó en Visual Studio Code, con control de versiones en Git y GitHub. El motor se escribió en módulos independientes y se validó con una réplica en Python. Cada cambio pasa más de ciento cincuenta pruebas automáticas, incluidas las de accesibilidad, antes de publicarse.',
+    html: { fondo: 'hueso', kicker: 'Cómo se construyó', titulo: 'Programado, probado y publicado', lista: ['Visual Studio Code · Git · GitHub', 'JavaScript + validación cruzada en Python', `${E2E} pruebas automáticas en navegador`, 'Accesibilidad WCAG 2.1 AA · 0 violaciones'] } },
   { id: 'telefono', tipo: 'telefono', voz: 'La interfaz se adapta al teléfono, tanto en vertical como en horizontal, sin perder información.' },
   { id: 'cierre', tipo: 'tarjeta', voz: 'COATL convierte datos oficiales en una decisión informada. Gracias por su atención.',
     html: { fondo: 'granate', kicker: 'maikolv.github.io/coatl', titulo: 'COATL', sub: 'Datos oficiales → decisión informada', pie: 'Miguel Antonio Cruz García · Bruno Alejandro López Bautista · Alonso Arroyo Cortés' } },
@@ -89,8 +92,9 @@ const ACCIONES = {
     await p.click('#t-operacion'); await p.fill('#clientes', '90'); await p.waitForTimeout(t);
     await p.click('#t-ubicacion'); await p.selectOption('#zona', { index: 2 }); await p.waitForTimeout(t);
     await p.click('#t-finanzas'); await p.fill('#ticket', '110'); await p.waitForTimeout(t); },
-  async mapa(p, d) { await p.waitForTimeout(800); const y = await p.evaluate(() => { const m = document.querySelector('#mapaReal'); return m ? m.getBoundingClientRect().top + scrollY - 140 : 1200; });
-    await lento(p, y, 2000); await p.waitForTimeout(Math.max(0, d * 1000 - 2800)); },
+  async mapa(p, d) {   // la escena abre ya en #mapa: se ajusta bajo la barra fija y se mantiene mientras cargan las teselas
+    await p.evaluate(() => { const m = document.querySelector('#mapa'); scrollTo(0, m.getBoundingClientRect().top + scrollY - 100); });
+    await p.waitForTimeout(d * 1000); },
   async asistente(p, d) { await p.waitForTimeout(700); await p.click('#asisAbrir'); const t = Math.max(600, (d * 1000 - 1500) / 3);
     for (const c of ['¿Cómo voy?', '¿Qué zona me conviene?', '¿Cómo subo mi probabilidad?']) { await p.click(`#asisChips button:has-text("${c}")`); await p.waitForTimeout(t); } },
 };

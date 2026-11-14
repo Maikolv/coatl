@@ -1,12 +1,12 @@
 /* ---------- 25. Asistente COATL: siempre disponible (esquina inferior derecha) ----------
    Responde con el MISMO motor del simulador: estado actual, mejor zona, palancas (FODA),
-   ajustes por texto o voz (intérprete local) y navegación. Con la clave opcional de
-   Anthropic (la misma del widget «Describe tu negocio») contesta preguntas libres con Claude. */
+   ajustes por texto o voz (intérprete local) y navegación. Las preguntas libres las responde
+   la IA de COATL (Gemini, clave del proyecto en el servidor; ver describir.js e iaProyecto). */
 (function asistente(){
   const caja=document.createElement("div"); caja.className="asis"; caja.id="asistente";
   caja.innerHTML='<button type="button" class="asis-boton" id="asisAbrir" aria-expanded="false" aria-controls="asisPanel" aria-label="Abrir el asistente COATL"><span aria-hidden="true">💬</span><b>Asistente</b></button>'+
     '<section class="asis-panel" id="asisPanel" role="dialog" aria-label="Asistente COATL" hidden>'+
-      '<header class="asis-cab"><strong>Asistente COATL</strong><span id="asisModo">local · sin conexión</span><button type="button" class="asis-cerrar" id="asisCerrar" aria-label="Cerrar el asistente">✕</button></header>'+
+      '<header class="asis-cab"><strong>Asistente COATL</strong><span id="asisModo">'+(IA_ACTIVA?"IA de COATL · Gemini":"local · sin conexión")+'</span><button type="button" class="asis-cerrar" id="asisCerrar" aria-label="Cerrar el asistente">✕</button></header>'+
       '<div class="asis-log" id="asisLog" aria-live="polite"></div>'+
       '<div class="asis-chips" id="asisChips">'+["¿Cómo voy?","¿Qué zona me conviene?","¿Cómo subo mi probabilidad?","Abrir el DENUE"].map(c=>'<button type="button">'+c+'</button>').join("")+'</div>'+
       '<form class="asis-forma" id="asisForma"><label class="sr-only" for="asisTexto">Escribe al asistente</label>'+
@@ -44,30 +44,18 @@
     const res=interpretarLocal(texto);
     if(res.entendido.length){ aplicarInterpretacion(res.r); return "Ajusté el simulador ("+res.entendido.map(esc).join(", ")+"). "+estado(); }
     if(/(como voy|probabilidad|utilidad|gano|ganancia|resultado|cuanto)/.test(t)) return estado();
-    if(claveGemini) return await preguntarGemini(texto);
-    if(claveClaude) return await preguntarClaude(texto);
-    return "No identifiqué una cifra ni una pregunta que pueda calcular. Prueba: «¿cómo voy?», «¿qué zona me conviene?», «cafetería en Los Héroes con 70 clientes al día» o «abre el DENUE». Para preguntas libres, pega tu clave gratuita de Google AI Studio en «Usar IA en línea» del Simulador.";
+    if(IA_ACTIVA) return esc(await iaProyecto("asistente", texto, contexto())||"Sin respuesta.");
+    return "No identifiqué una cifra ni una pregunta que pueda calcular. Prueba: «¿cómo voy?», «¿qué zona me conviene?», «cafetería en Los Héroes con 70 clientes al día» o «abre el DENUE». Las preguntas libres las responde la IA de COATL en el sitio publicado.";
   }
-  function instrucciones(){ const {e,P}=actual();
-    return "Eres el asistente de COATL, simulador académico de supervivencia a 3 años y rentabilidad de negocios en Coacalco de Berriozábal. Responde en español de México, en 2–4 frases, sin inventar cifras: usa solo el escenario dado. No das asesoría financiera. Escenario actual: "+
-      JSON.stringify({giro:e.giro.n, zona:e.zona.n, P_3_anios:pct(P), utilidad_mensual:Math.round(e.utilMes), clientes_dia:e.mu, ticket:e.ticket}); }
-  const preguntarGemini=async texto=>esc((await gemini(instrucciones(),texto,800))||"Sin respuesta.");
-  async function preguntarClaude(texto){
-    const {default:Anthropic}=await import(SDK_URL);
-    const client=new Anthropic({apiKey:claveClaude, dangerouslyAllowBrowser:true});
-    const r=await client.beta.messages.create({model:"claude-opus-5-5", max_tokens:1500,
-      betas:["server-side-fallback-2026-07-01"], fallbacks:"default", output_config:{effort:"low"},
-      system:instrucciones(),
-      messages:[{role:"user",content:texto}]});
-    if(r.stop_reason==="refusal") return "No puedo responder esa pregunta.";
-    return esc((r.content.find(b=>b.type==="text")||{}).text||"Sin respuesta.");
-  }
+  // Contexto mínimo para la IA: solo el resumen del escenario, nunca archivos de Empresas.
+  function contexto(){ const {e,P}=actual();
+    return {giro:e.giro.n, zona:e.zona.n, P_3_anios:pct(P), utilidad_mensual:Math.round(e.utilMes), clientes_dia:e.mu, ticket:e.ticket}; }
   async function enviar(texto){
     texto=texto.trim(); if(!texto) return;
     decir(esc(texto),"yo"); inp.value="";
     try{ decir(await responder(texto)); }
-    catch(err){ console.warn(err); decir((claveGemini?"Gemini":"Claude")+" no respondió: "+esc(String(claveGemini?err.message:(err.status||err.message)))+". Sigo disponible en modo local."); }
-    $("asisModo").textContent=claveGemini?"Gemini (tu clave)":claveClaude?"Claude (tu clave)":"local · sin conexión";
+    catch(err){ console.warn(err); decir("La IA no respondió: "+esc(String(err.message))+". Sigo disponible en modo local."); }
+    $("asisModo").textContent=IA_ACTIVA?"IA de COATL · Gemini":"local · sin conexión";
   }
   $("asisForma").addEventListener("submit",ev=>{ ev.preventDefault(); enviar(inp.value); });
   $("asisChips").addEventListener("click",ev=>{ if(ev.target.tagName==="BUTTON") enviar(ev.target.textContent); });

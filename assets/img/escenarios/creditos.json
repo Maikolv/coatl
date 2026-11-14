@@ -1,0 +1,101 @@
+{
+ "mexibus": {
+  "titulo": "Mexibús Línea 2, estación Coacalco Berriozábal",
+  "uso": "Territorio · movilidad",
+  "autor": "Tbhotch",
+  "licencia": "CC BY-SA 2.5 mx",
+  "licenciaUrl": "https://creativecommons.org/licenses/by-sa/2.5/mx/deed.en",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Coacalco_Berrioz%C3%A1bal_(Mexib%C3%BAs_L2)_2.jpg",
+  "src": "assets/img/escenarios/mexibus.webp"
+ },
+ "power-center": {
+  "titulo": "Coacalco Power Center sobre la Vía López Portillo",
+  "uso": "Territorio · comercio regional",
+  "autor": "Tbhotch",
+  "licencia": "CC BY-SA 4.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Coacalco_Power_Center_(2024)_1.jpg",
+  "src": "assets/img/escenarios/power-center.webp"
+ },
+ "calle-chiapas": {
+  "titulo": "Calle Chiapas, San Francisco Coacalco",
+  "uso": "Territorio · comercio de barrio",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Calle_Chiapas,_San_Francisco_Coacalco,_Mexico_2011_-_panoramio.jpg",
+  "src": "assets/img/escenarios/calle-chiapas.webp"
+ },
+ "museo-mamut": {
+  "titulo": "Museo del Mamut de Coacalco",
+  "uso": "Territorio · cultura y turismo",
+  "autor": "Tbhotch",
+  "licencia": "CC BY-SA 4.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Museo_del_Mamut,_Coacalco.jpg",
+  "src": "assets/img/escenarios/museo-mamut.webp"
+ },
+ "cafeteria": {
+  "titulo": "Cafetería en Coacalco (escenario de referencia: cafetería)",
+  "uso": "Inicio · widget de clientes",
+  "autor": "Axel Arias",
+  "licencia": "CC BY-SA 4.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Tim_Hortons_Coacalco.jpg",
+  "src": "assets/img/escenarios/cafeteria.webp"
+ },
+ "plaza-coacalco": {
+  "titulo": "Plaza Coacalco",
+  "uso": "Metodología · cómo leer tu resultado",
+  "autor": "Tbhotch",
+  "licencia": "CC BY-SA 4.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Plaza_Coacalco_(2022).jpg",
+  "src": "assets/img/escenarios/plaza-coacalco.webp"
+ },
+ "zentralia": {
+  "titulo": "Zentralia Coacalco",
+  "uso": "DENUE · competencia",
+  "autor": "Tbhotch",
+  "licencia": "CC BY-SA 4.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Zentralia_Coacalco_2.jpg",
+  "src": "assets/img/escenarios/zentralia.webp"
+ },
+ "plaza-flores": {
+  "titulo": "Plaza Las Flores, Villa de las Flores",
+  "uso": "Empresas",
+  "autor": "Tbhotch",
+  "licencia": "CC BY-SA 4.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Plaza_Las_Flores_Coacalco_1.jpg",
+  "src": "assets/img/escenarios/plaza-flores.webp"
+ },
+ "san-rafael": {
+  "titulo": "Vista aérea de San Rafael, Coacalco",
+  "uso": "Estrategia · plan de acción",
+  "autor": "Sxmuelfernandez",
+  "licencia": "CC BY-SA 4.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:San_Rafael,_Coacalco.jpg",
+  "src": "assets/img/escenarios/san-rafael.webp"
+ },
+ "la-era": {
+  "titulo": "Plaza La Era, Coacalco",
+  "uso": "Simulador · escenario",
+  "autor": "Tbhotch",
+  "licencia": "CC BY-SA 4.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:La_Era_Coacalco.jpg",
+  "src": "assets/img/escenarios/la-era.webp"
+ },
+ "valle": {
+  "titulo": "Vista hacia el valle desde Puerta Coacalco",
+  "uso": "Aviso legal",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Puerta_Coacalco)Vista_hacia_el_valle_-_panoramio.jpg",
+  "src": "assets/img/escenarios/valle.webp"
+ }
+}

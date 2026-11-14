@@ -24,7 +24,7 @@ test('el widget de inicio coincide con el motor y abre el simulador con su estad
   await expect(page.locator('#probNum')).toHaveText(pDemo);
 });
 
-test('mapa 2.5D: la lista se navega con teclado y la ficha muestra la procedencia', async ({ page }) => {
+test('mapa de zonas: la lista se navega con teclado y la ficha muestra la procedencia', async ({ page }) => {
   await ir(page);
   await expect(page.locator('#mapa25Lista li')).toHaveCount(6);
   await page.locator('#mapa25Lista').focus();

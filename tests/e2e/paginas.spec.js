@@ -88,72 +88,82 @@ test('asistente: siempre visible, responde con el motor y ajusta el simulador', 
   await expect(page.locator('#denue')).toBeVisible();
 });
 
-test('asistente con clave de Gemini: pregunta libre por REST, sin guardar', async ({ page }) => {
-  let cuerpo = null, clave = null;
-  await page.route('https://generativelanguage.googleapis.com/**', async (ruta) => {
-    cuerpo = ruta.request().postDataJSON(); clave = ruta.request().headers()['x-goog-api-key'];
-    await ruta.fulfill({ json: { steps: [{ type: 'model_output', content: [{ type: 'text', text: 'Respuesta <b>simulada</b> de Gemini.' }] }] } });
+test('asistente con la IA de COATL: el visitante no pone clave y solo viaja el resumen del escenario', async ({ page }) => {
+  const cuerpos = [];
+  await page.route('https://coatl-ia.vercel.app/**', async (ruta) => {
+    cuerpos.push({ cuerpo: ruta.request().postDataJSON(), cab: ruta.request().headers() });
+    await ruta.fulfill({ json: { texto: 'Respuesta <b>simulada</b> de Gemini.' } });
   });
-  await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
-  await page.click('.describir-ia summary');
-  await page.fill('#descClave', 'AIza-prueba');
-  await page.locator('#descClave').dispatchEvent('change');
+  await page.goto('/?ia=1#simulador', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('input[type="password"], #descClave')).toHaveCount(0);   // ya no se pide clave
   await page.click('#asisAbrir');
+  await expect(page.locator('#asisModo')).toHaveText('IA de COATL · Gemini');
   await page.fill('#asisTexto', '¿Qué opinas de la competencia en mi zona?');
   await page.press('#asisTexto', 'Enter');
-  await expect(page.locator('#asisLog .bot').last()).toHaveText('Respuesta <b>simulada</b> de Gemini.');  // escapado, no HTML
-  await expect(page.locator('#asisModo')).toHaveText('Gemini (tu clave)');
-  expect(clave).toBe('AIza-prueba');
-  expect(cuerpo.store).toBe(false);
-  expect(cuerpo.system_instruction).toContain('Cafetería');
+  await expect(page.locator('#asisLog .bot').last()).toHaveText('Respuesta <b>simulada</b> de Gemini.');   // escapado, no HTML
+  expect(cuerpos).toHaveLength(1);
+  const { cuerpo, cab } = cuerpos[0];
+  expect(cuerpo.modo).toBe('asistente');
+  expect(cuerpo.contexto.giro).toBe('Cafetería');
+  expect(Object.keys(cab).some((k) => /api-key|authorization/i.test(k))).toBe(false);   // ninguna clave sale del navegador
 });
 
-test('Gemini: cambia de modelo si no está disponible y explica el límite gratuito', async ({ page }) => {
-  const modelos = []; let limite = false;
-  await page.route('https://generativelanguage.googleapis.com/**', async (ruta) => {
-    const m = ruta.request().postDataJSON().model; modelos.push(m);
-    if (limite) return ruta.fulfill({ status: 429, json: { error: { message: 'Resource exhausted' } } });
-    if (m === 'gemini-3.8-flash') return ruta.fulfill({ status: 404, json: { error: { message: 'not found' } } });
-    await ruta.fulfill({ json: { steps: [{ type: 'model_output', content: [{ type: 'text', text: 'Hola desde el modelo de respaldo.' }] }] } });
-  });
-  await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
-  await page.click('.describir-ia summary');
-  await page.fill('#descClave', 'AIza-prueba');
-  await page.locator('#descClave').dispatchEvent('change');
+test('si la IA de COATL no responde, el asistente avisa y sigue en modo local', async ({ page }) => {
+  await page.route('https://coatl-ia.vercel.app/**', (ruta) => ruta.fulfill({ status: 429, json: { error: 'Se alcanzó el límite gratuito de Gemini; intenta en un minuto' } }));
+  await page.goto('/?ia=1#simulador', { waitUntil: 'domcontentloaded' });
   await page.click('#asisAbrir');
-  await page.fill('#asisTexto', '¿Qué opinas de mi competencia?');
-  await page.press('#asisTexto', 'Enter');
-  await expect(page.locator('#asisLog .bot').last()).toHaveText('Hola desde el modelo de respaldo.');
-  expect(modelos).toEqual(['gemini-3.8-flash', 'gemini-3.5-flash-lite']);
-  limite = true;
   await page.fill('#asisTexto', '¿Y la demanda?');
   await page.press('#asisTexto', 'Enter');
-  await expect(page.locator('#asisLog .bot').last()).toContainText('límite del plan gratuito');
+  await expect(page.locator('#asisLog .bot').last()).toContainText('límite gratuito');
+  await page.click('#asisChips button:has-text("¿Cómo voy?")');
+  await expect(page.locator('#asisLog .bot').last()).toContainText('51.6%');   // el motor local sigue respondiendo
 });
 
-test('describe tu negocio con clave de Gemini: JSON validado ajusta el simulador', async ({ page }) => {
+test('describe tu negocio con la IA de COATL: JSON validado ajusta el simulador', async ({ page }) => {
   let cuerpo = null;
-  await page.route('https://generativelanguage.googleapis.com/**', async (ruta) => {
+  await page.route('https://coatl-ia.vercel.app/**', async (ruta) => {
     cuerpo = ruta.request().postDataJSON();
     const j = { giro: 'farmacia', zona: 'no_existe', clientes: 90, ticket: '120', inversion: null, renta: 9000, empleados: null,
       costoEmpleado: null, superficie: null, credito: null, tasa: null, experiencia_anios: 4, resumen: 'Farmacia con 90 clientes.' };
-    await ruta.fulfill({ json: { steps: [{ type: 'model_output', content: [{ type: 'text', text: '```json\n' + JSON.stringify(j) + '\n```' }] }] } });
+    await ruta.fulfill({ json: { texto: '```json\n' + JSON.stringify(j) + '\n```' } });
   });
-  await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
-  await page.click('.describir-ia summary');
-  await page.fill('#descClave', 'AIza-prueba');
-  await page.locator('#descClave').dispatchEvent('change');
-  await expect(page.locator('#descModo')).toContainText('Gemini');
+  await page.goto('/?ia=1#simulador', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#descModo')).toContainText('IA de COATL');
   await page.fill('#descTexto', 'Una farmacia con 90 clientes al día');
   await page.click('#descAplicar');
   await expect(page.locator('#giro')).toHaveValue('farmacia');
   await expect(page.locator('#clientes')).toHaveValue('90');
   await expect(page.locator('#renta')).toHaveValue('9000');
   await expect(page.locator('#descEntendido')).not.toContainText('ticket');   // "120" como texto se descarta
-  await expect(page.locator('#ticket')).not.toHaveValue('120');
-  await expect(page.locator('#wDescribir-estado')).toContainText('con Gemini');
-  expect(cuerpo.store).toBe(false);
-  expect(cuerpo.system_instruction).toContain('JSON');
+  await expect(page.locator('#wDescribir-estado')).toContainText('IA de COATL');
+  expect(cuerpo.modo).toBe('interprete');
+  expect(cuerpo.contexto).toContain('Giros válidos');
+});
+
+test('describe tu negocio: si la IA falla, el intérprete local hace el trabajo', async ({ page }) => {
+  await page.route('https://coatl-ia.vercel.app/**', (ruta) => ruta.abort());
+  await page.goto('/?ia=1#simulador', { waitUntil: 'domcontentloaded' });
+  await page.fill('#descTexto', 'cafetería en Los Héroes con 70 clientes al día');
+  await page.click('#descAplicar');
+  await expect(page.locator('#clientes')).toHaveValue('70');
+  await expect(page.locator('#wDescribir-estado')).toContainText('intérprete local');
+});
+
+test('las pestañas abiertas se reordenan con flechas y arrastrando', async ({ page }) => {
+  for (const h of ['inicio', 'territorio', 'denue']) await page.goto('/#' + h, { waitUntil: 'domcontentloaded' });
+  const orden = () => page.locator('#pestanasApp .pa-tab').evaluateAll((t) => t.map((x) => x.dataset.id));
+  await expect.poll(orden).toEqual(['inicio', 'territorio', 'denue']);
+  await page.locator('[data-mover="denue"]').focus();
+  await page.keyboard.press('ArrowLeft');
+  await expect.poll(orden).toEqual(['inicio', 'denue', 'territorio']);
+  await expect(page.locator('#avisoPestanas')).toContainText('posición 2 de 3');
+  const asa = page.locator('[data-mover="inicio"]'), destino = page.locator('.pa-tab[data-id="territorio"]');
+  const a = await asa.boundingBox(), d = await destino.boundingBox();
+  await page.mouse.move(a.x + a.width / 2, a.y + a.height / 2);
+  await page.mouse.down();
+  await page.mouse.move(d.x + d.width - 4, d.y + d.height / 2, { steps: 8 });
+  await page.mouse.up();
+  await expect.poll(orden).toEqual(['denue', 'territorio', 'inicio']);
 });
 
 test('giro propio con cualquier nombre', async ({ page }) => {

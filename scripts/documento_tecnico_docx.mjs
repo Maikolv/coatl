@@ -9,6 +9,11 @@ import {
   LevelFormat, TableOfContents, CharacterSet,
 } from 'docx';
 import { REF, FUENTES, AUTORES } from './datos_reporte.mjs';
+import { execSync } from 'node:child_process';
+
+// Conteos reales de pruebas al momento de generar (no se escriben a mano).
+const UNITARIAS = ['tests/modelo.test.mjs', 'tests/ia.test.mjs'].map((t) => (fs.readFileSync(t, 'utf8').match(/^test\(/gm) || []).length).reduce((a, x) => a + x, 0);
+const E2E = +(/Total: (\d+) tests?/.exec(execSync('npx playwright test --list', { encoding: 'utf8' })) || [])[1] || 0;
 
 const ROJO = 'C8102E', GRANATE = '7A0C1F', HUESO = 'FBF6F3', TINTA = '38070F', GRIS = '6E464B', ROSA = 'F3E9E4';
 const DISPLAY = 'Bricolage Grotesque', CUERPO = 'Hanken Grotesk', MONO = 'Spline Sans Mono';
@@ -99,7 +104,7 @@ const como = [
   h1('2. Cómo funciona'),
   p('El recorrido tiene tres pasos: la persona describe su negocio, el motor estadístico calcula y la interfaz explica los resultados.'),
   h2('Paso 1 · Entrada'),
-  p('El simulador tiene 32 variables en 4 pestañas (Negocio, Ubicación, Operación y Finanzas): giro (35 giros base y 989 actividades del SCIAN), zona, clientes por día, ticket promedio, renta, empleados, inversión, crédito y experiencia, entre otras. También se puede escribir o dictar el negocio en lenguaje natural («Describe tu negocio»): un intérprete local por reglas extrae las cifras y, de forma opcional, puede usarse Gemini con una clave gratuita de la propia persona.'),
+  p('El simulador tiene 32 variables en 4 pestañas (Negocio, Ubicación, Operación y Finanzas): giro (35 giros base y 989 actividades del SCIAN), zona, clientes por día, ticket promedio, renta, empleados, inversión, crédito y experiencia, entre otras. También se puede escribir o dictar el negocio en lenguaje natural («Describe tu negocio»): la IA de COATL (Gemini) lo convierte en datos del simulador y, si no hay conexión, un intérprete local por reglas hace el trabajo. El visitante nunca necesita una clave.'),
   h2('Paso 2 · Motor estadístico'),
   p('Los cálculos viven en módulos puros (sin interfaz) en src/modelo/, de modo que los mismos números alimentan la página, las pruebas y este documento. El detalle está en el capítulo 3.'),
   h2('Paso 3 · Resultados y explicación'),
@@ -162,7 +167,8 @@ const fuentes = [
   vineta([code('scripts/denue_sync.py'), ' agrega el DENUE de las 32 entidades. Solo publica conteos, nunca nombres ni contactos. GitHub Actions lo corre cada semana y lo valida contra la API oficial: 11,557 frente a 11,554 negocios en Coacalco.']),
   vineta([code('scripts/censo_sync.py'), ' toma los Censos Económicos 2019, prefiere el estrato de 0 a 10 personas de Coacalco y cae a niveles más amplios si falta el dato.']),
   vineta([code('scripts/ageb_sync.mjs'), ' descarga las AGEB del servicio geográfico del INEGI y asigna cada una a una zona por su centroide.']),
-  ...fig('docs/capturas/doc/denue.png', 'Figura 3. Apartado DENUE: competencia real por giro.'),
+  ...fig('docs/capturas/doc/territorio.png', 'Figura 3. Territorio: indicadores oficiales y fotografías reales de Coacalco (Wikimedia Commons).'),
+  ...fig('docs/capturas/doc/denue.png', 'Figura 4. Apartado DENUE: competencia real por giro.'),
 ];
 
 // ---------- 5. Construcción ----------
@@ -178,6 +184,8 @@ const construccion = [
     ['Playwright y axe-core', 'Pruebas automáticas en navegador (computadora y teléfono) y de accesibilidad.'],
     ['GitHub Actions y Pages', 'Pruebas en cada cambio y publicación del sitio.'],
     ['Leaflet y Chart.js', 'Mapa interactivo y gráficas.'],
+    ['Vercel (plan gratuito)', 'Intermediario de IA: guarda la clave de Gemini del proyecto fuera del navegador.'],
+    ['Wikimedia Commons', 'Fotografías reales de Coacalco con licencia libre y su cita.'],
   ], [2900, 6460]),
   espacio(),
   h2('5.2 Arquitectura del código'),
@@ -186,6 +194,7 @@ const construccion = [
     ['src/modelo/', 'Modelo logístico, rango plausible, Cox, Monte Carlo y finanzas (funciones puras).'],
     ['src/ui/, src/mapa/', 'Formulario, resultados, widgets, asistente, mapa y estilos.'],
     ['scripts/', 'Construcción, servidor local, sincronización de datos, validador y documentos.'],
+    ['servicios/ia/', 'Intermediario de IA (función de Vercel) con sus reglas de seguridad.'],
     ['tests/', 'Pruebas unitarias del modelo y pruebas en navegador.'],
   ], [2400, 6960]),
   espacio(),
@@ -204,9 +213,9 @@ const construccion = [
 const calidad = [
   h1('6. Calidad, seguridad y accesibilidad'),
   tabla(['Verificación', 'Resultado'], [
-    ['Pruebas unitarias del modelo', '12 de 12 correctas'],
+    ['Pruebas unitarias (modelo e intermediario de IA)', `${UNITARIAS} de ${UNITARIAS} correctas`],
     ['Validación cruzada en Python', 'Las 5 métricas de referencia coinciden'],
-    ['Pruebas en navegador (150 casos)', 'Computadora, teléfono vertical y horizontal, y rotación'],
+    [`Pruebas en navegador (${E2E} casos)`, 'Computadora, teléfono vertical y horizontal, rotación, IA simulada y privacidad'],
     ['Accesibilidad WCAG 2.1 AA (axe-core)', '0 violaciones en los 8 apartados'],
     ['Dependencias (npm audit)', '0 vulnerabilidades'],
     ['Integración continua', 'Pruebas y publicación automática en cada cambio'],
@@ -215,19 +224,33 @@ const calidad = [
   h2('Privacidad'),
   vineta('Los archivos de Empresas se leen dentro del navegador y nunca se envían a ningún servidor, ni siquiera a la IA opcional.'),
   vineta('Sin analítica ni rastreadores. La política de seguridad (CSP) limita a qué sitios puede conectarse la página.'),
-  vineta('La IA (Gemini o Claude) es opcional: usa la clave de la propia persona, guardada solo en la memoria de la pestaña. Gemini se llama con store:false.'),
-  ...fig('docs/capturas/asistente.png', 'Figura 4. Asistente siempre disponible, con motor local y Gemini opcional.', 560),
+  vineta('La IA de COATL (Gemini) usa la clave del proyecto, guardada en un intermediario de Vercel: nunca llega al navegador. Solo recibe la pregunta y un resumen del escenario, con store:false, tope de tokens y límite de peticiones.'),
+  ...fig('docs/capturas/asistente.png', 'Figura 5. Asistente siempre disponible: motor local e IA de COATL (Gemini).', 560),
 ];
 
 // ---------- 7. Limitaciones y referencias ----------
+const precision = [
+  h1('7. Ruta hacia una precisión mayor'),
+  p('Ningún método produce exactitud absoluta al predecir el futuro de un negocio. Lo que distingue a un modelo de nivel posgrado es estimar sus parámetros con datos reales, calibrarlos, validarlos con datos no vistos y reportar la incertidumbre real. El equipo identificó estos métodos, todos con datos públicos (detalle en docs/METODOS_PRECISION.md):'),
+  tabla(['Método', 'Qué mejora', 'Datos'], [
+    ['Panel del DENUE + riesgo en tiempo discreto (Shumway, 2001)', 'Estima los β con negocios reales en lugar de valores del equipo', 'Ediciones históricas del DENUE'],
+    ['Kaplan–Meier y Cox / Royston–Parmar', 'Curva de supervivencia local por giro', 'Mismo panel'],
+    ['Riesgos competitivos (Fine–Gray)', 'Separa cierre real de cambio de domicilio o de giro', 'Mismo panel'],
+    ['Modelo jerárquico bayesiano', 'Estimaciones estables en giros pequeños e intervalos creíbles', 'DENUE de municipios vecinos'],
+    ['Modelo de Huff', 'Demanda por zona en lugar del índice de afluencia', 'AGEB, Censo 2020 y DENUE'],
+    ['Brier, calibración, AUC, curva de decisión (TRIPOD)', 'Mide si el 60 % del modelo es un 60 % real', 'Validación temporal'],
+    ['Predicción conformal', 'Intervalos con cobertura garantizada', 'Cualquier modelo ajustado'],
+  ], [3300, 3560, 2500]),
+];
+
 const cierre = [
-  h1('7. Limitaciones'),
+  h1('8. Limitaciones'),
   vineta('Los coeficientes β y varios datos por giro son estimaciones del equipo; el contraste con los Censos Económicos ayuda a calibrarlos.'),
   vineta('La curva S₀(t) es nacional. Aplicarla a Coacalco supone que el municipio se comporta como el promedio del país.'),
   vineta('Las cifras del censo están en pesos de 2018 y no se ajustan por inflación.'),
   vineta('El rango plausible de P es un análisis de sensibilidad, no un intervalo de confianza estadístico.'),
   vineta('COATL apoya la decisión pero no sustituye la asesoría financiera profesional.'),
-  h1('8. Referencias'),
+  h1('9. Referencias'),
   ...FUENTES.map(([t, u]) => p([t + ' ', enlace(u, u)], { spacing: { after: 100 } })),
   ...[
     ['INEGI. Directorio Estadístico Nacional de Unidades Económicas (DENUE), descarga masiva.', 'https://www.inegi.org.mx/app/descarga/?ti=6'],
@@ -236,6 +259,10 @@ const cierre = [
     ['INEGI. Marco Geoestadístico.', 'https://www.inegi.org.mx/temas/mg/'],
     ['OpenStreetMap. Derechos de autor y licencia.', 'https://www.openstreetmap.org/copyright'],
     ['Microsoft. Visual Studio Code.', 'https://code.visualstudio.com/'],
+    ['Shumway, T. (2001). Forecasting bankruptcy more accurately: a simple hazard model.', 'https://doi.org/10.1086/209665'],
+    ['Huff, D. (1964). Defining and estimating a trading area.', 'https://doi.org/10.1177/002224296402800307'],
+    ['Collins, G. et al. (2015). TRIPOD statement.', 'https://doi.org/10.1136/bmj.g7594'],
+    ['Wikimedia Commons. Categoría Coacalco de Berriozábal (fotografías con licencia libre).', 'https://commons.wikimedia.org/wiki/Category:Coacalco_de_Berrioz%C3%A1bal'],
   ].map(([t, u]) => p([t + ' ', enlace(u, u)], { spacing: { after: 100 } })),
   greca(300),
   p([new TextRun({ text: 'COATL · ', font: DISPLAY, bold: true, color: ROJO }), new TextRun({ text: AUTORES.join(' · '), color: GRIS, size: 19 })], { alignment: AlignmentType.CENTER }),
@@ -264,7 +291,7 @@ const doc = new Document({
     properties: { titlePage: true, page: { size: { width: 12240, height: 15840 }, margin: { top: 1440, bottom: 1300, left: 1440, right: 1440 } } },
     headers: { default: new Header({ children: [new Paragraph({ alignment: AlignmentType.RIGHT, border: { bottom: { style: BorderStyle.THICK_THIN_LARGE_GAP, size: 12, color: ROJO, space: 4 } }, children: [new TextRun({ text: 'COATL', font: DISPLAY, bold: true, color: ROJO, size: 18 }), new TextRun({ text: '  ·  Documento técnico', color: GRIS, size: 16 })] })] }) },
     footers: { default: new Footer({ children: [new Paragraph({ alignment: AlignmentType.CENTER, children: [new TextRun({ children: [PageNumber.CURRENT], font: MONO, size: 16, color: ROJO })] })] }) },
-    children: [...portada, ...que, ...como, ...mod, ...fuentes, ...construccion, ...calidad, ...cierre],
+    children: [...portada, ...que, ...como, ...mod, ...fuentes, ...construccion, ...calidad, ...precision, ...cierre],
   }],
 });
 

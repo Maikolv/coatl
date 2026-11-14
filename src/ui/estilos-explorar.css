@@ -311,3 +311,47 @@ body.vista-todo .pestanas-app{display:none}
   .nav{position:static}
   .asis-boton{padding:.45rem .6rem}
 }
+
+/* ===== v8: fotos de escenarios, mapa real en Inicio y simulador sin huecos ===== */
+/* Pie de foto con título (cita completa de Commons) */
+.foto-escena figcaption{left:0;border-top-left-radius:0;padding:.35rem .6rem;background:linear-gradient(transparent,rgba(26,5,8,.82));font-size:.62rem}
+.foto-escena .foto-titulo{display:block;font:700 .78rem/1.25 var(--cuerpo);margin-bottom:.1rem}
+/* Territorio: el Palacio a la izquierda y cuatro escenas en 2×2; ya no queda espacio en blanco junto a la foto */
+.galeria-territorio{display:grid;grid-template-columns:minmax(0,1.25fr) minmax(0,1fr) minmax(0,1fr);grid-template-rows:repeat(2,minmax(0,1fr));gap:.9rem;margin:0 0 1.8rem}
+.galeria-territorio .galeria-principal{grid-row:1 / span 2;max-width:none;margin:0;display:flex;flex-direction:column}
+.galeria-territorio .galeria-principal img{flex:1;min-height:0;object-fit:cover;height:100%}
+.galeria-territorio .galeria-escena{aspect-ratio:3/2}
+@media (max-width:980px){
+  .galeria-territorio{grid-template-columns:1fr 1fr;grid-template-rows:auto}
+  .galeria-territorio .galeria-principal{grid-column:1 / -1;grid-row:auto}
+}
+/* Estrategia: introducción · foto · resumen */
+.foda-intro{grid-template-columns:minmax(0,1.25fr) minmax(0,.8fr) minmax(0,.7fr)}
+.foda-foto{aspect-ratio:3/2;align-self:stretch}
+/* Inicio: el mapa real ocupa el lugar del esquema isométrico */
+.mapa-leaflet.mapa25-escena{height:380px;aspect-ratio:auto;min-height:0;background:var(--niebla)}
+.mapa-sin-red{display:flex;align-items:center;justify-content:center;padding:1.2rem;text-align:center;font-size:.9rem;color:var(--gris-texto)}
+.demo-postal{flex:1 1 auto;min-height:200px}   /* crece y llena la tarjeta: sin hueco bajo el botón */
+/* Simulador: el formulario acompaña a los resultados (sticky) para que nunca quede una columna en blanco */
+@media (min-width:981px){
+  .simulador > #forma{position:sticky;top:var(--tope-forma,96px);align-self:start}
+}
+/* La novena tarjeta (VPN) ocupa toda la fila en lugar de dejar media fila vacía */
+.kpis > :last-child:nth-child(odd){grid-column:1 / -1}
+/* Análisis: el tornado a la izquierda y, a su derecha, comparar arriba y exportar abajo */
+.analisis{grid-template-columns:minmax(0,1.3fr) minmax(0,1fr)}
+.analisis > :first-child{grid-row:span 2}
+.analisis > :first-child .lienzo{height:360px}
+@media (max-width:980px){
+  .analisis,.foda-intro{grid-template-columns:minmax(0,1fr)}
+  .analisis > :first-child{grid-row:auto}
+  .mapa-leaflet.mapa25-escena{height:300px}
+}
+/* Pestañas reordenables: asa ⠿ para arrastrar (ratón o dedo) o mover con flechas */
+.pa-mover{border:0;background:none;color:inherit;opacity:.6;cursor:grab;touch-action:none;padding:.15rem .25rem;font-size:.9rem;line-height:1;border-radius:6px}
+.pa-mover:hover,.pa-mover:focus-visible{opacity:1}
+.pa-tab.arrastrando{position:relative;z-index:3;opacity:.92;box-shadow:0 10px 24px -10px rgba(56,7,15,.55);cursor:grabbing}
+.pa-tab.destino{box-shadow:inset 3px 0 0 var(--rojo)}
+/* Ranking de zonas: cada fila es un botón real (teclado y lector de pantalla), con el aspecto de antes */
+.ranking li > .rk-zona{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:.7rem;width:100%;cursor:pointer}
+.ranking li:has(.rk-zona:focus-visible){outline:2px solid var(--rojo);outline-offset:2px}
