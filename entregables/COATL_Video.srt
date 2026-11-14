@@ -1,0 +1,199 @@
+1
+00:00:00,700 --> 00:00:04,655
+COATL: Cálculo de Oportunidad y Análisis Territorial Local.
+
+2
+00:00:04,655 --> 00:00:09,213
+Un proyecto de Probabilidad y Estadística para estimar si un negocio
+
+3
+00:00:09,213 --> 00:00:11,828
+sobrevivirá en Coacalco de Berriozábal.
+
+4
+00:00:13,228 --> 00:00:16,895
+En México, muchos negocios cierran en sus primeros años,
+
+5
+00:00:16,895 --> 00:00:20,629
+y la decisión de abrir suele tomarse sin medir el riesgo.
+
+6
+00:00:20,629 --> 00:00:23,707
+COATL responde dos preguntas antes de invertir:
+
+7
+00:00:23,707 --> 00:00:27,964
+qué tan probable es que el negocio siga abierto y rentable a tres
+
+8
+00:00:27,964 --> 00:00:29,798
+años, y cuánto podría ganar.
+
+9
+00:00:31,198 --> 00:00:35,672
+Es una aplicación web gratuita: funciona en cualquier navegador,
+
+10
+00:00:35,672 --> 00:00:39,028
+en computadora o en teléfono, sin instalar nada.
+
+11
+00:00:39,028 --> 00:00:42,313
+La portada muestra el tablero de cien negocios:
+
+12
+00:00:42,313 --> 00:00:44,970
+cuántos siguen abiertos al tercer año.
+
+13
+00:00:46,370 --> 00:00:51,037
+En el simulador se configuran treinta y dos variables en cuatro
+
+14
+00:00:51,037 --> 00:00:53,927
+pestañas: giro, zona, clientes, ticket,
+
+15
+00:00:53,927 --> 00:00:58,817
+renta, empleados e inversión. Cada cambio recalcula al instante la
+
+16
+00:00:58,817 --> 00:01:02,966
+probabilidad, la utilidad y los indicadores financieros.
+
+17
+00:01:04,366 --> 00:01:07,456
+El motor combina cuatro técnicas de la materia:
+
+18
+00:01:07,456 --> 00:01:10,744
+una regresión logística para la probabilidad base;
+
+19
+00:01:10,744 --> 00:01:15,083
+una curva de supervivencia tipo Cox con datos oficiales del INEGI;
+
+20
+00:01:15,083 --> 00:01:18,700
+una simulación Monte Carlo reproducible para el riesgo;
+
+21
+00:01:18,700 --> 00:01:23,236
+y el análisis financiero con VPN, ROI y recuperación de la inversión.
+
+22
+00:01:24,636 --> 00:01:28,738
+El análisis es territorial: el mapa divide Coacalco en seis zonas
+
+23
+00:01:28,738 --> 00:01:32,209
+construidas sobre las setenta AGEB oficiales del INEGI,
+
+24
+00:01:32,209 --> 00:01:35,744
+y compara la probabilidad del mismo negocio en cada una.
+
+25
+00:01:37,144 --> 00:01:41,694
+La competencia sale del Directorio Estadístico Nacional de Unidades
+
+26
+00:01:41,694 --> 00:01:45,701
+Económicas, el DENUE, que se actualiza cada semana de forma
+
+27
+00:01:45,701 --> 00:01:49,980
+automática. En Coacalco hay más de once mil quinientos negocios
+
+28
+00:01:49,980 --> 00:01:50,795
+registrados.
+
+29
+00:01:52,195 --> 00:01:56,672
+Con esos resultados, el FODA dinámico propone nueve estrategias y mide
+
+30
+00:01:56,672 --> 00:01:59,551
+cuántos puntos sube la probabilidad cada una,
+
+31
+00:01:59,551 --> 00:02:02,813
+para convertir el diagnóstico en un plan de acción.
+
+32
+00:02:04,213 --> 00:02:08,956
+Un asistente siempre disponible responde preguntas como cómo voy o qué
+
+33
+00:02:08,956 --> 00:02:11,666
+zona me conviene, usando el mismo motor.
+
+34
+00:02:11,666 --> 00:02:14,783
+De forma opcional puede conectarse con Gemini,
+
+35
+00:02:14,783 --> 00:02:17,629
+con una clave gratuita del propio usuario.
+
+36
+00:02:19,029 --> 00:02:23,056
+Ningún dato se inventa. La información proviene del INEGI,
+
+37
+00:02:23,056 --> 00:02:26,111
+de los Censos Económicos dos mil diecinueve,
+
+38
+00:02:26,111 --> 00:02:28,750
+del Censo de Población dos mil veinte,
+
+39
+00:02:28,750 --> 00:02:33,541
+del CONEVAL y de Data México. Lo que es supuesto del equipo se rotula
+
+40
+00:02:33,541 --> 00:02:35,415
+como estimación del equipo.
+
+41
+00:02:36,815 --> 00:02:39,976
+El proyecto se programó en Visual Studio Code,
+
+42
+00:02:39,976 --> 00:02:42,794
+con control de versiones en Git y GitHub.
+
+43
+00:02:42,794 --> 00:02:47,329
+El motor se escribió en módulos independientes y se validó con una
+
+44
+00:02:47,329 --> 00:02:51,453
+réplica en Python. Cada cambio pasa ciento cincuenta pruebas
+
+45
+00:02:51,453 --> 00:02:54,476
+automáticas, incluidas las de accesibilidad,
+
+46
+00:02:54,476 --> 00:02:55,851
+antes de publicarse.
+
+47
+00:02:57,251 --> 00:03:01,411
+La interfaz se adapta al teléfono, tanto en vertical como en
+
+48
+00:03:01,411 --> 00:03:03,839
+horizontal, sin perder información.
+
+49
+00:03:05,239 --> 00:03:09,736
+COATL convierte datos oficiales en una decisión informada.
+
+50
+00:03:09,736 --> 00:03:11,597
+Gracias por su atención.

@@ -126,3 +126,21 @@ Verificación: build idéntico, 12 unitarias, validador Python, e2e completas en
 | 9 | Gemini solo probado con respuestas simuladas | ⏳ Falta una prueba manual con una clave real (docs/GEMINI.md) |
 
 Privacidad de Empresas: se agregó `tests/e2e/privacidad-ia.spec.js`, con clave y respuesta simuladas de Gemini. Comprueba que la petición del asistente excluya el nombre del archivo, el CSV completo y todos sus valores. Los puntos 7 y 8 se completaron después fuera del entorno de Codex; ver «Cierre de la Fase 4» en `docs/REVISION_CODEX.md`.
+
+## 9. Auditoría v7.4: teléfono, documentos y video (13 de noviembre de 2026)
+
+Nueva prueba `tests/e2e/orientacion.spec.js`: revisa los 8 apartados en teléfono vertical (390×844), horizontal (844×390) y horizontal pequeño (667×375), además de la rotación. Busca desbordes, elementos cortados y cuánto ocupa lo fijo arriba.
+
+| # | Hallazgo | Acción |
+|---|---|---|
+| 1 | En vertical, el mapa, el ranking de zonas y la recomendación del Simulador se cortaban a la derecha (llegaban a 435 px en una pantalla de 390 px), porque una tabla ancha estiraba la columna | ✅ Las rejillas de una columna usan `minmax(0,1fr)`; la tabla conserva su propio desplazamiento |
+| 2 | En horizontal, la barra superior y la tira de pestañas fijas ocupaban 167 de 375 px (45 % de la pantalla) | ✅ Con poca altura, la barra superior se desplaza con la página; solo la tira queda fija (46 px, 12 %) |
+| 3 | La posición de la tira de pestañas no se recalculaba al girar el teléfono | ✅ Se recalcula en cada cambio de tamaño |
+| 4 | El Simulador decía «22 variables»; el formulario tiene 32 | ✅ Corregido a 32 |
+| 5 | Las notas pequeñas partían palabras a la mitad («escr-ibas»), por `word-break:break-all` | ✅ `overflow-wrap:anywhere`: solo parte lo que no cabe, como una URL larga |
+| 6 | Las capturas del README y de los documentos mostraban la interfaz anterior a Gemini | ✅ Regeneradas |
+| 7 | El reporte Word usaba Georgia y Calibri en vez de las tipografías del sitio | ✅ Usa Bricolage Grotesque, Hanken Grotesk y Spline Sans Mono, incrustadas |
+| 8 | La presentación PPTX usa fuentes del sistema | ⏳ pptxgenjs no puede incrustar fuentes: si se cambiaran, en otra computadora se verían con una fuente de reemplazo. Se deja como está |
+| 9 | No había un documento que explicara la construcción ni un video para evaluadores | ✅ `entregables/COATL_Documento_Tecnico.docx` y `entregables/COATL_Video.mp4` (con subtítulos `.srt`) |
+| 10 | La pestaña «Territorio» de la tira y la orden al asistente «abre el territorio» llevaban a Inicio: `vistaDe()` solo buscaba elementos por id y la vista `territorio` no tiene uno | ✅ Primero reconoce el nombre de la vista; nueva prueba «cada apartado abre por su nombre» |
+| 11 | Al corregir el desborde, las tablas de escenarios y de zonas se desplazan dentro de su caja en el teléfono, pero esa caja no se alcanzaba con teclado (axe: `scrollable-region-focusable`) | ✅ `tabindex="0"`, `role="region"` y nombre accesible, como las demás tablas |

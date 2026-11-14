@@ -126,5 +126,7 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - Monte Carlo y el rango plausible de P se calculan en un Web Worker desde un Blob generado por el build. Si falla el Worker, se usa el motor síncrono.
 
 - S₀(t) usa el tabulado nacional del INEGI 1989–2019 para t = 1…10. Los datos por giro siguen siendo estimaciones del equipo.
+- Documento técnico: `node scripts/documento_tecnico_docx.mjs` → `entregables/COATL_Documento_Tecnico.docx`. Video para evaluadores: `node scripts/video_presentacion.mjs` → `entregables/COATL_Video.mp4` + `.srt` (Windows: voz Sabina, Edge y ffmpeg). Todo documento usa la paleta, la greca y las tipografías del sitio (`assets/fuentes/`, incrustadas).
+- Teléfono: `tests/e2e/orientacion.spec.js` revisa vertical, horizontal y rotación; en horizontal bajo la barra superior no es fija.
 - Reporte y presentación se generan con `node scripts/reporte_docx.mjs` y `node scripts/presentacion_pptx.mjs` (cifras tomadas del propio modelo). La foto de contexto es obra de ProtoplasmaKid, publicada en Wikimedia Commons bajo CC BY-SA 4.0. [Ficha de la foto](https://commons.wikimedia.org/wiki/File:Coacalco_Estado_Mexico.JPG).
 - Diagrama UML de 6 carriles: hecho (`scripts/diagrama_uml.mjs` → docs/ y entregables/).

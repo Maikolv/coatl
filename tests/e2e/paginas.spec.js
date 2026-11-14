@@ -56,6 +56,19 @@ test('costos propios ilimitados entran al modelo', async ({ page }) => {
   await expect(page.locator('#probNum')).not.toHaveText('51.6%', { timeout: 5000 });
 });
 
+test('cada apartado abre por su nombre (#territorio, pestañas y asistente)', async ({ page }) => {
+  await page.goto('/#territorio', { waitUntil: 'load' });
+  await expect(page.locator('#contexto')).toBeVisible();
+  await expect(page.locator('#explorar')).toBeHidden();
+  await page.goto('/#inicio', { waitUntil: 'load' });
+  await page.click('#asisAbrir');
+  await page.fill('#asisTexto', 'abre el territorio');
+  await page.press('#asisTexto', 'Enter');
+  await expect(page.locator('#contexto')).toBeVisible();
+  await page.click('#pestanasApp a[href="#territorio"]');
+  await expect(page.locator('#contexto')).toBeVisible();
+});
+
 test('asistente: siempre visible, responde con el motor y ajusta el simulador', async ({ page }) => {
   for (const ruta of ['/', '/#denue', '/#legal']) {
     await page.goto(ruta, { waitUntil: 'domcontentloaded' });

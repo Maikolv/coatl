@@ -20,9 +20,13 @@ let vistaActual=null;
    como en un navegador). La lista dura lo que la sesión de esta ventana. */
 let abiertas=[]; try{ abiertas=JSON.parse(sessionStorage.getItem('coatl-pestanas'))||[]; }catch(_){}
 abiertas=abiertas.filter(id=>VISTAS.some(v=>v.id===id));
+// La tira se pega debajo de la barra superior si esta es fija; en horizontal bajo, la barra se desplaza y la tira va arriba.
+function fijarTope(){ const tira=document.getElementById('pestanasApp'), nav=document.querySelector('.nav'); if(!tira||!nav) return;
+  tira.style.top=(getComputedStyle(nav).position==='sticky'?nav.offsetHeight:0)+'px'; }
+window.addEventListener('resize',fijarTope);
 function pintarPestanas(){
   const tira=document.getElementById('pestanasApp'); if(!tira) return;
-  const nav=document.querySelector('.nav'); if(nav) tira.style.top=nav.offsetHeight+'px';
+  fijarTope();
   try{ sessionStorage.setItem('coatl-pestanas',JSON.stringify(abiertas)); }catch(_){}
   tira.innerHTML=abiertas.map(id=>{const v=VISTAS.find(x=>x.id===id), act=id===vistaActual;
     return '<div class="pa-tab'+(act?' activa':'')+'"><a href="#'+id+'"'+(act?' aria-current="page"':'')+'>'+v.titulo+'</a>'+
@@ -36,6 +40,7 @@ document.addEventListener('click',ev=>{
 });
 VISTAS.forEach(v=>v.secciones.forEach(s=>{const el=$(s); if(el) el.dataset.pagina=v.id}));
 function vistaDe(id){
+  const directa=VISTAS.find(v=>v.id===id); if(directa) return directa;   // «#territorio» no es id de ningún elemento
   const el=id&&document.getElementById(id);
   const sec=el&&el.closest("[data-pagina]");
   return sec?VISTAS.find(v=>v.id===sec.dataset.pagina):null;

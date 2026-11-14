@@ -126,8 +126,16 @@ src/
 scripts/                build, servidor, validador Python, diagrama UML, capturas
 tests/                  unitarias (node:test) y e2e (Playwright)
 docs/                   AUDITORIA, METODOLOGIA, diagrama de proceso, capturas
-entregables/            reporte Word/PDF, presentación PPTX/PDF, pitch y diagrama
+entregables/            documento técnico y reporte Word, video, presentación PPTX/PDF, pitch y diagrama
 ```
+
+## Entregables
+
+- [Documento técnico (Word)](entregables/COATL_Documento_Tecnico.docx): cómo funciona COATL, de dónde sale la información y cómo se construyó.
+- [Video para evaluadores](entregables/COATL_Video.mp4), con narración y subtítulos ([.srt](entregables/COATL_Video.srt)).
+- [Reporte técnico (Word)](entregables/COATL_Reporte.docx) y [presentación](entregables/COATL_Presentacion.pptx).
+
+Se regeneran con `node scripts/documento_tecnico_docx.mjs`, `node scripts/video_presentacion.mjs` y `node scripts/reporte_docx.mjs`.
 
 ## Metodología
 

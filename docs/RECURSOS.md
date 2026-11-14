@@ -38,4 +38,5 @@ Detalle y verificación en `docs/VERIFICACION_DATOS.md` y `docs/DENUE.md`.
 | Leaflet 1.9.4, Chart.js 4.4.1, SheetJS 0.18.5 | cdnjs, con SRI |
 | `@anthropic-ai/sdk` 1.3.0 | Intérprete opcional con Claude (jsDelivr) y `npm run asistente` |
 | Reconocimiento de voz | Web Speech API del navegador |
-| Fuentes | Google Fonts: Bricolage Grotesque, Hanken Grotesk, Spline Sans Mono |
+| Fuentes | Google Fonts: Bricolage Grotesque, Hanken Grotesk, Spline Sans Mono (OFL 1.1; copias TTF en `assets/fuentes/` para Word y video) |
+| Voz del video | Síntesis de voz de Windows, voz «Microsoft Sabina» (español de México) |

@@ -498,7 +498,7 @@ img{max-width:100%}
 @media (max-width:980px){
   .hero-inner{grid-template-columns:1fr;padding-top:3rem}
   .cifras{grid-template-columns:1fr 1fr}
-  .dos-col,.simulador,.metodos,.guia,.graficas-sim,.mapa-grid,.postales,.foda-grid,.foda-intro,.triplete{grid-template-columns:1fr}
+  .dos-col,.simulador,.metodos,.guia,.graficas-sim,.mapa-grid,.postales,.foda-grid,.foda-intro,.triplete{grid-template-columns:minmax(0,1fr)}
   .accion{grid-template-columns:auto 1fr}
   .accion .impacto{grid-column:2;text-align:left;margin-top:.3rem}
   .ilustracion{margin:0 auto}
@@ -537,7 +537,7 @@ img{max-width:100%}
 #comparadorZonas{margin-top:1rem}
 #comparadorZonas caption{text-align:left;font-weight:700;color:var(--granate);padding-bottom:.3rem}
 #comparadorZonas tr.actual{background:#FFF0F2;font-weight:700}
-.nota-widget{font-size:.8rem;color:var(--gris-texto);word-break:break-all}
+.nota-widget{font-size:.8rem;color:var(--gris-texto);overflow-wrap:anywhere}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 @media (max-width:1000px){.graficas-sim{grid-template-columns:1fr}}
 @media print{

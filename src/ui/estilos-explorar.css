@@ -305,3 +305,9 @@ body.vista-todo .pestanas-app{display:none}
 .censo-tabla th[scope=row],.censo-tabla thead th:first-child{text-align:left}
 .censo-tabla thead th{font-size:.72rem;color:var(--gris-texto);font-weight:600}
 .censo-nota{margin:0 0 .6rem;color:var(--gris-texto);font-size:.76rem}
+
+/* Teléfono en horizontal (poca altura): la barra superior se desplaza con la página para no tapar casi la mitad de la pantalla; solo la tira de pestañas queda fija. */
+@media (orientation:landscape) and (max-height:500px){
+  .nav{position:static}
+  .asis-boton{padding:.45rem .6rem}
+}

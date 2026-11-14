@@ -4,7 +4,7 @@ import fs from 'node:fs';
 import {
   Document, Packer, Paragraph, TextRun, HeadingLevel, AlignmentType, Table, TableRow, TableCell,
   WidthType, ShadingType, BorderStyle, ImageRun, ExternalHyperlink, PageBreak, Footer, PageNumber,
-  LevelFormat, TableOfContents,
+  LevelFormat, TableOfContents, CharacterSet,
 } from 'docx';
 import { REF, FUENTES, AUTORES } from './datos_reporte.mjs';
 
@@ -17,7 +17,7 @@ const b = (t) => new TextRun({ text: t, bold: true });
 const h1 = (t) => new Paragraph({ heading: HeadingLevel.HEADING_1, keepNext: true, children: [new TextRun(t)] });
 const h2 = (t) => new Paragraph({ heading: HeadingLevel.HEADING_2, keepNext: true, children: [new TextRun(t)] });
 const vineta = (t) => new Paragraph({ numbering: { reference: 'vinetas', level: 0 }, spacing: { after: 80 }, children: [].concat(t).map((x) => (typeof x === 'string' ? new TextRun(x) : x)) });
-const formula = (t) => new Paragraph({ spacing: { before: 80, after: 160 }, indent: { left: 360 }, border: { left: { style: BorderStyle.SINGLE, size: 18, color: ROJO, space: 8 } }, shading: { type: ShadingType.CLEAR, fill: HUESO, color: 'auto' }, children: [new TextRun({ text: t, font: 'Consolas', size: 20, color: TINTA })] });
+const formula = (t) => new Paragraph({ spacing: { before: 80, after: 160 }, indent: { left: 360 }, border: { left: { style: BorderStyle.SINGLE, size: 18, color: ROJO, space: 8 } }, shading: { type: ShadingType.CLEAR, fill: HUESO, color: 'auto' }, children: [new TextRun({ text: t, font: 'Spline Sans Mono', size: 20, color: TINTA })] });
 const greca = () => new Paragraph({ border: { bottom: { style: BorderStyle.DOUBLE, size: 12, color: ROJO, space: 4 } }, spacing: { after: 200 } });
 const fig = (ruta, w, h, pie) => [
   new Paragraph({ alignment: AlignmentType.CENTER, children: [new ImageRun({ type: 'png', data: fs.readFileSync(ruta), transformation: { width: w, height: h } })] }),
@@ -40,7 +40,7 @@ const tamPng = (ruta) => { const b = fs.readFileSync(ruta); return [b.readUInt32
 const escala = (ruta, anchoPx) => { const [w, h] = tamPng(ruta); return [anchoPx, Math.round(h * anchoPx / w)]; };
 
 const portada = [
-  new Paragraph({ spacing: { before: 1800 }, alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'COATL', bold: true, size: 96, color: ROJO, font: 'Georgia' })] }),
+  new Paragraph({ spacing: { before: 1800 }, alignment: AlignmentType.CENTER, children: [new TextRun({ text: 'COATL', bold: true, size: 96, color: ROJO, font: 'Bricolage Grotesque' })] }),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 400 }, children: [new TextRun({ text: 'Cálculo de Oportunidad y Análisis Territorial Local', size: 32, color: GRANATE })] }),
   greca(),
   new Paragraph({ alignment: AlignmentType.CENTER, spacing: { after: 120 }, children: [new TextRun({ text: 'Reporte técnico: probabilidad de supervivencia a 3 años y rentabilidad esperada de abrir un negocio en Coacalco de Berriozábal, Estado de México', size: 26 })] }),
@@ -54,7 +54,7 @@ const portada = [
 ];
 
 const cuerpo = [
-  new Paragraph({ spacing: { after: 200 }, children: [new TextRun({ text: 'Contenido', bold: true, size: 34, color: ROJO, font: 'Georgia' })] }),
+  new Paragraph({ spacing: { after: 200 }, children: [new TextRun({ text: 'Contenido', bold: true, size: 34, color: ROJO, font: 'Bricolage Grotesque' })] }),
   new TableOfContents('Contenido', { hyperlink: true, headingStyleRange: '1-2' }),
   new Paragraph({ children: [new PageBreak()] }),
 
@@ -131,11 +131,17 @@ const cuerpo = [
 const doc = new Document({
   creator: AUTORES.join(', '), title: 'COATL · Reporte técnico', description: 'Reporte técnico del simulador COATL',
   features: { updateFields: true },
+  // Tipografías del sitio incrustadas (OFL), para que el reporte se vea igual en cualquier equipo.
+  fonts: [
+    { name: 'Bricolage Grotesque', data: fs.readFileSync('assets/fuentes/BricolageGrotesque-ExtraBold.ttf'), bold: fs.readFileSync('assets/fuentes/BricolageGrotesque-ExtraBold.ttf'), characterSet: CharacterSet.ANSI },
+    { name: 'Hanken Grotesk', data: fs.readFileSync('assets/fuentes/HankenGrotesk-Regular.ttf'), bold: fs.readFileSync('assets/fuentes/HankenGrotesk-Bold.ttf'), characterSet: CharacterSet.ANSI },
+    { name: 'Spline Sans Mono', data: fs.readFileSync('assets/fuentes/SplineSansMono-Regular.ttf'), characterSet: CharacterSet.ANSI },
+  ],
   styles: {
-    default: { document: { run: { font: 'Calibri', size: 22, color: TINTA } } },
+    default: { document: { run: { font: 'Hanken Grotesk', size: 22, color: TINTA } } },
     paragraphStyles: [
-      { id: 'Heading1', name: 'Heading 1', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { size: 34, bold: true, color: ROJO, font: 'Georgia' }, paragraph: { spacing: { before: 360, after: 160 }, outlineLevel: 0 } },
-      { id: 'Heading2', name: 'Heading 2', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { size: 26, bold: true, color: GRANATE, font: 'Georgia' }, paragraph: { spacing: { before: 240, after: 120 }, outlineLevel: 1 } },
+      { id: 'Heading1', name: 'Heading 1', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { size: 34, bold: true, color: ROJO, font: 'Bricolage Grotesque' }, paragraph: { spacing: { before: 360, after: 160 }, outlineLevel: 0 } },
+      { id: 'Heading2', name: 'Heading 2', basedOn: 'Normal', next: 'Normal', quickFormat: true, run: { size: 26, bold: true, color: GRANATE, font: 'Bricolage Grotesque' }, paragraph: { spacing: { before: 240, after: 120 }, outlineLevel: 1 } },
     ],
   },
   numbering: { config: [{ reference: 'vinetas', levels: [{ level: 0, format: LevelFormat.BULLET, text: '•', alignment: AlignmentType.LEFT, style: { paragraph: { indent: { left: 540, hanging: 270 } } } }] }] },

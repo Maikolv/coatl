@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-cIYrkcgAtDl7dU4FbWY29RCd47f9gYwu3jSUyT0x8pA=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'sha256-4wT5/NwSw15nCQcmyqGfHXgu40OoZSAISq5XVSNobT8=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://generativelanguage.googleapis.com https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-R559yTd0Y5gxQ6bZeCfUsKEHmH4gee/DwOkTf/nQfe8=' https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; worker-src blob:; style-src 'self' 'sha256-n76rBtSfl5oaotgAQuhlaQI4Z59Jd/Ka1FKj/wqAlsA=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://generativelanguage.googleapis.com https://api.anthropic.com https://cdn.jsdelivr.net; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -520,7 +520,7 @@ img{max-width:100%}
 @media (max-width:980px){
   .hero-inner{grid-template-columns:1fr;padding-top:3rem}
   .cifras{grid-template-columns:1fr 1fr}
-  .dos-col,.simulador,.metodos,.guia,.graficas-sim,.mapa-grid,.postales,.foda-grid,.foda-intro,.triplete{grid-template-columns:1fr}
+  .dos-col,.simulador,.metodos,.guia,.graficas-sim,.mapa-grid,.postales,.foda-grid,.foda-intro,.triplete{grid-template-columns:minmax(0,1fr)}
   .accion{grid-template-columns:auto 1fr}
   .accion .impacto{grid-column:2;text-align:left;margin-top:.3rem}
   .ilustracion{margin:0 auto}
@@ -559,7 +559,7 @@ img{max-width:100%}
 #comparadorZonas{margin-top:1rem}
 #comparadorZonas caption{text-align:left;font-weight:700;color:var(--granate);padding-bottom:.3rem}
 #comparadorZonas tr.actual{background:#FFF0F2;font-weight:700}
-.nota-widget{font-size:.8rem;color:var(--gris-texto);word-break:break-all}
+.nota-widget{font-size:.8rem;color:var(--gris-texto);overflow-wrap:anywhere}
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);border:0}
 @media (max-width:1000px){.graficas-sim{grid-template-columns:1fr}}
 @media print{
@@ -881,6 +881,12 @@ body.vista-todo .pestanas-app{display:none}
 .censo-tabla thead th{font-size:.72rem;color:var(--gris-texto);font-weight:600}
 .censo-nota{margin:0 0 .6rem;color:var(--gris-texto);font-size:.76rem}
 
+/* Teléfono en horizontal (poca altura): la barra superior se desplaza con la página para no tapar casi la mitad de la pantalla; solo la tira de pestañas queda fija. */
+@media (orientation:landscape) and (max-height:500px){
+  .nav{position:static}
+  .asis-boton{padding:.45rem .6rem}
+}
+
 /* estilos en línea movidos por el build */
 [data-ei="0"]{margin-top:1.5rem !important}
 [data-ei="1"]{font-family:var(--mono) !important;font-size:.66rem !important;color:#855559 !important;margin-top:.7rem !important}
@@ -1107,7 +1113,7 @@ body.vista-todo .pestanas-app{display:none}
   <div class="seccion">
     <p class="folio">Sección 02 · El instrumento</p>
     <h2 class="titulo" data-ei="2">Simulador de éxito y rentabilidad</h2>
-    <p class="intro">Configura las 22 variables del escenario en las cuatro pestañas: <strong data-ei="3">el cálculo es en vivo</strong>, cada ajuste mueve al instante el medidor, las gráficas y el mapa de zonas. ¿Sin ideas? Lanza el dado de <strong data-ei="4">🎲 Escenario sorpresa</strong>. El modelo devuelve la probabilidad (con un decimal, cálculo determinista y reproducible) de operar con rentabilidad al tercer año, la curva de supervivencia, la distribución de utilidades (Monte Carlo, 2,000 corridas) y los indicadores financieros del proyecto.</p>
+    <p class="intro">Configura las 32 variables del escenario en las cuatro pestañas: <strong data-ei="3">el cálculo es en vivo</strong>, cada ajuste mueve al instante el medidor, las gráficas y el mapa de zonas. ¿Sin ideas? Lanza el dado de <strong data-ei="4">🎲 Escenario sorpresa</strong>. El modelo devuelve la probabilidad (con un decimal, cálculo determinista y reproducible) de operar con rentabilidad al tercer año, la curva de supervivencia, la distribución de utilidades (Monte Carlo, 2,000 corridas) y los indicadores financieros del proyecto.</p>
 
     <article class="widget widget-describir" id="wDescribir" data-estado="vacio" aria-labelledby="wDescribir-q">
       <p class="widget-pregunta" id="wDescribir-q">Cuéntale a COATL tu negocio y ajusta el simulador por ti</p>
@@ -1454,7 +1460,7 @@ body.vista-todo .pestanas-app{display:none}
           <button type="button" class="btn btn-widget" id="guardarEsc">＋ Guardar escenario actual</button>
           <button type="button" class="btn btn-widget btn-sec" id="limpiarEsc">Limpiar</button>
         </div>
-        <div class="tabla-desliza"><table class="tabla-comparar" id="tablaComparar"><caption class="sr-only">Escenarios guardados</caption></table></div>
+        <div class="tabla-desliza" tabindex="0" role="region" aria-label="Escenarios guardados (desplazable)"><table class="tabla-comparar" id="tablaComparar"><caption class="sr-only">Escenarios guardados</caption></table></div>
       </div>
       <div class="panel">
         <h3>Exportar y compartir</h3>
@@ -1556,7 +1562,7 @@ body.vista-todo .pestanas-app{display:none}
           <p class="ranking-titulo">Ranking de zonas para tu escenario</p>
           <ul class="ranking" id="ranking"></ul>
           <p class="reco" id="recomendacion"></p>
-      <div class="tabla-desliza"><table class="tabla-zonas" id="comparadorZonas"><caption>Comparador de zonas para tu mismo negocio</caption></table></div>
+      <div class="tabla-desliza" tabindex="0" role="region" aria-label="Comparador de zonas (desplazable)"><table class="tabla-zonas" id="comparadorZonas"><caption>Comparador de zonas para tu mismo negocio</caption></table></div>
         </div>
       </div>
     </div>
@@ -3576,9 +3582,13 @@ let vistaActual=null;
    como en un navegador). La lista dura lo que la sesión de esta ventana. */
 let abiertas=[]; try{ abiertas=JSON.parse(sessionStorage.getItem('coatl-pestanas'))||[]; }catch(_){}
 abiertas=abiertas.filter(id=>VISTAS.some(v=>v.id===id));
+// La tira se pega debajo de la barra superior si esta es fija; en horizontal bajo, la barra se desplaza y la tira va arriba.
+function fijarTope(){ const tira=document.getElementById('pestanasApp'), nav=document.querySelector('.nav'); if(!tira||!nav) return;
+  tira.style.top=(getComputedStyle(nav).position==='sticky'?nav.offsetHeight:0)+'px'; }
+window.addEventListener('resize',fijarTope);
 function pintarPestanas(){
   const tira=document.getElementById('pestanasApp'); if(!tira) return;
-  const nav=document.querySelector('.nav'); if(nav) tira.style.top=nav.offsetHeight+'px';
+  fijarTope();
   try{ sessionStorage.setItem('coatl-pestanas',JSON.stringify(abiertas)); }catch(_){}
   tira.innerHTML=abiertas.map(id=>{const v=VISTAS.find(x=>x.id===id), act=id===vistaActual;
     return '<div class="pa-tab'+(act?' activa':'')+'"><a href="#'+id+'"'+(act?' aria-current="page"':'')+'>'+v.titulo+'</a>'+
@@ -3592,6 +3602,7 @@ document.addEventListener('click',ev=>{
 });
 VISTAS.forEach(v=>v.secciones.forEach(s=>{const el=$(s); if(el) el.dataset.pagina=v.id}));
 function vistaDe(id){
+  const directa=VISTAS.find(v=>v.id===id); if(directa) return directa;   // «#territorio» no es id de ningún elemento
   const el=id&&document.getElementById(id);
   const sec=el&&el.closest("[data-pagina]");
   return sec?VISTAS.find(v=>v.id===sec.dataset.pagina):null;
