@@ -229,7 +229,7 @@ body.vista-entra [data-pagina]:not([hidden]){animation:entraVista .35s ease both
 .widget-describir{margin-bottom:1.5rem}
 .describir-cuerpo{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:1.2rem}
 #descTexto{width:100%;font:inherit;padding:.75rem .9rem;border:1px solid var(--niebla-2);border-radius:12px;resize:vertical;min-height:110px;background:#fff;color:var(--tinta)}
-#descTexto:focus-visible,#descClave:focus-visible{outline:3px solid var(--granate);outline-offset:2px}
+#descTexto:focus-visible{outline:3px solid var(--granate);outline-offset:2px}
 .boton-voz.escuchando{background:var(--rojo);color:#fff;animation:late 1.2s infinite}
 .describir-salida{background:#fff;border:1px solid var(--niebla-2);border-radius:12px;padding:.8rem 1rem;font-size:.85rem}
 .describir-salida ul{margin:.3rem 0 0 1.1rem}
