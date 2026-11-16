@@ -401,7 +401,7 @@ body.vista-todo .pestanas-app{display:none}
 .mr-t{font-weight:700;font-size:.8rem;color:#7A0C1F;margin:0 0 .35rem}
 .mr-celda ul{list-style:none;margin:0;padding:0;font-size:.82rem;display:grid;gap:.2rem}
 .mr-celda li span{float:right;font-variant-numeric:tabular-nums}
-.mr-celda li.neg span{color:#C8102E}.mr-celda li.pos span{color:#2e6b3a}.mr-celda li.vacio{color:#777}
+.mr-celda li.neg span{color:#C8102E}.mr-celda li.pos span{color:#2e6b3a}.mr-celda li.vacio{color:#6B5457}
 .calendario{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
 .calendario>li{border-left:4px solid #C8102E;padding:.3rem .7rem;background:#FBF6F3;border-radius:0 8px 8px 0}
 .calendario>li.cal-kpi{border-left-color:#7A0C1F}
