@@ -9,7 +9,7 @@
 //  - Sin facturación: con el plan gratuito de Gemini, al agotar la cuota responde 429; nunca cobra.
 
 const ORIGENES = new Set(['https://maikolv.github.io', 'http://127.0.0.1:8000', 'http://localhost:8000']);
-const MODELOS = ['gemini-3.8-flash', 'gemini-3.5-flash-lite'];
+const MODELOS = ['gemini-3.5-flash-lite', 'gemini-3.8-flash'];   // el ligero primero: respuestas cortas y rápidas
 const LIMITE = { ventanaMs: 10 * 60 * 1000, max: 30 };   // 30 peticiones por IP cada 10 minutos (por instancia)
 const visitas = new Map();
 
