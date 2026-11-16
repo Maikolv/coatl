@@ -32,7 +32,7 @@ const guardados=[];
 let ultimoResumen=null;
 function resumenEscenario(e,modelo,mc,f){
   const rp=rangoP(modelo);
-  return {nombre:e.giro.n+" · "+CORTOS[e.zonaKey], P:modelo.P, rango:pct(rp.p05)+"–"+pct(rp.p95),
+  return {nombre:e.giro.n+" · "+CORTOS[e.zonaKey], negocio:negocioActual, P:modelo.P, rango:pct(rp.p05)+"–"+pct(rp.p95),
     util:e.utilMes, p05:mc.p05, p95:mc.p95, pe:e.peDia, roi:f.roi, payback:f.payback, vpn:f.vpn, hash:serializarEscenario()};
 }
 function pintarComparador(){
@@ -92,32 +92,7 @@ $("compartirURL").addEventListener("click",async()=>{
   $("notaCompartir").textContent=ok?"Enlace copiado al portapapeles.":"Copia este enlace: "+url;
 });
 
-/* Exportar: PNG compuesto (encabezado + KPIs + gráficas) y PDF vía impresión del navegador. */
-$("exportarPDF").addEventListener("click",async()=>{
-  await graficasListas([...PENDIENTES.keys()].map(c=>c.id));
-  window.print();
-});
-$("exportarPNG").addEventListener("click",async()=>{
-  const W=1400, graf=await graficasListas(["graficaSupervivencia","graficaMC","graficaTornado","graficaPE"]), alto=230+Math.ceil(graf.length/2)*420+60;
-  const cv=document.createElement("canvas"); cv.width=W; cv.height=alto;
-  const x=cv.getContext("2d");
-  x.fillStyle=COL.hueso; x.fillRect(0,0,W,alto);
-  x.fillStyle=COL.rojo; x.fillRect(0,0,W,14);
-  x.fillStyle=COL.tinta; x.font="700 34px 'Bricolage Grotesque',Arial"; x.fillText("COATL · Reporte del escenario",40,64);
-  if(ultimoResumen){
-    const r=ultimoResumen;
-    x.font="500 20px 'Hanken Grotesk',Arial"; x.fillStyle=COL.granate; x.fillText(r.nombre,40,98);
-    [["P a 3 años",pct(r.P)+" ("+r.rango+")"],["Utilidad/mes",mxn.format(Math.round(r.util))],["ROI anual",pct(r.roi)],
-     ["Payback",r.payback?r.payback.toFixed(1)+" meses":"—"],["VPN 3 años",mxn.format(Math.round(r.vpn))]]
-      .forEach(([k,v],i)=>{x.font="500 16px 'Hanken Grotesk',Arial";x.fillStyle="#6B5457";x.fillText(k,40+i*270,140);
-        x.font="700 24px 'Hanken Grotesk',Arial";x.fillStyle=COL.tinta;x.fillText(v,40+i*270,172)});
-  }
-  graf.forEach((g,i)=>{const cx=40+(i%2)*670, cy=210+Math.floor(i/2)*420;
-    x.fillStyle="#fff";x.fillRect(cx,cy,640,400);x.drawImage(g.canvas,cx+10,cy+10,620,380)});
-  x.font="400 14px 'Hanken Grotesk',Arial"; x.fillStyle="#6B5457";
-  x.fillText("Estimaciones bajo supuestos declarados; no constituyen asesoría financiera. © 2026 Cruz García, López Bautista y Arroyo Cortés.",40,alto-24);
-  const a=document.createElement("a"); a.download="COATL-escenario.png"; a.href=cv.toDataURL("image/png"); a.click();
-});
+/* Exportar reporte (PDF e imagen): ver src/ui/reporte.js. */
 
 /* Alternativa textual de las gráficas para lectores de pantalla (WCAG 1.1.1). */
 function describirGraficas(e,modelo,mc,S){

@@ -30,5 +30,8 @@ if (!soffice) {
 }
 const archivos = ['COATL_Documento_Tecnico.docx', 'COATL_Reporte.docx', 'COATL_Presentacion.pptx', 'COATL_Pitch_Inversionistas.pptx']
   .map((f) => join('entregables', f)).filter(existsSync);
-correr(soffice, ['--headless', '--convert-to', 'pdf', '--outdir', 'entregables', ...archivos]);
+// Sin intérprete de comandos: la ruta de LibreOffice en Windows lleva espacios («Program Files»).
+console.log(`\n› LibreOffice: convirtiendo ${archivos.length} documentos a PDF`);
+const conv = spawnSync(soffice, ['--headless', '--convert-to', 'pdf', '--outdir', 'entregables', ...archivos], { stdio: 'inherit', shell: soffice === 'soffice' });
+if (conv.status !== 0) throw new Error(`LibreOffice no pudo convertir los documentos (código ${conv.status})`);
 console.log('\n✔ Entregables y PDF actualizados en entregables/');

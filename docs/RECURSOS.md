@@ -47,14 +47,21 @@ Descargadas de Wikimedia Commons con `node scripts/fotos_sync.mjs`, recortadas a
 
 | Dónde aparece | Foto | Autor | Licencia |
 |---|---|---|---|
-| Territorio · movilidad | [Mexibús Línea 2, estación Coacalco Berriozábal](https://commons.wikimedia.org/wiki/File:Coacalco_Berrioz%C3%A1bal_(Mexib%C3%BAs_L2)_2.jpg) | Tbhotch | [CC BY-SA 2.5 mx](https://creativecommons.org/licenses/by-sa/2.5/mx/deed.en) |
-| Territorio · comercio regional | [Coacalco Power Center sobre la Vía López Portillo](https://commons.wikimedia.org/wiki/File:Coacalco_Power_Center_(2024)_1.jpg) | Tbhotch | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
-| Territorio · comercio de barrio | [Calle Chiapas, San Francisco Coacalco](https://commons.wikimedia.org/wiki/File:Calle_Chiapas,_San_Francisco_Coacalco,_Mexico_2011_-_panoramio.jpg) | ArCaRa | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0) |
-| Territorio · cultura y turismo | [Museo del Mamut de Coacalco](https://commons.wikimedia.org/wiki/File:Museo_del_Mamut,_Coacalco.jpg) | Tbhotch | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| Carrusel · Territorio | [Mexibús Línea 2, estación Coacalco Berriozábal](https://commons.wikimedia.org/wiki/File:Coacalco_Berrioz%C3%A1bal_(Mexib%C3%BAs_L2)_2.jpg) | Tbhotch | [CC BY-SA 2.5 mx](https://creativecommons.org/licenses/by-sa/2.5/mx/deed.en) |
+| Carrusel · Territorio | [Coacalco Power Center sobre la Vía López Portillo](https://commons.wikimedia.org/wiki/File:Coacalco_Power_Center_(2024)_1.jpg) | Tbhotch | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| Carrusel · Territorio | [Calle Chiapas, San Francisco Coacalco](https://commons.wikimedia.org/wiki/File:Calle_Chiapas,_San_Francisco_Coacalco,_Mexico_2011_-_panoramio.jpg) | ArCaRa | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0) |
+| Carrusel · Territorio | [Museo del Mamut de Coacalco](https://commons.wikimedia.org/wiki/File:Museo_del_Mamut,_Coacalco.jpg) | Tbhotch | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
 | Inicio · widget de clientes | [Cafetería en Coacalco (escenario de referencia: cafetería)](https://commons.wikimedia.org/wiki/File:Tim_Hortons_Coacalco.jpg) | Axel Arias | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
-| Metodología · cómo leer tu resultado | [Plaza Coacalco](https://commons.wikimedia.org/wiki/File:Plaza_Coacalco_(2022).jpg) | Tbhotch | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
-| DENUE · competencia | [Zentralia Coacalco](https://commons.wikimedia.org/wiki/File:Zentralia_Coacalco_2.jpg) | Tbhotch | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
-| Empresas | [Plaza Las Flores, Villa de las Flores](https://commons.wikimedia.org/wiki/File:Plaza_Las_Flores_Coacalco_1.jpg) | Tbhotch | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
-| Estrategia · plan de acción | [Vista aérea de San Rafael, Coacalco](https://commons.wikimedia.org/wiki/File:San_Rafael,_Coacalco.jpg) | Sxmuelfernandez | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
-| Simulador · escenario | [Plaza La Era, Coacalco](https://commons.wikimedia.org/wiki/File:La_Era_Coacalco.jpg) | Tbhotch | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
-| Aviso legal | [Vista hacia el valle desde Puerta Coacalco](https://commons.wikimedia.org/wiki/File:Puerta_Coacalco)Vista_hacia_el_valle_-_panoramio.jpg) | ArCaRa | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0) |
+| Carrusel · Inicio | [Plaza Coacalco · Corredor Vía López Portillo](https://commons.wikimedia.org/wiki/File:Plaza_Coacalco_(2022).jpg) | Tbhotch | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| Carrusel · Territorio | [Zentralia Coacalco](https://commons.wikimedia.org/wiki/File:Zentralia_Coacalco_2.jpg) | Tbhotch | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| Carrusel · Territorio | [Plaza Las Flores, Villa de las Flores](https://commons.wikimedia.org/wiki/File:Plaza_Las_Flores_Coacalco_1.jpg) | Tbhotch | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| Carrusel · Inicio | [Vista aérea de San Rafael · zona Potrero–San Rafael](https://commons.wikimedia.org/wiki/File:San_Rafael,_Coacalco.jpg) | Sxmuelfernandez | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| Carrusel · Territorio | [Plaza La Era, Coacalco](https://commons.wikimedia.org/wiki/File:La_Era_Coacalco.jpg) | Tbhotch | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| Carrusel · Inicio | [Vista hacia el valle desde Puerta Coacalco · Sierra de Guadalupe](https://commons.wikimedia.org/wiki/File:Puerta_Coacalco)Vista_hacia_el_valle_-_panoramio.jpg) | ArCaRa | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0) |
+| Carrusel · Inicio | [Iglesia de San Francisco · Centro de Coacalco](https://commons.wikimedia.org/wiki/File:Iglesia_San_Francisco_Coacalco_Mexico.JPG) | ProtoplasmaKid | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| Carrusel · Inicio | [Iglesia en Coacalco](https://commons.wikimedia.org/wiki/File:Coacalco_Iglesia.jpg) | GenezisLr | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| Carrusel · Inicio | [Coacalco al pie de la Sierra de Guadalupe](https://commons.wikimedia.org/wiki/File:Coacalco_de_Berrioz%C3%A1bal.jpg) | Sxmuelfernandez | [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0) |
+| Carrusel · Inicio | [Paraje Xolo · Sierra de Guadalupe](https://commons.wikimedia.org/wiki/File:Paraje_%22Xolo%22_-_Coacalco_-_M%C3%A9xico_-_panoramio.jpg) | ArCaRa | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0) |
+| Carrusel · Inicio | [Atardecer desde Puerta Coacalco](https://commons.wikimedia.org/wiki/File:Aurora_en_%22Puerta_Coacalco%22_-_panoramio.jpg) | ArCaRa | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0) |
+| Carrusel · Inicio | [Comercio de calle: La BTK, Coacalco](https://commons.wikimedia.org/wiki/File:La_BTK_Coacalco.jpg) | Tbhotch | [CC BY-SA 4.0](https://creativecommons.org/licenses/by-sa/4.0) |
+| Carrusel · Inicio | [Universidad ETAC, campus Coacalco](https://commons.wikimedia.org/wiki/File:ETAC-_UNIVERSIDAD_CAMPUS_COACALCO._-_panoramio.jpg) | ArCaRa | [CC BY 3.0](https://creativecommons.org/licenses/by/3.0) |

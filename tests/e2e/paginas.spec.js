@@ -8,7 +8,7 @@ test('cada apartado se abre como página propia y respeta atrás/adelante', asyn
   expect(await visibles(page)).toEqual(['inicio', 'explorar']);
   await page.click('.nav-links a[data-vista="simulador"]');
   await expect(page.locator('#simulador')).toBeVisible();
-  expect(await visibles(page)).toEqual(['simulador']);
+  expect(await visibles(page)).toEqual(['simulador', 'mejora']);
   await expect(page).toHaveTitle(/^Simulador · /);
   await expect(page.locator('.nav-links a[aria-current="page"]')).toHaveText('Simulador');
   await page.click('.nav-links a[data-vista="metodologia"]');
@@ -21,7 +21,7 @@ test('cada apartado se abre como página propia y respeta atrás/adelante', asyn
 test('un enlace profundo abre la página que contiene el destino', async ({ page }) => {
   await page.goto('/#mapa', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('#mapa')).toBeVisible();
-  expect(await visibles(page)).toEqual(['simulador']);
+  expect(await visibles(page)).toEqual(['simulador', 'mejora']);
 });
 
 test('describir la situación ajusta el simulador (intérprete local)', async ({ page }) => {
@@ -237,19 +237,20 @@ test('v9: la lista de giros incluye todas las actividades presentes en Coacalco 
   await expect(page.locator('#probNum')).toHaveText(/%/);
 });
 
-test('v9: carrusel de zonas con botones, puntos y pausa; sin fotos en Estrategia ni en Aviso legal', async ({ page }) => {
-  await page.goto('/#metodologia', { waitUntil: 'domcontentloaded' });
-  const puntos = page.locator('.car-punto');
-  expect(await puntos.count()).toBeGreaterThanOrEqual(8);
-  await page.locator('#carrusel').scrollIntoViewIfNeeded();
-  await page.click('#carPausa');
-  await expect(page.locator('#carPausa')).toHaveAttribute('aria-pressed', 'true');
-  await page.click('#carSig');
-  await expect(puntos.nth(1)).toHaveAttribute('aria-current', 'true');
-  const fuentes = await page.locator('.car-slide img').evaluateAll((i) => i.map((x) => x.getAttribute('src')));
+test('v11: carruseles en Inicio y Territorio con fotos distintas; sin fotos en DENUE, Simulador, Empresas, Estrategia ni Aviso legal', async ({ page }) => {
+  await page.goto('/?vista=todo', { waitUntil: 'load' });
+  for (const id of ['#carrusel-inicio', '#carrusel-territorio']) {
+    await page.locator(id).scrollIntoViewIfNeeded();
+    await expect(page.locator(id + ' .car-slide').first()).toBeVisible();
+    await page.locator(id + ' .car-pausa').click();
+    await expect(page.locator(id + ' .car-pausa')).toHaveAttribute('aria-pressed', 'true');
+    await page.locator(id + ' .car-sig').click();
+    await expect(page.locator(id + ' .car-punto[aria-current="true"]')).toHaveCount(1);
+  }
+  const fuentes = await page.locator('.car-slide img').evaluateAll((im) => im.map((x) => x.getAttribute('src')));
   expect(new Set(fuentes).size).toBe(fuentes.length);
-  await expect(page.locator('#estrategia img')).toHaveCount(0);
-  await expect(page.locator('#legal img')).toHaveCount(0);
+  for (const sel of ['#denue', '#simulador', '#mejora', '#empresas', '#estrategia', '#legal', '#lectura']) await expect(page.locator(sel + ' img')).toHaveCount(0);
+  await expect(page.locator('.folio').filter({ hasText: /Sección \d/ })).toHaveCount(0);
   await expect(page.locator('#fodaBalance')).toBeAttached();
 });
 
@@ -265,14 +266,18 @@ test('v10: simulador de plan, matriz de impacto y calendario de 90 días', async
   for (const w of ['wPlan', 'wRiesgo', 'wCalendario']) await expect(page.locator('#' + w)).toHaveAttribute('data-estado', 'listo');
   await expect(page.locator('#planRes')).toContainText('51.6% →');
   const antes = await page.locator('#planRes strong').textContent();
-  await page.locator('#planOpciones input:checked').first().uncheck();
+  await page.locator('#planOpciones input:checked').first().click();
   await expect(page.locator('#planRes strong')).not.toHaveText(antes);
   await expect(page.locator('#planOpciones input:checked').first()).toBeAttached();
   await expect(page.locator('#matrizRiesgo .mr-celda')).toHaveCount(4);
   await expect(page.locator('#wRiesgo')).toContainText('no está medida');
   await expect(page.locator('#calendario > li')).toHaveCount(4);
   // Al desmarcar todo, el calendario queda vacío con mensaje (sin hueco)
-  while (await page.locator('#planOpciones input:checked').count()) await page.locator('#planOpciones input:checked').first().uncheck();
+  // La lista se vuelve a dibujar en cada cambio: se hace clic y se espera a que baje el conteo (uncheck() revisaría un nodo ya reemplazado).
+  for (let n = await page.locator('#planOpciones input:checked').count(); n > 0; n--) {
+    await page.locator('#planOpciones input:checked').first().click();
+    await expect(page.locator('#planOpciones input:checked')).toHaveCount(n - 1);
+  }
   await expect(page.locator('#wCalendario')).toHaveAttribute('data-estado', 'vacio');
   // Impresión: solo Estrategia queda visible
   await page.evaluate(() => document.body.classList.add('imprimir-plan'));
@@ -284,8 +289,33 @@ test('v10: simulador de plan, matriz de impacto y calendario de 90 días', async
 test('v10: aviso legal con uso aceptable, licencias (ODbL) y revisión profesional', async ({ page }) => {
   await page.goto('/?vista=todo#legal', { waitUntil: 'load' });
   const legal = page.locator('#legal');
-  for (const t of ['Uso aceptable', 'Licencias de terceros', 'ODbL', 'Revisión profesional', 'no ha sido revisado por un abogado']) await expect(legal).toContainText(t);
+  for (const t of ['Uso aceptable', 'licencias de terceros', 'ODbL', 'Revisión profesional', 'no ha sido revisado por un abogado', 'Negocios guardados', 'Estimación fiscal']) await expect(legal).toContainText(t);
   await expect(legal.locator('a[href*="docs/RECURSOS.md"]')).toHaveCount(1);
   const nums = await legal.locator('article.metodo').evaluateAll((a) => a.map((x) => x.dataset.num));
   expect(nums).toEqual(nums.map((_, i) => '§' + (i + 1)));
+});
+
+test('v11: nombre del negocio, guardado local, alternativas, diagnóstico, fiscal y modelo 2.5D', async ({ page }) => {
+  await page.goto('/?vista=todo#simulador', { waitUntil: 'load' });
+  for (const w of ['wAlternativas', 'wMadurez', 'wFiscal', 'wEscena', 'wFichaNegocio']) await expect(page.locator('#' + w)).toHaveAttribute('data-estado', 'listo');
+  await page.fill('#negocioNombre', 'Café La Serpiente');
+  await expect(page.locator('#mejoraNombre')).toContainText('Café La Serpiente');
+  await expect(page.locator('#madB-uvp')).toContainText('Café La Serpiente');
+  await page.click('#negocioGuardar');
+  await expect(page.locator('#negocioLista option')).toHaveCount(2);
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('coatl-negocios')).length)).toBe(1);
+  await expect(page.locator('#madurezNiveles .mad-item')).toHaveCount(30);
+  await expect(page.locator('#fiscalCuerpo')).toContainText('RESICO');
+  await expect(page.locator('#escenaNegocio svg')).toBeVisible();
+  await page.click('#escenaPotencial');
+  await expect(page.locator('#escenaPotencial')).toHaveAttribute('aria-pressed', 'true');
+  const antes = await page.locator('#probNum').textContent();
+  await page.locator('#alternativas button').first().click();
+  await expect(page.locator('#altDeshacer')).toBeVisible();
+  await expect(page.locator('#probNum')).not.toHaveText(antes);
+  await page.click('#altDeshacer');
+  await expect(page.locator('#probNum')).toHaveText(antes);
+  await page.selectOption('#negocioLista', 'Café La Serpiente');
+  await page.click('#negocioEliminar');
+  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('coatl-negocios')).length)).toBe(0);
 });

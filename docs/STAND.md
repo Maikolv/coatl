@@ -1,56 +1,99 @@
-# Propuesta de stand físico — COATL
+# Stand físico de COATL — tres propuestas
 
-Objetivo: que un evaluador o inversionista entienda en **30 segundos** qué es COATL y en **3 minutos** lo vea funcionar con un caso real de Coacalco. Identidad fija: rojo `#C8102E`, granate `#7A0C1F`, blanco hueso `#FBF6F3` y greca escalonada.
+Objetivo común: que un evaluador o inversionista entienda en **30 segundos** qué es COATL y en **3 minutos** lo vea funcionar con un negocio real de Coacalco. Identidad fija en las tres: rojo `#C8102E`, granate `#7A0C1F`, blanco hueso `#FBF6F3` y greca escalonada. Los precios son **aproximados en MXN**: cotiza en la papelería o imprenta local antes de comprar.
 
-## 1. Distribución (mesa de 1.8 × 0.6 m)
-
-```
-   [ Lona roll-up 0.85×2 m ]                 [ Pantalla 32"+ en pedestal: video en bucle ]
- ┌──────────────────────────────────────────────────────────────────────────────┐
- │  Tablet/laptop DEMO    │   Póster central (tríptico)   │   QR grande + one-pager │
- │  (simulador en vivo)   │   "¿Sobrevivirá tu negocio?"  │   tarjetas para llevar   │
- └──────────────────────────────────────────────────────────────────────────────┘
-          mantel rojo con franja de greca al frente
-```
-
-## 2. Recursos y presupuesto aproximado (MXN, cotizar antes de comprar)
-
-| Recurso | Para qué | Costo aprox. | Prioridad |
+| | A · Esencial | B · Profesional (recomendada) | C · Inmersiva |
 |---|---|---|---|
-| Laptop o tablet ≥ 10" con el sitio abierto (modo sin conexión: `npm run servir`) | Demo en vivo del simulador | Propia | Indispensable |
-| Pantalla/monitor 32"+ (prestado o rentado) | `entregables/COATL_Video.mp4` en bucle con subtítulos | $0–1,500 renta | Alta |
-| Lona roll-up 85×200 cm | Nombre, pregunta gancho, logotipo y greca | $650–1,100 | Alta |
-| Póster/tríptico 90×60 cm (foam board) | Modelo en 4 pasos: logística → Cox → Monte Carlo → finanzas | $350–600 | Alta |
-| One-pager impreso (100 pzas, carta, color) | Escenario de referencia, QR y autores | $250–450 | Alta |
-| QR grande impreso (A4) apuntando a `maikolv.github.io/coatl` | Que lo prueben en su teléfono | $30 | Indispensable |
-| Mantel rojo + franja de greca (vinil o tela) | Identidad visual | $250–500 | Media |
-| Tarjetas de presentación (50 pzas) con QR | Contacto del equipo | $150–300 | Media |
-| Multicontacto, extensión 5 m, cargadores, cable HDMI | Energía y respaldo | Propios | Indispensable |
-| Hotspot del teléfono / módem | La IA requiere internet; el resto funciona sin red | Propio | Alta |
-| Playeras o gafetes rojos con nombre | Imagen de equipo | $0–450 | Opcional |
-| **Total estimado** | | **≈ $1,700 – 5,400** | |
+| Idea | Una mesa bien vestida y una demo impecable | Mesa + pantalla + lona: se ve desde lejos | El visitante simula **su** negocio y se lleva su reporte |
+| Costo aproximado | $900 – 1,800 | $3,500 – 6,500 | $9,000 – 16,000 |
+| Tiempo de preparación | 2 días | 1 semana | 2 a 3 semanas |
+| Personas en el stand | 2 | 3 | 3 a 4 |
+| Espacio | Mesa de 1.2 m | Mesa de 1.8 m + 1 m² | 3 × 2 m |
+| Riesgo | Pasa desapercibida si hay stands grandes | Bajo | Depende de internet, energía e impresora |
 
-## 3. Contenido impreso (todo se genera del propio modelo)
+---
 
-- **One-pager**: problema (≈ 57 % de los negocios no llega a 3 años, tabla INEGI), la solución, el escenario de referencia *Cafetería · Los Héroes* (P 51.6 %, rango 44.3–58.3 %, ROI 302.9 %, payback 4.1 meses, VPN $912,776), QR y autores en orden: Miguel Antonio Cruz García, Bruno Alejandro López Bautista, Alonso Arroyo Cortés.
-- **Póster**: diagrama de proceso (`entregables/diagrama-proceso.png`) y una lámina de "qué NO es" (no es un pronóstico exacto; los β son estimaciones del equipo).
-- Sacar los PDF con `npm run entregables` justo antes de imprimir, para que las cifras coincidan con el sitio.
+## Propuesta A · Esencial
 
-## 4. Guion de demostración (3 minutos)
+Para cuando el presupuesto es mínimo o el espacio es una mesa compartida.
 
-1. **Gancho (15 s)**: «¿Qué probabilidad tiene una cafetería en Los Héroes de seguir abierta en 3 años?» Que el visitante adivine.
-2. **Simular (60 s)**: abrir el simulador, mostrar el mapa de zonas y el resultado 51.6 % con su rango plausible. Cambiar la zona o el ticket para que vea moverse P.
-3. **Riesgo (45 s)**: Monte Carlo (P5 / mediana / P95) y el cobro de piso: subirlo muestra cómo baja la utilidad.
-4. **Estrategia (45 s)**: marcar acciones en el simulador de plan (51.6 % → 66.2 % con tres acciones), mostrar la matriz de impacto y control y el calendario de 90 días; imprimir el plan en PDF.
-5. **Cierre (15 s)**: QR para que lo prueben en su teléfono y el one-pager.
+| Recurso | Para qué | Costo aprox. |
+|---|---|---|
+| Laptop propia con el sitio (`npm run servir`, funciona sin internet) | Demo en vivo | Propia |
+| Póster 60 × 90 cm en papel couché, pegado a cartón o foam board | Pregunta gancho y el modelo en 4 pasos | $180 – 350 |
+| QR impreso tamaño carta en acrílico o protector de hojas | Que lo prueben en su teléfono | $30 – 120 |
+| One-pager a color, 50 piezas | Lo que el evaluador se lleva | $150 – 300 |
+| Mantel rojo liso + franja de greca impresa en vinil o papel | Identidad | $250 – 450 |
+| Gafetes con nombre (los tres autores) | Imagen de equipo | $60 – 120 |
+| Extensión, multicontacto y cargadores | Energía | Propios |
+| Hotspot del teléfono | Solo la IA necesita internet | Propio |
+| **Total** | | **≈ $900 – 1,800** |
 
-Para **inversionistas**, enfatizar: producto sin servidor (costo de operación casi cero), datos públicos (INEGI, DENUE), modelo validado por pruebas automáticas y la ruta de crecimiento (más municipios, calibrar β con datos reales). Para **evaluadores**: método estadístico, honestidad sobre los límites y las pruebas (`npm test`, validador Python, e2e).
+**Fortalezas:** barata, rápida y sin riesgo técnico. **Debilidad:** de lejos no llama la atención; todo depende de quien presenta.
 
-## 5. Lista de verificación del día
+## Propuesta B · Profesional (recomendada)
 
-- [ ] Sitio abierto en `?vista=todo` y también servido localmente (`npm run servir`) por si falla la red.
+Equilibrio entre costo e impacto. Es la que conviene para una jornada académica con evaluadores e invitados externos.
+
+| Recurso | Para qué | Costo aprox. |
+|---|---|---|
+| Todo lo de la propuesta A | Base | $900 – 1,800 |
+| Lona roll-up 85 × 200 cm con estructura | Nombre, pregunta gancho y greca: se ve a 10 m | $650 – 1,100 |
+| Pantalla o monitor de 32" o más (prestado o rentado) con base | `entregables/COATL_Video.mp4` en bucle con subtítulos | $0 – 1,500 |
+| Tablet de 10" o más en soporte de mesa | Segundo punto de demo para que el visitante toque | Propia o $0 – 600 de renta |
+| One-pager en couché de 150 g, 100 piezas | Mejor acabado | $300 – 550 |
+| Tarjetas de presentación con QR, 100 piezas | Contacto | $180 – 350 |
+| Playeras rojas tipo polo con el logotipo (3) | Equipo identificable | $750 – 1,200 |
+| Cable HDMI, adaptador, memoria USB con el video | Respaldo | $150 – 300 |
+| **Total** | | **≈ $3,500 – 6,500** |
+
+**Fortalezas:** presencia visual, dos puntos de atención (video y demo) y material para llevar. **Debilidad:** hay que conseguir la pantalla y ensayar el montaje.
+
+## Propuesta C · Inmersiva
+
+El visitante escribe el nombre de su negocio, lo simula, ve su modelo 2.5D y se lleva su reporte impreso con la estética de COATL.
+
+| Recurso | Para qué | Costo aprox. |
+|---|---|---|
+| Todo lo de la propuesta B | Base | $3,500 – 6,500 |
+| Fondo de tela tensada o back de 2 × 2 m con greca | Escenografía para fotos | $2,500 – 4,500 |
+| Segunda pantalla o proyector corto | Mapa de zonas en grande | $0 – 2,000 |
+| Impresora láser o de inyección a color + papel de 120 g | Imprimir el **reporte del negocio** de cada visitante («Imprimir / guardar como PDF») | $1,800 – 3,500 (o prestada) |
+| Tótem o atril con tablet y teclado | Autoservicio: «simula tu negocio» | $600 – 1,500 |
+| Módem o plan de datos dedicado | La IA y el mapa en línea | $200 – 500 |
+| Stickers de greca y del logotipo, 200 piezas | Recuerdo y difusión | $350 – 700 |
+| Regleta con respaldo (no-break pequeño) | Que no se apague la demo | $0 – 900 |
+| **Total** | | **≈ $9,000 – 16,000** |
+
+**Fortalezas:** experiencia memorable y evidencia de uso real (cada reporte impreso es una demo). **Debilidad:** más cosas pueden fallar; exige ensayo general y un plan B sin internet.
+
+---
+
+## Lo que no cambia entre propuestas
+
+### Contenido impreso (sale del propio modelo)
+
+- **One-pager:** el problema (más de la mitad de los negocios no llega al tercer año según la tabla del INEGI), la solución, el escenario de referencia *Cafetería · Los Héroes* (P 51.6 % con su rango plausible, ROI 302.9 %, payback 4.1 meses, VPN $912,776), el QR y los autores en este orden: Miguel Antonio Cruz García, Bruno Alejandro López Bautista, Alonso Arroyo Cortés.
+- **Póster:** diagrama de proceso (`entregables/diagrama-proceso.png`) y un recuadro de «qué NO es» (no predice con exactitud; los β son estimaciones del equipo).
+- Genera los archivos con `npm run entregables` justo antes de imprimir, para que las cifras coincidan con el sitio.
+
+### Guion de demostración (3 minutos)
+
+1. **Gancho (15 s):** «¿Qué probabilidad tiene una cafetería en Los Héroes de seguir abierta en 3 años?» Que el visitante adivine.
+2. **Simular (60 s):** escribe el nombre del negocio, muestra el mapa de zonas y el 51.6 % con su rango plausible. Cambia la zona o el ticket para que vea moverse P.
+3. **Riesgo (45 s):** Monte Carlo (P5 / mediana / P95) y el cobro de piso: al subirlo baja la utilidad.
+4. **Mejorar (45 s):** alternativas para subir P, diagnóstico de 5 niveles con sus borradores, estimación fiscal y el modelo 2.5D de lo que el negocio puede llegar a ser.
+5. **Cierre (15 s):** guarda el negocio, imprime o descarga su reporte y entrega el one-pager con el QR.
+
+Con **inversionistas** subraya: producto sin servidor (costo de operación casi nulo), datos públicos (INEGI, DENUE), pruebas automáticas y ruta de crecimiento a otros municipios. Con **evaluadores**: método estadístico, honestidad sobre los límites y las pruebas (`npm test`, validador en Python, pruebas de navegador).
+
+### Lista de verificación del día
+
+- [ ] Sitio abierto y también servido localmente (`npm run servir`) por si falla la red.
 - [ ] Video descargado en la laptop, no en streaming.
-- [ ] Brillo al máximo, notificaciones y protector de pantalla apagados.
-- [ ] Respuestas ensayadas: «¿qué tan exacto es?» → es una estimación con rango plausible, no una predicción exacta; «¿de dónde salen los datos?» → INEGI, DENUE y supuestos del equipo, documentados en METODOLOGIA.md.
+- [ ] Brillo al máximo; notificaciones y protector de pantalla apagados.
+- [ ] Respuestas ensayadas: «¿qué tan exacto es?» → es una estimación con rango plausible, no una predicción; «¿de dónde salen los datos?» → INEGI, DENUE y supuestos del equipo documentados en METODOLOGIA.md.
 - [ ] Una persona hace la demo, otra atiende preguntas y otra reparte material.
-- [ ] No pedir ni guardar datos personales de los visitantes (aviso de privacidad del sitio).
+- [ ] No pedir ni guardar datos personales de los visitantes. Si alguien guarda su negocio en la laptop del stand, bórralo al terminar («Eliminar» en «Mis negocios»).
+
+> Hay un encargo listo para que Codex prepare sus propias tres propuestas y se puedan comparar: [PROMPT_CODEX_STAND.md](PROMPT_CODEX_STAND.md).

@@ -1,10 +1,10 @@
 // Carga los módulos puros (sin DOM) en un contexto aislado, tal como el navegador los concatena.
 import fs from 'node:fs';
 import vm from 'node:vm';
-const ARCHIVOS = ['src/datos/datos.js', 'src/modelo/modelo.js', 'src/modelo/finanzas.js'];
+const ARCHIVOS = ['src/datos/datos.js', 'src/modelo/modelo.js', 'src/modelo/finanzas.js', 'src/modelo/fiscal.js', 'src/datos/madurez.js'];
 export function cargarModelo() {
   const codigo = ARCHIVOS.map((f) => fs.readFileSync(f, 'utf8')).join('\n') +
-    '\n;({GIROS,ZONAS,S0,BETA0,ESTACION,N_SIM,SEMILLA,INCERTIDUMBRE,mulberry32,gaussiana,acota,sigmoide,derivar,modeloLogistico,curvaSupervivencia,monteCarlo,rangoP,cuantil,finanzas})';
+    '\n;({GIROS,ZONAS,S0,BETA0,ESTACION,N_SIM,SEMILLA,INCERTIDUMBRE,mulberry32,gaussiana,acota,sigmoide,derivar,modeloLogistico,curvaSupervivencia,monteCarlo,rangoP,cuantil,finanzas,tasaResicoPF,estimarFiscal,NIVELES_MADUREZ,PUNTOS_MADUREZ,indiceMadurez})';
   return vm.runInNewContext(codigo, { Math, Object, Array, Infinity, isFinite });
 }
 // Escenario por defecto del formulario (src/index.html): Cafetería · Los Héroes.

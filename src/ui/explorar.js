@@ -279,26 +279,37 @@ function pintarExplorar(e,modelo,mc,S){
   pintarDemo(); pintarMapa25(); pintarSupervivencia(); pintarMeta(); pintarSuperficie(); pintarTraza();
 }
 
-/* ===== Carrusel de zonas de Coacalco (sección «Cómo leer tu resultado») =====
-   Desplazamiento nativo con scroll-snap (deslizar con el dedo), botones, puntos y flechas del teclado.
-   Avanza solo cada 6 s salvo con movimiento reducido; se pausa al pasar el cursor o enfocar, y tiene botón de pausa (WCAG 2.2.2). */
-(function carruselZonas(){
-  const pista=$("carPista"); if(!pista) return;
-  const slides=[...pista.children], puntos=[...document.querySelectorAll(".car-punto")];
-  let actual=0, pausado=matchMedia("(prefers-reduced-motion: reduce)").matches, encima=false;
-  const ir=i=>{ actual=(i+slides.length)%slides.length; pista.scrollTo({left:slides[actual].offsetLeft-pista.offsetLeft, behavior:pausado?"auto":"smooth"}); };
+/* Carruseles de fotos (Inicio y Territorio). En pantallas anchas se ven tres fotos a la vez; avanzan
+   solos cada 6 s, se detienen con el botón de pausa, al pasar el cursor o el foco, y si la persona
+   pidió menos movimiento. Flechas ← → con la pista enfocada. */
+let movimientoPausado=false;
+document.querySelectorAll(".carrusel").forEach(cont=>{
+  const pista=cont.querySelector(".car-pista"), slides=[...pista.children], puntos=[...cont.querySelectorAll(".car-punto")];
+  if(!slides.length) return;
+  let actual=0, pausado=matchMedia("(prefers-reduced-motion: reduce)").matches, encima=false, marco=0;
+  const visibles=()=>Math.max(1,Math.round(pista.clientWidth/slides[0].offsetWidth));
   const marcar=i=>{ actual=i; puntos.forEach((p,k)=>p.setAttribute("aria-current",k===i?"true":"false")); };
-  const obs=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting&&e.intersectionRatio>.6) marcar(slides.indexOf(e.target)); }),{root:pista,threshold:[.6]});
-  slides.forEach(s=>obs.observe(s)); marcar(0);
-  $("carAnt").addEventListener("click",()=>ir(actual-1));
-  $("carSig").addEventListener("click",()=>ir(actual+1));
-  puntos.forEach(p=>p.addEventListener("click",()=>ir(+p.dataset.i)));
+  const ir=i=>{ const tope=slides.length-visibles(); i=i>tope?0:i<0?tope:i; marcar(i);
+    pista.scrollTo({left:slides[i].offsetLeft-slides[0].offsetLeft, behavior:pausado||movimientoPausado?"auto":"smooth"}); };
+  pista.addEventListener("scroll",()=>{ cancelAnimationFrame(marco); marco=requestAnimationFrame(()=>{
+    const paso=slides.length>1?slides[1].offsetLeft-slides[0].offsetLeft:1; marcar(Math.min(slides.length-1,Math.round(pista.scrollLeft/paso))); }); },{passive:true});
+  marcar(0);
+  cont.querySelector(".car-ant").addEventListener("click",()=>ir(actual-1));
+  cont.querySelector(".car-sig").addEventListener("click",()=>ir(actual+1));
+  puntos.forEach(p=>p.addEventListener("click",()=>ir(Math.min(+p.dataset.i,slides.length-visibles()))));
   pista.addEventListener("keydown",ev=>{ if(ev.key==="ArrowRight"){ev.preventDefault();ir(actual+1);} if(ev.key==="ArrowLeft"){ev.preventDefault();ir(actual-1);} });
-  const btn=$("carPausa");
+  const btn=cont.querySelector(".car-pausa");
   const pintarPausa=()=>{ btn.setAttribute("aria-pressed",String(pausado)); btn.textContent=pausado?"▶":"❚❚"; btn.setAttribute("aria-label",pausado?"Reanudar el carrusel":"Pausar el carrusel"); };
   btn.addEventListener("click",()=>{ pausado=!pausado; pintarPausa(); }); pintarPausa();
-  const cont=$("carrusel");
   ["mouseenter","focusin"].forEach(t=>cont.addEventListener(t,()=>encima=true));
   ["mouseleave","focusout"].forEach(t=>cont.addEventListener(t,()=>encima=false));
-  setInterval(()=>{ if(!pausado&&!encima&&!document.hidden&&cont.offsetParent) ir(actual+1); },6000);
+  setInterval(()=>{ if(!pausado&&!movimientoPausado&&!encima&&!document.hidden&&cont.offsetParent) ir(actual+1); },6000);
+});
+/* Pausa global del movimiento decorativo (grecas, modelo 2.5D y carruseles): WCAG 2.2.2. */
+(function pausaMovimiento(){
+  const b=$("pausaMovimiento"); if(!b) return;
+  try{ movimientoPausado=sessionStorage.getItem("coatl-sin-movimiento")==="1"; }catch(_){}
+  const pintar=()=>{ document.body.classList.toggle("sin-movimiento",movimientoPausado); b.setAttribute("aria-pressed",String(movimientoPausado)); b.textContent=movimientoPausado?"▶ Reanudar el movimiento":"❚❚ Pausar el movimiento"; };
+  b.addEventListener("click",()=>{ movimientoPausado=!movimientoPausado; try{ sessionStorage.setItem("coatl-sin-movimiento",movimientoPausado?"1":"0"); }catch(_){} pintar(); });
+  pintar();
 })();

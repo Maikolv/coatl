@@ -37,13 +37,17 @@ function cargarXLSX(){
 const numero=v=>{ if(typeof v==="number") return v; const t=String(v??"").replace(/[$\s]/g,"").replace(/,(?=\d{3}(\D|$))/g,""); return t===""?NaN:Number(t.replace(",",".")); };
 
 function interpretar(filas){
-  if(filas.length<2) throw new Error("El archivo no tiene filas de datos.");
+  /* La plantilla de Excel trae título y guía arriba: el encabezado es la primera fila (de las 20 iniciales) que nombra «ventas». */
+  const iCab=filas.slice(0,20).findIndex(f=>f.map(normCol).some(c=>ALIAS.ventas.includes(c)));
+  if(iCab>0) filas=filas.slice(iCab);
+  if(filas.length<2) throw new Error("El archivo no tiene filas de datos. Llena la hoja «Datos» de la plantilla.");
   const cab=filas[0].map(normCol), idx={};
   for(const [k,als] of Object.entries(ALIAS)) idx[k]=cab.findIndex(c=>als.includes(c));
   const faltan=["ventas","costo_variable","costos_fijos"].filter(k=>idx[k]<0);
   if(faltan.length) throw new Error("Faltan columnas: "+faltan.join(", ")+". Usa la plantilla.");
   const meses=[];
   filas.slice(1).forEach((f,i)=>{
+    if([idx.ventas,idx.costo_variable,idx.costos_fijos].every(k=>String(f[k]??"").trim()==="")) return;   // fila sin capturar (plantilla)
     const v=numero(f[idx.ventas]), cv=numero(f[idx.costo_variable]), cf=numero(f[idx.costos_fijos]);
     const cl=idx.clientes>=0?numero(f[idx.clientes]):NaN;
     if([v,cv,cf].some(x=>!Number.isFinite(x))) throw new Error("Fila "+(i+2)+": ventas, costo_variable y costos_fijos deben ser números.");
@@ -91,6 +95,11 @@ function pintarEmpresa(){
     '<div><span>P(utilidad anual &gt; 0)</span><b>'+pct(r.pPos)+'</b> <span class="proc proc-modelo">tus datos</span></div>'+
     '<div><span>Utilidad anual P5 · P50 · P95</span><b>'+mxn.format(Math.round(r.p05))+" · "+mxn.format(Math.round(r.p50))+" · "+mxn.format(Math.round(r.p95))+'</b></div>'+
     '<div><span>Meses analizados</span><b>'+r.n+'</b>'+(r.n<12?' <span class="proc proc-supuesto">menos de 12: más incertidumbre</span>':"")+'</div>';
+  const fis=estimarFiscal(r.ventasMedia,r.utilMedia,0), nota=$("empFiscal");
+  nota.hidden=false;
+  nota.textContent="Fiscal (orientativo): con tus ventas reales promedio de "+mxn.format(Math.round(r.ventasMedia))+" al mes, el ISR estimado sería de "+mxn.format(Math.round(fis.isrMes))+
+    (fis.regimen==="resico_pf"?" en RESICO de personas físicas ("+(fis.tasaResico*100).toFixed(1)+" % de los ingresos)":" en régimen general (30 % de la utilidad; tus ingresos superan el tope del RESICO)")+
+    ", y tu utilidad promedio después de ISR, "+mxn.format(Math.round(fis.utilDespues))+" al mes. Confírmalo con un contador."+(typeof negocioActual!=="undefined"&&negocioActual?" Negocio: «"+negocioActual+"».":"");
   $("empSerie").innerHTML=svgSerie(empresa.meses);
   $("empDist").innerHTML=svgDist(r);
   const fila=(k,tuyo,coatl,nota)=>'<tr><th scope="row">'+k+'</th><td>'+tuyo+'</td><td>'+coatl+'</td><td>'+(nota||"")+'</td></tr>';
@@ -111,7 +120,8 @@ async function leerArchivo(file){
     let filas;
     if(/\.xlsx?$/i.test(file.name)){
       const X=await cargarXLSX(), wb=X.read(await file.arrayBuffer(),{type:"array"});
-      filas=X.utils.sheet_to_json(wb.Sheets[wb.SheetNames[0]],{header:1,raw:true,defval:""});
+      const hoja=wb.SheetNames.find(n=>normCol(n)==="datos")||wb.SheetNames[0];
+      filas=X.utils.sheet_to_json(wb.Sheets[hoja],{header:1,raw:true,defval:""}).filter(f=>f.some(c=>String(c).trim()!==""));
     } else filas=parseCSV(await file.text());
     const meses=interpretar(filas);
     empresa={meses, r:analizar(meses)};
@@ -129,6 +139,7 @@ zona.addEventListener("drop",ev=>leerArchivo(ev.dataTransfer.files[0]));
 $("empBorrar").addEventListener("click",()=>{
   empresa=null; $("empArchivo").value=""; $("empResultados").hidden=true;
   ["empCifras","empSerie","empDist","empTabla"].forEach(id=>$(id).innerHTML="");
+  $("empFiscal").hidden=true; $("empFiscal").textContent="";
   estadoWidget("wEmpresa","vacio","Datos borrados de la memoria del navegador.");
 });
 $("empAplicar").addEventListener("click",()=>{

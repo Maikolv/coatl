@@ -4,7 +4,7 @@
    la IA de COATL (Gemini, clave del proyecto en el servidor; ver describir.js e iaProyecto). */
 (function asistente(){
   const caja=document.createElement("div"); caja.className="asis"; caja.id="asistente";
-  caja.innerHTML='<button type="button" class="asis-boton" id="asisAbrir" aria-expanded="false" aria-controls="asisPanel" aria-label="Abrir el asistente COATL"><span aria-hidden="true">💬</span><b>Asistente</b></button>'+
+  caja.innerHTML='<button type="button" class="asis-boton" id="asisAbrir" aria-expanded="false" aria-controls="asisPanel" aria-label="Abrir el asistente COATL"><svg class="asis-icono" viewBox="0 0 48 48" aria-hidden="true" focusable="false"><path d="M9 4h30a6 6 0 0 1 6 6v21a6 6 0 0 1-6 6H21l-10 8 2.4-8H9a6 6 0 0 1-6-6V10a6 6 0 0 1 6-6z" fill="#FBF6F3"/><circle cx="14" cy="15" r="3.6" fill="#C8102E"/><circle cx="24" cy="15" r="3.6" fill="#C8102E"/><circle cx="34" cy="15" r="3.6" fill="#C8102E"/><path d="M8 31h4v-7h8v5h-4m4 2h4v-7h8v5h-4m4 2h4v-7h4" fill="none" stroke="#C8102E" stroke-width="2.4" stroke-linejoin="miter"/></svg><b>Asistente</b></button>'+
     '<section class="asis-panel" id="asisPanel" role="dialog" aria-label="Asistente COATL" hidden>'+
       '<header class="asis-cab"><strong>Asistente COATL</strong><span id="asisModo">'+(IA_ACTIVA?"IA de COATL · Gemini":"local · sin conexión")+'</span><button type="button" class="asis-cerrar" id="asisCerrar" aria-label="Cerrar el asistente">✕</button></header>'+
       '<div class="asis-log" id="asisLog" aria-live="polite"></div>'+

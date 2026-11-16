@@ -13,6 +13,8 @@ export const MODULOS_JS = [
   'src/datos/datos.js',
   'src/modelo/modelo.js',
   'src/modelo/finanzas.js',
+  'src/modelo/fiscal.js',
+  'src/datos/madurez.js',
   'src/ui/formato.js',
   'src/ui/controles.js',
   'src/ui/resultados.js',
@@ -26,6 +28,10 @@ export const MODULOS_JS = [
   'src/ui/describir.js',
   'src/ui/paginas.js',
   'src/ui/asistente.js',
+  'src/ui/escena25.js',
+  'src/ui/negocios.js',
+  'src/ui/mejora.js',
+  'src/ui/reporte.js',
   'src/ui/app.js',
 ];
 
@@ -42,20 +48,29 @@ function figuraFoto(id, clase) {
     `<figcaption><span class="foto-titulo">${e(cred.titulo)}</span> <a href="${e(cred.pagina)}" target="_blank" rel="noopener">${e(cred.autor)}</a> · <a href="${e(cred.licenciaUrl)}" target="_blank" rel="noopener">${e(cred.licencia)}</a></figcaption></figure>`;
 }
 
-// Carrusel de zonas (sección «Cómo leer tu resultado»): todas las fotos cuyo uso empieza con «Carrusel».
-function carrusel() {
+// Carruseles de fotos (Inicio y Territorio): cada uno toma las fotos cuyo uso es «Carrusel · <grupo>».
+// Ninguna foto se repite entre carruseles ni en el resto del sitio (lo garantiza figuraFoto).
+const GRUPOS = { inicio: ['Inicio', 'Fotos de Coacalco y sus alrededores'], territorio: ['Territorio', 'Fotos de comercio, movilidad y cultura en Coacalco'] };
+function carrusel(grupo) {
+  const [uso, etiqueta] = GRUPOS[grupo];
   const cred = JSON.parse(fs.readFileSync(path.join(raiz, 'assets/img/escenarios/creditos.json'), 'utf8'));
-  const ids = Object.keys(cred).filter((id) => cred[id].uso.startsWith('Carrusel'));
-  const slides = ids.map((id, i) => `<li class="car-slide" id="car-${i}" aria-roledescription="diapositiva" aria-label="${i + 1} de ${ids.length}">` +
-    figuraFoto(id, 'car-foto').replace('loading="lazy"', i ? 'loading="lazy"' : 'loading="eager"') + '</li>').join('');
-  const puntos = ids.map((id, i) => `<button type="button" class="car-punto" data-i="${i}" aria-label="Ver foto ${i + 1}: ${cred[id].titulo.replace(/"/g, '')}"></button>`).join('');
-  return `<section class="carrusel" id="carrusel" aria-roledescription="carrusel" aria-label="Fotos de distintas zonas de Coacalco">
-      <ul class="car-pista" id="carPista" tabindex="0" aria-live="off">${slides}</ul>
+  const ids = Object.keys(cred).filter((id) => cred[id].uso === 'Carrusel · ' + uso);
+  const figuras = ids.map((id) => [cred[id].titulo, figuraFoto(id, 'car-foto')]);
+  if (grupo === 'territorio') {   // la foto del Palacio Municipal va incrustada y abre este carrusel
+    figuras.unshift(['Palacio Municipal de Coacalco', '<figure class="foto-cita foto-escena car-foto"><img src="data:image/webp;base64,@@FOTO_PALACIO@@" width="960" height="720" loading="lazy" decoding="async" alt="Fachada del Palacio Municipal de Coacalco con arcos y la estatua de Felipe Berriozábal al frente">' +
+      '<figcaption><span class="foto-titulo">Palacio Municipal de Coacalco</span> <a href="https://commons.wikimedia.org/wiki/File:Coacalco_Estado_Mexico.JPG" target="_blank" rel="noopener">ProtoplasmaKid</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption></figure>']);
+  }
+  const n = figuras.length;
+  const slides = figuras.map(([, fig], i) => `<li class="car-slide" aria-roledescription="diapositiva" aria-label="${i + 1} de ${n}">` +
+    fig.replace('loading="lazy"', i < 3 ? 'loading="eager"' : 'loading="lazy"') + '</li>').join('');
+  const puntos = figuras.map(([t], i) => `<button type="button" class="car-punto" data-i="${i}" aria-label="Ver foto ${i + 1}: ${t.replace(/"/g, '')}"></button>`).join('');
+  return `<section class="carrusel" id="carrusel-${grupo}" aria-roledescription="carrusel" aria-label="${etiqueta}">
+      <ul class="car-pista" tabindex="0" aria-live="off">${slides}</ul>
       <div class="car-controles">
-        <button type="button" class="car-btn" id="carAnt" aria-label="Foto anterior">‹</button>
+        <button type="button" class="car-btn car-ant" aria-label="Foto anterior">‹</button>
         <div class="car-puntos">${puntos}</div>
-        <button type="button" class="car-btn" id="carSig" aria-label="Foto siguiente">›</button>
-        <button type="button" class="car-btn car-pausa" id="carPausa" aria-pressed="false" aria-label="Pausar el carrusel">❚❚</button>
+        <button type="button" class="car-btn car-sig" aria-label="Foto siguiente">›</button>
+        <button type="button" class="car-btn car-pausa" aria-pressed="false" aria-label="Pausar el carrusel">❚❚</button>
       </div>
     </section>`;
 }
@@ -86,7 +101,7 @@ export function construir() {
     .replace('@@IA_URL@@', () => IA_URL)
     .replace('@@IA_ORIGEN@@', () => (IA_URL ? new URL(IA_URL).origin : ''))
     .replace(/@@FOTO:([a-z-]+):([a-z-]+)@@/g, (_, id, clase) => figuraFoto(id, clase))
-    .replace('@@CARRUSEL@@', () => carrusel())
+    .replace(/@@CARRUSEL:([a-z]+)@@/g, (_, g) => carrusel(g))
     .replace('@@FOTO_PALACIO@@', () => fs.readFileSync(path.join(raiz, 'assets/img/palacio-coacalco.webp')).toString('base64'));
   // CSP sin 'unsafe-inline' para scripts: se autoriza solo el script en línea por su hash
   //.
@@ -106,6 +121,8 @@ export function construir() {
   fs.writeFileSync(path.join(raiz, 'dist', '.nojekyll'), '');
   fs.writeFileSync(path.join(raiz, 'dist', 'robots.txt'), 'User-agent: *\nAllow: /\n');
   // Agregados del DENUE (scripts/denue_sync.py): se publican junto al sitio.
+  const plantillas = path.join(raiz, 'assets', 'plantillas');   // plantilla de Excel (scripts/plantilla_excel.mjs)
+  if (fs.existsSync(plantillas)) fs.cpSync(plantillas, path.join(raiz, 'dist', 'assets', 'plantillas'), { recursive: true });
   for (const sub of ['zonas', 'escenarios']) {   // fotos de zonas y de escenarios (scripts/fotos_sync.mjs)
     const fotos = path.join(raiz, 'assets', 'img', sub);
     if (fs.existsSync(fotos)) fs.cpSync(fotos, path.join(raiz, 'dist', 'assets', 'img', sub), { recursive: true });

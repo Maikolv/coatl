@@ -1,7 +1,7 @@
 {
  "mexibus": {
   "titulo": "Mexibús Línea 2, estación Coacalco Berriozábal",
-  "uso": "Territorio · movilidad",
+  "uso": "Carrusel · Territorio",
   "autor": "Tbhotch",
   "licencia": "CC BY-SA 2.5 mx",
   "licenciaUrl": "https://creativecommons.org/licenses/by-sa/2.5/mx/deed.en",
@@ -10,7 +10,7 @@
  },
  "power-center": {
   "titulo": "Coacalco Power Center sobre la Vía López Portillo",
-  "uso": "Territorio · comercio regional",
+  "uso": "Carrusel · Territorio",
   "autor": "Tbhotch",
   "licencia": "CC BY-SA 4.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -19,7 +19,7 @@
  },
  "calle-chiapas": {
   "titulo": "Calle Chiapas, San Francisco Coacalco",
-  "uso": "Territorio · comercio de barrio",
+  "uso": "Carrusel · Territorio",
   "autor": "ArCaRa",
   "licencia": "CC BY 3.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -28,7 +28,7 @@
  },
  "museo-mamut": {
   "titulo": "Museo del Mamut de Coacalco",
-  "uso": "Territorio · cultura y turismo",
+  "uso": "Carrusel · Territorio",
   "autor": "Tbhotch",
   "licencia": "CC BY-SA 4.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -46,7 +46,7 @@
  },
  "plaza-coacalco": {
   "titulo": "Plaza Coacalco · Corredor Vía López Portillo",
-  "uso": "Carrusel · Cómo leer tu resultado",
+  "uso": "Carrusel · Inicio",
   "autor": "Tbhotch",
   "licencia": "CC BY-SA 4.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -55,7 +55,7 @@
  },
  "zentralia": {
   "titulo": "Zentralia Coacalco",
-  "uso": "DENUE · competencia",
+  "uso": "Carrusel · Territorio",
   "autor": "Tbhotch",
   "licencia": "CC BY-SA 4.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -64,7 +64,7 @@
  },
  "plaza-flores": {
   "titulo": "Plaza Las Flores, Villa de las Flores",
-  "uso": "Empresas",
+  "uso": "Carrusel · Territorio",
   "autor": "Tbhotch",
   "licencia": "CC BY-SA 4.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -73,7 +73,7 @@
  },
  "san-rafael": {
   "titulo": "Vista aérea de San Rafael · zona Potrero–San Rafael",
-  "uso": "Carrusel · Cómo leer tu resultado",
+  "uso": "Carrusel · Inicio",
   "autor": "Sxmuelfernandez",
   "licencia": "CC BY-SA 4.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -82,7 +82,7 @@
  },
  "la-era": {
   "titulo": "Plaza La Era, Coacalco",
-  "uso": "Simulador · escenario",
+  "uso": "Carrusel · Territorio",
   "autor": "Tbhotch",
   "licencia": "CC BY-SA 4.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -91,7 +91,7 @@
  },
  "valle": {
   "titulo": "Vista hacia el valle desde Puerta Coacalco · Sierra de Guadalupe",
-  "uso": "Carrusel · Cómo leer tu resultado",
+  "uso": "Carrusel · Inicio",
   "autor": "ArCaRa",
   "licencia": "CC BY 3.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -100,7 +100,7 @@
  },
  "iglesia-san-francisco": {
   "titulo": "Iglesia de San Francisco · Centro de Coacalco",
-  "uso": "Carrusel · Cómo leer tu resultado",
+  "uso": "Carrusel · Inicio",
   "autor": "ProtoplasmaKid",
   "licencia": "CC BY-SA 4.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -109,7 +109,7 @@
  },
  "iglesia-coacalco": {
   "titulo": "Iglesia en Coacalco",
-  "uso": "Carrusel · Cómo leer tu resultado",
+  "uso": "Carrusel · Inicio",
   "autor": "GenezisLr",
   "licencia": "CC BY-SA 4.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -118,7 +118,7 @@
  },
  "sierra": {
   "titulo": "Coacalco al pie de la Sierra de Guadalupe",
-  "uso": "Carrusel · Cómo leer tu resultado",
+  "uso": "Carrusel · Inicio",
   "autor": "Sxmuelfernandez",
   "licencia": "CC BY-SA 3.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
@@ -127,7 +127,7 @@
  },
  "paraje-xolo": {
   "titulo": "Paraje Xolo · Sierra de Guadalupe",
-  "uso": "Carrusel · Cómo leer tu resultado",
+  "uso": "Carrusel · Inicio",
   "autor": "ArCaRa",
   "licencia": "CC BY 3.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -136,7 +136,7 @@
  },
  "atardecer": {
   "titulo": "Atardecer desde Puerta Coacalco",
-  "uso": "Carrusel · Cómo leer tu resultado",
+  "uso": "Carrusel · Inicio",
   "autor": "ArCaRa",
   "licencia": "CC BY 3.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
@@ -145,7 +145,7 @@
  },
  "la-btk": {
   "titulo": "Comercio de calle: La BTK, Coacalco",
-  "uso": "Carrusel · Cómo leer tu resultado",
+  "uso": "Carrusel · Inicio",
   "autor": "Tbhotch",
   "licencia": "CC BY-SA 4.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -154,7 +154,7 @@
  },
  "etac": {
   "titulo": "Universidad ETAC, campus Coacalco",
-  "uso": "Carrusel · Cómo leer tu resultado",
+  "uso": "Carrusel · Inicio",
   "autor": "ArCaRa",
   "licencia": "CC BY 3.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",

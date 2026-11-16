@@ -7,7 +7,7 @@ const VISTAS=[
   {id:"inicio",      titulo:"Inicio",        secciones:["inicio","explorar"]},
   {id:"territorio",  titulo:"Territorio",    secciones:["contexto"]},
   {id:"denue",       titulo:"DENUE nacional",secciones:["denue"]},
-  {id:"simulador",   titulo:"Simulador",     secciones:["simulador"]},
+  {id:"simulador",   titulo:"Simulador",     secciones:["simulador","mejora"]},
   {id:"empresas",    titulo:"Para empresas", secciones:["empresas"]},
   {id:"estrategia",  titulo:"Estrategia",    secciones:["estrategia"]},
   {id:"metodologia", titulo:"Metodología",   secciones:["metodologia","trazabilidad","lectura"]},
@@ -99,8 +99,8 @@ function mostrarVista(v, destino, desplazar){
     else window.scrollTo({top:0,behavior:"auto"});
   }
 }
-function enrutar(desplazar){
-  const h=decodeURIComponent(location.hash.slice(1));
+function enrutar(desplazar, hash){
+  let h=""; try{ h=decodeURIComponent((hash==null?location.hash:hash).slice(1)); }catch(_){}
   if(/(^|&)e=/.test(h)){ mostrarVista(VISTAS.find(v=>v.id==="simulador"),null,false); return; }   // escenario compartido
   const v=vistaDe(h)||VISTAS[0];
   mostrarVista(v, h?document.getElementById(h):null, desplazar);
@@ -110,6 +110,8 @@ function irA(id){
   if(location.hash==="#"+id) enrutar(true);
   else location.hash=id;
 }
-window.addEventListener("hashchange",()=>enrutar(true));
+/* Se enruta con la dirección de CADA evento (newURL): si dos navegaciones llegan seguidas, location.hash
+   ya vale la última cuando se atiende la primera y la página intermedia perdía su pestaña. */
+window.addEventListener("hashchange",ev=>{ let h=null; try{ h=new URL(ev.newURL).hash; }catch(_){} enrutar(true,h); });
 if(TODO) document.body.classList.add("vista-todo");
 enrutar(false);

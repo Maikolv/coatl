@@ -304,10 +304,11 @@ function terminarCalculo({id,e,modelo},mc,rango){
   pintarVeredicto(modelo.P);
   const vpn=pintarKPIs(e,mc,S,modelo);
   pintarLectura(e,mc,modelo,vpn);
-  ultimoResumen=resumenEscenario(e,modelo,mc,finanzas(e,mc,S));
+  const fin=finanzas(e,mc,S);
+  ultimoResumen=resumenEscenario(e,modelo,mc,fin);
   /* Lo que está fuera de la vista se pinta en tareas separadas (<50 ms cada una)
      para no bloquear el hilo principal; una versión nueva cancela la anterior. */
-  [()=>pintarGraficas(e,mc,S,modelo), ()=>pintarMapa(e,modelo), ()=>pintarFODA(e,modelo,mc), ()=>pintarWidgets(e,modelo,mc,S), ()=>pintarExplorar(e,modelo,mc,S)]
+  [()=>pintarGraficas(e,mc,S,modelo), ()=>pintarMapa(e,modelo), ()=>pintarFODA(e,modelo,mc), ()=>pintarWidgets(e,modelo,mc,S), ()=>pintarExplorar(e,modelo,mc,S), ()=>pintarMejora(e,modelo,mc,fin)]
     .forEach(f=>setTimeout(()=>{ if(id===versionCalculo) f(); },0));
 }
 /* ---------- 15. Barra de progreso y navegación activa ---------- */

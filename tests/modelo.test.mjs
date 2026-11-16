@@ -108,3 +108,35 @@ test('cobro de piso y variables emocionales: neutras por defecto, con efecto al 
   cerca(base.utilMes - conPiso.utilMes, 5000, 1, 'la cuota sale completa de la utilidad');
   assert.ok(conPiso.peDia > base.peDia, 'el punto de equilibrio sube');
 });
+
+test('v11 fiscal: tabla del RESICO (art. 113-E LISR), tope de 3.5 millones y régimen general', () => {
+  assert.equal(M.tasaResicoPF(25000), 0.010);
+  assert.equal(M.tasaResicoPF(25000.01), 0.011);
+  assert.equal(M.tasaResicoPF(83333.33), 0.015);
+  assert.equal(M.tasaResicoPF(148086), 0.020);
+  assert.equal(M.tasaResicoPF(250000), 0.025);
+  const f = M.estimarFiscal(148086, 60371, 11000);
+  assert.equal(f.regimen, 'resico_pf');
+  assert.ok(Math.abs(f.isrMes - 2961.72) < 0.01);
+  assert.ok(Math.abs(f.utilDespues - (60371 - 2961.72)) < 0.01);
+  assert.ok(Math.abs(f.isn - 330) < 1e-9);
+  const g = M.estimarFiscal(400000, 90000, 0);   // 4.8 millones al año: fuera del RESICO de personas físicas
+  assert.equal(g.regimen, 'general');
+  assert.equal(g.isrMes, 27000);
+  assert.equal(M.estimarFiscal(100000, -5000, 0).isrGeneral, 0);   // con pérdida no hay ISR en régimen general
+});
+
+test('v11 diagnóstico: 30 puntos en 5 niveles, pesos que suman 1 e índice de 0 a 100', () => {
+  assert.equal(M.PUNTOS_MADUREZ.length, 30);
+  assert.equal(new Set(M.PUNTOS_MADUREZ.map((p) => p.id)).size, 30);
+  assert.equal(Array.from(M.NIVELES_MADUREZ, (n) => M.PUNTOS_MADUREZ.filter((p) => p.n === n.n).length).join(), "7,7,6,5,5");
+  assert.ok(Math.abs(M.NIVELES_MADUREZ.reduce((s, n) => s + n.w, 0) - 1) < 1e-9);
+  assert.equal(M.indiceMadurez({}).indice, 0);
+  assert.equal(M.indiceMadurez({}).nivel, 0);
+  const todo = Object.fromEntries(M.PUNTOS_MADUREZ.map((p) => [p.id, 2]));
+  assert.equal(M.indiceMadurez(todo).indice, 100);
+  assert.equal(M.indiceMadurez(todo).nivel, 5);
+  const n1 = Object.fromEntries(M.PUNTOS_MADUREZ.filter((p) => p.n === 1).map((p) => [p.id, 2]));
+  assert.equal(M.indiceMadurez(n1).nivel, 1);
+  assert.equal(M.indiceMadurez(n1).indice, 35);
+});

@@ -128,6 +128,17 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - `npm run entregables` (scripts/entregables.mjs) regenera DOCX/PPTX y, con LibreOffice (`winget install TheDocumentFoundation.LibreOffice`), los PDF; CI en .github/workflows/entregables.yml (artefacto, sin commits).
 - Propuesta de stand: docs/STAND.md.
 
+## v11: negocio con nombre, mejora y reporte
+
+- `src/ui/negocios.js`: nombre y negocios guardados en `localStorage` (`coatl-negocios`, solo variables del formulario y respuestas del diagnóstico). Excepción deliberada a «sin localStorage»: los archivos de empresas siguen solo en memoria.
+- `src/ui/mejora.js` (sección #mejora, página del simulador): alternativas (`palancas`), diagnóstico (`src/datos/madurez.js`, 30 puntos; no cambia P), fiscal (`src/modelo/fiscal.js`) y modelo 2.5D (`src/ui/escena25.js`, `escenaNegocio(o)`, SVG puro).
+- `src/ui/reporte.js`: PDF propio (`body.imprimir-reporte` + #reporteNegocio) e imagen PNG a 2×; no es captura del sitio.
+- Carruseles: `@@CARRUSEL:inicio@@` y `@@CARRUSEL:territorio@@` (uso «Carrusel · Inicio/Territorio» en creditos.json). Sin fotos en DENUE, Simulador, Empresas, Estrategia ni Aviso legal. Folios sin «Sección 0X».
+- Grecas animadas (`grecaMarcha`); pausa global con #pausaMovimiento (`body.sin-movimiento`).
+- Plantilla de Excel: `node scripts/plantilla_excel.mjs` → `assets/plantillas/` (el build la copia a dist). Requiere `exceljs`.
+- Orden de módulos: negocios, mejora y reporte van ANTES de app.js (app.js calcula al cargar).
+- Pendiente de decidir: el rango plausible del escenario de referencia es 44.1–58.2 % desde v9 (el documento dice 44.3–58.3 %); ver docs/AUDITORIA.md §13.
+
 ## Pendiente
 
 - Monte Carlo y el rango plausible de P se calculan en un Web Worker desde un Blob generado por el build. Si falla el Worker, se usa el motor síncrono.

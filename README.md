@@ -86,7 +86,15 @@ Simulador estadístico que estima la **probabilidad de que un negocio siga opera
 
 </details>
 
-## Funciones principales (v8)
+## Funciones principales (v11)
+
+- **Tu negocio con nombre**: escribe el nombre, guárdalo en «Mis negocios» (solo en tu navegador) y vuelve a él cuando quieras.
+- **Mejora tu negocio**: alternativas con su efecto real en la probabilidad y botón para probarlas; diagnóstico de 5 niveles y 30 puntos con un borrador a tu medida en cada uno; estimación fiscal (RESICO o régimen general) y lista de obligaciones.
+- **Modelo 2.5D del negocio**: dibujo isométrico generado con tus datos, «como está hoy» y «lo que puede llegar a ser» (SVG, sin WebGL).
+- **Reporte propio en PDF e imagen**: solo lo relevante del negocio, con la identidad de COATL; la imagen sale a 3,200 px de ancho.
+- **Plantilla de Excel con guía** para el apartado de empresas (`node scripts/plantilla_excel.mjs`).
+- **Identidad en movimiento**: grecas que avanzan y carruseles de fotos en Inicio y Territorio, con botón para pausar el movimiento.
+- **Stand físico**: tres propuestas de recursos en [docs/STAND.md](docs/STAND.md) y un encargo para Codex en [docs/PROMPT_CODEX_STAND.md](docs/PROMPT_CODEX_STAND.md).
 
 - **IA de COATL sin clave para el visitante**: el asistente y «Describe tu negocio» usan Gemini con la clave del proyecto, guardada en un intermediario de Vercel ([docs/GEMINI.md](docs/GEMINI.md)); sin red, responde el motor local.
 - **Mapa real en Inicio y en el Simulador**: el esquema del equipo se retiró; ambos usan las AGEB oficiales del INEGI.
@@ -99,7 +107,7 @@ Simulador estadístico que estima la **probabilidad de que un negocio siga opera
 - **Mapa con límites oficiales**: las 70 AGEB urbanas del INEGI agrupadas en las seis zonas.
 - **Accesibilidad verificada**: axe-core WCAG 2.1 AA sin violaciones en todos los apartados ([docs/ACCESIBILIDAD.md](docs/ACCESIBILIDAD.md)).
 
-- **Asistente siempre disponible** (botón 💬 en la esquina inferior derecha de todas las páginas): dice cómo vas, qué zona conviene y qué palancas suben tu probabilidad con el mismo motor; ajusta el simulador por texto o voz y te lleva a cualquier apartado. Responde preguntas libres con la **IA de COATL** (Gemini, con la clave del proyecto guardada en un intermediario de Vercel; el visitante no pone ninguna clave). Detalles en [docs/GEMINI.md](docs/GEMINI.md).
+- **Asistente siempre disponible** (botón con globo y greca en la esquina inferior derecha de todas las páginas): dice cómo vas, qué zona conviene y qué palancas suben tu probabilidad con el mismo motor; ajusta el simulador por texto o voz y te lleva a cualquier apartado. Responde preguntas libres con la **IA de COATL** (Gemini, con la clave del proyecto guardada en un intermediario de Vercel; el visitante no pone ninguna clave). Detalles en [docs/GEMINI.md](docs/GEMINI.md).
 - **Giros sin límite**: los 35 calibrados, las 989 actividades del SCIAN o cualquier nombre que escribas (giro propio con la plantilla más parecida, rotulada «estimación del equipo»).
 
 - **Páginas por apartado**: Inicio, Territorio, DENUE, Simulador, Empresas, Estrategia, Metodología y Legal. Cada uno tiene su propia dirección (`#simulador`, `#denue`…), y `?vista=todo` muestra el sitio completo en una sola página.
@@ -148,7 +156,7 @@ Salida real de los comandos de verificación, como texto (sin imágenes). La act
 _Generado el 2026-11-16._
 
 <!-- t:build -->
-**Construcción del sitio** · `npm run build` · código de salida 0 · 3.8 s
+**Construcción del sitio** · `npm run build` · código de salida 0 · 2.3 s
 
 ```text
 $ npm run build
@@ -156,33 +164,33 @@ $ npm run build
 > coatl@2.0.0 build
 > node scripts/build.mjs
 
-index.html y dist/index.html generados (389,979 bytes)
+index.html y dist/index.html generados (485,340 bytes)
 ```
 <!-- /t:build -->
 
 <!-- t:unitarias -->
-**Pruebas unitarias del modelo y del intermediario de IA** · `npm test` · código de salida 0 · 2.9 s
+**Pruebas unitarias del modelo y del intermediario de IA** · `npm test` · código de salida 0 · 2.7 s
 
 ```text
 $ npm test
 … (se muestran las últimas 12 líneas)
-✔ 35 giros y 6 zonas (0.541ms)
-✔ los controles de modelo de negocio, permisos, modalidad y horario mueven P (neutros por defecto) (0.7886ms)
-✔ S0 coincide con la tabla oficial del INEGI 1989–2019 (t = 1…10) y β₀ reproduce S0(3) (0.4962ms)
-✔ cobro de piso y variables emocionales: neutras por defecto, con efecto al usarlas (1.0354ms)
-ℹ tests 16
+✔ S0 coincide con la tabla oficial del INEGI 1989–2019 (t = 1…10) y β₀ reproduce S0(3) (0.6699ms)
+✔ cobro de piso y variables emocionales: neutras por defecto, con efecto al usarlas (4.8875ms)
+✔ v11 fiscal: tabla del RESICO (art. 113-E LISR), tope de 3.5 millones y régimen general (1.3678ms)
+✔ v11 diagnóstico: 30 puntos en 5 niveles, pesos que suman 1 e índice de 0 a 100 (2.7748ms)
+ℹ tests 18
 ℹ suites 0
-ℹ pass 16
+ℹ pass 18
 ℹ fail 0
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 1647.9667
+ℹ duration_ms 1364.8148
 ```
 <!-- /t:unitarias -->
 
 <!-- t:validador -->
-**Validación cruzada del modelo en Python** · `uv run --no-project python scripts/validar_modelo.py` · código de salida 0 · 0.6 s
+**Validación cruzada del modelo en Python** · `uv run --no-project python scripts/validar_modelo.py` · código de salida 0 · 1.6 s
 
 ```text
 $ uv run --no-project python scripts/validar_modelo.py
@@ -198,34 +206,49 @@ OK  vpn      obtenido=912,775.5843  referencia=912,776
 <!-- /t:validador -->
 
 <!-- t:auditoria -->
-**Auditoría de dependencias** · `npm audit` · código de salida 0 · 4.4 s
+**Auditoría de dependencias** · `npm audit` · código de salida 1 · 7.9 s
 
 ```text
 $ npm audit
-found 0 vulnerabilities
+# npm audit report
+
+uuid  <11.1.1
+Severity: moderate
+uuid: Missing buffer bounds check in v3/v5/v6 when buf is provided - https://github.com/advisories/GHSA-w5hq-g745-h8pq
+fix available via `npm audit fix --force`
+Will install exceljs@3.4.0, which is a breaking change
+node_modules/uuid
+  exceljs  >=3.5.0
+  Depends on vulnerable versions of uuid
+  node_modules/exceljs
+
+2 moderate severity vulnerabilities
+
+To address all issues (including breaking changes), run:
+  npm audit fix --force
 ```
 <!-- /t:auditoria -->
 
 <!-- t:e2e -->
-**Pruebas en navegador (computadora, teléfono y accesibilidad)** · `npx playwright test --reporter=line` · código de salida 1 · 441.8 s
+**Pruebas en navegador (computadora, teléfono y accesibilidad)** · `npx playwright test --reporter=line` · código de salida 0 · 393.5 s
 
 ```text
 $ npx playwright test --reporter=line
 … (se muestran las últimas 14 líneas)
-[157/166] [movil] › tests\e2e\recorrido.spec.js:15:1 › el widget de inicio coincide con el motor y abre el simulador con su estado
-[158/166] [movil] › tests\e2e\orientacion.spec.js:11:7 › teléfono horizontal pequeño › legal: sin desbordes ni elementos cortados
-[159/166] [movil] › tests\e2e\orientacion.spec.js:38:1 › al girar el teléfono, la barra fija ocupa poco y la tira de pestañas se reacomoda
-[160/166] [movil] › tests\e2e\recorrido.spec.js:27:1 › mapa de zonas: la lista se navega con teclado y la ficha muestra la procedencia
-[161/166] [movil] › tests\e2e\recorrido.spec.js:40:1 › escenario vigente y restablecer referencia
-[162/166] [movil] › tests\e2e\recorrido.spec.js:51:1 › el Worker y el respaldo síncrono reproducen la misma simulación
-[163/166] [movil] › tests\e2e\recorrido.spec.js:74:1 › supervivencia por año y meta de Monte Carlo responden
-[164/166] [movil] › tests\e2e\recorrido.spec.js:83:1 › superficie: lectura exacta, teclado y vista plana
-[165/166] [movil] › tests\e2e\recorrido.spec.js:95:1 › trazabilidad: de un resultado a su fuente
-[166/166] [movil] › tests\e2e\recorrido.spec.js:106:3 › movimiento reducido › la superficie arranca en vista plana con la misma información
-  1 failed
-    [movil] › tests\e2e\accesibilidad.spec.js:7:3 › axe sin violaciones: estrategia ────────────────
+[157/168] [movil] › tests\e2e\paginas.spec.js:264:1 › v10: simulador de plan, matriz de impacto y calendario de 90 días
+[158/168] [movil] › tests\e2e\recorrido.spec.js:7:1 › los seis widgets terminan en estado «listo» y sin errores
+[159/168] [movil] › tests\e2e\recorrido.spec.js:15:1 › el widget de inicio coincide con el motor y abre el simulador con su estado
+[160/168] [movil] › tests\e2e\recorrido.spec.js:27:1 › mapa de zonas: la lista se navega con teclado y la ficha muestra la procedencia
+[161/168] [movil] › tests\e2e\paginas.spec.js:289:1 › v10: aviso legal con uso aceptable, licencias (ODbL) y revisión profesional
+[162/168] [movil] › tests\e2e\recorrido.spec.js:40:1 › escenario vigente y restablecer referencia
+[163/168] [movil] › tests\e2e\paginas.spec.js:298:1 › v11: nombre del negocio, guardado local, alternativas, diagnóstico, fiscal y modelo 2.5D
+[164/168] [movil] › tests\e2e\recorrido.spec.js:51:1 › el Worker y el respaldo síncrono reproducen la misma simulación
+[165/168] [movil] › tests\e2e\recorrido.spec.js:74:1 › supervivencia por año y meta de Monte Carlo responden
+[166/168] [movil] › tests\e2e\recorrido.spec.js:83:1 › superficie: lectura exacta, teclado y vista plana
+[167/168] [movil] › tests\e2e\recorrido.spec.js:95:1 › trazabilidad: de un resultado a su fuente
+[168/168] [movil] › tests\e2e\recorrido.spec.js:106:3 › movimiento reducido › la superficie arranca en vista plana con la misma información
   25 skipped
-  140 passed (7.3m)
+  143 passed (6.5m)
 ```
 <!-- /t:e2e -->
 <!-- terminal:fin -->
