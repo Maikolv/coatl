@@ -70,6 +70,8 @@ export default async function handler(req, res) {
     return res.status(200).json({ texto: salida });
   } catch (e) {
     const status = e.status === 429 ? 429 : e.name === 'TimeoutError' ? 504 : 502;
-    return res.status(status).json({ error: status === 429 ? 'Se alcanzó el límite gratuito de Gemini; intenta en un minuto' : 'La IA no respondió' });
+    // El detalle (código y mensaje de Gemini) ayuda a diagnosticar; nunca incluye la clave.
+    return res.status(status).json({ error: status === 429 ? 'Se alcanzó el límite gratuito de Gemini; intenta en un minuto' : 'La IA no respondió',
+      detalle: `${e.status || e.name}: ${String(e.message).slice(0, 200)}` });
   }
 }
