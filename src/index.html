@@ -774,6 +774,29 @@
   </div>
   <div class="acciones" id="acciones"></div>
   <p class="plan-cierre" id="planCierre"></p>
+
+  <div class="plan-herramientas" id="planHerramientas">
+    <article class="widget widget-claro" id="wPlan" data-estado="cargando" aria-labelledby="wPlan-q">
+      <p class="widget-pregunta" id="wPlan-q">¿Qué pasa si aplico varias acciones a la vez?</p>
+      <fieldset class="plan-opciones"><legend class="sr-only">Acciones del plan</legend><div id="planOpciones"></div></fieldset>
+      <div class="plan-res" id="planRes" aria-live="polite"></div>
+      <p class="nota-widget">Se recalcula con el mismo modelo del simulador aplicando juntas las acciones marcadas. Los puntos no se suman por separado: los efectos se combinan en la curva logística.</p>
+      <p class="widget-estado" role="status" id="wPlan-estado">Calculando…</p>
+    </article>
+    <article class="widget widget-claro" id="wRiesgo" data-estado="cargando" aria-labelledby="wRiesgo-q">
+      <p class="widget-pregunta" id="wRiesgo-q">¿Qué factores pesan más y cuáles controlas?</p>
+      <div class="matriz-riesgo" id="matrizRiesgo"></div>
+      <p class="nota-widget">Impacto = puntos de probabilidad que cambiarían si ese factor fuera neutro (β = 0), calculado con el modelo; alto si son 3 puntos o más. Es una matriz de <strong>impacto y control</strong>: la probabilidad de que ocurra cada riesgo no está medida.</p>
+      <p class="widget-estado" role="status" id="wRiesgo-estado">Calculando…</p>
+    </article>
+    <article class="widget widget-claro" id="wCalendario" data-estado="cargando" aria-labelledby="wCal-q">
+      <p class="widget-pregunta" id="wCal-q">¿Qué hago en los próximos 90 días y cómo sé si funciona?</p>
+      <ol class="calendario" id="calendario"></ol>
+      <p class="nota-widget">Hitos e indicadores sugeridos por el equipo para las acciones marcadas en el simulador de plan.</p>
+      <p class="widget-estado" role="status" id="wCalendario-estado">Calculando…</p>
+      <button type="button" class="btn btn-widget" id="imprimirPlan">📄 Imprimir o guardar mi plan en PDF</button>
+    </article>
+  </div>
 </section>
 
 <!-- ============ 04 METODOLOGÍA ============ -->
@@ -931,10 +954,22 @@
       <p>El sitio se verifica automáticamente con criterios WCAG 2.1 nivel AA (axe-core) en computadora y teléfono, y puede usarse solo con teclado. Si encuentras una barrera, repórtala en el enlace de contacto para corregirla.</p>
     </article>
     <article class="metodo" data-num="§9">
+      <h3>Uso aceptable</h3>
+      <p>El sitio es para consulta personal, académica y de planeación. No está permitido usar la IA de COATL ni el simulador de forma automatizada o masiva (bots, extracción sistemática, pruebas de carga), intentar evadir el límite de solicitudes del intermediario, ni enviar datos personales de terceros o información confidencial en las preguntas. El equipo puede bloquear el acceso que incumpla estas reglas.</p>
+    </article>
+    <article class="metodo" data-num="§10">
+      <h3>Licencias de terceros</h3>
+      <p>Las fotografías se usan con la licencia indicada en su pie y en el <a href="https://github.com/Maikolv/coatl/blob/main/docs/RECURSOS.md" target="_blank" rel="noopener">registro de recursos</a> (autor, fuente y licencia de cada una). Los datos del mapa son de © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> bajo la licencia <a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener">ODbL</a>. Las tipografías se distribuyen bajo la <a href="https://openfontlicense.org/" target="_blank" rel="noopener">SIL Open Font License</a>; Leaflet y Chart.js, bajo licencias de código abierto (BSD-2 y MIT). Los datos del INEGI se usan conforme a sus <a href="https://www.inegi.org.mx/inegi/terminos.html" target="_blank" rel="noopener">términos de uso</a>.</p>
+    </article>
+    <article class="metodo" data-num="§11">
+      <h3>Revisión profesional</h3>
+      <p>Este aviso fue redactado por estudiantes con fines académicos y no ha sido revisado por un abogado. Antes de usar COATL con fines comerciales o con inversionistas, el equipo recomienda que una persona abogada revise este aviso, el tratamiento de datos y las licencias.</p>
+    </article>
+    <article class="metodo" data-num="§12">
       <h3>Vigencia y cambios</h3>
       <p>Aviso actualizado el 15 de noviembre de 2026. Los cambios se publican en esta misma página y quedan registrados en el historial público del repositorio.</p>
     </article>
-    <article class="metodo" data-num="§10">
+    <article class="metodo" data-num="§13">
       <h3>Marco aplicable y jurisdicción</h3>
       <p>Este aviso se rige por las leyes de los Estados Unidos Mexicanos. Para cualquier controversia relacionada con la titularidad o el uso de esta obra, las partes se someten a los tribunales competentes del Estado de México, renunciando a cualquier otro fuero. Si alguna disposición de este aviso fuera declarada inválida, las restantes conservarán plena vigencia. Los autores podrán actualizar este aviso; la versión publicada en el sitio será la vigente. <em>Este apartado es informativo y no sustituye la asesoría de un abogado titulado.</em></p>
     </article>

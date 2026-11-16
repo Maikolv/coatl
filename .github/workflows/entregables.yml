@@ -1,0 +1,30 @@
+# Regenera los entregables (Word, PowerPoint y PDF) con LibreOffice cada vez que cambia el sitio o el modelo.
+# Los deja como artefacto descargable de la ejecución; no hace commits.
+name: Entregables
+on:
+  push:
+    branches: [main]
+    paths: ['src/**', 'scripts/**', 'data/**', 'package.json']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  entregables:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 22, cache: npm }
+      - run: npm ci
+      - name: LibreOffice y fuentes
+        run: sudo apt-get update && sudo apt-get install -y --no-install-recommends libreoffice-writer libreoffice-impress fonts-dejavu ffmpeg
+      - run: npm run entregables
+      - uses: actions/upload-artifact@v4
+        with:
+          name: entregables-coatl
+          path: |
+            entregables/*.docx
+            entregables/*.pptx
+            entregables/*.pdf
+            entregables/diagrama-proceso.*
+          retention-days: 30

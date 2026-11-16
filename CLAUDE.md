@@ -122,6 +122,12 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - Los widgets llaman a las mismas funciones del motor: nunca dupliques fórmulas en la UI.
 - La CSP usa hashes calculados por el build: no agregues style="" en HTML generado por JS (usa CSSOM o clases).
 
+## v10: plan, aviso legal y entregables
+
+- Estrategia: `pintarHerramientasPlan` (app.js) con `aplicarPalancas`, `HITOS_PLAN`; widgets #wPlan, #wRiesgo (impacto y control, sin probabilidad de ocurrencia), #wCalendario; impresión con `body.imprimir-plan`.
+- `npm run entregables` (scripts/entregables.mjs) regenera DOCX/PPTX y, con LibreOffice (`winget install TheDocumentFoundation.LibreOffice`), los PDF; CI en .github/workflows/entregables.yml (artefacto, sin commits).
+- Propuesta de stand: docs/STAND.md.
+
 ## Pendiente
 
 - Monte Carlo y el rango plausible de P se calculan en un Web Worker desde un Blob generado por el build. Si falla el Worker, se usa el motor síncrono.

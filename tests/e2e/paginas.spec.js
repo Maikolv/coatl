@@ -259,3 +259,33 @@ test('v9: ninguna foto del sitio se repite y todas cargan', async ({ page }) => 
   expect(new Set(fotos).size).toBe(fotos.length);
   for (const f of new Set(fotos)) expect((await page.request.get(f)).status(), f).toBe(200);
 });
+
+test('v10: simulador de plan, matriz de impacto y calendario de 90 días', async ({ page }) => {
+  await page.goto('/?vista=todo#estrategia', { waitUntil: 'load' });
+  for (const w of ['wPlan', 'wRiesgo', 'wCalendario']) await expect(page.locator('#' + w)).toHaveAttribute('data-estado', 'listo');
+  await expect(page.locator('#planRes')).toContainText('51.6% →');
+  const antes = await page.locator('#planRes strong').textContent();
+  await page.locator('#planOpciones input:checked').first().uncheck();
+  await expect(page.locator('#planRes strong')).not.toHaveText(antes);
+  await expect(page.locator('#planOpciones input:checked').first()).toBeAttached();
+  await expect(page.locator('#matrizRiesgo .mr-celda')).toHaveCount(4);
+  await expect(page.locator('#wRiesgo')).toContainText('no está medida');
+  await expect(page.locator('#calendario > li')).toHaveCount(4);
+  // Al desmarcar todo, el calendario queda vacío con mensaje (sin hueco)
+  while (await page.locator('#planOpciones input:checked').count()) await page.locator('#planOpciones input:checked').first().uncheck();
+  await expect(page.locator('#wCalendario')).toHaveAttribute('data-estado', 'vacio');
+  // Impresión: solo Estrategia queda visible
+  await page.evaluate(() => document.body.classList.add('imprimir-plan'));
+  await page.emulateMedia({ media: 'print' });
+  await expect(page.locator('#estrategia')).toBeVisible();
+  await expect(page.locator('#legal')).toBeHidden();
+});
+
+test('v10: aviso legal con uso aceptable, licencias (ODbL) y revisión profesional', async ({ page }) => {
+  await page.goto('/?vista=todo#legal', { waitUntil: 'load' });
+  const legal = page.locator('#legal');
+  for (const t of ['Uso aceptable', 'Licencias de terceros', 'ODbL', 'Revisión profesional', 'no ha sido revisado por un abogado']) await expect(legal).toContainText(t);
+  await expect(legal.locator('a[href*="docs/RECURSOS.md"]')).toHaveCount(1);
+  const nums = await legal.locator('article.metodo').evaluateAll((a) => a.map((x) => x.dataset.num));
+  expect(nums).toEqual(nums.map((_, i) => '§' + (i + 1)));
+});

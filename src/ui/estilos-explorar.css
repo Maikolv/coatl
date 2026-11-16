@@ -389,3 +389,30 @@ body.vista-todo .pestanas-app{display:none}
 .foda-intro{align-items:stretch}
 .foda-intro > .intro{align-self:center}
 .foda-intro .foda-resumen{display:flex;flex-direction:column;justify-content:center}
+
+/* ---------- Herramientas del plan (Estrategia) ---------- */
+.plan-herramientas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:1.25rem;margin-top:1.5rem}
+.plan-opciones{border:0;padding:0;margin:0 0 .75rem;display:grid;gap:.4rem}
+.plan-op{display:flex;align-items:center;gap:.5rem;padding:.5rem .65rem;border:1px solid rgba(122,12,31,.18);border-radius:8px;background:#fff;cursor:pointer;font-size:.92rem}
+.plan-op input{accent-color:#C8102E;width:1.1rem;height:1.1rem}
+.plan-dp{margin-left:auto;color:#7A0C1F;font-size:.8rem;white-space:nowrap}
+.plan-res{font-size:1rem;margin:.5rem 0}.plan-p strong{color:#C8102E;font-size:1.35rem}
+.matriz-riesgo{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.mr-celda{background:#FBF6F3;border:1px solid rgba(122,12,31,.15);border-radius:8px;padding:.6rem;min-height:5rem}
+.mr-celda:first-child{border-color:#C8102E}
+.mr-t{font-weight:700;font-size:.8rem;color:#7A0C1F;margin:0 0 .35rem}
+.mr-celda ul{list-style:none;margin:0;padding:0;font-size:.82rem;display:grid;gap:.2rem}
+.mr-celda li span{float:right;font-variant-numeric:tabular-nums}
+.mr-celda li.neg span{color:#C8102E}.mr-celda li.pos span{color:#2e6b3a}.mr-celda li.vacio{color:#777}
+.calendario{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
+.calendario>li{border-left:4px solid #C8102E;padding:.3rem .7rem;background:#FBF6F3;border-radius:0 8px 8px 0}
+.calendario>li.cal-kpi{border-left-color:#7A0C1F}
+.cal-t{font-weight:700;margin:0 0 .2rem;color:#7A0C1F}
+.calendario ul{margin:0;padding-left:1.1rem;font-size:.88rem}
+.btn-widget{margin-top:.75rem;width:100%}
+@media (max-width:480px){.matriz-riesgo{grid-template-columns:1fr}}
+@media print{
+  body.imprimir-plan>*:not(main),body.imprimir-plan .nav,body.imprimir-plan .pestanas-app,body.imprimir-plan .asis,body.imprimir-plan #imprimirPlan{display:none!important}
+  body.imprimir-plan main>*:not(#estrategia):not(:has(#estrategia)),body.imprimir-plan [data-pagina]:not(#estrategia):not(:has(#estrategia)){display:none!important}
+  body.imprimir-plan #estrategia{display:block!important}
+}

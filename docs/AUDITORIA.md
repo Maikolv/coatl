@@ -217,3 +217,11 @@ No se usó WebGL: CLAUDE.md lo rechaza. La profundidad se logra con SVG, 2.5D y 
 2. Licencias de las fotos por cada una: ya están en el pie de cada foto y en docs/RECURSOS.md; falta enlazarlas desde el aviso.
 3. Licencia ODbL de OpenStreetMap en el pie del mapa (ya citada).
 4. Revisión por un profesional del derecho antes de usar el sitio fuera del ámbito académico.
+
+## 12. v10 — Estrategia, aviso legal y entregables automáticos
+
+- **Estrategia**: simulador de plan (combina las palancas marcadas con `aplicarPalancas` y recalcula P con el mismo modelo; no suma puntos), matriz de **impacto y control** (impacto = ΔP si el factor fuera neutro; la probabilidad de ocurrencia de cada riesgo **no está medida** y así se declara), calendario de 90 días con indicadores de seguimiento (sugerencias del equipo) y botón para imprimir o guardar el plan en PDF (CSS de impresión que deja solo Estrategia). Estados `data-estado` en los tres widgets; foco del teclado conservado al recalcular.
+- **Aviso legal**: artículos de uso aceptable (sin uso automatizado o masivo de la IA), licencias de terceros (fotos enlazadas a docs/RECURSOS.md, ODbL de OpenStreetMap, OFL, Leaflet/Chart.js, términos del INEGI) y recomendación de revisión por un abogado; numeración § continua verificada por e2e.
+- **Entregables**: `npm run entregables` reconstruye el sitio, rehace diagrama, Word y PowerPoint desde el modelo y, si hay LibreOffice, los convierte a PDF; el flujo `.github/workflows/entregables.yml` hace lo mismo en cada cambio a `main` y los publica como artefacto (sin commits).
+- **Revisión cruzada con Codex** (solo lectura): detectó que el selector de impresión podía ocultar la propia sección Estrategia y la pérdida de foco al recalcular las casillas; ambos corregidos.
+- **Stand físico**: propuesta en docs/STAND.md.

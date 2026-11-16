@@ -10,7 +10,8 @@
     "test:e2e": "playwright test",
     "servir": "node scripts/servir.mjs",
     "asistente": "node scripts/asistente.mjs",
-    "iniciar": "node scripts/servir.mjs 8000"
+    "iniciar": "node scripts/servir.mjs 8000",
+    "entregables": "node scripts/entregables.mjs"
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "^1.3.0",

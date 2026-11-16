@@ -19,7 +19,7 @@
 <text x="155" y="341" text-anchor="middle" font-family="Hanken Grotesk,Arial,sans-serif" font-size="13" fill="#38070F">compartido (decodifica</text>
 <text x="155" y="358" text-anchor="middle" font-family="Hanken Grotesk,Arial,sans-serif" font-size="13" fill="#38070F">y valida cada campo)</text>
 <rect x="37" y="410" width="236" height="90" rx="14" fill="#FFFFFF" stroke="#7A0C1F" stroke-width="1.6"/>
-<text x="155" y="434" text-anchor="middle" font-family="Hanken Grotesk,Arial,sans-serif" font-size="13" fill="#38070F" font-weight="700">Capturar 32 variables</text>
+<text x="155" y="434" text-anchor="middle" font-family="Hanken Grotesk,Arial,sans-serif" font-size="13" fill="#38070F" font-weight="700">Capturar 36 variables</text>
 <text x="155" y="451" text-anchor="middle" font-family="Hanken Grotesk,Arial,sans-serif" font-size="13" fill="#38070F">giro · zona · local · deuda</text>
 <text x="155" y="468" text-anchor="middle" font-family="Hanken Grotesk,Arial,sans-serif" font-size="13" fill="#38070F">ticket · CV · merma · μ</text>
 <text x="155" y="485" text-anchor="middle" font-family="Hanken Grotesk,Arial,sans-serif" font-size="13" fill="#38070F">g · π · r · estacionalidad</text>

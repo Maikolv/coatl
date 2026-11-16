@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-La5OD7XczApmVPF4iCyoVX/7bpFheoMV9HI0Zsn9VEc=' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'sha256-sp9rpjw1pht6GEPuyj1iegK88cElaGqBz3OKQCbqbaI=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://coatl-ia.vercel.app; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-G8Lh2/+mCOixeeyrtZUaSFVG7YN44Zhkp6NaI4gzglw=' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'sha256-/QilpujUgUswoPoWJA97Cz+/n8/8I6xfgXYtdfj6Fs4=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://coatl-ia.vercel.app; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -965,6 +965,33 @@ body.vista-todo .pestanas-app{display:none}
 .foda-intro > .intro{align-self:center}
 .foda-intro .foda-resumen{display:flex;flex-direction:column;justify-content:center}
 
+/* ---------- Herramientas del plan (Estrategia) ---------- */
+.plan-herramientas{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));gap:1.25rem;margin-top:1.5rem}
+.plan-opciones{border:0;padding:0;margin:0 0 .75rem;display:grid;gap:.4rem}
+.plan-op{display:flex;align-items:center;gap:.5rem;padding:.5rem .65rem;border:1px solid rgba(122,12,31,.18);border-radius:8px;background:#fff;cursor:pointer;font-size:.92rem}
+.plan-op input{accent-color:#C8102E;width:1.1rem;height:1.1rem}
+.plan-dp{margin-left:auto;color:#7A0C1F;font-size:.8rem;white-space:nowrap}
+.plan-res{font-size:1rem;margin:.5rem 0}.plan-p strong{color:#C8102E;font-size:1.35rem}
+.matriz-riesgo{display:grid;grid-template-columns:1fr 1fr;gap:.5rem}
+.mr-celda{background:#FBF6F3;border:1px solid rgba(122,12,31,.15);border-radius:8px;padding:.6rem;min-height:5rem}
+.mr-celda:first-child{border-color:#C8102E}
+.mr-t{font-weight:700;font-size:.8rem;color:#7A0C1F;margin:0 0 .35rem}
+.mr-celda ul{list-style:none;margin:0;padding:0;font-size:.82rem;display:grid;gap:.2rem}
+.mr-celda li span{float:right;font-variant-numeric:tabular-nums}
+.mr-celda li.neg span{color:#C8102E}.mr-celda li.pos span{color:#2e6b3a}.mr-celda li.vacio{color:#777}
+.calendario{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
+.calendario>li{border-left:4px solid #C8102E;padding:.3rem .7rem;background:#FBF6F3;border-radius:0 8px 8px 0}
+.calendario>li.cal-kpi{border-left-color:#7A0C1F}
+.cal-t{font-weight:700;margin:0 0 .2rem;color:#7A0C1F}
+.calendario ul{margin:0;padding-left:1.1rem;font-size:.88rem}
+.btn-widget{margin-top:.75rem;width:100%}
+@media (max-width:480px){.matriz-riesgo{grid-template-columns:1fr}}
+@media print{
+  body.imprimir-plan>*:not(main),body.imprimir-plan .nav,body.imprimir-plan .pestanas-app,body.imprimir-plan .asis,body.imprimir-plan #imprimirPlan{display:none!important}
+  body.imprimir-plan main>*:not(#estrategia):not(:has(#estrategia)),body.imprimir-plan [data-pagina]:not(#estrategia):not(:has(#estrategia)){display:none!important}
+  body.imprimir-plan #estrategia{display:block!important}
+}
+
 /* estilos en línea movidos por el build */
 [data-ei="0"]{margin-top:1.5rem !important}
 [data-ei="1"]{font-family:var(--mono) !important;font-size:.66rem !important;color:#855559 !important;margin-top:.7rem !important}
@@ -1740,6 +1767,29 @@ body.vista-todo .pestanas-app{display:none}
   </div>
   <div class="acciones" id="acciones"></div>
   <p class="plan-cierre" id="planCierre"></p>
+
+  <div class="plan-herramientas" id="planHerramientas">
+    <article class="widget widget-claro" id="wPlan" data-estado="cargando" aria-labelledby="wPlan-q">
+      <p class="widget-pregunta" id="wPlan-q">¿Qué pasa si aplico varias acciones a la vez?</p>
+      <fieldset class="plan-opciones"><legend class="sr-only">Acciones del plan</legend><div id="planOpciones"></div></fieldset>
+      <div class="plan-res" id="planRes" aria-live="polite"></div>
+      <p class="nota-widget">Se recalcula con el mismo modelo del simulador aplicando juntas las acciones marcadas. Los puntos no se suman por separado: los efectos se combinan en la curva logística.</p>
+      <p class="widget-estado" role="status" id="wPlan-estado">Calculando…</p>
+    </article>
+    <article class="widget widget-claro" id="wRiesgo" data-estado="cargando" aria-labelledby="wRiesgo-q">
+      <p class="widget-pregunta" id="wRiesgo-q">¿Qué factores pesan más y cuáles controlas?</p>
+      <div class="matriz-riesgo" id="matrizRiesgo"></div>
+      <p class="nota-widget">Impacto = puntos de probabilidad que cambiarían si ese factor fuera neutro (β = 0), calculado con el modelo; alto si son 3 puntos o más. Es una matriz de <strong>impacto y control</strong>: la probabilidad de que ocurra cada riesgo no está medida.</p>
+      <p class="widget-estado" role="status" id="wRiesgo-estado">Calculando…</p>
+    </article>
+    <article class="widget widget-claro" id="wCalendario" data-estado="cargando" aria-labelledby="wCal-q">
+      <p class="widget-pregunta" id="wCal-q">¿Qué hago en los próximos 90 días y cómo sé si funciona?</p>
+      <ol class="calendario" id="calendario"></ol>
+      <p class="nota-widget">Hitos e indicadores sugeridos por el equipo para las acciones marcadas en el simulador de plan.</p>
+      <p class="widget-estado" role="status" id="wCalendario-estado">Calculando…</p>
+      <button type="button" class="btn btn-widget" id="imprimirPlan">📄 Imprimir o guardar mi plan en PDF</button>
+    </article>
+  </div>
 </section>
 
 <!-- ============ 04 METODOLOGÍA ============ -->
@@ -1905,10 +1955,22 @@ body.vista-todo .pestanas-app{display:none}
       <p>El sitio se verifica automáticamente con criterios WCAG 2.1 nivel AA (axe-core) en computadora y teléfono, y puede usarse solo con teclado. Si encuentras una barrera, repórtala en el enlace de contacto para corregirla.</p>
     </article>
     <article class="metodo" data-num="§9">
+      <h3>Uso aceptable</h3>
+      <p>El sitio es para consulta personal, académica y de planeación. No está permitido usar la IA de COATL ni el simulador de forma automatizada o masiva (bots, extracción sistemática, pruebas de carga), intentar evadir el límite de solicitudes del intermediario, ni enviar datos personales de terceros o información confidencial en las preguntas. El equipo puede bloquear el acceso que incumpla estas reglas.</p>
+    </article>
+    <article class="metodo" data-num="§10">
+      <h3>Licencias de terceros</h3>
+      <p>Las fotografías se usan con la licencia indicada en su pie y en el <a href="https://github.com/Maikolv/coatl/blob/main/docs/RECURSOS.md" target="_blank" rel="noopener">registro de recursos</a> (autor, fuente y licencia de cada una). Los datos del mapa son de © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> bajo la licencia <a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener">ODbL</a>. Las tipografías se distribuyen bajo la <a href="https://openfontlicense.org/" target="_blank" rel="noopener">SIL Open Font License</a>; Leaflet y Chart.js, bajo licencias de código abierto (BSD-2 y MIT). Los datos del INEGI se usan conforme a sus <a href="https://www.inegi.org.mx/inegi/terminos.html" target="_blank" rel="noopener">términos de uso</a>.</p>
+    </article>
+    <article class="metodo" data-num="§11">
+      <h3>Revisión profesional</h3>
+      <p>Este aviso fue redactado por estudiantes con fines académicos y no ha sido revisado por un abogado. Antes de usar COATL con fines comerciales o con inversionistas, el equipo recomienda que una persona abogada revise este aviso, el tratamiento de datos y las licencias.</p>
+    </article>
+    <article class="metodo" data-num="§12">
       <h3>Vigencia y cambios</h3>
       <p>Aviso actualizado el 15 de noviembre de 2026. Los cambios se publican en esta misma página y quedan registrados en el historial público del repositorio.</p>
     </article>
-    <article class="metodo" data-num="§10">
+    <article class="metodo" data-num="§13">
       <h3>Marco aplicable y jurisdicción</h3>
       <p>Este aviso se rige por las leyes de los Estados Unidos Mexicanos. Para cualquier controversia relacionada con la titularidad o el uso de esta obra, las partes se someten a los tribunales competentes del Estado de México, renunciando a cualquier otro fuero. Si alguna disposición de este aviso fuera declarada inválida, las restantes conservarán plena vigencia. Los autores podrán actualizar este aviso; la versión publicada en el sitio será la vigente. <em>Este apartado es informativo y no sustituye la asesoría de un abogado titulado.</em></p>
     </article>
@@ -4029,6 +4091,23 @@ function liUL(arr, vacio){
   return arr.map(([nom])=>'<li><span class="factor">'+nom+"</span></li>").join("");
 }
 
+/* Aplica varias palancas a la vez sobre una copia del escenario (la usan el techo del plan y el simulador de plan). */
+function aplicarPalancas(e, lista){
+  let c=clon(e);
+  lista.forEach(l=>{
+    if(l.clave==="reserva")c.resZ=0.20;
+    if(l.clave==="deuda")c.credPct=0.15;
+    if(l.clave==="margen")c.cv=Math.max(0.30,c.cv-0.10);
+    if(l.clave==="marketing"){c.mktZ=0.12;c.mu=Math.round(c.mu*1.12);}
+    if(l.clave==="formalidad")c.formZ=0.10;
+    if(l.clave==="experiencia")c.expZ=0.15;
+    if(l.clave==="diferenciacion"){c.compZ=0;c.mktZ=Math.min(0.12,c.mktZ+0.07);}
+    if(l.clave==="retencion"){c.mu=Math.round(c.mu*1.07);c.cv=Math.max(0.05,c.cv-0.01);}
+  });
+  /* El traslado de zona se aplica al final para escalar la demanda ya ajustada. */
+  const z=lista.find(l=>l.clave==="zona"); if(z) c=trasladarZona(c,z.zonaK);
+  return c;
+}
 function pintarFODA(e, modelo, mc){
   const P0=modelo.P;
   pintarTriplete(mc);
@@ -4040,20 +4119,7 @@ function pintarFODA(e, modelo, mc){
 
   const L=palancas(e, P0);
   // Techo realista: aplicar simultáneamente las 3 palancas de mayor impacto
-  let cTecho=clon(e);
-  L.slice(0,3).forEach(l=>{
-    if(l.clave==="reserva")cTecho.resZ=0.20;
-    if(l.clave==="deuda")cTecho.credPct=0.15;
-    if(l.clave==="margen")cTecho.cv=Math.max(0.30,cTecho.cv-0.10);
-    if(l.clave==="marketing"){cTecho.mktZ=0.12;cTecho.mu=Math.round(cTecho.mu*1.12);}
-    if(l.clave==="formalidad")cTecho.formZ=0.10;
-    if(l.clave==="experiencia")cTecho.expZ=0.15;
-    if(l.clave==="diferenciacion"){cTecho.compZ=0;cTecho.mktZ=Math.min(0.12,cTecho.mktZ+0.07);}
-    if(l.clave==="retencion"){cTecho.mu=Math.round(cTecho.mu*1.07);cTecho.cv=Math.max(0.05,cTecho.cv-0.01);}
-  });
-  /* El traslado de zona se aplica al final para escalar la demanda ya ajustada. */
-  const accZona=L.slice(0,3).find(l=>l.clave==="zona");
-  if(accZona) cTecho=trasladarZona(cTecho,accZona.zonaK);
+  const cTecho=aplicarPalancas(e, L.slice(0,3));
   const techo = L.length ? Math.max(P0, probDe(cTecho)) : P0;
   $("fodaP").textContent=(P0*100).toFixed(1)+"%";
   $("fodaTecho").textContent="potencial con el plan: "+(techo*100).toFixed(1)+"%";
@@ -4063,6 +4129,7 @@ function pintarFODA(e, modelo, mc){
   $("fbNota").innerHTML="Brecha al potencial: <strong>+"+((techo-P0)*100).toFixed(1)+" pts</strong> · factores a favor <strong>"+aFavor+"</strong> frente a <strong>"+enContra+"</strong> en contra. "+
     (mayorA?"Amenaza principal: <strong>"+esc(mayorA[0])+"</strong>.":"Sin amenazas externas marcadas.");
 
+  pintarHerramientasPlan(e, modelo, L, P0);
   if(!L.length){
     $("acciones").innerHTML='<div class="accion"><div class="rank">✓</div><div class="cuerpo"><h3>Escenario muy sólido</h3><p class="que">El modelo no encuentra palancas con mejora significativa: tu configuración ya es robusta. Mantén la reserva de capital y vigila la competencia y la inflación.</p></div><div class="impacto"><div class="lift">—</div><div class="lift-k">sin brecha</div></div></div>';
     $("planCierre").innerHTML="<b>Lectura:</b> conserva la disciplina financiera; incluso con probabilidad alta, la cola izquierda del Monte Carlo existe. Reevalúa el plan si cambian renta, competencia o inflación.";
@@ -4191,6 +4258,55 @@ if(!cargarEscenario(location.hash)) calcular();
   new ResizeObserver(ajustar).observe(forma);
   addEventListener("resize",ajustar); ajustar();
 })();
+
+/* ---------- 13-bis. Herramientas del plan (Estrategia) ---------- */
+// Hitos de 90 días e indicador de seguimiento por palanca: sugerencias del equipo, no datos.
+const HITOS_PLAN={
+  reserva:{m:["Separar 1 mes de gastos fijos en una cuenta aparte","Llegar a 3 meses de reserva","Llegar a 6 meses de reserva"],kpi:"Meses de gastos fijos cubiertos por la reserva (meta: 6)"},
+  deuda:{m:["Renegociar plazo o tasa del crédito","Reducir el crédito con aportación propia","Deuda de 15 % o menos de la inversión"],kpi:"Crédito como % de la inversión (meta: 15 % o menos)"},
+  margen:{m:["Cotizar con 3 proveedores","Ajustar recetas o mezcla de productos","Costo variable 10 puntos menor"],kpi:"Costo variable como % de la venta"},
+  marketing:{m:["Perfil de Google y redes con fotos y horario","Promoción medible (cupón o código)","12 % más clientes por día"],kpi:"Clientes por día (promedio semanal)"},
+  formalidad:{m:["Alta en el SAT (RESICO)","Registro patronal en el IMSS","Facturar y operar formalmente"],kpi:"Trámites completados (de 3)"},
+  experiencia:{m:["Elegir curso o mentoría del giro","Completar la capacitación","Aplicar 3 mejoras aprendidas"],kpi:"Horas de capacitación y mejoras aplicadas"},
+  diferenciacion:{m:["Definir qué te hace distinto","Ajustar oferta y comunicación","Medir ventas del producto distintivo"],kpi:"% de ventas del producto o servicio distintivo"},
+  retencion:{m:["Programa de lealtad sencillo","Registrar clientes recurrentes","7 % más clientes que regresan"],kpi:"Clientes que regresan en 30 días"},
+  zona:{m:["Visitar locales disponibles en la zona sugerida","Comparar renta y afluencia en campo","Decidir la ubicación"],kpi:"Renta por m² y peatones por hora"}
+};
+let planSel=null;
+function pintarHerramientasPlan(e, modelo, L, P0){
+  // Simulador de plan: mismas palancas, aplicadas juntas con aplicarPalancas()
+  seguro("wPlan",()=>{
+    if(!L.length){ $("planOpciones").innerHTML=""; $("planRes").innerHTML=""; estadoWidget("wPlan","vacio","Tu escenario no tiene palancas con mejora significativa."); return false; }
+    const claves=L.map(l=>l.clave);
+    if(!planSel || !planSel.every(c=>claves.includes(c))) planSel=claves.slice(0,3);
+    const foco=document.activeElement&&document.activeElement.closest("#planOpciones")?document.activeElement.value:null;
+    $("planOpciones").innerHTML=L.map(l=>'<label class="plan-op"><input type="checkbox" value="'+l.clave+'"'+(planSel.includes(l.clave)?" checked":"")+'> '+l.titulo+' <span class="plan-dp">+'+(l.lift*100).toFixed(1)+' pts sola</span></label>').join("");
+    if(foco){ const f=$("planOpciones").querySelector("input[value=\""+foco+"\"]"); if(f) f.focus(); }
+    const elegidas=L.filter(l=>planSel.includes(l.clave));
+    const Pplan=elegidas.length?Math.max(P0,probDe(aplicarPalancas(e,elegidas))):P0;
+    $("planRes").innerHTML='<span class="plan-p">'+(P0*100).toFixed(1)+'% → <strong>'+(Pplan*100).toFixed(1)+'%</strong></span> con '+elegidas.length+(elegidas.length===1?" acción":" acciones")+' (+'+((Pplan-P0)*100).toFixed(1)+' pts)';
+  });
+  // Matriz de impacto y control: ΔP si el factor fuera neutro
+  seguro("wRiesgo",()=>{
+    const INT=["Experiencia","Reserva","Formalidad","Marketing","Estructura de deuda","Local propio","Margen de seguridad","Resiliencia","Motivación","Modelo de negocio","Permisos","Modalidad","Horario"];
+    const sig=x=>1/(1+Math.exp(-x)), z=modelo.z;
+    const fac=modelo.contribs.filter(c=>Math.abs(c[1])>0.001).map(([n,b])=>({n:n.replace(/ \(.+\)$/,""), b, imp:Math.abs(sig(z)-sig(z-b)), ctrl:INT.some(k=>n.startsWith(k))}));
+    if(!fac.length){ estadoWidget("wRiesgo","vacio","Todos los factores están en posición neutra."); return false; }
+    const alto=f=>f.imp>=0.03;
+    const celda=(t,f)=>'<div class="mr-celda"><p class="mr-t">'+t+'</p><ul>'+(f.length?f.sort((a,b)=>b.imp-a.imp).map(x=>'<li class="'+(x.b<0?"neg":"pos")+'">'+esc(x.n)+' <span>'+(x.b<0?"−":"+")+(x.imp*100).toFixed(1)+' pts</span></li>').join(""):'<li class="vacio">Ninguno</li>')+"</ul></div>";
+    $("matrizRiesgo").innerHTML=celda("Controlas · impacto alto",fac.filter(f=>f.ctrl&&alto(f)))+celda("Externo · impacto alto",fac.filter(f=>!f.ctrl&&alto(f)))+
+      celda("Controlas · impacto bajo",fac.filter(f=>f.ctrl&&!alto(f)))+celda("Externo · impacto bajo",fac.filter(f=>!f.ctrl&&!alto(f)));
+  });
+  // Calendario de 90 días e indicadores de las acciones marcadas
+  seguro("wCalendario",()=>{
+    const elegidas=L.filter(l=>planSel&&planSel.includes(l.clave)&&HITOS_PLAN[l.clave]);
+    if(!elegidas.length){ $("calendario").innerHTML=""; estadoWidget("wCalendario","vacio","Marca al menos una acción en el simulador de plan."); return false; }
+    $("calendario").innerHTML=["Días 1 a 30","Días 31 a 60","Días 61 a 90"].map((t,m)=>'<li><p class="cal-t">'+t+'</p><ul>'+elegidas.map(l=>"<li>"+HITOS_PLAN[l.clave].m[m]+"</li>").join("")+"</ul></li>").join("")+
+      '<li class="cal-kpi"><p class="cal-t">Indicadores de seguimiento</p><ul>'+elegidas.map(l=>"<li><strong>"+l.titulo+":</strong> "+HITOS_PLAN[l.clave].kpi+"</li>").join("")+"</ul></li>";
+  });
+}
+$("planOpciones").addEventListener("change",()=>{ planSel=[...$("planOpciones").querySelectorAll("input:checked")].map(i=>i.value); calcular(); });
+$("imprimirPlan").addEventListener("click",()=>{ document.body.classList.add("imprimir-plan"); print(); setTimeout(()=>document.body.classList.remove("imprimir-plan"),500); });
 
 </script>
 </body>

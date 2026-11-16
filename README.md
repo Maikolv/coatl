@@ -148,7 +148,7 @@ Salida real de los comandos de verificación, como texto (sin imágenes). La act
 _Generado el 2026-11-16._
 
 <!-- t:build -->
-**Construcción del sitio** · `npm run build` · código de salida 0 · 2.4 s
+**Construcción del sitio** · `npm run build` · código de salida 0 · 3.8 s
 
 ```text
 $ npm run build
@@ -156,20 +156,20 @@ $ npm run build
 > coatl@2.0.0 build
 > node scripts/build.mjs
 
-index.html y dist/index.html generados (378,507 bytes)
+index.html y dist/index.html generados (389,979 bytes)
 ```
 <!-- /t:build -->
 
 <!-- t:unitarias -->
-**Pruebas unitarias del modelo y del intermediario de IA** · `npm test` · código de salida 0 · 3.7 s
+**Pruebas unitarias del modelo y del intermediario de IA** · `npm test` · código de salida 0 · 2.9 s
 
 ```text
 $ npm test
 … (se muestran las últimas 12 líneas)
-✔ 35 giros y 6 zonas (1.5047ms)
-✔ los controles de modelo de negocio, permisos, modalidad y horario mueven P (neutros por defecto) (0.9936ms)
-✔ S0 coincide con la tabla oficial del INEGI 1989–2019 (t = 1…10) y β₀ reproduce S0(3) (0.7161ms)
-✔ cobro de piso y variables emocionales: neutras por defecto, con efecto al usarlas (1.7051ms)
+✔ 35 giros y 6 zonas (0.541ms)
+✔ los controles de modelo de negocio, permisos, modalidad y horario mueven P (neutros por defecto) (0.7886ms)
+✔ S0 coincide con la tabla oficial del INEGI 1989–2019 (t = 1…10) y β₀ reproduce S0(3) (0.4962ms)
+✔ cobro de piso y variables emocionales: neutras por defecto, con efecto al usarlas (1.0354ms)
 ℹ tests 16
 ℹ suites 0
 ℹ pass 16
@@ -177,12 +177,12 @@ $ npm test
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 2052.974
+ℹ duration_ms 1647.9667
 ```
 <!-- /t:unitarias -->
 
 <!-- t:validador -->
-**Validación cruzada del modelo en Python** · `uv run --no-project python scripts/validar_modelo.py` · código de salida 0 · 1.1 s
+**Validación cruzada del modelo en Python** · `uv run --no-project python scripts/validar_modelo.py` · código de salida 0 · 0.6 s
 
 ```text
 $ uv run --no-project python scripts/validar_modelo.py
@@ -198,7 +198,7 @@ OK  vpn      obtenido=912,775.5843  referencia=912,776
 <!-- /t:validador -->
 
 <!-- t:auditoria -->
-**Auditoría de dependencias** · `npm audit` · código de salida 0 · 5.4 s
+**Auditoría de dependencias** · `npm audit` · código de salida 0 · 4.4 s
 
 ```text
 $ npm audit
@@ -207,25 +207,25 @@ found 0 vulnerabilities
 <!-- /t:auditoria -->
 
 <!-- t:e2e -->
-**Pruebas en navegador (computadora, teléfono y accesibilidad)** · `npx playwright test --reporter=line` · código de salida 0 · 457.9 s
+**Pruebas en navegador (computadora, teléfono y accesibilidad)** · `npx playwright test --reporter=line` · código de salida 1 · 441.8 s
 
 ```text
 $ npx playwright test --reporter=line
 … (se muestran las últimas 14 líneas)
-[151/162] [movil] › tests\e2e\recorrido.spec.js:7:1 › los seis widgets terminan en estado «listo» y sin errores
-[152/162] [movil] › tests\e2e\orientacion.spec.js:11:7 › teléfono horizontal pequeño › metodologia: sin desbordes ni elementos cortados
-[153/162] [movil] › tests\e2e\recorrido.spec.js:15:1 › el widget de inicio coincide con el motor y abre el simulador con su estado
-[154/162] [movil] › tests\e2e\orientacion.spec.js:11:7 › teléfono horizontal pequeño › legal: sin desbordes ni elementos cortados
-[155/162] [movil] › tests\e2e\orientacion.spec.js:38:1 › al girar el teléfono, la barra fija ocupa poco y la tira de pestañas se reacomoda
-[156/162] [movil] › tests\e2e\recorrido.spec.js:27:1 › mapa de zonas: la lista se navega con teclado y la ficha muestra la procedencia
-[157/162] [movil] › tests\e2e\recorrido.spec.js:40:1 › escenario vigente y restablecer referencia
-[158/162] [movil] › tests\e2e\recorrido.spec.js:51:1 › el Worker y el respaldo síncrono reproducen la misma simulación
-[159/162] [movil] › tests\e2e\recorrido.spec.js:74:1 › supervivencia por año y meta de Monte Carlo responden
-[160/162] [movil] › tests\e2e\recorrido.spec.js:83:1 › superficie: lectura exacta, teclado y vista plana
-[161/162] [movil] › tests\e2e\recorrido.spec.js:95:1 › trazabilidad: de un resultado a su fuente
-[162/162] [movil] › tests\e2e\recorrido.spec.js:106:3 › movimiento reducido › la superficie arranca en vista plana con la misma información
+[157/166] [movil] › tests\e2e\recorrido.spec.js:15:1 › el widget de inicio coincide con el motor y abre el simulador con su estado
+[158/166] [movil] › tests\e2e\orientacion.spec.js:11:7 › teléfono horizontal pequeño › legal: sin desbordes ni elementos cortados
+[159/166] [movil] › tests\e2e\orientacion.spec.js:38:1 › al girar el teléfono, la barra fija ocupa poco y la tira de pestañas se reacomoda
+[160/166] [movil] › tests\e2e\recorrido.spec.js:27:1 › mapa de zonas: la lista se navega con teclado y la ficha muestra la procedencia
+[161/166] [movil] › tests\e2e\recorrido.spec.js:40:1 › escenario vigente y restablecer referencia
+[162/166] [movil] › tests\e2e\recorrido.spec.js:51:1 › el Worker y el respaldo síncrono reproducen la misma simulación
+[163/166] [movil] › tests\e2e\recorrido.spec.js:74:1 › supervivencia por año y meta de Monte Carlo responden
+[164/166] [movil] › tests\e2e\recorrido.spec.js:83:1 › superficie: lectura exacta, teclado y vista plana
+[165/166] [movil] › tests\e2e\recorrido.spec.js:95:1 › trazabilidad: de un resultado a su fuente
+[166/166] [movil] › tests\e2e\recorrido.spec.js:106:3 › movimiento reducido › la superficie arranca en vista plana con la misma información
+  1 failed
+    [movil] › tests\e2e\accesibilidad.spec.js:7:3 › axe sin violaciones: estrategia ────────────────
   25 skipped
-  137 passed (7.6m)
+  140 passed (7.3m)
 ```
 <!-- /t:e2e -->
 <!-- terminal:fin -->

@@ -184,6 +184,23 @@ function liUL(arr, vacio){
   return arr.map(([nom])=>'<li><span class="factor">'+nom+"</span></li>").join("");
 }
 
+/* Aplica varias palancas a la vez sobre una copia del escenario (la usan el techo del plan y el simulador de plan). */
+function aplicarPalancas(e, lista){
+  let c=clon(e);
+  lista.forEach(l=>{
+    if(l.clave==="reserva")c.resZ=0.20;
+    if(l.clave==="deuda")c.credPct=0.15;
+    if(l.clave==="margen")c.cv=Math.max(0.30,c.cv-0.10);
+    if(l.clave==="marketing"){c.mktZ=0.12;c.mu=Math.round(c.mu*1.12);}
+    if(l.clave==="formalidad")c.formZ=0.10;
+    if(l.clave==="experiencia")c.expZ=0.15;
+    if(l.clave==="diferenciacion"){c.compZ=0;c.mktZ=Math.min(0.12,c.mktZ+0.07);}
+    if(l.clave==="retencion"){c.mu=Math.round(c.mu*1.07);c.cv=Math.max(0.05,c.cv-0.01);}
+  });
+  /* El traslado de zona se aplica al final para escalar la demanda ya ajustada. */
+  const z=lista.find(l=>l.clave==="zona"); if(z) c=trasladarZona(c,z.zonaK);
+  return c;
+}
 function pintarFODA(e, modelo, mc){
   const P0=modelo.P;
   pintarTriplete(mc);
@@ -195,20 +212,7 @@ function pintarFODA(e, modelo, mc){
 
   const L=palancas(e, P0);
   // Techo realista: aplicar simultáneamente las 3 palancas de mayor impacto
-  let cTecho=clon(e);
-  L.slice(0,3).forEach(l=>{
-    if(l.clave==="reserva")cTecho.resZ=0.20;
-    if(l.clave==="deuda")cTecho.credPct=0.15;
-    if(l.clave==="margen")cTecho.cv=Math.max(0.30,cTecho.cv-0.10);
-    if(l.clave==="marketing"){cTecho.mktZ=0.12;cTecho.mu=Math.round(cTecho.mu*1.12);}
-    if(l.clave==="formalidad")cTecho.formZ=0.10;
-    if(l.clave==="experiencia")cTecho.expZ=0.15;
-    if(l.clave==="diferenciacion"){cTecho.compZ=0;cTecho.mktZ=Math.min(0.12,cTecho.mktZ+0.07);}
-    if(l.clave==="retencion"){cTecho.mu=Math.round(cTecho.mu*1.07);cTecho.cv=Math.max(0.05,cTecho.cv-0.01);}
-  });
-  /* El traslado de zona se aplica al final para escalar la demanda ya ajustada. */
-  const accZona=L.slice(0,3).find(l=>l.clave==="zona");
-  if(accZona) cTecho=trasladarZona(cTecho,accZona.zonaK);
+  const cTecho=aplicarPalancas(e, L.slice(0,3));
   const techo = L.length ? Math.max(P0, probDe(cTecho)) : P0;
   $("fodaP").textContent=(P0*100).toFixed(1)+"%";
   $("fodaTecho").textContent="potencial con el plan: "+(techo*100).toFixed(1)+"%";
@@ -218,6 +222,7 @@ function pintarFODA(e, modelo, mc){
   $("fbNota").innerHTML="Brecha al potencial: <strong>+"+((techo-P0)*100).toFixed(1)+" pts</strong> · factores a favor <strong>"+aFavor+"</strong> frente a <strong>"+enContra+"</strong> en contra. "+
     (mayorA?"Amenaza principal: <strong>"+esc(mayorA[0])+"</strong>.":"Sin amenazas externas marcadas.");
 
+  pintarHerramientasPlan(e, modelo, L, P0);
   if(!L.length){
     $("acciones").innerHTML='<div class="accion"><div class="rank">✓</div><div class="cuerpo"><h3>Escenario muy sólido</h3><p class="que">El modelo no encuentra palancas con mejora significativa: tu configuración ya es robusta. Mantén la reserva de capital y vigila la competencia y la inflación.</p></div><div class="impacto"><div class="lift">—</div><div class="lift-k">sin brecha</div></div></div>';
     $("planCierre").innerHTML="<b>Lectura:</b> conserva la disciplina financiera; incluso con probabilidad alta, la cola izquierda del Monte Carlo existe. Reevalúa el plan si cambian renta, competencia o inflación.";
@@ -346,3 +351,52 @@ if(!cargarEscenario(location.hash)) calcular();
   new ResizeObserver(ajustar).observe(forma);
   addEventListener("resize",ajustar); ajustar();
 })();
+
+/* ---------- 13-bis. Herramientas del plan (Estrategia) ---------- */
+// Hitos de 90 días e indicador de seguimiento por palanca: sugerencias del equipo, no datos.
+const HITOS_PLAN={
+  reserva:{m:["Separar 1 mes de gastos fijos en una cuenta aparte","Llegar a 3 meses de reserva","Llegar a 6 meses de reserva"],kpi:"Meses de gastos fijos cubiertos por la reserva (meta: 6)"},
+  deuda:{m:["Renegociar plazo o tasa del crédito","Reducir el crédito con aportación propia","Deuda de 15 % o menos de la inversión"],kpi:"Crédito como % de la inversión (meta: 15 % o menos)"},
+  margen:{m:["Cotizar con 3 proveedores","Ajustar recetas o mezcla de productos","Costo variable 10 puntos menor"],kpi:"Costo variable como % de la venta"},
+  marketing:{m:["Perfil de Google y redes con fotos y horario","Promoción medible (cupón o código)","12 % más clientes por día"],kpi:"Clientes por día (promedio semanal)"},
+  formalidad:{m:["Alta en el SAT (RESICO)","Registro patronal en el IMSS","Facturar y operar formalmente"],kpi:"Trámites completados (de 3)"},
+  experiencia:{m:["Elegir curso o mentoría del giro","Completar la capacitación","Aplicar 3 mejoras aprendidas"],kpi:"Horas de capacitación y mejoras aplicadas"},
+  diferenciacion:{m:["Definir qué te hace distinto","Ajustar oferta y comunicación","Medir ventas del producto distintivo"],kpi:"% de ventas del producto o servicio distintivo"},
+  retencion:{m:["Programa de lealtad sencillo","Registrar clientes recurrentes","7 % más clientes que regresan"],kpi:"Clientes que regresan en 30 días"},
+  zona:{m:["Visitar locales disponibles en la zona sugerida","Comparar renta y afluencia en campo","Decidir la ubicación"],kpi:"Renta por m² y peatones por hora"}
+};
+let planSel=null;
+function pintarHerramientasPlan(e, modelo, L, P0){
+  // Simulador de plan: mismas palancas, aplicadas juntas con aplicarPalancas()
+  seguro("wPlan",()=>{
+    if(!L.length){ $("planOpciones").innerHTML=""; $("planRes").innerHTML=""; estadoWidget("wPlan","vacio","Tu escenario no tiene palancas con mejora significativa."); return false; }
+    const claves=L.map(l=>l.clave);
+    if(!planSel || !planSel.every(c=>claves.includes(c))) planSel=claves.slice(0,3);
+    const foco=document.activeElement&&document.activeElement.closest("#planOpciones")?document.activeElement.value:null;
+    $("planOpciones").innerHTML=L.map(l=>'<label class="plan-op"><input type="checkbox" value="'+l.clave+'"'+(planSel.includes(l.clave)?" checked":"")+'> '+l.titulo+' <span class="plan-dp">+'+(l.lift*100).toFixed(1)+' pts sola</span></label>').join("");
+    if(foco){ const f=$("planOpciones").querySelector("input[value=\""+foco+"\"]"); if(f) f.focus(); }
+    const elegidas=L.filter(l=>planSel.includes(l.clave));
+    const Pplan=elegidas.length?Math.max(P0,probDe(aplicarPalancas(e,elegidas))):P0;
+    $("planRes").innerHTML='<span class="plan-p">'+(P0*100).toFixed(1)+'% → <strong>'+(Pplan*100).toFixed(1)+'%</strong></span> con '+elegidas.length+(elegidas.length===1?" acción":" acciones")+' (+'+((Pplan-P0)*100).toFixed(1)+' pts)';
+  });
+  // Matriz de impacto y control: ΔP si el factor fuera neutro
+  seguro("wRiesgo",()=>{
+    const INT=["Experiencia","Reserva","Formalidad","Marketing","Estructura de deuda","Local propio","Margen de seguridad","Resiliencia","Motivación","Modelo de negocio","Permisos","Modalidad","Horario"];
+    const sig=x=>1/(1+Math.exp(-x)), z=modelo.z;
+    const fac=modelo.contribs.filter(c=>Math.abs(c[1])>0.001).map(([n,b])=>({n:n.replace(/ \(.+\)$/,""), b, imp:Math.abs(sig(z)-sig(z-b)), ctrl:INT.some(k=>n.startsWith(k))}));
+    if(!fac.length){ estadoWidget("wRiesgo","vacio","Todos los factores están en posición neutra."); return false; }
+    const alto=f=>f.imp>=0.03;
+    const celda=(t,f)=>'<div class="mr-celda"><p class="mr-t">'+t+'</p><ul>'+(f.length?f.sort((a,b)=>b.imp-a.imp).map(x=>'<li class="'+(x.b<0?"neg":"pos")+'">'+esc(x.n)+' <span>'+(x.b<0?"−":"+")+(x.imp*100).toFixed(1)+' pts</span></li>').join(""):'<li class="vacio">Ninguno</li>')+"</ul></div>";
+    $("matrizRiesgo").innerHTML=celda("Controlas · impacto alto",fac.filter(f=>f.ctrl&&alto(f)))+celda("Externo · impacto alto",fac.filter(f=>!f.ctrl&&alto(f)))+
+      celda("Controlas · impacto bajo",fac.filter(f=>f.ctrl&&!alto(f)))+celda("Externo · impacto bajo",fac.filter(f=>!f.ctrl&&!alto(f)));
+  });
+  // Calendario de 90 días e indicadores de las acciones marcadas
+  seguro("wCalendario",()=>{
+    const elegidas=L.filter(l=>planSel&&planSel.includes(l.clave)&&HITOS_PLAN[l.clave]);
+    if(!elegidas.length){ $("calendario").innerHTML=""; estadoWidget("wCalendario","vacio","Marca al menos una acción en el simulador de plan."); return false; }
+    $("calendario").innerHTML=["Días 1 a 30","Días 31 a 60","Días 61 a 90"].map((t,m)=>'<li><p class="cal-t">'+t+'</p><ul>'+elegidas.map(l=>"<li>"+HITOS_PLAN[l.clave].m[m]+"</li>").join("")+"</ul></li>").join("")+
+      '<li class="cal-kpi"><p class="cal-t">Indicadores de seguimiento</p><ul>'+elegidas.map(l=>"<li><strong>"+l.titulo+":</strong> "+HITOS_PLAN[l.clave].kpi+"</li>").join("")+"</ul></li>";
+  });
+}
+$("planOpciones").addEventListener("change",()=>{ planSel=[...$("planOpciones").querySelectorAll("input:checked")].map(i=>i.value); calcular(); });
+$("imprimirPlan").addEventListener("click",()=>{ document.body.classList.add("imprimir-plan"); print(); setTimeout(()=>document.body.classList.remove("imprimir-plan"),500); });
