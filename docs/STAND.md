@@ -73,7 +73,7 @@ El visitante escribe el nombre de su negocio, lo simula, ve su modelo 2.5D y se 
 
 ### Contenido impreso (sale del propio modelo)
 
-- **One-pager:** el problema (más de la mitad de los negocios no llega al tercer año según la tabla del INEGI), la solución, el escenario de referencia *Cafetería · Los Héroes* (P 51.6 % con su rango plausible, ROI 302.9 %, payback 4.1 meses, VPN $912,776), el QR y los autores en este orden: Miguel Antonio Cruz García, Bruno Alejandro López Bautista, Alonso Arroyo Cortés.
+- **One-pager:** el problema (más de la mitad de los negocios no llega al tercer año según la tabla del INEGI), la solución, el escenario de referencia *Cafetería · Los Héroes* (P 51.6 %, rango plausible 44.1–58.2 %, ROI 302.9 %, payback 4.1 meses, VPN $912,776), el QR y los autores en este orden: Miguel Antonio Cruz García, Bruno Alejandro López Bautista, Alonso Arroyo Cortés.
 - **Póster:** diagrama de proceso (`entregables/diagrama-proceso.png`) y un recuadro de «qué NO es» (no predice con exactitud; los β son estimaciones del equipo).
 - Genera los archivos con `npm run entregables` justo antes de imprimir, para que las cifras coincidan con el sitio.
 

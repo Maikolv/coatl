@@ -140,3 +140,9 @@ test('v11 diagnóstico: 30 puntos en 5 niveles, pesos que suman 1 e índice de 0
   assert.equal(M.indiceMadurez(n1).nivel, 1);
   assert.equal(M.indiceMadurez(n1).indice, 35);
 });
+
+test('referencia: rango plausible de P = 44.1–58.2 % (vigente desde v9)', () => {
+  const r = M.rangoP(M.modeloLogistico(escenarioReferencia(M)));
+  assert.equal((r.p05 * 100).toFixed(1), '44.1');
+  assert.equal((r.p95 * 100).toFixed(1), '58.2');
+});

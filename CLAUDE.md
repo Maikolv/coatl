@@ -50,7 +50,7 @@ Alcance funcional: 35 giros de negocio, 36 variables en 4 pestañas (incluye rie
 
 | Métrica | Valor |
 |---|---|
-| P(supervivencia 3 años) | 51.6 % (rango plausible 44.3–58.3 %) |
+| P(supervivencia 3 años) | 51.6 % (rango plausible 44.1–58.2 %; era 44.3–58.3 % hasta v8) |
 | Utilidad mensual | ≈ $60,371 |
 | ROI | 302.9 % |
 | Payback | 4 meses (4.1) |
@@ -137,7 +137,7 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - Grecas animadas (`grecaMarcha`); pausa global con #pausaMovimiento (`body.sin-movimiento`).
 - Plantilla de Excel: `node scripts/plantilla_excel.mjs` → `assets/plantillas/` (el build la copia a dist). Requiere `exceljs`.
 - Orden de módulos: negocios, mejora y reporte van ANTES de app.js (app.js calcula al cargar).
-- Pendiente de decidir: el rango plausible del escenario de referencia es 44.1–58.2 % desde v9 (el documento dice 44.3–58.3 %); ver docs/AUDITORIA.md §13.
+- Rango plausible de referencia: 44.1–58.2 % desde v9 (antes 44.3–58.3 %); lo vigila `tests/modelo.test.mjs`. Ver docs/METODOLOGIA.md.
 
 ## Pendiente
 

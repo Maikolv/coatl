@@ -144,7 +144,7 @@ En Windows, las e2e usan Microsoft Edge (`COATL_CANAL=msedge`) porque el Chromiu
 
 | P (3 años) | Rango plausible | Utilidad/mes | ROI | Payback | VPN 3 años |
 |---|---|---|---|---|---|
-| 51.6 % | 44.3 %–58.3 % | $60,371 | 302.9 % | 4 meses | $912,776 |
+| 51.6 % | 44.1 %–58.2 % | $60,371 | 302.9 % | 4 meses | $912,776 |
 
 Los cambios frente a las versiones anteriores están en [docs/METODOLOGIA.md](docs/METODOLOGIA.md#escenario-de-referencia). Las fuentes de cada dato se verificaron en [docs/VERIFICACION_DATOS.md](docs/VERIFICACION_DATOS.md).
 
@@ -156,7 +156,7 @@ Salida real de los comandos de verificación, como texto (sin imágenes). La act
 _Generado el 2026-11-16._
 
 <!-- t:build -->
-**Construcción del sitio** · `npm run build` · código de salida 0 · 2.3 s
+**Construcción del sitio** · `npm run build` · código de salida 0 · 2.7 s
 
 ```text
 $ npm run build
@@ -164,33 +164,33 @@ $ npm run build
 > coatl@2.0.0 build
 > node scripts/build.mjs
 
-index.html y dist/index.html generados (485,340 bytes)
+index.html y dist/index.html generados (485,343 bytes)
 ```
 <!-- /t:build -->
 
 <!-- t:unitarias -->
-**Pruebas unitarias del modelo y del intermediario de IA** · `npm test` · código de salida 0 · 2.7 s
+**Pruebas unitarias del modelo y del intermediario de IA** · `npm test` · código de salida 0 · 2.4 s
 
 ```text
 $ npm test
 … (se muestran las últimas 12 líneas)
-✔ S0 coincide con la tabla oficial del INEGI 1989–2019 (t = 1…10) y β₀ reproduce S0(3) (0.6699ms)
-✔ cobro de piso y variables emocionales: neutras por defecto, con efecto al usarlas (4.8875ms)
-✔ v11 fiscal: tabla del RESICO (art. 113-E LISR), tope de 3.5 millones y régimen general (1.3678ms)
-✔ v11 diagnóstico: 30 puntos en 5 niveles, pesos que suman 1 e índice de 0 a 100 (2.7748ms)
-ℹ tests 18
+✔ cobro de piso y variables emocionales: neutras por defecto, con efecto al usarlas (0.9047ms)
+✔ v11 fiscal: tabla del RESICO (art. 113-E LISR), tope de 3.5 millones y régimen general (0.8047ms)
+✔ v11 diagnóstico: 30 puntos en 5 niveles, pesos que suman 1 e índice de 0 a 100 (1.0632ms)
+✔ referencia: rango plausible de P = 44.1–58.2 % (vigente desde v9) (42.7048ms)
+ℹ tests 19
 ℹ suites 0
-ℹ pass 18
+ℹ pass 19
 ℹ fail 0
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 1364.8148
+ℹ duration_ms 1128.0753
 ```
 <!-- /t:unitarias -->
 
 <!-- t:validador -->
-**Validación cruzada del modelo en Python** · `uv run --no-project python scripts/validar_modelo.py` · código de salida 0 · 1.6 s
+**Validación cruzada del modelo en Python** · `uv run --no-project python scripts/validar_modelo.py` · código de salida 0 · 0.7 s
 
 ```text
 $ uv run --no-project python scripts/validar_modelo.py
@@ -206,7 +206,7 @@ OK  vpn      obtenido=912,775.5843  referencia=912,776
 <!-- /t:validador -->
 
 <!-- t:auditoria -->
-**Auditoría de dependencias** · `npm audit` · código de salida 1 · 7.9 s
+**Auditoría de dependencias** · `npm audit` · código de salida 1 · 7.8 s
 
 ```text
 $ npm audit
@@ -230,25 +230,25 @@ To address all issues (including breaking changes), run:
 <!-- /t:auditoria -->
 
 <!-- t:e2e -->
-**Pruebas en navegador (computadora, teléfono y accesibilidad)** · `npx playwright test --reporter=line` · código de salida 0 · 393.5 s
+**Pruebas en navegador (computadora, teléfono y accesibilidad)** · `npx playwright test --reporter=line` · código de salida 0 · 364.7 s
 
 ```text
 $ npx playwright test --reporter=line
 … (se muestran las últimas 14 líneas)
-[157/168] [movil] › tests\e2e\paginas.spec.js:264:1 › v10: simulador de plan, matriz de impacto y calendario de 90 días
-[158/168] [movil] › tests\e2e\recorrido.spec.js:7:1 › los seis widgets terminan en estado «listo» y sin errores
-[159/168] [movil] › tests\e2e\recorrido.spec.js:15:1 › el widget de inicio coincide con el motor y abre el simulador con su estado
-[160/168] [movil] › tests\e2e\recorrido.spec.js:27:1 › mapa de zonas: la lista se navega con teclado y la ficha muestra la procedencia
-[161/168] [movil] › tests\e2e\paginas.spec.js:289:1 › v10: aviso legal con uso aceptable, licencias (ODbL) y revisión profesional
-[162/168] [movil] › tests\e2e\recorrido.spec.js:40:1 › escenario vigente y restablecer referencia
-[163/168] [movil] › tests\e2e\paginas.spec.js:298:1 › v11: nombre del negocio, guardado local, alternativas, diagnóstico, fiscal y modelo 2.5D
+[157/168] [movil] › tests\e2e\paginas.spec.js:298:1 › v11: nombre del negocio, guardado local, alternativas, diagnóstico, fiscal y modelo 2.5D
+[158/168] [movil] › tests\e2e\orientacion.spec.js:38:1 › al girar el teléfono, la barra fija ocupa poco y la tira de pestañas se reacomoda
+[159/168] [movil] › tests\e2e\privacidad-ia.spec.js:4:1 › Empresas: la IA de COATL no recibe datos del archivo cargado
+[160/168] [movil] › tests\e2e\recorrido.spec.js:7:1 › los seis widgets terminan en estado «listo» y sin errores
+[161/168] [movil] › tests\e2e\recorrido.spec.js:15:1 › el widget de inicio coincide con el motor y abre el simulador con su estado
+[162/168] [movil] › tests\e2e\recorrido.spec.js:27:1 › mapa de zonas: la lista se navega con teclado y la ficha muestra la procedencia
+[163/168] [movil] › tests\e2e\recorrido.spec.js:40:1 › escenario vigente y restablecer referencia
 [164/168] [movil] › tests\e2e\recorrido.spec.js:51:1 › el Worker y el respaldo síncrono reproducen la misma simulación
 [165/168] [movil] › tests\e2e\recorrido.spec.js:74:1 › supervivencia por año y meta de Monte Carlo responden
 [166/168] [movil] › tests\e2e\recorrido.spec.js:83:1 › superficie: lectura exacta, teclado y vista plana
 [167/168] [movil] › tests\e2e\recorrido.spec.js:95:1 › trazabilidad: de un resultado a su fuente
 [168/168] [movil] › tests\e2e\recorrido.spec.js:106:3 › movimiento reducido › la superficie arranca en vista plana con la misma información
   25 skipped
-  143 passed (6.5m)
+  143 passed (6.0m)
 ```
 <!-- /t:e2e -->
 <!-- terminal:fin -->

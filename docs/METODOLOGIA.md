@@ -64,7 +64,7 @@ No incluyen ISR/RESICO, depreciación, sueldo del dueño, capital de trabajo ni 
 | v3 | S₀ oficial hasta el año 5, interpolada del 6 al 10 | 51.6 % | $60,371 | 302.9 % | 4.1 meses | $912,776 |
 | **v5 (vigente)** | S₀ oficial hasta el año 10 | **51.6 %** | **$60,371** | **302.9 %** | **4.1 meses** | **$912,776** |
 
-Rango plausible de P (v3 y v5): 44.3 %–58.3 %. La v4 incorporó el recorrido exploratorio con el modelo v3. En v5 cambian los puntos de supervivencia de los años 6–10. P y el VPN dependen de los primeros tres años. La utilidad, el ROI y el payback se calculan sin S₀.
+Rango plausible de P: **44.1 %–58.2 %** desde v9 (en v3 a v8 era 44.3 %–58.3 %). El cambio no viene de los datos ni de los coeficientes: v9 agregó tres variables neutras (extorsión, resiliencia y motivación) y `rangoP` hace un sorteo por cada variable, aunque su β sea 0, así que la secuencia del generador se recorre y el P5 y el P95 se mueven una o dos décimas. P, la utilidad, el ROI, el payback y el VPN no cambiaron. La v4 incorporó el recorrido exploratorio con el modelo v3. En v5 cambian los puntos de supervivencia de los años 6–10. P y el VPN dependen de los primeros tres años. La utilidad, el ROI y el payback se calculan sin S₀.
 Monte Carlo v2: DE $179,399; P5 $489,097; P50 $744,277; P95 $1,072,698.
 La prueba `compatibilidad` de `tests/modelo.test.mjs` confirma que con las entradas v1 se recuperan la utilidad y el VPN v1. Ninguna de las dos cantidades depende del Monte Carlo.
 

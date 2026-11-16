@@ -16,7 +16,7 @@ Trabajas en COATL, una app web estática en español de México (GitHub Pages, s
 ## Reglas obligatorias
 
 - Edita solo `src/`, `scripts/`, `tests/`, `docs/`, `package.json` y `package-lock.json`. Nunca edites a mano `index.html` ni `dist/`: se regeneran con `npm run build`.
-- No cambies el modelo estadístico ni los valores por defecto. El escenario de referencia es Cafetería · Los Héroes y debe seguir dando P = 51.6 % (rango 44.3–58.3), utilidad ≈ $60,371, ROI 302.9 %, payback 4.1 y VPN $912,776.
+- No cambies el modelo estadístico ni los valores por defecto. El escenario de referencia es Cafetería · Los Héroes y debe seguir dando P = 51.6 % (rango 44.1–58.2), utilidad ≈ $60,371, ROI 302.9 %, payback 4.1 y VPN $912,776.
 - No cambies la identidad visual. No agregues Three.js, WebGL ni frameworks. No agregues analítica ni `localStorage`, ni envíes datos de Empresas a ningún lado.
 - No borres archivos existentes ni quites funciones, pruebas o documentación. Si algo sobra, propónlo en el resumen en vez de borrarlo.
 - No uses claves reales ni tokens. Las pruebas de Gemini y Claude deben usar respuestas simuladas (`page.route`).
