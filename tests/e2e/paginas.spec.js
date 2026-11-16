@@ -51,7 +51,15 @@ test('costos propios ilimitados entran al modelo', async ({ page }) => {
   await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
   await expect(page.locator('#probNum')).toHaveText('51.6%');
   await page.click('#t-finanzas');
-  for (let i = 0; i < 3; i++) { await page.click('#extrasAgregar'); await page.locator('#extrasLista li').last().locator('input[type=number]').fill('20000'); }
+  for (let i = 0; i < 3; i++) {
+    // Cada captura dispara un recálculo en vivo: se espera a que termine antes del siguiente clic
+    // (en CI, un clic dado a medio recálculo llegó a perderse y el total quedaba en $40,000).
+    await expect(page.locator('#escVigente')).toHaveAttribute('data-estado', 'vigente');
+    await page.click('#extrasAgregar');
+    await expect(page.locator('#extrasLista li')).toHaveCount(i + 1);
+    await page.locator('#extrasLista li').last().locator('input[type=number]').fill('20000');
+    await expect(page.locator('#extrasTotal')).toHaveText('$' + (20 * (i + 1)) + ',000');
+  }
   await expect(page.locator('#extrasTotal')).toHaveText('$60,000');
   await expect(page.locator('#probNum')).not.toHaveText('51.6%', { timeout: 5000 });
 });
