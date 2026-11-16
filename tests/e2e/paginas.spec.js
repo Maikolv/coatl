@@ -317,7 +317,8 @@ test('v11: nombre del negocio, guardado local, alternativas, diagnóstico, fisca
   await expect(page.locator('#escenaNegocio svg')).toBeVisible();
   await page.click('#escenaPotencial');
   await expect(page.locator('#escenaPotencial')).toHaveAttribute('aria-pressed', 'true');
-  const antes = await page.locator('#probNum').textContent();
+  await expect(page.locator('#probNum')).toHaveText('51.6%');   // el contador del score es animado: se espera el valor final
+  const antes = '51.6%';
   await page.locator('#alternativas button').first().click();
   await expect(page.locator('#altDeshacer')).toBeVisible();
   await expect(page.locator('#probNum')).not.toHaveText(antes);
