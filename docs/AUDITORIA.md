@@ -162,3 +162,58 @@ Nueva prueba `tests/e2e/orientacion.spec.js`: revisa los 8 apartados en teléfon
 | 11 | Las pestañas no se podían reordenar | ✅ Asa ⠿ para arrastrar (ratón o dedo) y flechas ←/→ con anuncio para lector de pantalla |
 | 12 | Precisión: β y afluencia son estimaciones del equipo | 📄 Ruta con métodos y datos reales en `docs/METODOS_PRECISION.md` (panel del DENUE, Shumway, Kaplan–Meier, Huff, calibración, conformal) |
 | 13 | El README no mostraba la salida real de las verificaciones | ✅ Sección «Capturas de la terminal» generada por `scripts/capturas_terminal.mjs` |
+
+## 11. v9: IA en vivo, cobro de piso y variables emocionales, giros de Coacalco, carrusel y aviso legal (15 de noviembre de 2026)
+
+| # | Hallazgo o petición | Acción |
+|---|---|---|
+| 1 | La IA publicada en Vercel respondía «La IA no respondió»: `gemini-3.8-flash` tardaba más de 25 s | ✅ Primero `gemini-3.5-flash-lite`; el error ahora trae el código de Gemini (sin la clave). Verificado en vivo |
+| 2 | Faltaban la extorsión («cobro de piso») y factores emocionales | ✅ 4 variables nuevas: riesgo de extorsión en la zona, pago mensual por extorsión (costo fijo), resiliencia y motivación. Neutras por defecto: la referencia no cambia (51.6 %, VPN $912,776). Pruebas unitarias y e2e |
+| 3 | La lista de giros solo tenía 35 calibrados y la búsqueda SCIAN | ✅ Grupo con las 424 actividades que existen hoy en Coacalco (DENUE, 11,554 negocios), ordenadas por número de negocios; se conservan las 989 del SCIAN |
+| 4 | Estrategia y Aviso legal llevaban fotos | ✅ Retiradas. Estrategia: widget «Balance de tu escenario» (FODA contado, brecha al potencial y amenaza principal) |
+| 5 | «Cómo leer tu resultado» tenía una sola foto | ✅ Carrusel de 10 fotos de distintas zonas (botones, puntos, deslizar, teclado, pausa; sin movimiento automático con movimiento reducido) |
+| 6 | Aviso legal decía que el sitio «no transmite datos», falso desde la IA; citaba la LFPDPPP sin la nueva ley | ✅ Privacidad corregida (qué se envía a Vercel y Google, y qué no), nueva LFPDPPP (DOF 20-03-2025, reforma 14-11-2025, autoridad: Secretaría Anticorrupción y Buen Gobierno), y artículos nuevos: uso de IA, variables sensibles (089), accesibilidad, vigencia y contacto. 10 artículos numerados |
+| 7 | README con imágenes repartidas en varias secciones | ✅ Una sola sección «Capturas del proyecto»; «Capturas de la terminal» pasó a texto real generado por script |
+| 8 | Las capturas de página completa dejaban vacía la sección 05 | ✅ Era `content-visibility:auto` (optimización de carga): se desactiva solo al capturar |
+| 9 | Fotos | ✅ 18 fotos de Commons + 6 de zonas + Palacio, ninguna repetida (el build lo impide; prueba e2e verifica que todas cargan con HTTP 200) |
+
+### ¿Exactitud del 99 %?
+
+**No es alcanzable ni demostrable** con los datos disponibles. Pronosticar si un negocio concreto sobrevive tres años tiene incertidumbre irreducible: depende de hechos futuros. Además, hoy los β son estimaciones del equipo y no hay datos de seguimiento para medir el acierto. Lo que sí se hizo es usar más métodos estadísticos y probabilísticos y ser honesto con su incertidumbre:
+
+- regresión logística;
+- supervivencia tipo Cox con S₀(t) del INEGI;
+- Monte Carlo reproducible con P5, P50 y P95;
+- rango plausible por perturbación de β;
+- contraste con los Censos Económicos;
+- validación cruzada en Python.
+
+La ruta para medir y mejorar la precisión real (panel del DENUE, calibración y Brier) está en `docs/METODOS_PRECISION.md`. Cualquier cifra de «exactitud» se reportará solo cuando exista esa validación.
+
+### Inventario de widgets por ruta (encargo de rediseño)
+
+| Ruta | Widget | Pregunta · interacción · respuesta | Estados | 3D / capas | Alternativa sin WebGL |
+|---|---|---|---|---|---|
+| Inicio | wDemo | ¿Cuántos clientes al día…? · deslizador · P, utilidad y equilibrio; abre el simulador con ese estado | cargando, listo, vacío, error | Capas | No usa WebGL |
+| Inicio | wMapa | ¿En qué zona…? · mapa real y lista con teclado · ficha con procedencia | ✓ | Mapa multicapa (calles y satélite) | Lista equivalente si no hay red |
+| Simulador | 36 variables, escenario vigente, restablecer | Unidades junto al control; la última simulación válida se marca mientras recalcula | ✓ | — | — |
+| Resultados | wSup, wMC, wSuperficie | Supervivencia por año, meta de utilidad, superficie de dos supuestos | ✓ | Superficie 2.5D + tabla 2D sincronizada | Vista plana y movimiento reducido |
+| Metodología | wTraza | Del resultado a la variable, la fuente, el periodo y el supuesto | ✓ | Capas | — |
+| Estrategia | Balance FODA, triplete, matriz, plan | Conteo de factores, brecha al potencial y palancas con ΔP | — | — | — |
+
+No se usó WebGL: CLAUDE.md lo rechaza. La profundidad se logra con SVG, 2.5D y capas, que ya funcionan sin aceleración gráfica.
+
+### Qué más mejorar en Estrategia (propuesta)
+
+1. Un **simulador de plan**: marcar varias acciones y ver la P combinada, con costo estimado de cada una.
+2. **Matriz de riesgos** probabilidad × impacto, incluida la extorsión.
+3. **Calendario de 90 días** con hitos derivados del plan.
+4. **Indicadores de seguimiento** por estrategia (por ejemplo, clientes por día o margen) para medir si funciona.
+5. Exportar el plan a PDF.
+
+### Qué más cubrir en el Aviso legal (propuesta)
+
+1. Términos de uso aceptable (sin uso automatizado masivo de la IA).
+2. Licencias de las fotos por cada una: ya están en el pie de cada foto y en docs/RECURSOS.md; falta enlazarlas desde el aviso.
+3. Licencia ODbL de OpenStreetMap en el pie del mapa (ya citada).
+4. Revisión por un profesional del derecho antes de usar el sitio fuera del ámbito académico.

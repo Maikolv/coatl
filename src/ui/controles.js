@@ -78,11 +78,12 @@ function leerEscenario(){
     compZ:+$("competencia").value, resZ:+$("reserva").value,
     modZ:+$("modeloNegocio").value||0, permZ:+$("permisos").value||0,
     modalZ:+$("modalidad").value||0, horZ:+$("horario").value||0,
+    extZ:+$("extorsion").value||0, resilZ:+$("resiliencia").value||0, motivZ:+$("motivacion").value||0,
     empleados:num("empleados"), costoEmpleado:num("costoEmpleado"),
     propio:$("local").value==="propio", superficie:num("superficie"),
     inversion:num("inversion"), credPct:num("credito")/100, tasa:num("tasa")/100,
     renta:num("renta"), ticket:Math.max(1,num("ticket")), cv:num("cvar")/100,
-    otrosFijos:num("otrosFijos")+(typeof sumaExtras==="function"?sumaExtras():0),
+    otrosFijos:num("otrosFijos")+num("cobroPiso")+(typeof sumaExtras==="function"?sumaExtras():0),   // la cuota de extorsión es un costo fijo más
     mu:Math.max(1,num("clientes")), diasSem:+$("dias").value||6,
     estacion:ESTACION[$("estacionalidad").value]||ESTACION.estable, r:num("descuento")/100,
     merma:num("merma")/100, mktGasto:num("mktGasto"),

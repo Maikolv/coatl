@@ -52,6 +52,9 @@ function interpretarLocal(texto){
   if(/mucha competencia|muy competido|saturad/.test(t)){r.competencia="-0.20"; entendido.push("competencia alta");}
   else if(/poca competencia|sin competencia|no hay competencia/.test(t)){r.competencia="0.15"; entendido.push("competencia baja");}
   if(/informal|sin factura|sin registro/.test(t)){r.formalidad="-0.06"; entendido.push("operación informal");}
+  if(/cobro de piso|extorsi|me cobran cuota|derecho de piso/.test(t)){r.extorsion="-0.45"; entendido.push("riesgo de extorsión en la zona");}
+  if(/por necesidad|me quede sin (trabajo|empleo)|me corrieron|desemplead/.test(t)){r.motivacion="-0.10"; entendido.push("emprende por necesidad");}
+  if(/estres|agotad|cansad|ansiedad/.test(t)){r.resiliencia="-0.15"; entendido.push("desgaste emocional");}
   if(/redes sociales|facebook|instagram|tiktok|publicidad/.test(t)){r.marketing=/pauta|anuncio|publicidad pagada|whatsapp business/.test(t)?"0.12":"0.05"; entendido.push("marketing en redes");}
   const reserva=/(\d+)\s*meses? de (?:reserva|gastos|ahorro)/.exec(t);
   if(reserva){const m=+reserva[1]; r.reserva=m>12?"0.35":m>=6?"0.20":m>=3?"0":"-0.30"; entendido.push("reserva: "+m+" meses");}
@@ -66,7 +69,7 @@ function aplicarInterpretacion(r){
   fija("inversion",r.inversion!=null?Math.round(r.inversion/10000)*10000:null); fija("renta",r.renta!=null?Math.round(r.renta):null);
   fija("empleados",r.empleados); fija("costoEmpleado",r.costoEmpleado); fija("superficie",r.superficie);
   fija("credito",r.credito!=null?Math.round(r.credito/5)*5:null); fija("tasa",r.tasa);
-  ["experiencia","dias","local","competencia","formalidad","marketing","reserva"].forEach(k=>{ if(r[k]!=null&&[...$(k).options].some(o=>o.value===String(r[k]))) $(k).value=String(r[k]); });
+  ["experiencia","dias","local","competencia","formalidad","marketing","reserva","extorsion","motivacion","resiliencia"].forEach(k=>{ if(r[k]!=null&&[...$(k).options].some(o=>o.value===String(r[k]))) $(k).value=String(r[k]); });
   ["inversion","credito","cvar","merma"].forEach(id=>$(id).dispatchEvent(new Event("input")));
   calcular();
 }

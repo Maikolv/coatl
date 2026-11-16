@@ -9,7 +9,7 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-ZGd/pktL4z3I5ypLRCwBlr+YFe08w0uTliSFKW7wdfg=' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'sha256-s47Rfv8W4FYDdA2xuPxCaN+kfoLYRg78zUuTjQHaxBA=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://coatl-ia.vercel.app; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-La5OD7XczApmVPF4iCyoVX/7bpFheoMV9HI0Zsn9VEc=' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'sha256-sp9rpjw1pht6GEPuyj1iegK88cElaGqBz3OKQCbqbaI=' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://coatl-ia.vercel.app; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -931,6 +931,40 @@ body.vista-todo .pestanas-app{display:none}
 .ranking li > .rk-zona{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:.7rem;width:100%;cursor:pointer}
 .ranking li:has(.rk-zona:focus-visible){outline:2px solid var(--rojo);outline-offset:2px}
 
+/* ===== v9: carrusel de zonas, balance FODA ===== */
+#lectura .intro-flex{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:2rem;align-items:center}
+.carrusel{position:relative;min-width:0}
+.car-pista{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;margin:0;padding:0;list-style:none;border-radius:14px;
+  box-shadow:0 18px 40px -16px rgba(56,7,15,.45);scrollbar-width:none;outline-offset:4px}
+.car-pista::-webkit-scrollbar{display:none}
+.car-pista:focus-visible{outline:3px solid var(--rojo)}
+.car-slide{flex:0 0 100%;scroll-snap-align:start;margin:0}
+.car-foto{border-radius:0;box-shadow:none;aspect-ratio:3/2}
+.car-foto figcaption{font-size:.68rem}
+.car-foto .foto-titulo{font-size:.9rem}
+.car-controles{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.7rem;flex-wrap:wrap}
+.car-btn{border:1px solid var(--niebla-2);background:#fff;color:var(--granate);width:2.4rem;height:2.4rem;border-radius:50%;font-size:1.2rem;line-height:1;cursor:pointer}
+.car-btn:hover,.car-btn:focus-visible{background:var(--rojo);color:#fff;outline:none}
+.car-pausa{font-size:.8rem}
+.car-puntos{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:center}
+.car-punto{width:.7rem;height:.7rem;border-radius:50%;border:0;background:#E5CFCB;cursor:pointer;padding:0}
+.car-punto[aria-current="true"]{background:var(--rojo);transform:scale(1.25)}
+.car-punto:focus-visible{outline:2px solid var(--granate);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.car-pista{scroll-behavior:auto}}
+@media (max-width:980px){#lectura .intro-flex{grid-template-columns:minmax(0,1fr)}}
+/* Balance FODA en lugar de foto */
+.foda-balance{background:#fff;border:1px solid var(--niebla-2);border-radius:14px;padding:1rem 1.1rem;box-shadow:var(--sombra);align-self:stretch;display:flex;flex-direction:column;gap:.6rem}
+.fb-titulo{margin:0;font:700 .75rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--rojo)}
+.fb-cuadros{display:grid;grid-template-columns:1fr 1fr;gap:.45rem}
+.fb-c{border-radius:10px;padding:.45rem .55rem;display:flex;flex-direction:column;font-size:.78rem;color:var(--tinta);border-left:4px solid}
+.fb-n{font:800 1.5rem/1 var(--display)}
+.fb-f{background:#EAF5EE;border-color:#1F7A4D}.fb-o{background:#EAF0FA;border-color:#2457A5}
+.fb-d{background:#FDF3E6;border-color:#8F5E12}.fb-a{background:#FBE9EB;border-color:var(--rojo)}
+.fb-nota{margin:0;font-size:.82rem;color:var(--gris-texto)}
+.foda-intro{align-items:stretch}
+.foda-intro > .intro{align-self:center}
+.foda-intro .foda-resumen{display:flex;flex-direction:column;justify-content:center}
+
 /* estilos en línea movidos por el build */
 [data-ei="0"]{margin-top:1.5rem !important}
 [data-ei="1"]{font-family:var(--mono) !important;font-size:.66rem !important;color:#855559 !important;margin-top:.7rem !important}
@@ -1167,7 +1201,7 @@ body.vista-todo .pestanas-app{display:none}
     <p class="folio">Sección 02 · El instrumento</p>
     <h2 class="titulo" data-ei="2">Simulador de éxito y rentabilidad</h2>
     <div class="intro-flex">
-      <p class="intro">Configura las 32 variables del escenario en las cuatro pestañas: <strong data-ei="3">el cálculo es en vivo</strong>, cada ajuste mueve al instante el medidor, las gráficas y el mapa de zonas. ¿Sin ideas? Lanza el dado de <strong data-ei="4">🎲 Escenario sorpresa</strong>. El modelo devuelve la probabilidad (con un decimal, cálculo determinista y reproducible) de operar con rentabilidad al tercer año, la curva de supervivencia, la distribución de utilidades (Monte Carlo, 2,000 corridas) y los indicadores financieros del proyecto.</p>
+      <p class="intro">Configura las 36 variables del escenario en las cuatro pestañas: <strong data-ei="3">el cálculo es en vivo</strong>, cada ajuste mueve al instante el medidor, las gráficas y el mapa de zonas. ¿Sin ideas? Lanza el dado de <strong data-ei="4">🎲 Escenario sorpresa</strong>. El modelo devuelve la probabilidad (con un decimal, cálculo determinista y reproducible) de operar con rentabilidad al tercer año, la curva de supervivencia, la distribución de utilidades (Monte Carlo, 2,000 corridas) y los indicadores financieros del proyecto.</p>
       <figure class="foto-cita foto-escena ilustracion"><img src="assets/img/escenarios/la-era.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Plaza La Era, Coacalco"><figcaption><span class="foto-titulo">Plaza La Era, Coacalco</span> <a href="https://commons.wikimedia.org/wiki/File:La_Era_Coacalco.jpg" target="_blank" rel="noopener">Tbhotch</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption></figure>
     </div>
 
@@ -1224,6 +1258,26 @@ body.vista-todo .pestanas-app{display:none}
             <div class="campo">
               <label for="empleados">Empleados (además de ti)</label>
               <input type="number" id="empleados" min="0" max="50" step="1" value="1">
+            </div>
+          </div>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="resiliencia">Resiliencia y manejo del estrés</label>
+              <select id="resiliencia">
+                <option value="0.10">Alta: red de apoyo y manejo del estrés</option>
+                <option value="0" selected>Media</option>
+                <option value="-0.15">Baja: agotamiento, sin red de apoyo</option>
+              </select>
+              <span class="ayuda">Variable emocional: el desgaste del dueño es causa frecuente de cierre en micronegocios. Efecto: <span class="proc proc-supuesto">estimación del equipo</span>.</span>
+            </div>
+            <div class="campo">
+              <label for="motivacion">Motivación para emprender</label>
+              <select id="motivacion">
+                <option value="0.08">Por oportunidad detectada</option>
+                <option value="0" selected>Mixta</option>
+                <option value="-0.10">Por necesidad (falta de empleo)</option>
+              </select>
+              <span class="ayuda">Los negocios abiertos por necesidad suelen tener menos capital y planeación. Efecto: <span class="proc proc-supuesto">estimación del equipo</span>.</span>
             </div>
           </div>
           <div class="fila-2">
@@ -1293,6 +1347,20 @@ body.vista-todo .pestanas-app{display:none}
               <option value="-0.25">Sin permisos</option>
             </select>
             <span class="ayuda">Operar sin licencia expone a clausura por el municipio: riesgo directo de mortalidad del negocio.</span>
+          </div>
+          <div class="campo">
+            <label for="extorsion">Riesgo de extorsión («cobro de piso») en la zona</label>
+            <select id="extorsion">
+              <option value="0" selected>Sin reportes conocidos</option>
+              <option value="-0.15">Reportes ocasionales en la zona</option>
+              <option value="-0.45">Cobro de piso activo en la zona</option>
+            </select>
+            <span class="ayuda">La extorsión es de los delitos más frecuentes contra negocios según la <a href="https://www.inegi.org.mx/programas/enve/2024/" target="_blank" rel="noopener">ENVE del INEGI</a>. Efecto en P: <span class="proc proc-supuesto">estimación del equipo</span>.</span>
+          </div>
+          <div class="campo">
+            <label for="cobroPiso">Pago mensual por extorsión (MXN/mes)</label>
+            <input type="number" id="cobroPiso" min="0" max="200000" step="500" value="0" inputmode="numeric">
+            <span class="ayuda">Si ya pagas o te exigen una cuota, súmala aquí: entra a los costos fijos y baja la utilidad y el punto de equilibrio. Denuncia anónima: 089.</span>
           </div>
         </div>
 
@@ -1637,7 +1705,16 @@ body.vista-todo .pestanas-app{display:none}
   <h2 class="titulo">Qué hacer para no perder: análisis FODA y plan de acción</h2>
   <div class="foda-intro">
     <p class="intro" data-ei="6">No basta con saber la probabilidad: hay que poder moverla. Este apartado lee tu escenario <strong>en vivo</strong>, lo clasifica en Fortalezas, Oportunidades, Debilidades y Amenazas, y construye un <strong>plan de acción priorizado</strong>. Cada estrategia muestra cuántos puntos de probabilidad ganarías —calculados volviendo a correr el modelo con esa mejora— y la evidencia real que la respalda.</p>
-    <figure class="foto-cita foto-escena foda-foto"><img src="assets/img/escenarios/san-rafael.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Vista aérea de San Rafael, Coacalco"><figcaption><span class="foto-titulo">Vista aérea de San Rafael, Coacalco</span> <a href="https://commons.wikimedia.org/wiki/File:San_Rafael,_Coacalco.jpg" target="_blank" rel="noopener">Sxmuelfernandez</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption></figure>
+    <div class="foda-balance" id="fodaBalance" aria-live="polite">
+      <p class="fb-titulo">Balance de tu escenario</p>
+      <div class="fb-cuadros">
+        <div class="fb-c fb-f"><span class="fb-n" id="fbF">—</span><span>Fortalezas</span></div>
+        <div class="fb-c fb-o"><span class="fb-n" id="fbO">—</span><span>Oportunidades</span></div>
+        <div class="fb-c fb-d"><span class="fb-n" id="fbD">—</span><span>Debilidades</span></div>
+        <div class="fb-c fb-a"><span class="fb-n" id="fbA">—</span><span>Amenazas</span></div>
+      </div>
+      <p class="fb-nota" id="fbNota">Calculando…</p>
+    </div>
     <div class="foda-resumen">
       Probabilidad actual
       <span class="gr" id="fodaP">—</span>
@@ -1740,7 +1817,15 @@ body.vista-todo .pestanas-app{display:none}
   <h2 class="titulo">Cómo leer tu resultado</h2>
   <div class="intro-flex">
     <p class="intro">Una probabilidad no es una sentencia: es una medida de riesgo bajo supuestos. Esta guía traduce los rangos del medidor a decisiones de inversión, en línea con los criterios de evaluación de la Jornada Académica.</p>
-    <figure class="foto-cita foto-escena ilustracion"><img src="assets/img/escenarios/plaza-coacalco.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Plaza Coacalco"><figcaption><span class="foto-titulo">Plaza Coacalco</span> <a href="https://commons.wikimedia.org/wiki/File:Plaza_Coacalco_(2022).jpg" target="_blank" rel="noopener">Tbhotch</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption></figure>
+    <section class="carrusel" id="carrusel" aria-roledescription="carrusel" aria-label="Fotos de distintas zonas de Coacalco">
+      <ul class="car-pista" id="carPista" tabindex="0" aria-live="off"><li class="car-slide" id="car-0" aria-roledescription="diapositiva" aria-label="1 de 10"><figure class="foto-cita foto-escena car-foto"><img src="assets/img/escenarios/plaza-coacalco.webp" width="1200" height="800" loading="eager" decoding="async" alt="Plaza Coacalco · Corredor Vía López Portillo"><figcaption><span class="foto-titulo">Plaza Coacalco · Corredor Vía López Portillo</span> <a href="https://commons.wikimedia.org/wiki/File:Plaza_Coacalco_(2022).jpg" target="_blank" rel="noopener">Tbhotch</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption></figure></li><li class="car-slide" id="car-1" aria-roledescription="diapositiva" aria-label="2 de 10"><figure class="foto-cita foto-escena car-foto"><img src="assets/img/escenarios/san-rafael.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Vista aérea de San Rafael · zona Potrero–San Rafael"><figcaption><span class="foto-titulo">Vista aérea de San Rafael · zona Potrero–San Rafael</span> <a href="https://commons.wikimedia.org/wiki/File:San_Rafael,_Coacalco.jpg" target="_blank" rel="noopener">Sxmuelfernandez</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption></figure></li><li class="car-slide" id="car-2" aria-roledescription="diapositiva" aria-label="3 de 10"><figure class="foto-cita foto-escena car-foto"><img src="assets/img/escenarios/valle.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Vista hacia el valle desde Puerta Coacalco · Sierra de Guadalupe"><figcaption><span class="foto-titulo">Vista hacia el valle desde Puerta Coacalco · Sierra de Guadalupe</span> <a href="https://commons.wikimedia.org/wiki/File:Puerta_Coacalco)Vista_hacia_el_valle_-_panoramio.jpg" target="_blank" rel="noopener">ArCaRa</a> · <a href="https://creativecommons.org/licenses/by/3.0" target="_blank" rel="noopener">CC BY 3.0</a></figcaption></figure></li><li class="car-slide" id="car-3" aria-roledescription="diapositiva" aria-label="4 de 10"><figure class="foto-cita foto-escena car-foto"><img src="assets/img/escenarios/iglesia-san-francisco.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Iglesia de San Francisco · Centro de Coacalco"><figcaption><span class="foto-titulo">Iglesia de San Francisco · Centro de Coacalco</span> <a href="https://commons.wikimedia.org/wiki/File:Iglesia_San_Francisco_Coacalco_Mexico.JPG" target="_blank" rel="noopener">ProtoplasmaKid</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption></figure></li><li class="car-slide" id="car-4" aria-roledescription="diapositiva" aria-label="5 de 10"><figure class="foto-cita foto-escena car-foto"><img src="assets/img/escenarios/iglesia-coacalco.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Iglesia en Coacalco"><figcaption><span class="foto-titulo">Iglesia en Coacalco</span> <a href="https://commons.wikimedia.org/wiki/File:Coacalco_Iglesia.jpg" target="_blank" rel="noopener">GenezisLr</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption></figure></li><li class="car-slide" id="car-5" aria-roledescription="diapositiva" aria-label="6 de 10"><figure class="foto-cita foto-escena car-foto"><img src="assets/img/escenarios/sierra.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Coacalco al pie de la Sierra de Guadalupe"><figcaption><span class="foto-titulo">Coacalco al pie de la Sierra de Guadalupe</span> <a href="https://commons.wikimedia.org/wiki/File:Coacalco_de_Berrioz%C3%A1bal.jpg" target="_blank" rel="noopener">Sxmuelfernandez</a> · <a href="https://creativecommons.org/licenses/by-sa/3.0" target="_blank" rel="noopener">CC BY-SA 3.0</a></figcaption></figure></li><li class="car-slide" id="car-6" aria-roledescription="diapositiva" aria-label="7 de 10"><figure class="foto-cita foto-escena car-foto"><img src="assets/img/escenarios/paraje-xolo.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Paraje Xolo · Sierra de Guadalupe"><figcaption><span class="foto-titulo">Paraje Xolo · Sierra de Guadalupe</span> <a href="https://commons.wikimedia.org/wiki/File:Paraje_%22Xolo%22_-_Coacalco_-_M%C3%A9xico_-_panoramio.jpg" target="_blank" rel="noopener">ArCaRa</a> · <a href="https://creativecommons.org/licenses/by/3.0" target="_blank" rel="noopener">CC BY 3.0</a></figcaption></figure></li><li class="car-slide" id="car-7" aria-roledescription="diapositiva" aria-label="8 de 10"><figure class="foto-cita foto-escena car-foto"><img src="assets/img/escenarios/atardecer.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Atardecer desde Puerta Coacalco"><figcaption><span class="foto-titulo">Atardecer desde Puerta Coacalco</span> <a href="https://commons.wikimedia.org/wiki/File:Aurora_en_%22Puerta_Coacalco%22_-_panoramio.jpg" target="_blank" rel="noopener">ArCaRa</a> · <a href="https://creativecommons.org/licenses/by/3.0" target="_blank" rel="noopener">CC BY 3.0</a></figcaption></figure></li><li class="car-slide" id="car-8" aria-roledescription="diapositiva" aria-label="9 de 10"><figure class="foto-cita foto-escena car-foto"><img src="assets/img/escenarios/la-btk.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Comercio de calle: La BTK, Coacalco"><figcaption><span class="foto-titulo">Comercio de calle: La BTK, Coacalco</span> <a href="https://commons.wikimedia.org/wiki/File:La_BTK_Coacalco.jpg" target="_blank" rel="noopener">Tbhotch</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption></figure></li><li class="car-slide" id="car-9" aria-roledescription="diapositiva" aria-label="10 de 10"><figure class="foto-cita foto-escena car-foto"><img src="assets/img/escenarios/etac.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Universidad ETAC, campus Coacalco"><figcaption><span class="foto-titulo">Universidad ETAC, campus Coacalco</span> <a href="https://commons.wikimedia.org/wiki/File:ETAC-_UNIVERSIDAD_CAMPUS_COACALCO._-_panoramio.jpg" target="_blank" rel="noopener">ArCaRa</a> · <a href="https://creativecommons.org/licenses/by/3.0" target="_blank" rel="noopener">CC BY 3.0</a></figcaption></figure></li></ul>
+      <div class="car-controles">
+        <button type="button" class="car-btn" id="carAnt" aria-label="Foto anterior">‹</button>
+        <div class="car-puntos"><button type="button" class="car-punto" data-i="0" aria-label="Ver foto 1: Plaza Coacalco · Corredor Vía López Portillo"></button><button type="button" class="car-punto" data-i="1" aria-label="Ver foto 2: Vista aérea de San Rafael · zona Potrero–San Rafael"></button><button type="button" class="car-punto" data-i="2" aria-label="Ver foto 3: Vista hacia el valle desde Puerta Coacalco · Sierra de Guadalupe"></button><button type="button" class="car-punto" data-i="3" aria-label="Ver foto 4: Iglesia de San Francisco · Centro de Coacalco"></button><button type="button" class="car-punto" data-i="4" aria-label="Ver foto 5: Iglesia en Coacalco"></button><button type="button" class="car-punto" data-i="5" aria-label="Ver foto 6: Coacalco al pie de la Sierra de Guadalupe"></button><button type="button" class="car-punto" data-i="6" aria-label="Ver foto 7: Paraje Xolo · Sierra de Guadalupe"></button><button type="button" class="car-punto" data-i="7" aria-label="Ver foto 8: Atardecer desde Puerta Coacalco"></button><button type="button" class="car-punto" data-i="8" aria-label="Ver foto 9: Comercio de calle: La BTK, Coacalco"></button><button type="button" class="car-punto" data-i="9" aria-label="Ver foto 10: Universidad ETAC, campus Coacalco"></button></div>
+        <button type="button" class="car-btn" id="carSig" aria-label="Foto siguiente">›</button>
+        <button type="button" class="car-btn car-pausa" id="carPausa" aria-pressed="false" aria-label="Pausar el carrusel">❚❚</button>
+      </div>
+    </section>
   </div>
 
   <div class="guia">
@@ -1767,6 +1852,7 @@ body.vista-todo .pestanas-app{display:none}
       <li><strong>Incertidumbre del Monte Carlo:</strong> σ de demanda mensual 22 %, de ticket 8 %, choque anual 15 % y costo variable ±2 pp, todos supuestos del equipo.</li>
       <li><strong>Datos por giro y zona:</strong> ticket, costo variable, demanda de referencia, afluencia y renta por m² son estimaciones propias, editables en el simulador.</li>
       <li><strong>Finanzas:</strong> antes de impuestos, sin depreciación, sin sueldo del dueño ni capital de trabajo; VPN a 3 años sin valor terminal.</li>
+      <li><strong>Extorsión y variables emocionales:</strong> el efecto del «cobro de piso», la resiliencia y la motivación en P es estimación del equipo; las cuatro son neutras por defecto. El pago de piso, si lo capturas, entra completo a los costos fijos.</li>
     </ul>
     <h3>Limitaciones y propuesta de mejora</h3>
     <p>Este es un modelo educativo: los coeficientes logísticos no provienen de una regresión ajustada con microdatos (que el INEGI no publica a nivel negocio), sino de una calibración documentada sobre las tablas de supervivencia oficiales. La mejora natural del proyecto es estimar los β con datos de panel de la Demografía de los Negocios del INEGI, incorporar la distribución de Poisson para llegadas de clientes en giros de bajo flujo y validar las rentas por zona con un muestreo de campo en el municipio. Ningún resultado de esta herramienta constituye asesoría financiera.</p>
@@ -1776,10 +1862,7 @@ body.vista-todo .pestanas-app{display:none}
 <section class="seccion" id="legal">
   <p class="folio">Sección 06 · Marco legal y referencias</p>
   <h2 class="titulo">Aviso legal</h2>
-  <div class="intro-flex">
-    <p class="intro">Este apartado protege los derechos de los autores del proyecto y delimita con claridad el alcance de la herramienta, conforme a la legislación mexicana aplicable. El uso del sitio implica la aceptación de estos términos.</p>
-    <figure class="foto-cita foto-escena ilustracion"><img src="assets/img/escenarios/valle.webp" width="1200" height="800" loading="lazy" decoding="async" alt="Vista hacia el valle desde Puerta Coacalco"><figcaption><span class="foto-titulo">Vista hacia el valle desde Puerta Coacalco</span> <a href="https://commons.wikimedia.org/wiki/File:Puerta_Coacalco)Vista_hacia_el_valle_-_panoramio.jpg" target="_blank" rel="noopener">ArCaRa</a> · <a href="https://creativecommons.org/licenses/by/3.0" target="_blank" rel="noopener">CC BY 3.0</a></figcaption></figure>
-  </div>
+  <p class="intro">Este apartado protege los derechos de los autores del proyecto y delimita con claridad el alcance de la herramienta, conforme a la legislación mexicana aplicable. El uso del sitio implica la aceptación de estos términos.</p>
 
   <div class="metodos">
     <article class="metodo" data-num="§1">
@@ -1796,7 +1879,12 @@ body.vista-todo .pestanas-app{display:none}
     </article>
     <article class="metodo" data-num="§4">
       <h3>Privacidad y datos personales</h3>
-      <p>Este sitio <strong>no recolecta, almacena ni transmite datos personales</strong>: no utiliza cookies propias, no tiene formularios de registro y todos los cálculos del simulador se ejecutan localmente en tu navegador, sin enviarse a servidor alguno. Al no existir tratamiento de datos personales, no se actualizan los supuestos de la <a href="https://www.diputados.gob.mx/LeyesBiblio/ref/lfpdppp.htm" target="_blank" rel="noopener">LFPDPPP</a>; los proveedores de mapas (OpenStreetMap, Esri) pueden registrar solicitudes técnicas de teselas conforme a sus propias políticas.</p>
+      <p>COATL <strong>no pide registro, no usa cookies propias ni analítica y no vende ni comparte datos</strong>. Los cálculos del simulador se hacen en tu navegador. Hay dos excepciones que debes conocer, en términos del artículo 14 de la <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFPDPPP.pdf" target="_blank" rel="noopener">Ley Federal de Protección de Datos Personales en Posesión de los Particulares</a> (nueva ley, DOF 20-03-2025; última reforma DOF 14-11-2025):</p>
+      <ul>
+        <li><strong>Asistente de IA y «Describe tu negocio».</strong> Cuando escribes una pregunta libre o una descripción, ese texto y un resumen del escenario (giro, zona, probabilidad, utilidad, clientes y ticket) se envían al intermediario de COATL en Vercel Inc. y de ahí a la API de Gemini de Google LLC, en Estados Unidos, solo para generar la respuesta. COATL no guarda la conversación y pide a Google no almacenarla (<code>store:false</code>); en el plan gratuito, Google puede usar el contenido conforme a sus términos. <strong>No escribas datos personales, de contacto ni de terceros.</strong> Las preguntas de los botones («¿Cómo voy?», etc.) se responden en tu navegador sin enviar nada.</li>
+        <li><strong>Mapas, fuentes y bibliotecas.</strong> Al cargar el mapa, las tipografías y las bibliotecas, tu navegador pide recursos a OpenStreetMap, Esri, Google Fonts y cdnjs (Cloudflare), que reciben tu dirección IP como en cualquier sitio web.</li>
+      </ul>
+      <p>Para dudas o para ejercer tus derechos (acceso, rectificación, cancelación u oposición) escribe en <a href="https://github.com/Maikolv/coatl/issues" target="_blank" rel="noopener">github.com/Maikolv/coatl/issues</a>. La autoridad en la materia es la Secretaría Anticorrupción y Buen Gobierno.</p>
       <p><strong>Archivos de empresas.</strong> Los archivos que cargues en la sección «Para empresas» se leen únicamente en tu navegador: no se envían a ningún servidor (la política de seguridad del sitio lo impide), no se guardan en el dispositivo y se eliminan al recargar la página o al pulsar «Borrar mis datos». COATL no tiene acceso a ellos. Si eliges un archivo de Excel, el navegador descarga el lector SheetJS desde cdnjs; esa descarga no incluye tus datos.</p>
       <p><strong>DENUE.</strong> Se publican solo conteos agregados del Directorio Estadístico Nacional de Unidades Económicas (INEGI), información pública; no se muestran nombres, direcciones ni contactos de los establecimientos.</p>
     </article>
@@ -1805,6 +1893,22 @@ body.vista-todo .pestanas-app{display:none}
       <p>Los datos estadísticos provienen de fuentes oficiales de libre uso citando la fuente (INEGI, IGECEM, CONEVAL). La cartografía es © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> bajo licencia ODbL; la imagen satelital es cortesía de Esri y sus proveedores. Bibliotecas: <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a> (BSD-2), <a href="https://www.chartjs.org/" target="_blank" rel="noopener">Chart.js</a> (MIT) y tipografías de <a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts</a> (SIL OFL). Cada recurso conserva su licencia original; su uso aquí no implica afiliación ni respaldo de sus titulares.</p>
     </article>
     <article class="metodo" data-num="§6">
+      <h3>Uso de inteligencia artificial</h3>
+      <p>Las respuestas del asistente las genera un modelo de lenguaje (Gemini) y pueden contener errores u omisiones. No sustituyen al simulador: las cifras válidas son las del motor estadístico de COATL. La IA tiene instrucciones fijas para responder solo sobre COATL, negocios y Coacalco, y un límite de uso para evitar abusos. La clave del servicio pertenece al proyecto y nunca llega a tu navegador.</p>
+    </article>
+    <article class="metodo" data-num="§7">
+      <h3>Variables sensibles: extorsión y estado emocional</h3>
+      <p>Las opciones sobre «cobro de piso», resiliencia y motivación son <strong>supuestos que tú eliges</strong>; COATL no recaba ni publica información sobre delitos ni sobre la salud de nadie. Sus efectos en la probabilidad son <em>estimaciones del equipo</em>. Si eres víctima de extorsión, denúncialo de forma anónima al <strong>089</strong>. Este simulador no es asesoría legal ni de seguridad.</p>
+    </article>
+    <article class="metodo" data-num="§8">
+      <h3>Accesibilidad</h3>
+      <p>El sitio se verifica automáticamente con criterios WCAG 2.1 nivel AA (axe-core) en computadora y teléfono, y puede usarse solo con teclado. Si encuentras una barrera, repórtala en el enlace de contacto para corregirla.</p>
+    </article>
+    <article class="metodo" data-num="§9">
+      <h3>Vigencia y cambios</h3>
+      <p>Aviso actualizado el 15 de noviembre de 2026. Los cambios se publican en esta misma página y quedan registrados en el historial público del repositorio.</p>
+    </article>
+    <article class="metodo" data-num="§10">
       <h3>Marco aplicable y jurisdicción</h3>
       <p>Este aviso se rige por las leyes de los Estados Unidos Mexicanos. Para cualquier controversia relacionada con la titularidad o el uso de esta obra, las partes se someten a los tribunales competentes del Estado de México, renunciando a cualquier otro fuero. Si alguna disposición de este aviso fuera declarada inválida, las restantes conservarán plena vigencia. Los autores podrán actualizar este aviso; la versión publicada en el sitio será la vigente. <em>Este apartado es informativo y no sustituye la asesoría de un abogado titulado.</em></p>
     </article>
@@ -2034,6 +2138,9 @@ function modeloLogistico(e){
     ["Permisos municipales", e.permZ||0],
     ["Modalidad de venta", e.modalZ||0],
     ["Horario extendido", e.horZ||0],
+    ["Riesgo de extorsión (cobro de piso)", e.extZ||0],
+    ["Resiliencia del emprendedor", e.resilZ||0],
+    ["Motivación para emprender", e.motivZ||0],
     ["Margen de seguridad financiero", msZ]
   ];
   const z=BETA0+contribs.reduce((s,c)=>s+c[1],0);
@@ -2215,11 +2322,12 @@ function leerEscenario(){
     compZ:+$("competencia").value, resZ:+$("reserva").value,
     modZ:+$("modeloNegocio").value||0, permZ:+$("permisos").value||0,
     modalZ:+$("modalidad").value||0, horZ:+$("horario").value||0,
+    extZ:+$("extorsion").value||0, resilZ:+$("resiliencia").value||0, motivZ:+$("motivacion").value||0,
     empleados:num("empleados"), costoEmpleado:num("costoEmpleado"),
     propio:$("local").value==="propio", superficie:num("superficie"),
     inversion:num("inversion"), credPct:num("credito")/100, tasa:num("tasa")/100,
     renta:num("renta"), ticket:Math.max(1,num("ticket")), cv:num("cvar")/100,
-    otrosFijos:num("otrosFijos")+(typeof sumaExtras==="function"?sumaExtras():0),
+    otrosFijos:num("otrosFijos")+num("cobroPiso")+(typeof sumaExtras==="function"?sumaExtras():0),   // la cuota de extorsión es un costo fijo más
     mu:Math.max(1,num("clientes")), diasSem:+$("dias").value||6,
     estacion:ESTACION[$("estacionalidad").value]||ESTACION.estable, r:num("descuento")/100,
     merma:num("merma")/100, mktGasto:num("mktGasto"),
@@ -2979,6 +3087,30 @@ function pintarExplorar(e,modelo,mc,S){
   pintarDemo(); pintarMapa25(); pintarSupervivencia(); pintarMeta(); pintarSuperficie(); pintarTraza();
 }
 
+/* ===== Carrusel de zonas de Coacalco (sección «Cómo leer tu resultado») =====
+   Desplazamiento nativo con scroll-snap (deslizar con el dedo), botones, puntos y flechas del teclado.
+   Avanza solo cada 6 s salvo con movimiento reducido; se pausa al pasar el cursor o enfocar, y tiene botón de pausa (WCAG 2.2.2). */
+(function carruselZonas(){
+  const pista=$("carPista"); if(!pista) return;
+  const slides=[...pista.children], puntos=[...document.querySelectorAll(".car-punto")];
+  let actual=0, pausado=matchMedia("(prefers-reduced-motion: reduce)").matches, encima=false;
+  const ir=i=>{ actual=(i+slides.length)%slides.length; pista.scrollTo({left:slides[actual].offsetLeft-pista.offsetLeft, behavior:pausado?"auto":"smooth"}); };
+  const marcar=i=>{ actual=i; puntos.forEach((p,k)=>p.setAttribute("aria-current",k===i?"true":"false")); };
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting&&e.intersectionRatio>.6) marcar(slides.indexOf(e.target)); }),{root:pista,threshold:[.6]});
+  slides.forEach(s=>obs.observe(s)); marcar(0);
+  $("carAnt").addEventListener("click",()=>ir(actual-1));
+  $("carSig").addEventListener("click",()=>ir(actual+1));
+  puntos.forEach(p=>p.addEventListener("click",()=>ir(+p.dataset.i)));
+  pista.addEventListener("keydown",ev=>{ if(ev.key==="ArrowRight"){ev.preventDefault();ir(actual+1);} if(ev.key==="ArrowLeft"){ev.preventDefault();ir(actual-1);} });
+  const btn=$("carPausa");
+  const pintarPausa=()=>{ btn.setAttribute("aria-pressed",String(pausado)); btn.textContent=pausado?"▶":"❚❚"; btn.setAttribute("aria-label",pausado?"Reanudar el carrusel":"Pausar el carrusel"); };
+  btn.addEventListener("click",()=>{ pausado=!pausado; pintarPausa(); }); pintarPausa();
+  const cont=$("carrusel");
+  ["mouseenter","focusin"].forEach(t=>cont.addEventListener(t,()=>encima=true));
+  ["mouseleave","focusout"].forEach(t=>cont.addEventListener(t,()=>encima=false));
+  setInterval(()=>{ if(!pausado&&!encima&&!document.hidden&&cont.offsetParent) ir(actual+1); },6000);
+})();
+
 /* ===== src/ui/denue.js ===== */
 /* ---------- 19. DENUE nacional (datos reales del INEGI, sincronizados) ----------
    Lee los agregados que genera scripts/denue_sync.py en data/denue/. Solo conteos.
@@ -3247,13 +3379,17 @@ async function catalogoSCIAN(){
   try{ DENUE.clases=await jsonDenue("clases.json"); }catch(_){ DENUE.clases=null; }
   return DENUE.clases;
 }
+function crearGiroScian(codigo,cat){
+  const clave="scian_"+codigo, base=plantillaDe(codigo);
+  if(!GIROS[clave]) GIROS[clave]=Object.assign({},GIROS[base],{n:cat[codigo]+" (SCIAN "+codigo+")", scian:codigo, base});
+  return clave;
+}
 async function usarActividad(codigo){
   const cat=await catalogoSCIAN(); if(!cat||!cat[codigo]) return false;
   const propio=Object.entries((DENUE.meta&&DENUE.meta.giros_scian)||{}).find(([,cs])=>cs.length===1&&cs[0]===codigo);
   if(propio){ $("giro").value=propio[0]; $("giro").dispatchEvent(new Event("change")); calcular(); return true; }
-  const base=plantillaDe(codigo), clave="scian_"+codigo;
-  if(!GIROS[clave]){
-    GIROS[clave]=Object.assign({},GIROS[base],{n:cat[codigo]+" (SCIAN "+codigo+")", scian:codigo, base});
+  const base=plantillaDe(codigo), clave=crearGiroScian(codigo,cat);
+  if(!$("giro").querySelector('option[value="'+clave+'"]')){   // no repetir si ya está en la lista de Coacalco
     const o=document.createElement("option"); o.value=clave; o.textContent="SCIAN "+codigo+" · "+cat[codigo];
     $("giroScianGrupo").appendChild(o);
   }
@@ -3314,6 +3450,24 @@ $("extrasAgregar").addEventListener("click",()=>{ agregarExtra("",0); actualizar
 $("extrasLista").addEventListener("input",()=>{ actualizarExtras(); });
 $("forma").addEventListener("reset",()=>{ $("extrasLista").innerHTML=""; actualizarExtras(); });
 $("giro").addEventListener("change",()=>pintarCompetenciaDenue());
+
+/* Todas las actividades que existen hoy en Coacalco (DENUE, municipio 15-020), ordenadas por número de negocios.
+   Se cargan cuando el navegador está libre; al elegir una, hereda la plantilla de su giro COATL más cercano. */
+(async function giroCoacalco(){
+  await new Promise(r=>(window.requestIdleCallback||setTimeout)(r,{timeout:2500}));
+  let mun, cat;
+  try{ [mun,cat]=await Promise.all([jsonDenue("coacalco.json"), catalogoSCIAN()]); }catch(_){ return; }
+  if(!mun||!cat) return;
+  const sel=$("giro"), grupo=document.createElement("optgroup");
+  const filas=Object.entries(mun.clases).filter(([c])=>cat[c]).sort((a,b)=>b[1]-a[1]);
+  grupo.label="Actividades presentes en Coacalco · "+filas.length+" (DENUE)"; grupo.id="giroCoacalcoGrupo";
+  grupo.innerHTML=filas.map(([c,n])=>'<option value="scian_'+c+'">'+esc(cat[c])+' · '+n.toLocaleString("es-MX")+(n===1?" negocio":" negocios")+'</option>').join("");
+  sel.insertBefore(grupo,$("giroScianGrupo"));
+  // Al elegir una, la entrada de GIROS se crea antes que los demás oyentes de «change» la lean.
+  sel.addEventListener("change",()=>{ const v=sel.value; if(v.startsWith("scian_")&&!GIROS[v]) crearGiroScian(v.slice(6),cat); },{capture:true});
+  sel.addEventListener("change",()=>{ const v=sel.value; if(v.startsWith("scian_")&&grupo.querySelector('option[value="'+v+'"]'))
+    $("giroNota").innerHTML="Actividad real en Coacalco (DENUE). Parámetros de referencia de <strong>"+esc(GIROS[GIROS[v].base].n)+"</strong> <span class=\"proc proc-supuesto\">estimación del equipo</span>; ajústalos en Finanzas y Operación."; });
+})();
 
 /* ===== src/ui/censo.js ===== */
 /* ---------- 24. Referencia censal por giro (INEGI, Censos Económicos 2019) ----------
@@ -3411,6 +3565,9 @@ function interpretarLocal(texto){
   if(/mucha competencia|muy competido|saturad/.test(t)){r.competencia="-0.20"; entendido.push("competencia alta");}
   else if(/poca competencia|sin competencia|no hay competencia/.test(t)){r.competencia="0.15"; entendido.push("competencia baja");}
   if(/informal|sin factura|sin registro/.test(t)){r.formalidad="-0.06"; entendido.push("operación informal");}
+  if(/cobro de piso|extorsi|me cobran cuota|derecho de piso/.test(t)){r.extorsion="-0.45"; entendido.push("riesgo de extorsión en la zona");}
+  if(/por necesidad|me quede sin (trabajo|empleo)|me corrieron|desemplead/.test(t)){r.motivacion="-0.10"; entendido.push("emprende por necesidad");}
+  if(/estres|agotad|cansad|ansiedad/.test(t)){r.resiliencia="-0.15"; entendido.push("desgaste emocional");}
   if(/redes sociales|facebook|instagram|tiktok|publicidad/.test(t)){r.marketing=/pauta|anuncio|publicidad pagada|whatsapp business/.test(t)?"0.12":"0.05"; entendido.push("marketing en redes");}
   const reserva=/(\d+)\s*meses? de (?:reserva|gastos|ahorro)/.exec(t);
   if(reserva){const m=+reserva[1]; r.reserva=m>12?"0.35":m>=6?"0.20":m>=3?"0":"-0.30"; entendido.push("reserva: "+m+" meses");}
@@ -3425,7 +3582,7 @@ function aplicarInterpretacion(r){
   fija("inversion",r.inversion!=null?Math.round(r.inversion/10000)*10000:null); fija("renta",r.renta!=null?Math.round(r.renta):null);
   fija("empleados",r.empleados); fija("costoEmpleado",r.costoEmpleado); fija("superficie",r.superficie);
   fija("credito",r.credito!=null?Math.round(r.credito/5)*5:null); fija("tasa",r.tasa);
-  ["experiencia","dias","local","competencia","formalidad","marketing","reserva"].forEach(k=>{ if(r[k]!=null&&[...$(k).options].some(o=>o.value===String(r[k]))) $(k).value=String(r[k]); });
+  ["experiencia","dias","local","competencia","formalidad","marketing","reserva","extorsion","motivacion","resiliencia"].forEach(k=>{ if(r[k]!=null&&[...$(k).options].some(o=>o.value===String(r[k]))) $(k).value=String(r[k]); });
   ["inversion","credito","cvar","merma"].forEach(id=>$(id).dispatchEvent(new Event("input")));
   calcular();
 }
@@ -3830,7 +3987,8 @@ function palancas(e, P0){
 
 function clasificarFODA(e, modelo){
   const INT={"Experiencia en el giro":1,"Reserva de capital":1,"Formalidad fiscal":1,"Marketing":1,
-    "Estructura de deuda":1,"Local propio":1,"Margen de seguridad financiero":1};
+    "Estructura de deuda":1,"Local propio":1,"Margen de seguridad financiero":1,
+    "Resiliencia del emprendedor":1,"Motivación para emprender":1};
   const F=[],O=[],D=[],A=[];
   modelo.contribs.forEach(([nom,beta])=>{
     const interno = Object.keys(INT).some(k=>nom.startsWith(k));
@@ -3899,6 +4057,11 @@ function pintarFODA(e, modelo, mc){
   const techo = L.length ? Math.max(P0, probDe(cTecho)) : P0;
   $("fodaP").textContent=(P0*100).toFixed(1)+"%";
   $("fodaTecho").textContent="potencial con el plan: "+(techo*100).toFixed(1)+"%";
+  // Balance FODA: cuántos factores hay en cada cuadrante y cuánto pesan (Σβ) los internos frente a los externos.
+  [["fbF",f.F],["fbO",f.O],["fbD",f.D],["fbA",f.A]].forEach(([id,l])=>{ $(id).textContent=l.length; });
+  const mayorA=[...f.A].sort((x,y)=>x[1]-y[1])[0], aFavor=f.F.length+f.O.length, enContra=f.D.length+f.A.length;
+  $("fbNota").innerHTML="Brecha al potencial: <strong>+"+((techo-P0)*100).toFixed(1)+" pts</strong> · factores a favor <strong>"+aFavor+"</strong> frente a <strong>"+enContra+"</strong> en contra. "+
+    (mayorA?"Amenaza principal: <strong>"+esc(mayorA[0])+"</strong>.":"Sin amenazas externas marcadas.");
 
   if(!L.length){
     $("acciones").innerHTML='<div class="accion"><div class="rank">✓</div><div class="cuerpo"><h3>Escenario muy sólido</h3><p class="que">El modelo no encuentra palancas con mejora significativa: tu configuración ya es robusta. Mantén la reserva de capital y vigila la competencia y la inflación.</p></div><div class="impacto"><div class="lift">—</div><div class="lift-k">sin brecha</div></div></div>';
@@ -3934,7 +4097,7 @@ function crearWorkerCalculo(){
   if(typeof Worker!=="function") return null;
   let url;
   try{
-    url=URL.createObjectURL(new Blob(["/* COATL · Datos de anclaje (giros, zonas, S0, estacionalidad). Sin DOM. */\n/* ---------- 1. Parámetros y datos de anclaje ---------- */\nconst GIROS = {\n  abarrotes:    {n:\"Abarrotes / minisúper\",                ticket:65,  cv:72, dem:120, z:-0.10},\n  tortilleria:  {n:\"Tortillería\",                          ticket:22,  cv:55, dem:260, z:-0.02},\n  carniceria:   {n:\"Carnicería / pollería\",                ticket:140, cv:68, dem:75,  z: 0.00},\n  fruteria:     {n:\"Frutería y verdulería\",                ticket:70,  cv:62, dem:95,  z:-0.05},\n  fonda:        {n:\"Fonda / cocina económica\",             ticket:85,  cv:45, dem:70,  z:-0.12},\n  taqueria:     {n:\"Taquería / antojitos\",                 ticket:95,  cv:40, dem:90,  z:-0.10},\n  restaurante:  {n:\"Restaurante\",                          ticket:180, cv:42, dem:55,  z:-0.15},\n  pizzeria:     {n:\"Pizzería\",                             ticket:160, cv:38, dem:45,  z:-0.10},\n  cafeteria:    {n:\"Cafetería\",                            ticket:95,  cv:38, dem:65,  z:-0.08},\n  jugueria:     {n:\"Juguería / licuados\",                  ticket:55,  cv:35, dem:70,  z:-0.06},\n  panaderia:    {n:\"Panadería\",                            ticket:40,  cv:45, dem:140, z:-0.02},\n  pasteleria:   {n:\"Pastelería / repostería\",              ticket:210, cv:38, dem:30,  z: 0.00},\n  papeleria:    {n:\"Papelería\",                            ticket:55,  cv:60, dem:80,  z:-0.10},\n  ciber:        {n:\"Ciber / impresiones\",                  ticket:35,  cv:25, dem:60,  z:-0.05},\n  farmacia:     {n:\"Farmacia\",                             ticket:160, cv:70, dem:90,  z: 0.05},\n  naturista:    {n:\"Tienda naturista / suplementos\",       ticket:170, cv:52, dem:30,  z: 0.03},\n  vinateria:    {n:\"Vinatería / licorería\",                ticket:180, cv:68, dem:55,  z: 0.02},\n  ropa:         {n:\"Ropa y calzado\",                       ticket:320, cv:55, dem:25,  z:-0.18},\n  joyeria:      {n:\"Joyería y bisutería\",                  ticket:350, cv:52, dem:10,  z:-0.08},\n  celulares:    {n:\"Celulares y accesorios\",               ticket:280, cv:55, dem:28,  z:-0.02},\n  tecnologia:   {n:\"Tecnología (venta y reparación)\",      ticket:380, cv:50, dem:18,  z: 0.10},\n  ferreteria:   {n:\"Ferretería / tlapalería\",              ticket:190, cv:62, dem:40,  z: 0.06},\n  refaccionaria:{n:\"Refaccionaria automotriz\",             ticket:260, cv:58, dem:22,  z: 0.08},\n  taller:       {n:\"Taller mecánico\",                      ticket:850, cv:40, dem:8,   z: 0.12},\n  autolavado:   {n:\"Autolavado\",                           ticket:120, cv:25, dem:28,  z: 0.04},\n  estetica:     {n:\"Estética / barbería\",                  ticket:130, cv:18, dem:28,  z: 0.08},\n  spa:          {n:\"Spa / salón de uñas\",                  ticket:260, cv:22, dem:18,  z: 0.06},\n  lavanderia:   {n:\"Lavandería\",                           ticket:90,  cv:30, dem:45,  z: 0.02},\n  gimnasio:     {n:\"Gimnasio (mensualidades)\",             ticket:480, cv:12, dem:12,  z: 0.05},\n  veterinaria:  {n:\"Veterinaria / estética canina\",        ticket:320, cv:30, dem:16,  z: 0.12},\n  dental:       {n:\"Consultorio dental\",                   ticket:750, cv:22, dem:7,   z: 0.22},\n  optica:       {n:\"Óptica\",                               ticket:950, cv:45, dem:7,   z: 0.10},\n  consultorio:  {n:\"Consultorio / despacho profesional\",   ticket:420, cv:15, dem:10,  z: 0.20},\n  educacion:    {n:\"Educación (regularización / idiomas)\", ticket:350, cv:20, dem:15,  z: 0.15},\n  floreria:     {n:\"Florería\",                             ticket:230, cv:45, dem:14,  z:-0.04}\n};\nconst ZONAS = {\n  corredor:  {n:\"Corredor Vía López Portillo\",                       afl:1.35, rm2:280, z: 0.30},\n  centro:    {n:\"San Francisco Coacalco (Centro)\",                   afl:1.15, rm2:170, z: 0.12},\n  flores:    {n:\"Villa de las Flores · Parque Res. · Bosques\",       afl:1.10, rm2:190, z: 0.15},\n  heroes:    {n:\"Los Héroes · Loma Bonita · V. de las Manzanas\",     afl:1.00, rm2:150, z: 0.04},\n  popular:   {n:\"El Potrero · San Rafael · El Olivo\",                afl:0.90, rm2:110, z:-0.10},\n  periferia: {n:\"Zonas habitacionales periféricas\",                  afl:0.78, rm2:90,  z:-0.18}\n};\n/* Supervivencia nacional S0(t), t = 0…10 años.\n   INEGI, Demografía de los Negocios 1989–2019, tabulado Nal_Tot_CE2019,\n   columna p(x), edades 0…9: S0(x+1) = p(x), redondeada a cuatro decimales.\n   https://www.inegi.org.mx/contenidos/programas/dn/2019/tabulados/Nal_Tot_CE2019.xlsx */\nconst S0 = [1, 0.6908, 0.4812, 0.4261, 0.3871, 0.3568, 0.3320, 0.3111, 0.2930, 0.2770, 0.2627];\n/* Intercepto calibrado: un escenario neutro reproduce S0(3) nacional → β₀ = logit(0.4261). */\nconst BETA0 = Math.log(S0[3]/(1-S0[3]));\nconst ESTACION = {\n  estable:   [1,1,1,1,1,1,1,1,1,1,1,1],\n  diciembre: [.95,.90,.95,.95,1,1,1,1,1,1.05,1.15,1.35],\n  verano:    [.95,.95,1,1,1.05,1.10,1.20,1.25,1.10,.95,.95,1]\n};\nconst N_SIM = 2000, SEMILLA = 20262;\n\n\n/* Supuestos de incertidumbre del Monte Carlo y del rango de P.\n   Son SUPUESTOS DEL EQUIPO (no estimados con datos); se documentan en\n   docs/METODOLOGIA.md y en la ficha «Supuestos y limitaciones». */\nconst INCERTIDUMBRE = {\n  demandaMensual: 0.22,  // DE relativa de clientes, independiente por mes\n  ticket:         0.08,  // DE relativa del ticket promedio, por mes\n  demandaAnual:   0.15,  // DE (log) del choque común del año\n  costoVariable:  0.02,  // DE absoluta del costo variable efectivo (2 pp)\n  betaRelativa:   0.30,  // DE relativa de cada β para el rango de P\n  intercepto:     0.15   // DE del intercepto para el rango de P\n};\n\n/* Fotos reales de cada zona: Wikimedia Commons (licencia libre). Recortadas, con contraste y\n   nitidez ajustados y convertidas a WebP; la cita se muestra junto a cada foto. */\nconst FOTOS_ZONAS = {\n \"corredor\": {\n  \"src\": \"assets/img/zonas/corredor.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Plaza_Coacalco._-_panoramio.jpg\"\n },\n \"centro\": {\n  \"src\": \"assets/img/zonas/centro.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:C%C3%BApula_octagonal-San_Francisco-Koakalko._-_panoramio.jpg\"\n },\n \"flores\": {\n  \"src\": \"assets/img/zonas/flores.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Jard%C3%ADn_Triangular_en_villa_de_las_flores_cuidado_con_amor_por_dos_entusiastas_mujeres_de_la_comunidad._-_panoramio.jpg\"\n },\n \"periferia\": {\n  \"src\": \"assets/img/zonas/periferia.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Ultima_Parcela_en_Coacalco._-_panoramio.jpg\"\n },\n \"heroes\": {\n  \"src\": \"assets/img/zonas/heroes.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Los_Heroes-Koakalko._-_panoramio.jpg\"\n },\n \"popular\": {\n  \"src\": \"assets/img/zonas/popular.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Andador_Luis_Donaldo_Colosio._-_panoramio.jpg\"\n }\n};\n\n/* COATL · Núcleo estadístico puro (sin DOM): probado en tests/. */\n/* ---------- 2. Utilidades numéricas ---------- */\nfunction mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}\nfunction gaussiana(rng){let u=0,v=0;while(u===0)u=rng();while(v===0)v=rng();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}\nconst sigmoide = z => 1/(1+Math.exp(-z));\nconst acota = (x,a,b)=>Math.min(b,Math.max(a,x));\n\nfunction derivar(e){\n  e.diasMes=e.diasSem*4.33;\n  e.cvEff=acota(e.cv+(e.merma||0),0.02,0.95);\n  e.rentaEf=e.propio?0:e.renta;\n  e.interesMes=e.inversion*e.credPct*e.tasa/12;\n  e.fijos=e.rentaEf + e.empleados*e.costoEmpleado + e.otrosFijos + (e.mktGasto||0) + e.interesMes;\n  e.ventasMes=e.mu*e.diasMes*e.ticket;\n  e.margenUnit=e.ticket*(1-e.cvEff);\n  e.utilMes=e.ventasMes*(1-e.cvEff)-e.fijos;\n  e.peClientesMes=e.margenUnit>0?e.fijos/e.margenUnit:Infinity;\n  e.peDia=e.peClientesMes/e.diasMes;\n  e.pePesos=(1-e.cvEff)>0?e.fijos/(1-e.cvEff):Infinity;\n  e.ms=e.ventasMes>0?(e.ventasMes-e.pePesos)/e.ventasMes:-1;\n  return e;\n}\n\n/* ---------- 6. Modelo logístico con contribuciones etiquetadas ---------- */\nfunction modeloLogistico(e){\n  const msZ = e.ms>=0.30?0.25 : e.ms>=0.15?0.10 : e.ms>=0?-0.10 : -0.50;\n  const deudaZ = e.credPct>=0.6?-0.20 : e.credPct>=0.3?-0.08 : e.credPct>0?0:0.05;\n  const contribs=[\n    [\"Giro (\"+e.giro.n+\")\", e.giro.z],\n    [\"Zona (\"+e.zona.n+\")\", e.zona.z],\n    [\"Experiencia en el giro\", e.expZ],\n    [\"Reserva de capital\", e.resZ],\n    [\"Competencia cercana\", e.compZ],\n    [\"Formalidad fiscal\", e.formZ],\n    [\"Marketing\", e.mktZ],\n    [\"Estructura de deuda\", deudaZ],\n    [\"Local propio\", e.propio?0.10:0],\n    [\"Modelo de negocio\", e.modZ||0],\n    [\"Permisos municipales\", e.permZ||0],\n    [\"Modalidad de venta\", e.modalZ||0],\n    [\"Horario extendido\", e.horZ||0],\n    [\"Margen de seguridad financiero\", msZ]\n  ];\n  const z=BETA0+contribs.reduce((s,c)=>s+c[1],0);\n  return {P:acota(sigmoide(z),0.04,0.93), z, contribs};\n}\n\n/* ---------- 7. Curva de supervivencia personalizada ---------- */\nfunction curvaSupervivencia(P){\n  const h=Math.log(P)/Math.log(S0[3]);\n  return S0.map((s,t)=>t===0?1:Math.pow(s,h));\n}\n\n/* ---------- 8. Monte Carlo (2,000 años simulados) ---------- */\nfunction monteCarlo(e){\n  /* Cada corrida = un año. Fuentes de variación (supuestos del equipo, ver\n     INCERTIDUMBRE en datos.js):\n     · choque anual común de demanda (lognormal de media 1): un \"mal año\" afecta\n       a los 12 meses a la vez, por lo que no se compensa al sumar;\n     · ruido mensual de clientes y de ticket (independiente por mes);\n     · ruido anual en el costo variable (proveedores, merma). */\n  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA), res=new Array(N_SIM);\n  for(let i=0;i\u003cN_SIM;i++){\n    const fAnual=Math.exp(gaussiana(rng)*U.demandaAnual - U.demandaAnual*U.demandaAnual/2);\n    const cvSim=acota(e.cvEff + gaussiana(rng)*U.costoVariable, 0.02, 0.98);\n    let total=0;\n    for(let m=0;m\u003c12;m++){\n      const rampa=Math.pow(1+(e.crec||0), m/12);\n      const muM=e.mu*e.estacion[m]*rampa*fAnual;\n      const cli=Math.max(0, muM + gaussiana(rng)*U.demandaMensual*muM);\n      const tk =Math.max(1, e.ticket + gaussiana(rng)*U.ticket*e.ticket);\n      total += cli*e.diasMes*tk*(1-cvSim) - e.fijos;\n    }\n    res[i]=total;\n  }\n  res.sort((a,b)=>a-b);\n  const media=res.reduce((s,x)=>s+x,0)/N_SIM;\n  const sd=Math.sqrt(res.reduce((s,x)=>s+(x-media)**2,0)/(N_SIM-1));\n  return {res, media, sd, p025:cuantil(res,.025), p05:cuantil(res,.05), p50:cuantil(res,.5),\n          p95:cuantil(res,.95), p975:cuantil(res,.975),\n          pPos:res.filter(x=>x>0).length/N_SIM};\n}\n\n/* Cuantil empírico con interpolación lineal (tipo 7 de Hyndman–Fan, el de R/NumPy). */\nfunction cuantil(ordenados,p){\n  const h=(ordenados.length-1)*p, lo=Math.floor(h), hi=Math.ceil(h);\n  return ordenados[lo]+(ordenados[hi]-ordenados[lo])*(h-lo);\n}\n\n/* ---------- 8-bis. Rango plausible de P (incertidumbre de los β) ----------\n   Los β son supuestos del equipo, no estimaciones con error estándar. Para no\n   presentar P como exacta, se perturba z: cada contribución βᵢ con DE relativa\n   de 30 % y el intercepto con DE 0.15, y se reportan P5–P95 de P.\n   Es un análisis de sensibilidad, NO un intervalo de confianza muestral. */\nfunction rangoP(modelo){\n  if(modelo._rangoP) return modelo._rangoP;   // memo: se consulta varias veces por recálculo\n  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA+1), n=1000, ps=new Array(n);\n  for(let i=0;i\u003cn;i++){\n    let z=BETA0+gaussiana(rng)*U.intercepto;\n    for(const c of modelo.contribs) z+=c[1]*(1+gaussiana(rng)*U.betaRelativa);\n    ps[i]=acota(sigmoide(z),0.04,0.93);\n  }\n  ps.sort((a,b)=>a-b);\n  return (modelo._rangoP={p05:cuantil(ps,.05), p50:cuantil(ps,.5), p95:cuantil(ps,.95)});\n}\n\n\n// El build incluye este código y el motor en el mismo Blob.\nself.onmessage = ({data: {id, e, modelo}}) => {\n  self.postMessage({id, mc: monteCarlo(e), rango: rangoP(modelo)});\n};\n"],{type:"text/javascript"}));
+    url=URL.createObjectURL(new Blob(["/* COATL · Datos de anclaje (giros, zonas, S0, estacionalidad). Sin DOM. */\n/* ---------- 1. Parámetros y datos de anclaje ---------- */\nconst GIROS = {\n  abarrotes:    {n:\"Abarrotes / minisúper\",                ticket:65,  cv:72, dem:120, z:-0.10},\n  tortilleria:  {n:\"Tortillería\",                          ticket:22,  cv:55, dem:260, z:-0.02},\n  carniceria:   {n:\"Carnicería / pollería\",                ticket:140, cv:68, dem:75,  z: 0.00},\n  fruteria:     {n:\"Frutería y verdulería\",                ticket:70,  cv:62, dem:95,  z:-0.05},\n  fonda:        {n:\"Fonda / cocina económica\",             ticket:85,  cv:45, dem:70,  z:-0.12},\n  taqueria:     {n:\"Taquería / antojitos\",                 ticket:95,  cv:40, dem:90,  z:-0.10},\n  restaurante:  {n:\"Restaurante\",                          ticket:180, cv:42, dem:55,  z:-0.15},\n  pizzeria:     {n:\"Pizzería\",                             ticket:160, cv:38, dem:45,  z:-0.10},\n  cafeteria:    {n:\"Cafetería\",                            ticket:95,  cv:38, dem:65,  z:-0.08},\n  jugueria:     {n:\"Juguería / licuados\",                  ticket:55,  cv:35, dem:70,  z:-0.06},\n  panaderia:    {n:\"Panadería\",                            ticket:40,  cv:45, dem:140, z:-0.02},\n  pasteleria:   {n:\"Pastelería / repostería\",              ticket:210, cv:38, dem:30,  z: 0.00},\n  papeleria:    {n:\"Papelería\",                            ticket:55,  cv:60, dem:80,  z:-0.10},\n  ciber:        {n:\"Ciber / impresiones\",                  ticket:35,  cv:25, dem:60,  z:-0.05},\n  farmacia:     {n:\"Farmacia\",                             ticket:160, cv:70, dem:90,  z: 0.05},\n  naturista:    {n:\"Tienda naturista / suplementos\",       ticket:170, cv:52, dem:30,  z: 0.03},\n  vinateria:    {n:\"Vinatería / licorería\",                ticket:180, cv:68, dem:55,  z: 0.02},\n  ropa:         {n:\"Ropa y calzado\",                       ticket:320, cv:55, dem:25,  z:-0.18},\n  joyeria:      {n:\"Joyería y bisutería\",                  ticket:350, cv:52, dem:10,  z:-0.08},\n  celulares:    {n:\"Celulares y accesorios\",               ticket:280, cv:55, dem:28,  z:-0.02},\n  tecnologia:   {n:\"Tecnología (venta y reparación)\",      ticket:380, cv:50, dem:18,  z: 0.10},\n  ferreteria:   {n:\"Ferretería / tlapalería\",              ticket:190, cv:62, dem:40,  z: 0.06},\n  refaccionaria:{n:\"Refaccionaria automotriz\",             ticket:260, cv:58, dem:22,  z: 0.08},\n  taller:       {n:\"Taller mecánico\",                      ticket:850, cv:40, dem:8,   z: 0.12},\n  autolavado:   {n:\"Autolavado\",                           ticket:120, cv:25, dem:28,  z: 0.04},\n  estetica:     {n:\"Estética / barbería\",                  ticket:130, cv:18, dem:28,  z: 0.08},\n  spa:          {n:\"Spa / salón de uñas\",                  ticket:260, cv:22, dem:18,  z: 0.06},\n  lavanderia:   {n:\"Lavandería\",                           ticket:90,  cv:30, dem:45,  z: 0.02},\n  gimnasio:     {n:\"Gimnasio (mensualidades)\",             ticket:480, cv:12, dem:12,  z: 0.05},\n  veterinaria:  {n:\"Veterinaria / estética canina\",        ticket:320, cv:30, dem:16,  z: 0.12},\n  dental:       {n:\"Consultorio dental\",                   ticket:750, cv:22, dem:7,   z: 0.22},\n  optica:       {n:\"Óptica\",                               ticket:950, cv:45, dem:7,   z: 0.10},\n  consultorio:  {n:\"Consultorio / despacho profesional\",   ticket:420, cv:15, dem:10,  z: 0.20},\n  educacion:    {n:\"Educación (regularización / idiomas)\", ticket:350, cv:20, dem:15,  z: 0.15},\n  floreria:     {n:\"Florería\",                             ticket:230, cv:45, dem:14,  z:-0.04}\n};\nconst ZONAS = {\n  corredor:  {n:\"Corredor Vía López Portillo\",                       afl:1.35, rm2:280, z: 0.30},\n  centro:    {n:\"San Francisco Coacalco (Centro)\",                   afl:1.15, rm2:170, z: 0.12},\n  flores:    {n:\"Villa de las Flores · Parque Res. · Bosques\",       afl:1.10, rm2:190, z: 0.15},\n  heroes:    {n:\"Los Héroes · Loma Bonita · V. de las Manzanas\",     afl:1.00, rm2:150, z: 0.04},\n  popular:   {n:\"El Potrero · San Rafael · El Olivo\",                afl:0.90, rm2:110, z:-0.10},\n  periferia: {n:\"Zonas habitacionales periféricas\",                  afl:0.78, rm2:90,  z:-0.18}\n};\n/* Supervivencia nacional S0(t), t = 0…10 años.\n   INEGI, Demografía de los Negocios 1989–2019, tabulado Nal_Tot_CE2019,\n   columna p(x), edades 0…9: S0(x+1) = p(x), redondeada a cuatro decimales.\n   https://www.inegi.org.mx/contenidos/programas/dn/2019/tabulados/Nal_Tot_CE2019.xlsx */\nconst S0 = [1, 0.6908, 0.4812, 0.4261, 0.3871, 0.3568, 0.3320, 0.3111, 0.2930, 0.2770, 0.2627];\n/* Intercepto calibrado: un escenario neutro reproduce S0(3) nacional → β₀ = logit(0.4261). */\nconst BETA0 = Math.log(S0[3]/(1-S0[3]));\nconst ESTACION = {\n  estable:   [1,1,1,1,1,1,1,1,1,1,1,1],\n  diciembre: [.95,.90,.95,.95,1,1,1,1,1,1.05,1.15,1.35],\n  verano:    [.95,.95,1,1,1.05,1.10,1.20,1.25,1.10,.95,.95,1]\n};\nconst N_SIM = 2000, SEMILLA = 20262;\n\n\n/* Supuestos de incertidumbre del Monte Carlo y del rango de P.\n   Son SUPUESTOS DEL EQUIPO (no estimados con datos); se documentan en\n   docs/METODOLOGIA.md y en la ficha «Supuestos y limitaciones». */\nconst INCERTIDUMBRE = {\n  demandaMensual: 0.22,  // DE relativa de clientes, independiente por mes\n  ticket:         0.08,  // DE relativa del ticket promedio, por mes\n  demandaAnual:   0.15,  // DE (log) del choque común del año\n  costoVariable:  0.02,  // DE absoluta del costo variable efectivo (2 pp)\n  betaRelativa:   0.30,  // DE relativa de cada β para el rango de P\n  intercepto:     0.15   // DE del intercepto para el rango de P\n};\n\n/* Fotos reales de cada zona: Wikimedia Commons (licencia libre). Recortadas, con contraste y\n   nitidez ajustados y convertidas a WebP; la cita se muestra junto a cada foto. */\nconst FOTOS_ZONAS = {\n \"corredor\": {\n  \"src\": \"assets/img/zonas/corredor.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Plaza_Coacalco._-_panoramio.jpg\"\n },\n \"centro\": {\n  \"src\": \"assets/img/zonas/centro.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:C%C3%BApula_octagonal-San_Francisco-Koakalko._-_panoramio.jpg\"\n },\n \"flores\": {\n  \"src\": \"assets/img/zonas/flores.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Jard%C3%ADn_Triangular_en_villa_de_las_flores_cuidado_con_amor_por_dos_entusiastas_mujeres_de_la_comunidad._-_panoramio.jpg\"\n },\n \"periferia\": {\n  \"src\": \"assets/img/zonas/periferia.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Ultima_Parcela_en_Coacalco._-_panoramio.jpg\"\n },\n \"heroes\": {\n  \"src\": \"assets/img/zonas/heroes.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Los_Heroes-Koakalko._-_panoramio.jpg\"\n },\n \"popular\": {\n  \"src\": \"assets/img/zonas/popular.webp\",\n  \"autor\": \"ArCaRa\",\n  \"licencia\": \"CC BY 3.0\",\n  \"licenciaUrl\": \"https://creativecommons.org/licenses/by/3.0\",\n  \"pagina\": \"https://commons.wikimedia.org/wiki/File:Andador_Luis_Donaldo_Colosio._-_panoramio.jpg\"\n }\n};\n\n/* COATL · Núcleo estadístico puro (sin DOM): probado en tests/. */\n/* ---------- 2. Utilidades numéricas ---------- */\nfunction mulberry32(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}\nfunction gaussiana(rng){let u=0,v=0;while(u===0)u=rng();while(v===0)v=rng();return Math.sqrt(-2*Math.log(u))*Math.cos(2*Math.PI*v)}\nconst sigmoide = z => 1/(1+Math.exp(-z));\nconst acota = (x,a,b)=>Math.min(b,Math.max(a,x));\n\nfunction derivar(e){\n  e.diasMes=e.diasSem*4.33;\n  e.cvEff=acota(e.cv+(e.merma||0),0.02,0.95);\n  e.rentaEf=e.propio?0:e.renta;\n  e.interesMes=e.inversion*e.credPct*e.tasa/12;\n  e.fijos=e.rentaEf + e.empleados*e.costoEmpleado + e.otrosFijos + (e.mktGasto||0) + e.interesMes;\n  e.ventasMes=e.mu*e.diasMes*e.ticket;\n  e.margenUnit=e.ticket*(1-e.cvEff);\n  e.utilMes=e.ventasMes*(1-e.cvEff)-e.fijos;\n  e.peClientesMes=e.margenUnit>0?e.fijos/e.margenUnit:Infinity;\n  e.peDia=e.peClientesMes/e.diasMes;\n  e.pePesos=(1-e.cvEff)>0?e.fijos/(1-e.cvEff):Infinity;\n  e.ms=e.ventasMes>0?(e.ventasMes-e.pePesos)/e.ventasMes:-1;\n  return e;\n}\n\n/* ---------- 6. Modelo logístico con contribuciones etiquetadas ---------- */\nfunction modeloLogistico(e){\n  const msZ = e.ms>=0.30?0.25 : e.ms>=0.15?0.10 : e.ms>=0?-0.10 : -0.50;\n  const deudaZ = e.credPct>=0.6?-0.20 : e.credPct>=0.3?-0.08 : e.credPct>0?0:0.05;\n  const contribs=[\n    [\"Giro (\"+e.giro.n+\")\", e.giro.z],\n    [\"Zona (\"+e.zona.n+\")\", e.zona.z],\n    [\"Experiencia en el giro\", e.expZ],\n    [\"Reserva de capital\", e.resZ],\n    [\"Competencia cercana\", e.compZ],\n    [\"Formalidad fiscal\", e.formZ],\n    [\"Marketing\", e.mktZ],\n    [\"Estructura de deuda\", deudaZ],\n    [\"Local propio\", e.propio?0.10:0],\n    [\"Modelo de negocio\", e.modZ||0],\n    [\"Permisos municipales\", e.permZ||0],\n    [\"Modalidad de venta\", e.modalZ||0],\n    [\"Horario extendido\", e.horZ||0],\n    [\"Riesgo de extorsión (cobro de piso)\", e.extZ||0],\n    [\"Resiliencia del emprendedor\", e.resilZ||0],\n    [\"Motivación para emprender\", e.motivZ||0],\n    [\"Margen de seguridad financiero\", msZ]\n  ];\n  const z=BETA0+contribs.reduce((s,c)=>s+c[1],0);\n  return {P:acota(sigmoide(z),0.04,0.93), z, contribs};\n}\n\n/* ---------- 7. Curva de supervivencia personalizada ---------- */\nfunction curvaSupervivencia(P){\n  const h=Math.log(P)/Math.log(S0[3]);\n  return S0.map((s,t)=>t===0?1:Math.pow(s,h));\n}\n\n/* ---------- 8. Monte Carlo (2,000 años simulados) ---------- */\nfunction monteCarlo(e){\n  /* Cada corrida = un año. Fuentes de variación (supuestos del equipo, ver\n     INCERTIDUMBRE en datos.js):\n     · choque anual común de demanda (lognormal de media 1): un \"mal año\" afecta\n       a los 12 meses a la vez, por lo que no se compensa al sumar;\n     · ruido mensual de clientes y de ticket (independiente por mes);\n     · ruido anual en el costo variable (proveedores, merma). */\n  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA), res=new Array(N_SIM);\n  for(let i=0;i\u003cN_SIM;i++){\n    const fAnual=Math.exp(gaussiana(rng)*U.demandaAnual - U.demandaAnual*U.demandaAnual/2);\n    const cvSim=acota(e.cvEff + gaussiana(rng)*U.costoVariable, 0.02, 0.98);\n    let total=0;\n    for(let m=0;m\u003c12;m++){\n      const rampa=Math.pow(1+(e.crec||0), m/12);\n      const muM=e.mu*e.estacion[m]*rampa*fAnual;\n      const cli=Math.max(0, muM + gaussiana(rng)*U.demandaMensual*muM);\n      const tk =Math.max(1, e.ticket + gaussiana(rng)*U.ticket*e.ticket);\n      total += cli*e.diasMes*tk*(1-cvSim) - e.fijos;\n    }\n    res[i]=total;\n  }\n  res.sort((a,b)=>a-b);\n  const media=res.reduce((s,x)=>s+x,0)/N_SIM;\n  const sd=Math.sqrt(res.reduce((s,x)=>s+(x-media)**2,0)/(N_SIM-1));\n  return {res, media, sd, p025:cuantil(res,.025), p05:cuantil(res,.05), p50:cuantil(res,.5),\n          p95:cuantil(res,.95), p975:cuantil(res,.975),\n          pPos:res.filter(x=>x>0).length/N_SIM};\n}\n\n/* Cuantil empírico con interpolación lineal (tipo 7 de Hyndman–Fan, el de R/NumPy). */\nfunction cuantil(ordenados,p){\n  const h=(ordenados.length-1)*p, lo=Math.floor(h), hi=Math.ceil(h);\n  return ordenados[lo]+(ordenados[hi]-ordenados[lo])*(h-lo);\n}\n\n/* ---------- 8-bis. Rango plausible de P (incertidumbre de los β) ----------\n   Los β son supuestos del equipo, no estimaciones con error estándar. Para no\n   presentar P como exacta, se perturba z: cada contribución βᵢ con DE relativa\n   de 30 % y el intercepto con DE 0.15, y se reportan P5–P95 de P.\n   Es un análisis de sensibilidad, NO un intervalo de confianza muestral. */\nfunction rangoP(modelo){\n  if(modelo._rangoP) return modelo._rangoP;   // memo: se consulta varias veces por recálculo\n  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA+1), n=1000, ps=new Array(n);\n  for(let i=0;i\u003cn;i++){\n    let z=BETA0+gaussiana(rng)*U.intercepto;\n    for(const c of modelo.contribs) z+=c[1]*(1+gaussiana(rng)*U.betaRelativa);\n    ps[i]=acota(sigmoide(z),0.04,0.93);\n  }\n  ps.sort((a,b)=>a-b);\n  return (modelo._rangoP={p05:cuantil(ps,.05), p50:cuantil(ps,.5), p95:cuantil(ps,.95)});\n}\n\n\n// El build incluye este código y el motor en el mismo Blob.\nself.onmessage = ({data: {id, e, modelo}}) => {\n  self.postMessage({id, mc: monteCarlo(e), rango: rangoP(modelo)});\n};\n"],{type:"text/javascript"}));
     const worker=new Worker(url);
     worker.onmessage=({data:{id,mc,rango}})=>{
       if(id===solicitudCalculo?.id) terminarCalculo(solicitudCalculo,mc,rango);

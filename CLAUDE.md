@@ -42,7 +42,7 @@ entregables/           Pitch PPTX y diagrama
 
 Funciones núcleo: `modeloLogistico`, `rangoP`, `monteCarlo`, `curvaSupervivencia`, `finanzas` (en `src/modelo/`); `palancas`, `clasificarFODA` (`src/ui/app.js`); `pintarKPIs` (`src/ui/resultados.js`).
 
-Alcance funcional: 35 giros de negocio, 32 variables en 4 pestañas, 6 zonas con polígonos de color en el mapa.
+Alcance funcional: 35 giros de negocio, 36 variables en 4 pestañas (incluye riesgo de extorsión, pago de piso, resiliencia y motivación; neutras por defecto), 6 zonas con polígonos de color en el mapa.
 
 ### Escenario de referencia (prueba de regresión) — v5 (S₀ oficial INEGI hasta el año 10)
 

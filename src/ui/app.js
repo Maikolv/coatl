@@ -142,7 +142,8 @@ function palancas(e, P0){
 
 function clasificarFODA(e, modelo){
   const INT={"Experiencia en el giro":1,"Reserva de capital":1,"Formalidad fiscal":1,"Marketing":1,
-    "Estructura de deuda":1,"Local propio":1,"Margen de seguridad financiero":1};
+    "Estructura de deuda":1,"Local propio":1,"Margen de seguridad financiero":1,
+    "Resiliencia del emprendedor":1,"Motivación para emprender":1};
   const F=[],O=[],D=[],A=[];
   modelo.contribs.forEach(([nom,beta])=>{
     const interno = Object.keys(INT).some(k=>nom.startsWith(k));
@@ -211,6 +212,11 @@ function pintarFODA(e, modelo, mc){
   const techo = L.length ? Math.max(P0, probDe(cTecho)) : P0;
   $("fodaP").textContent=(P0*100).toFixed(1)+"%";
   $("fodaTecho").textContent="potencial con el plan: "+(techo*100).toFixed(1)+"%";
+  // Balance FODA: cuántos factores hay en cada cuadrante y cuánto pesan (Σβ) los internos frente a los externos.
+  [["fbF",f.F],["fbO",f.O],["fbD",f.D],["fbA",f.A]].forEach(([id,l])=>{ $(id).textContent=l.length; });
+  const mayorA=[...f.A].sort((x,y)=>x[1]-y[1])[0], aFavor=f.F.length+f.O.length, enContra=f.D.length+f.A.length;
+  $("fbNota").innerHTML="Brecha al potencial: <strong>+"+((techo-P0)*100).toFixed(1)+" pts</strong> · factores a favor <strong>"+aFavor+"</strong> frente a <strong>"+enContra+"</strong> en contra. "+
+    (mayorA?"Amenaza principal: <strong>"+esc(mayorA[0])+"</strong>.":"Sin amenazas externas marcadas.");
 
   if(!L.length){
     $("acciones").innerHTML='<div class="accion"><div class="rank">✓</div><div class="cuerpo"><h3>Escenario muy sólido</h3><p class="que">El modelo no encuentra palancas con mejora significativa: tu configuración ya es robusta. Mantén la reserva de capital y vigila la competencia y la inflación.</p></div><div class="impacto"><div class="lift">—</div><div class="lift-k">sin brecha</div></div></div>';

@@ -18,7 +18,7 @@ if (process.argv.includes('--sitio')) {
     await p.waitForTimeout(2500);
     const alto = await p.evaluate(() => document.documentElement.scrollHeight);
     for (let y = 0; y < alto; y += 600) { await p.evaluate((v) => scrollTo(0, v), y); await p.waitForTimeout(250); }  // dispara gráficas y animaciones diferidas
-    await p.evaluate(() => { document.querySelectorAll('.revela').forEach((e) => e.classList.add('visible')); document.querySelector('.nav').style.position = 'static'; scrollTo(0, 0); });
+    await p.evaluate(() => { document.querySelectorAll('.revela').forEach((e) => e.classList.add('visible')); document.querySelector('.nav').style.position = 'static'; document.querySelectorAll('section').forEach((s) => { s.style.contentVisibility = 'visible'; });   /* content-visibility:auto deja vacías las secciones fuera de pantalla en capturas de página completa */ scrollTo(0, 0); });
     await p.waitForTimeout(1200);
     await p.screenshot({ path: 'docs/capturas/' + archivo + '.png', fullPage: true });
   }

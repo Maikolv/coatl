@@ -235,7 +235,7 @@
     <p class="folio">Sección 02 · El instrumento</p>
     <h2 class="titulo" style="color:#fff">Simulador de éxito y rentabilidad</h2>
     <div class="intro-flex">
-      <p class="intro">Configura las 32 variables del escenario en las cuatro pestañas: <strong style="color:#FFC9CF">el cálculo es en vivo</strong>, cada ajuste mueve al instante el medidor, las gráficas y el mapa de zonas. ¿Sin ideas? Lanza el dado de <strong style="color:#FFC9CF">🎲 Escenario sorpresa</strong>. El modelo devuelve la probabilidad (con un decimal, cálculo determinista y reproducible) de operar con rentabilidad al tercer año, la curva de supervivencia, la distribución de utilidades (Monte Carlo, 2,000 corridas) y los indicadores financieros del proyecto.</p>
+      <p class="intro">Configura las 36 variables del escenario en las cuatro pestañas: <strong style="color:#FFC9CF">el cálculo es en vivo</strong>, cada ajuste mueve al instante el medidor, las gráficas y el mapa de zonas. ¿Sin ideas? Lanza el dado de <strong style="color:#FFC9CF">🎲 Escenario sorpresa</strong>. El modelo devuelve la probabilidad (con un decimal, cálculo determinista y reproducible) de operar con rentabilidad al tercer año, la curva de supervivencia, la distribución de utilidades (Monte Carlo, 2,000 corridas) y los indicadores financieros del proyecto.</p>
       @@FOTO:la-era:ilustracion@@
     </div>
 
@@ -292,6 +292,26 @@
             <div class="campo">
               <label for="empleados">Empleados (además de ti)</label>
               <input type="number" id="empleados" min="0" max="50" step="1" value="1">
+            </div>
+          </div>
+          <div class="fila-2">
+            <div class="campo">
+              <label for="resiliencia">Resiliencia y manejo del estrés</label>
+              <select id="resiliencia">
+                <option value="0.10">Alta: red de apoyo y manejo del estrés</option>
+                <option value="0" selected>Media</option>
+                <option value="-0.15">Baja: agotamiento, sin red de apoyo</option>
+              </select>
+              <span class="ayuda">Variable emocional: el desgaste del dueño es causa frecuente de cierre en micronegocios. Efecto: <span class="proc proc-supuesto">estimación del equipo</span>.</span>
+            </div>
+            <div class="campo">
+              <label for="motivacion">Motivación para emprender</label>
+              <select id="motivacion">
+                <option value="0.08">Por oportunidad detectada</option>
+                <option value="0" selected>Mixta</option>
+                <option value="-0.10">Por necesidad (falta de empleo)</option>
+              </select>
+              <span class="ayuda">Los negocios abiertos por necesidad suelen tener menos capital y planeación. Efecto: <span class="proc proc-supuesto">estimación del equipo</span>.</span>
             </div>
           </div>
           <div class="fila-2">
@@ -361,6 +381,20 @@
               <option value="-0.25">Sin permisos</option>
             </select>
             <span class="ayuda">Operar sin licencia expone a clausura por el municipio: riesgo directo de mortalidad del negocio.</span>
+          </div>
+          <div class="campo">
+            <label for="extorsion">Riesgo de extorsión («cobro de piso») en la zona</label>
+            <select id="extorsion">
+              <option value="0" selected>Sin reportes conocidos</option>
+              <option value="-0.15">Reportes ocasionales en la zona</option>
+              <option value="-0.45">Cobro de piso activo en la zona</option>
+            </select>
+            <span class="ayuda">La extorsión es de los delitos más frecuentes contra negocios según la <a href="https://www.inegi.org.mx/programas/enve/2024/" target="_blank" rel="noopener">ENVE del INEGI</a>. Efecto en P: <span class="proc proc-supuesto">estimación del equipo</span>.</span>
+          </div>
+          <div class="campo">
+            <label for="cobroPiso">Pago mensual por extorsión (MXN/mes)</label>
+            <input type="number" id="cobroPiso" min="0" max="200000" step="500" value="0" inputmode="numeric">
+            <span class="ayuda">Si ya pagas o te exigen una cuota, súmala aquí: entra a los costos fijos y baja la utilidad y el punto de equilibrio. Denuncia anónima: 089.</span>
           </div>
         </div>
 
@@ -705,7 +739,16 @@
   <h2 class="titulo">Qué hacer para no perder: análisis FODA y plan de acción</h2>
   <div class="foda-intro">
     <p class="intro" style="margin-bottom:0">No basta con saber la probabilidad: hay que poder moverla. Este apartado lee tu escenario <strong>en vivo</strong>, lo clasifica en Fortalezas, Oportunidades, Debilidades y Amenazas, y construye un <strong>plan de acción priorizado</strong>. Cada estrategia muestra cuántos puntos de probabilidad ganarías —calculados volviendo a correr el modelo con esa mejora— y la evidencia real que la respalda.</p>
-    @@FOTO:san-rafael:foda-foto@@
+    <div class="foda-balance" id="fodaBalance" aria-live="polite">
+      <p class="fb-titulo">Balance de tu escenario</p>
+      <div class="fb-cuadros">
+        <div class="fb-c fb-f"><span class="fb-n" id="fbF">—</span><span>Fortalezas</span></div>
+        <div class="fb-c fb-o"><span class="fb-n" id="fbO">—</span><span>Oportunidades</span></div>
+        <div class="fb-c fb-d"><span class="fb-n" id="fbD">—</span><span>Debilidades</span></div>
+        <div class="fb-c fb-a"><span class="fb-n" id="fbA">—</span><span>Amenazas</span></div>
+      </div>
+      <p class="fb-nota" id="fbNota">Calculando…</p>
+    </div>
     <div class="foda-resumen">
       Probabilidad actual
       <span class="gr" id="fodaP">—</span>
@@ -808,7 +851,7 @@
   <h2 class="titulo">Cómo leer tu resultado</h2>
   <div class="intro-flex">
     <p class="intro">Una probabilidad no es una sentencia: es una medida de riesgo bajo supuestos. Esta guía traduce los rangos del medidor a decisiones de inversión, en línea con los criterios de evaluación de la Jornada Académica.</p>
-    @@FOTO:plaza-coacalco:ilustracion@@
+    @@CARRUSEL@@
   </div>
 
   <div class="guia">
@@ -835,6 +878,7 @@
       <li><strong>Incertidumbre del Monte Carlo:</strong> σ de demanda mensual 22 %, de ticket 8 %, choque anual 15 % y costo variable ±2 pp, todos supuestos del equipo.</li>
       <li><strong>Datos por giro y zona:</strong> ticket, costo variable, demanda de referencia, afluencia y renta por m² son estimaciones propias, editables en el simulador.</li>
       <li><strong>Finanzas:</strong> antes de impuestos, sin depreciación, sin sueldo del dueño ni capital de trabajo; VPN a 3 años sin valor terminal.</li>
+      <li><strong>Extorsión y variables emocionales:</strong> el efecto del «cobro de piso», la resiliencia y la motivación en P es estimación del equipo; las cuatro son neutras por defecto. El pago de piso, si lo capturas, entra completo a los costos fijos.</li>
     </ul>
     <h3>Limitaciones y propuesta de mejora</h3>
     <p>Este es un modelo educativo: los coeficientes logísticos no provienen de una regresión ajustada con microdatos (que el INEGI no publica a nivel negocio), sino de una calibración documentada sobre las tablas de supervivencia oficiales. La mejora natural del proyecto es estimar los β con datos de panel de la Demografía de los Negocios del INEGI, incorporar la distribución de Poisson para llegadas de clientes en giros de bajo flujo y validar las rentas por zona con un muestreo de campo en el municipio. Ningún resultado de esta herramienta constituye asesoría financiera.</p>
@@ -844,10 +888,7 @@
 <section class="seccion" id="legal">
   <p class="folio">Sección 06 · Marco legal y referencias</p>
   <h2 class="titulo">Aviso legal</h2>
-  <div class="intro-flex">
-    <p class="intro">Este apartado protege los derechos de los autores del proyecto y delimita con claridad el alcance de la herramienta, conforme a la legislación mexicana aplicable. El uso del sitio implica la aceptación de estos términos.</p>
-    @@FOTO:valle:ilustracion@@
-  </div>
+  <p class="intro">Este apartado protege los derechos de los autores del proyecto y delimita con claridad el alcance de la herramienta, conforme a la legislación mexicana aplicable. El uso del sitio implica la aceptación de estos términos.</p>
 
   <div class="metodos">
     <article class="metodo" data-num="§1">
@@ -864,7 +905,12 @@
     </article>
     <article class="metodo" data-num="§4">
       <h3>Privacidad y datos personales</h3>
-      <p>Este sitio <strong>no recolecta, almacena ni transmite datos personales</strong>: no utiliza cookies propias, no tiene formularios de registro y todos los cálculos del simulador se ejecutan localmente en tu navegador, sin enviarse a servidor alguno. Al no existir tratamiento de datos personales, no se actualizan los supuestos de la <a href="https://www.diputados.gob.mx/LeyesBiblio/ref/lfpdppp.htm" target="_blank" rel="noopener">LFPDPPP</a>; los proveedores de mapas (OpenStreetMap, Esri) pueden registrar solicitudes técnicas de teselas conforme a sus propias políticas.</p>
+      <p>COATL <strong>no pide registro, no usa cookies propias ni analítica y no vende ni comparte datos</strong>. Los cálculos del simulador se hacen en tu navegador. Hay dos excepciones que debes conocer, en términos del artículo 14 de la <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFPDPPP.pdf" target="_blank" rel="noopener">Ley Federal de Protección de Datos Personales en Posesión de los Particulares</a> (nueva ley, DOF 20-03-2025; última reforma DOF 14-11-2025):</p>
+      <ul>
+        <li><strong>Asistente de IA y «Describe tu negocio».</strong> Cuando escribes una pregunta libre o una descripción, ese texto y un resumen del escenario (giro, zona, probabilidad, utilidad, clientes y ticket) se envían al intermediario de COATL en Vercel Inc. y de ahí a la API de Gemini de Google LLC, en Estados Unidos, solo para generar la respuesta. COATL no guarda la conversación y pide a Google no almacenarla (<code>store:false</code>); en el plan gratuito, Google puede usar el contenido conforme a sus términos. <strong>No escribas datos personales, de contacto ni de terceros.</strong> Las preguntas de los botones («¿Cómo voy?», etc.) se responden en tu navegador sin enviar nada.</li>
+        <li><strong>Mapas, fuentes y bibliotecas.</strong> Al cargar el mapa, las tipografías y las bibliotecas, tu navegador pide recursos a OpenStreetMap, Esri, Google Fonts y cdnjs (Cloudflare), que reciben tu dirección IP como en cualquier sitio web.</li>
+      </ul>
+      <p>Para dudas o para ejercer tus derechos (acceso, rectificación, cancelación u oposición) escribe en <a href="https://github.com/Maikolv/coatl/issues" target="_blank" rel="noopener">github.com/Maikolv/coatl/issues</a>. La autoridad en la materia es la Secretaría Anticorrupción y Buen Gobierno.</p>
       <p><strong>Archivos de empresas.</strong> Los archivos que cargues en la sección «Para empresas» se leen únicamente en tu navegador: no se envían a ningún servidor (la política de seguridad del sitio lo impide), no se guardan en el dispositivo y se eliminan al recargar la página o al pulsar «Borrar mis datos». COATL no tiene acceso a ellos. Si eliges un archivo de Excel, el navegador descarga el lector SheetJS desde cdnjs; esa descarga no incluye tus datos.</p>
       <p><strong>DENUE.</strong> Se publican solo conteos agregados del Directorio Estadístico Nacional de Unidades Económicas (INEGI), información pública; no se muestran nombres, direcciones ni contactos de los establecimientos.</p>
     </article>
@@ -873,6 +919,22 @@
       <p>Los datos estadísticos provienen de fuentes oficiales de libre uso citando la fuente (INEGI, IGECEM, CONEVAL). La cartografía es © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> bajo licencia ODbL; la imagen satelital es cortesía de Esri y sus proveedores. Bibliotecas: <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a> (BSD-2), <a href="https://www.chartjs.org/" target="_blank" rel="noopener">Chart.js</a> (MIT) y tipografías de <a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts</a> (SIL OFL). Cada recurso conserva su licencia original; su uso aquí no implica afiliación ni respaldo de sus titulares.</p>
     </article>
     <article class="metodo" data-num="§6">
+      <h3>Uso de inteligencia artificial</h3>
+      <p>Las respuestas del asistente las genera un modelo de lenguaje (Gemini) y pueden contener errores u omisiones. No sustituyen al simulador: las cifras válidas son las del motor estadístico de COATL. La IA tiene instrucciones fijas para responder solo sobre COATL, negocios y Coacalco, y un límite de uso para evitar abusos. La clave del servicio pertenece al proyecto y nunca llega a tu navegador.</p>
+    </article>
+    <article class="metodo" data-num="§7">
+      <h3>Variables sensibles: extorsión y estado emocional</h3>
+      <p>Las opciones sobre «cobro de piso», resiliencia y motivación son <strong>supuestos que tú eliges</strong>; COATL no recaba ni publica información sobre delitos ni sobre la salud de nadie. Sus efectos en la probabilidad son <em>estimaciones del equipo</em>. Si eres víctima de extorsión, denúncialo de forma anónima al <strong>089</strong>. Este simulador no es asesoría legal ni de seguridad.</p>
+    </article>
+    <article class="metodo" data-num="§8">
+      <h3>Accesibilidad</h3>
+      <p>El sitio se verifica automáticamente con criterios WCAG 2.1 nivel AA (axe-core) en computadora y teléfono, y puede usarse solo con teclado. Si encuentras una barrera, repórtala en el enlace de contacto para corregirla.</p>
+    </article>
+    <article class="metodo" data-num="§9">
+      <h3>Vigencia y cambios</h3>
+      <p>Aviso actualizado el 15 de noviembre de 2026. Los cambios se publican en esta misma página y quedan registrados en el historial público del repositorio.</p>
+    </article>
+    <article class="metodo" data-num="§10">
       <h3>Marco aplicable y jurisdicción</h3>
       <p>Este aviso se rige por las leyes de los Estados Unidos Mexicanos. Para cualquier controversia relacionada con la titularidad o el uso de esta obra, las partes se someten a los tribunales competentes del Estado de México, renunciando a cualquier otro fuero. Si alguna disposición de este aviso fuera declarada inválida, las restantes conservarán plena vigencia. Los autores podrán actualizar este aviso; la versión publicada en el sitio será la vigente. <em>Este apartado es informativo y no sustituye la asesoría de un abogado titulado.</em></p>
     </article>

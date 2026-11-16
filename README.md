@@ -7,8 +7,6 @@ Simulador estadístico que estima la **probabilidad de que un negocio siga opera
 **Autores:** Miguel Antonio Cruz García · Bruno Alejandro López Bautista · Alonso Arroyo Cortés
 **Materia:** Probabilidad y Estadística · Mtra. Noemí Daniela Palacios Fermín · Jornada Académica Empresarial 2026
 
-![Inicio de COATL: página completa](docs/capturas/inicio.png)
-
 ## Qué hace
 
 | Bloque | Resultado |
@@ -24,43 +22,67 @@ Simulador estadístico que estima la **probabilidad de que un negocio siga opera
 | Para empresas | Carga confidencial de CSV/Excel: el análisis corre solo en el navegador, con bootstrap de los meses propios |
 | Herramientas | Comparar 3 escenarios, compartir por URL, exportar PNG/PDF, restablecer referencia |
 
-### Capturas completas por apartado
+## Capturas del proyecto
 
-Cada imagen es la página entera, sin cortes (`node scripts/capturas.mjs --sitio`).
+Única sección con imágenes. Cada captura es la página completa del sitio publicado, sin cortes (`node scripts/capturas.mjs --sitio`).
 
-<details><summary><b>Simulador</b> · página completa</summary>
+<details open><summary><b>Inicio</b></summary>
 
-![Simulador](docs/capturas/simulador.png)
+![Inicio](docs/capturas/inicio.png)
 
 </details>
 
-<details><summary><b>Territorio</b> · página completa</summary>
+<details><summary><b>Territorio</b></summary>
 
 ![Territorio](docs/capturas/territorio.png)
 
 </details>
 
-<details><summary><b>DENUE</b> · página completa</summary>
+<details><summary><b>Simulador</b></summary>
+
+![Simulador](docs/capturas/simulador.png)
+
+</details>
+
+<details><summary><b>Mapa real de zonas</b></summary>
+
+![Mapa real de zonas](docs/capturas/mapa.png)
+
+</details>
+
+<details><summary><b>Asistente con IA</b></summary>
+
+![Asistente con IA](docs/capturas/asistente.png)
+
+</details>
+
+<details><summary><b>DENUE</b></summary>
 
 ![DENUE](docs/capturas/denue.png)
 
 </details>
 
-<details><summary><b>Empresas</b> · página completa</summary>
+<details><summary><b>Empresas</b></summary>
 
 ![Empresas](docs/capturas/empresas.png)
 
 </details>
 
-<details><summary><b>Estrategia</b> · página completa</summary>
+<details><summary><b>Estrategia</b></summary>
 
 ![Estrategia](docs/capturas/estrategia.png)
 
 </details>
 
-<details><summary><b>Metodología</b> · página completa</summary>
+<details><summary><b>Metodología</b></summary>
 
 ![Metodología](docs/capturas/metodologia.png)
+
+</details>
+
+<details><summary><b>Diagrama de proceso (UML)</b></summary>
+
+![Diagrama de proceso (UML)](docs/diagrama-proceso.png)
 
 </details>
 
@@ -79,8 +101,6 @@ Cada imagen es la página entera, sin cortes (`node scripts/capturas.mjs --sitio
 
 - **Asistente siempre disponible** (botón 💬 en la esquina inferior derecha de todas las páginas): dice cómo vas, qué zona conviene y qué palancas suben tu probabilidad con el mismo motor; ajusta el simulador por texto o voz y te lleva a cualquier apartado. Responde preguntas libres con la **IA de COATL** (Gemini, con la clave del proyecto guardada en un intermediario de Vercel; el visitante no pone ninguna clave). Detalles en [docs/GEMINI.md](docs/GEMINI.md).
 - **Giros sin límite**: los 35 calibrados, las 989 actividades del SCIAN o cualquier nombre que escribas (giro propio con la plantilla más parecida, rotulada «estimación del equipo»).
-
-![Asistente](docs/capturas/asistente.png)
 
 - **Páginas por apartado**: Inicio, Territorio, DENUE, Simulador, Empresas, Estrategia, Metodología y Legal. Cada uno tiene su propia dirección (`#simulador`, `#denue`…), y `?vista=todo` muestra el sitio completo en una sola página.
 - **Describe tu situación**: escribe o dicta tu negocio y el simulador ajusta los parámetros. El intérprete local funciona sin conexión; Claude es opcional, con tu propia clave.
@@ -122,27 +142,93 @@ Los cambios frente a las versiones anteriores están en [docs/METODOLOGIA.md](do
 
 ## Capturas de la terminal
 
-Salida real de los comandos de verificación, sin editar; las generan `node scripts/capturas_terminal.mjs` al ejecutar cada comando. Las pruebas en navegador muestran solo su final.
+Salida real de los comandos de verificación, como texto (sin imágenes). La actualiza `node scripts/capturas_terminal.mjs` al ejecutar cada comando.
 
-**Construcción del sitio** · `npm run build`
+<!-- terminal:inicio -->
+_Generado el 2026-11-16._
 
-![Construcción del sitio](docs/capturas/terminal/1-build.png)
+<!-- t:build -->
+**Construcción del sitio** · `npm run build` · código de salida 0 · 2.4 s
 
-**Pruebas unitarias del modelo y del intermediario de IA** · `npm test`
+```text
+$ npm run build
 
-![Pruebas unitarias](docs/capturas/terminal/2-pruebas-unitarias.png)
+> coatl@2.0.0 build
+> node scripts/build.mjs
 
-**Validación cruzada del modelo en Python** · `python scripts/validar_modelo.py`
+index.html y dist/index.html generados (378,507 bytes)
+```
+<!-- /t:build -->
 
-![Validación en Python](docs/capturas/terminal/3-validador-python.png)
+<!-- t:unitarias -->
+**Pruebas unitarias del modelo y del intermediario de IA** · `npm test` · código de salida 0 · 3.7 s
 
-**Auditoría de dependencias** · `npm audit`
+```text
+$ npm test
+… (se muestran las últimas 12 líneas)
+✔ 35 giros y 6 zonas (1.5047ms)
+✔ los controles de modelo de negocio, permisos, modalidad y horario mueven P (neutros por defecto) (0.9936ms)
+✔ S0 coincide con la tabla oficial del INEGI 1989–2019 (t = 1…10) y β₀ reproduce S0(3) (0.7161ms)
+✔ cobro de piso y variables emocionales: neutras por defecto, con efecto al usarlas (1.7051ms)
+ℹ tests 16
+ℹ suites 0
+ℹ pass 16
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 2052.974
+```
+<!-- /t:unitarias -->
 
-![Auditoría de dependencias](docs/capturas/terminal/4-auditoria-dependencias.png)
+<!-- t:validador -->
+**Validación cruzada del modelo en Python** · `uv run --no-project python scripts/validar_modelo.py` · código de salida 0 · 1.1 s
 
-**Pruebas en navegador: computadora, teléfono y accesibilidad** · `npm run test:e2e`
+```text
+$ uv run --no-project python scripts/validar_modelo.py
+z=0.0622  margen de seguridad=0.6910  fijos=27000.00
+Monte Carlo: {'media': 757349.85, 'sd': 179398.86, 'p025': 449283.73, 'p05': 489097.41, 'p50': 744276.67, 'p95': 1072698.1, 'p975': 1149212.79, 'pPos': 1.0}
+S(t): [1, 0.7503, 0.5666, 0.5155, 0.4785, 0.4492, 0.4247, 0.4038, 0.3854, 0.369, 0.3541]
+OK  P        obtenido=0.5155  referencia=0.5155
+OK  util     obtenido=60,370.7400  referencia=60,371
+OK  roi      obtenido=3.0294  referencia=3.029
+OK  payback  obtenido=4.1411  referencia=4
+OK  vpn      obtenido=912,775.5843  referencia=912,776
+```
+<!-- /t:validador -->
 
-![Pruebas en navegador](docs/capturas/terminal/5-pruebas-navegador.png)
+<!-- t:auditoria -->
+**Auditoría de dependencias** · `npm audit` · código de salida 0 · 5.4 s
+
+```text
+$ npm audit
+found 0 vulnerabilities
+```
+<!-- /t:auditoria -->
+
+<!-- t:e2e -->
+**Pruebas en navegador (computadora, teléfono y accesibilidad)** · `npx playwright test --reporter=line` · código de salida 0 · 457.9 s
+
+```text
+$ npx playwright test --reporter=line
+… (se muestran las últimas 14 líneas)
+[151/162] [movil] › tests\e2e\recorrido.spec.js:7:1 › los seis widgets terminan en estado «listo» y sin errores
+[152/162] [movil] › tests\e2e\orientacion.spec.js:11:7 › teléfono horizontal pequeño › metodologia: sin desbordes ni elementos cortados
+[153/162] [movil] › tests\e2e\recorrido.spec.js:15:1 › el widget de inicio coincide con el motor y abre el simulador con su estado
+[154/162] [movil] › tests\e2e\orientacion.spec.js:11:7 › teléfono horizontal pequeño › legal: sin desbordes ni elementos cortados
+[155/162] [movil] › tests\e2e\orientacion.spec.js:38:1 › al girar el teléfono, la barra fija ocupa poco y la tira de pestañas se reacomoda
+[156/162] [movil] › tests\e2e\recorrido.spec.js:27:1 › mapa de zonas: la lista se navega con teclado y la ficha muestra la procedencia
+[157/162] [movil] › tests\e2e\recorrido.spec.js:40:1 › escenario vigente y restablecer referencia
+[158/162] [movil] › tests\e2e\recorrido.spec.js:51:1 › el Worker y el respaldo síncrono reproducen la misma simulación
+[159/162] [movil] › tests\e2e\recorrido.spec.js:74:1 › supervivencia por año y meta de Monte Carlo responden
+[160/162] [movil] › tests\e2e\recorrido.spec.js:83:1 › superficie: lectura exacta, teclado y vista plana
+[161/162] [movil] › tests\e2e\recorrido.spec.js:95:1 › trazabilidad: de un resultado a su fuente
+[162/162] [movil] › tests\e2e\recorrido.spec.js:106:3 › movimiento reducido › la superficie arranca en vista plana con la misma información
+  25 skipped
+  137 passed (7.6m)
+```
+<!-- /t:e2e -->
+<!-- terminal:fin -->
 
 ## Estructura
 
@@ -172,7 +258,6 @@ Se regeneran con `node scripts/documento_tecnico_docx.mjs`, `node scripts/video_
 
 Fichas con fórmulas en [docs/METODOLOGIA.md](docs/METODOLOGIA.md) y diagrama de actividad UML en [docs/diagrama-proceso.svg](docs/diagrama-proceso.svg).
 
-![Diagrama de proceso](docs/diagrama-proceso.png)
 
 **Limitaciones:**
 - Los β son supuestos del equipo, no estimaciones con microdatos.

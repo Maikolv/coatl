@@ -355,3 +355,37 @@ body.vista-todo .pestanas-app{display:none}
 /* Ranking de zonas: cada fila es un botón real (teclado y lector de pantalla), con el aspecto de antes */
 .ranking li > .rk-zona{all:unset;box-sizing:border-box;display:flex;align-items:center;gap:.7rem;width:100%;cursor:pointer}
 .ranking li:has(.rk-zona:focus-visible){outline:2px solid var(--rojo);outline-offset:2px}
+
+/* ===== v9: carrusel de zonas, balance FODA ===== */
+#lectura .intro-flex{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.1fr);gap:2rem;align-items:center}
+.carrusel{position:relative;min-width:0}
+.car-pista{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;margin:0;padding:0;list-style:none;border-radius:14px;
+  box-shadow:0 18px 40px -16px rgba(56,7,15,.45);scrollbar-width:none;outline-offset:4px}
+.car-pista::-webkit-scrollbar{display:none}
+.car-pista:focus-visible{outline:3px solid var(--rojo)}
+.car-slide{flex:0 0 100%;scroll-snap-align:start;margin:0}
+.car-foto{border-radius:0;box-shadow:none;aspect-ratio:3/2}
+.car-foto figcaption{font-size:.68rem}
+.car-foto .foto-titulo{font-size:.9rem}
+.car-controles{display:flex;align-items:center;justify-content:center;gap:.5rem;margin-top:.7rem;flex-wrap:wrap}
+.car-btn{border:1px solid var(--niebla-2);background:#fff;color:var(--granate);width:2.4rem;height:2.4rem;border-radius:50%;font-size:1.2rem;line-height:1;cursor:pointer}
+.car-btn:hover,.car-btn:focus-visible{background:var(--rojo);color:#fff;outline:none}
+.car-pausa{font-size:.8rem}
+.car-puntos{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:center}
+.car-punto{width:.7rem;height:.7rem;border-radius:50%;border:0;background:#E5CFCB;cursor:pointer;padding:0}
+.car-punto[aria-current="true"]{background:var(--rojo);transform:scale(1.25)}
+.car-punto:focus-visible{outline:2px solid var(--granate);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.car-pista{scroll-behavior:auto}}
+@media (max-width:980px){#lectura .intro-flex{grid-template-columns:minmax(0,1fr)}}
+/* Balance FODA en lugar de foto */
+.foda-balance{background:#fff;border:1px solid var(--niebla-2);border-radius:14px;padding:1rem 1.1rem;box-shadow:var(--sombra);align-self:stretch;display:flex;flex-direction:column;gap:.6rem}
+.fb-titulo{margin:0;font:700 .75rem var(--mono);letter-spacing:.12em;text-transform:uppercase;color:var(--rojo)}
+.fb-cuadros{display:grid;grid-template-columns:1fr 1fr;gap:.45rem}
+.fb-c{border-radius:10px;padding:.45rem .55rem;display:flex;flex-direction:column;font-size:.78rem;color:var(--tinta);border-left:4px solid}
+.fb-n{font:800 1.5rem/1 var(--display)}
+.fb-f{background:#EAF5EE;border-color:#1F7A4D}.fb-o{background:#EAF0FA;border-color:#2457A5}
+.fb-d{background:#FDF3E6;border-color:#8F5E12}.fb-a{background:#FBE9EB;border-color:var(--rojo)}
+.fb-nota{margin:0;font-size:.82rem;color:var(--gris-texto)}
+.foda-intro{align-items:stretch}
+.foda-intro > .intro{align-self:center}
+.foda-intro .foda-resumen{display:flex;flex-direction:column;justify-content:center}

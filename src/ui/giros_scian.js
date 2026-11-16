@@ -17,13 +17,17 @@ async function catalogoSCIAN(){
   try{ DENUE.clases=await jsonDenue("clases.json"); }catch(_){ DENUE.clases=null; }
   return DENUE.clases;
 }
+function crearGiroScian(codigo,cat){
+  const clave="scian_"+codigo, base=plantillaDe(codigo);
+  if(!GIROS[clave]) GIROS[clave]=Object.assign({},GIROS[base],{n:cat[codigo]+" (SCIAN "+codigo+")", scian:codigo, base});
+  return clave;
+}
 async function usarActividad(codigo){
   const cat=await catalogoSCIAN(); if(!cat||!cat[codigo]) return false;
   const propio=Object.entries((DENUE.meta&&DENUE.meta.giros_scian)||{}).find(([,cs])=>cs.length===1&&cs[0]===codigo);
   if(propio){ $("giro").value=propio[0]; $("giro").dispatchEvent(new Event("change")); calcular(); return true; }
-  const base=plantillaDe(codigo), clave="scian_"+codigo;
-  if(!GIROS[clave]){
-    GIROS[clave]=Object.assign({},GIROS[base],{n:cat[codigo]+" (SCIAN "+codigo+")", scian:codigo, base});
+  const base=plantillaDe(codigo), clave=crearGiroScian(codigo,cat);
+  if(!$("giro").querySelector('option[value="'+clave+'"]')){   // no repetir si ya está en la lista de Coacalco
     const o=document.createElement("option"); o.value=clave; o.textContent="SCIAN "+codigo+" · "+cat[codigo];
     $("giroScianGrupo").appendChild(o);
   }
@@ -84,3 +88,21 @@ $("extrasAgregar").addEventListener("click",()=>{ agregarExtra("",0); actualizar
 $("extrasLista").addEventListener("input",()=>{ actualizarExtras(); });
 $("forma").addEventListener("reset",()=>{ $("extrasLista").innerHTML=""; actualizarExtras(); });
 $("giro").addEventListener("change",()=>pintarCompetenciaDenue());
+
+/* Todas las actividades que existen hoy en Coacalco (DENUE, municipio 15-020), ordenadas por número de negocios.
+   Se cargan cuando el navegador está libre; al elegir una, hereda la plantilla de su giro COATL más cercano. */
+(async function giroCoacalco(){
+  await new Promise(r=>(window.requestIdleCallback||setTimeout)(r,{timeout:2500}));
+  let mun, cat;
+  try{ [mun,cat]=await Promise.all([jsonDenue("coacalco.json"), catalogoSCIAN()]); }catch(_){ return; }
+  if(!mun||!cat) return;
+  const sel=$("giro"), grupo=document.createElement("optgroup");
+  const filas=Object.entries(mun.clases).filter(([c])=>cat[c]).sort((a,b)=>b[1]-a[1]);
+  grupo.label="Actividades presentes en Coacalco · "+filas.length+" (DENUE)"; grupo.id="giroCoacalcoGrupo";
+  grupo.innerHTML=filas.map(([c,n])=>'<option value="scian_'+c+'">'+esc(cat[c])+' · '+n.toLocaleString("es-MX")+(n===1?" negocio":" negocios")+'</option>').join("");
+  sel.insertBefore(grupo,$("giroScianGrupo"));
+  // Al elegir una, la entrada de GIROS se crea antes que los demás oyentes de «change» la lean.
+  sel.addEventListener("change",()=>{ const v=sel.value; if(v.startsWith("scian_")&&!GIROS[v]) crearGiroScian(v.slice(6),cat); },{capture:true});
+  sel.addEventListener("change",()=>{ const v=sel.value; if(v.startsWith("scian_")&&grupo.querySelector('option[value="'+v+'"]'))
+    $("giroNota").innerHTML="Actividad real en Coacalco (DENUE). Parámetros de referencia de <strong>"+esc(GIROS[GIROS[v].base].n)+"</strong> <span class=\"proc proc-supuesto\">estimación del equipo</span>; ajústalos en Finanzas y Operación."; });
+})();

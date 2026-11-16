@@ -39,6 +39,9 @@ function modeloLogistico(e){
     ["Permisos municipales", e.permZ||0],
     ["Modalidad de venta", e.modalZ||0],
     ["Horario extendido", e.horZ||0],
+    ["Riesgo de extorsión (cobro de piso)", e.extZ||0],
+    ["Resiliencia del emprendedor", e.resilZ||0],
+    ["Motivación para emprender", e.motivZ||0],
     ["Margen de seguridad financiero", msZ]
   ];
   const z=BETA0+contribs.reduce((s,c)=>s+c[1],0);

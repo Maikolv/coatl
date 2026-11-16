@@ -278,3 +278,27 @@ function pintarExplorar(e,modelo,mc,S){
   if(document.activeElement!==$("demoClientes")) $("demoClientes").value=Math.round(e.muBase||e.mu);
   pintarDemo(); pintarMapa25(); pintarSupervivencia(); pintarMeta(); pintarSuperficie(); pintarTraza();
 }
+
+/* ===== Carrusel de zonas de Coacalco (sección «Cómo leer tu resultado») =====
+   Desplazamiento nativo con scroll-snap (deslizar con el dedo), botones, puntos y flechas del teclado.
+   Avanza solo cada 6 s salvo con movimiento reducido; se pausa al pasar el cursor o enfocar, y tiene botón de pausa (WCAG 2.2.2). */
+(function carruselZonas(){
+  const pista=$("carPista"); if(!pista) return;
+  const slides=[...pista.children], puntos=[...document.querySelectorAll(".car-punto")];
+  let actual=0, pausado=matchMedia("(prefers-reduced-motion: reduce)").matches, encima=false;
+  const ir=i=>{ actual=(i+slides.length)%slides.length; pista.scrollTo({left:slides[actual].offsetLeft-pista.offsetLeft, behavior:pausado?"auto":"smooth"}); };
+  const marcar=i=>{ actual=i; puntos.forEach((p,k)=>p.setAttribute("aria-current",k===i?"true":"false")); };
+  const obs=new IntersectionObserver(es=>es.forEach(e=>{ if(e.isIntersecting&&e.intersectionRatio>.6) marcar(slides.indexOf(e.target)); }),{root:pista,threshold:[.6]});
+  slides.forEach(s=>obs.observe(s)); marcar(0);
+  $("carAnt").addEventListener("click",()=>ir(actual-1));
+  $("carSig").addEventListener("click",()=>ir(actual+1));
+  puntos.forEach(p=>p.addEventListener("click",()=>ir(+p.dataset.i)));
+  pista.addEventListener("keydown",ev=>{ if(ev.key==="ArrowRight"){ev.preventDefault();ir(actual+1);} if(ev.key==="ArrowLeft"){ev.preventDefault();ir(actual-1);} });
+  const btn=$("carPausa");
+  const pintarPausa=()=>{ btn.setAttribute("aria-pressed",String(pausado)); btn.textContent=pausado?"▶":"❚❚"; btn.setAttribute("aria-label",pausado?"Reanudar el carrusel":"Pausar el carrusel"); };
+  btn.addEventListener("click",()=>{ pausado=!pausado; pintarPausa(); }); pintarPausa();
+  const cont=$("carrusel");
+  ["mouseenter","focusin"].forEach(t=>cont.addEventListener(t,()=>encima=true));
+  ["mouseleave","focusout"].forEach(t=>cont.addEventListener(t,()=>encima=false));
+  setInterval(()=>{ if(!pausado&&!encima&&!document.hidden&&cont.offsetParent) ir(actual+1); },6000);
+})();

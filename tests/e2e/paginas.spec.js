@@ -206,3 +206,56 @@ test('mapa real: límites oficiales de AGEB del INEGI', async ({ page }) => {
   await page.locator('#mapa').scrollIntoViewIfNeeded();   // el mapa real se carga al entrar en pantalla
   await expect(page.locator('#mapaReal path.leaflet-interactive')).toHaveCount(70, { timeout: 20000 });
 });
+
+test('v9: extorsión y variables emocionales cambian el resultado; el pago de piso baja la utilidad', async ({ page }) => {
+  await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
+  await expect(page.locator('#probNum')).toHaveText('51.6%');   // neutras por defecto
+  const util = page.locator('#kpis .kpi', { hasText: 'Utilidad mensual esperada' }).locator('.v');
+  await expect(util).toHaveText('$60,371');
+  await page.click('#t-ubicacion');
+  await page.selectOption('#extorsion', '-0.45');
+  await expect(page.locator('#probNum')).not.toHaveText('51.6%');
+  await page.selectOption('#extorsion', '0');
+  await expect(page.locator('#probNum')).toHaveText('51.6%');
+  await page.fill('#cobroPiso', '5000');
+  await page.locator('#cobroPiso').dispatchEvent('input');
+  await expect(util).toHaveText('$55,371');   // la cuota sale completa de la utilidad
+  await page.fill('#cobroPiso', '0'); await page.locator('#cobroPiso').dispatchEvent('input');
+  await page.click('#t-negocio');
+  await page.selectOption('#resiliencia', '-0.15');
+  await expect(page.locator('#probNum')).not.toHaveText('51.6%');
+});
+
+test('v9: la lista de giros incluye todas las actividades presentes en Coacalco (DENUE)', async ({ page }) => {
+  await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
+  const grupo = page.locator('#giroCoacalcoGrupo');
+  await expect(grupo).toHaveCount(1, { timeout: 15000 });
+  expect(await grupo.locator('option').count()).toBeGreaterThan(400);
+  const valor = await grupo.locator('option').first().getAttribute('value');   // la actividad con más negocios
+  await page.selectOption('#giro', valor);
+  await expect(page.locator('#giroNota')).toContainText('Actividad real en Coacalco');
+  await expect(page.locator('#probNum')).toHaveText(/%/);
+});
+
+test('v9: carrusel de zonas con botones, puntos y pausa; sin fotos en Estrategia ni en Aviso legal', async ({ page }) => {
+  await page.goto('/#metodologia', { waitUntil: 'domcontentloaded' });
+  const puntos = page.locator('.car-punto');
+  expect(await puntos.count()).toBeGreaterThanOrEqual(8);
+  await page.locator('#carrusel').scrollIntoViewIfNeeded();
+  await page.click('#carPausa');
+  await expect(page.locator('#carPausa')).toHaveAttribute('aria-pressed', 'true');
+  await page.click('#carSig');
+  await expect(puntos.nth(1)).toHaveAttribute('aria-current', 'true');
+  const fuentes = await page.locator('.car-slide img').evaluateAll((i) => i.map((x) => x.getAttribute('src')));
+  expect(new Set(fuentes).size).toBe(fuentes.length);
+  await expect(page.locator('#estrategia img')).toHaveCount(0);
+  await expect(page.locator('#legal img')).toHaveCount(0);
+  await expect(page.locator('#fodaBalance')).toBeAttached();
+});
+
+test('v9: ninguna foto del sitio se repite y todas cargan', async ({ page }) => {
+  await page.goto('/?vista=todo', { waitUntil: 'load' });
+  const fotos = await page.locator('img[src*="assets/img/"]').evaluateAll((i) => i.map((x) => x.getAttribute('src')));
+  expect(new Set(fotos).size).toBe(fotos.length);
+  for (const f of new Set(fotos)) expect((await page.request.get(f)).status(), f).toBe(200);
+});

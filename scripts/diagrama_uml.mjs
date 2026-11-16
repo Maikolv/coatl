@@ -47,7 +47,7 @@ const lado = (a, b, g, o) => { const A = nodos[a], B = nodos[b]; const y = (A.ar
 inicio('ini', 0, Y0 + 40);
 rombo('url', 0, Y0 + 80, '¿#e= en URL?');
 accion('cargarURL', 0, Y0 + 190, ['Cargar escenario', 'compartido (decodifica', 'y valida cada campo)']);
-accion('captura', 0, Y0 + 300, ['Capturar 32 variables', 'giro · zona · local · deuda', 'ticket · CV · merma · μ', 'g · π · r · estacionalidad']);
+accion('captura', 0, Y0 + 300, ['Capturar 36 variables', 'giro · zona · local · deuda', 'ticket · CV · merma · μ', 'g · π · r · estacionalidad']);
 // ---- Carril 2: Determinista ----
 accion('derivar', 1, Y0 + 300, ['derivar()', 'cv′ = cv + merma', 'CF = renta+nómina+otros', '     +mkt+I₀·d·i/12'], { formula: true });
 accion('pe', 1, Y0 + 430, ['Punto de equilibrio', 'PE = CF / (t̄·(1−cv′))', 'MS = (V − PE$) / V'], { formula: true });

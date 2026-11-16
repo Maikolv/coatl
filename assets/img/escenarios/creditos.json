@@ -45,8 +45,8 @@
   "src": "assets/img/escenarios/cafeteria.webp"
  },
  "plaza-coacalco": {
-  "titulo": "Plaza Coacalco",
-  "uso": "Metodología · cómo leer tu resultado",
+  "titulo": "Plaza Coacalco · Corredor Vía López Portillo",
+  "uso": "Carrusel · Cómo leer tu resultado",
   "autor": "Tbhotch",
   "licencia": "CC BY-SA 4.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -72,8 +72,8 @@
   "src": "assets/img/escenarios/plaza-flores.webp"
  },
  "san-rafael": {
-  "titulo": "Vista aérea de San Rafael, Coacalco",
-  "uso": "Estrategia · plan de acción",
+  "titulo": "Vista aérea de San Rafael · zona Potrero–San Rafael",
+  "uso": "Carrusel · Cómo leer tu resultado",
   "autor": "Sxmuelfernandez",
   "licencia": "CC BY-SA 4.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
@@ -90,12 +90,75 @@
   "src": "assets/img/escenarios/la-era.webp"
  },
  "valle": {
-  "titulo": "Vista hacia el valle desde Puerta Coacalco",
-  "uso": "Aviso legal",
+  "titulo": "Vista hacia el valle desde Puerta Coacalco · Sierra de Guadalupe",
+  "uso": "Carrusel · Cómo leer tu resultado",
   "autor": "ArCaRa",
   "licencia": "CC BY 3.0",
   "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
   "pagina": "https://commons.wikimedia.org/wiki/File:Puerta_Coacalco)Vista_hacia_el_valle_-_panoramio.jpg",
   "src": "assets/img/escenarios/valle.webp"
+ },
+ "iglesia-san-francisco": {
+  "titulo": "Iglesia de San Francisco · Centro de Coacalco",
+  "uso": "Carrusel · Cómo leer tu resultado",
+  "autor": "ProtoplasmaKid",
+  "licencia": "CC BY-SA 4.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Iglesia_San_Francisco_Coacalco_Mexico.JPG",
+  "src": "assets/img/escenarios/iglesia-san-francisco.webp"
+ },
+ "iglesia-coacalco": {
+  "titulo": "Iglesia en Coacalco",
+  "uso": "Carrusel · Cómo leer tu resultado",
+  "autor": "GenezisLr",
+  "licencia": "CC BY-SA 4.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Coacalco_Iglesia.jpg",
+  "src": "assets/img/escenarios/iglesia-coacalco.webp"
+ },
+ "sierra": {
+  "titulo": "Coacalco al pie de la Sierra de Guadalupe",
+  "uso": "Carrusel · Cómo leer tu resultado",
+  "autor": "Sxmuelfernandez",
+  "licencia": "CC BY-SA 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by-sa/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Coacalco_de_Berrioz%C3%A1bal.jpg",
+  "src": "assets/img/escenarios/sierra.webp"
+ },
+ "paraje-xolo": {
+  "titulo": "Paraje Xolo · Sierra de Guadalupe",
+  "uso": "Carrusel · Cómo leer tu resultado",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Paraje_%22Xolo%22_-_Coacalco_-_M%C3%A9xico_-_panoramio.jpg",
+  "src": "assets/img/escenarios/paraje-xolo.webp"
+ },
+ "atardecer": {
+  "titulo": "Atardecer desde Puerta Coacalco",
+  "uso": "Carrusel · Cómo leer tu resultado",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:Aurora_en_%22Puerta_Coacalco%22_-_panoramio.jpg",
+  "src": "assets/img/escenarios/atardecer.webp"
+ },
+ "la-btk": {
+  "titulo": "Comercio de calle: La BTK, Coacalco",
+  "uso": "Carrusel · Cómo leer tu resultado",
+  "autor": "Tbhotch",
+  "licencia": "CC BY-SA 4.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by-sa/4.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:La_BTK_Coacalco.jpg",
+  "src": "assets/img/escenarios/la-btk.webp"
+ },
+ "etac": {
+  "titulo": "Universidad ETAC, campus Coacalco",
+  "uso": "Carrusel · Cómo leer tu resultado",
+  "autor": "ArCaRa",
+  "licencia": "CC BY 3.0",
+  "licenciaUrl": "https://creativecommons.org/licenses/by/3.0",
+  "pagina": "https://commons.wikimedia.org/wiki/File:ETAC-_UNIVERSIDAD_CAMPUS_COACALCO._-_panoramio.jpg",
+  "src": "assets/img/escenarios/etac.webp"
  }
 }

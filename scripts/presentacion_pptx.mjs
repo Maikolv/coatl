@@ -84,7 +84,7 @@ function imagen(s, ruta, x, y, wMax, hMax) {
   const s = lamina('COATL: un simulador estadístico del territorio', '02 · LA HERRAMIENTA');
   imagen(s, 'docs/capturas/inicio.png', 0.6, 1.8, 6.6, 4.9);
   vinetas(s, [
-    '35 giros de negocio, 6 zonas del municipio y 32 variables en 4 pestañas.',
+    '35 giros de negocio, 6 zonas del municipio y 36 variables en 4 pestañas.',
     'Resultado en vivo: probabilidad, rango plausible, utilidad, equilibrio, ROI, payback y VPN.',
     'Mapa real de zonas, FODA cuantificado y plan de acción.',
     'Comparar escenarios, compartir por enlace y exportar a PDF.',

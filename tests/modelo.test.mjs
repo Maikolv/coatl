@@ -97,3 +97,14 @@ test('S0 coincide con la tabla oficial del INEGI 1989–2019 (t = 1…10) y β�
   assert.deepEqual(Array.from(M.S0), [1, ...p.map(px => Number(px.toFixed(4)))]);
   cerca(1 / (1 + Math.exp(-M.BETA0)), M.S0[3], 1e-12, 'sigmoide(β₀)');
 });
+
+// v9: variables de extorsión y emocionales. Neutras por defecto (no mueven la referencia) y con efecto cuando se usan.
+test('cobro de piso y variables emocionales: neutras por defecto, con efecto al usarlas', () => {
+  const base = escenarioReferencia(M), P0 = M.modeloLogistico(base).P;
+  cerca(M.modeloLogistico(escenarioReferencia(M, { extZ: 0, resilZ: 0, motivZ: 0 })).P, P0, 1e-12, 'neutras');
+  assert.ok(M.modeloLogistico(escenarioReferencia(M, { extZ: -0.45 })).P < P0, 'la extorsión baja P');
+  assert.ok(M.modeloLogistico(escenarioReferencia(M, { resilZ: -0.15, motivZ: -0.10 })).P < P0, 'desgaste y necesidad bajan P');
+  const conPiso = escenarioReferencia(M, { otrosFijos: 6000 + 5000 });   // cuota de 5,000 al mes
+  cerca(base.utilMes - conPiso.utilMes, 5000, 1, 'la cuota sale completa de la utilidad');
+  assert.ok(conPiso.peDia > base.peDia, 'el punto de equilibrio sube');
+});
