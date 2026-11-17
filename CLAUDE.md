@@ -44,19 +44,19 @@ Funciones núcleo: `modeloLogistico`, `rangoP`, `monteCarlo`, `curvaSupervivenci
 
 Alcance funcional: 35 giros de negocio, 36 variables en 4 pestañas (incluye riesgo de extorsión, pago de piso, resiliencia y motivación; neutras por defecto), 6 zonas con polígonos de color en el mapa.
 
-### Escenario de referencia (prueba de regresión) — v15 (S₀ oficial INEGI, β de giro y zona con el DENUE, formalidad con la ENOE)
+### Escenario de referencia (prueba de regresión) — v16 (S₀ oficial INEGI, β de giro y zona del DENUE recalibrados, formalidad con la ENOE)
 
 **Cafetería · Los Héroes** (valores por defecto: ticket 95, CV 38 %) debe dar:
 
 | Métrica | Valor |
 |---|---|
-| P(supervivencia 3 años) | 38.0 % (rango plausible 30.3–46.3 %) |
+| P(supervivencia 3 años) | 40.9 % (rango plausible 33.4–48.9 %) |
 | Utilidad mensual | ≈ $60,371 |
 | ROI | 302.9 % |
 | Payback | 4 meses (4.1) |
-| VPN | $686,989 |
+| VPN | $736,085 |
 
-v1 (55.0 %, $41,899, 212.6 %, 6, $601,442) y v2 (55.0 %, $60,371, 302.9 %, 4, $970,106) usaban una S₀(t) aproximada y β₀ = −0.16; v3–v12 (51.6 %, rango 44.1–58.2 %, VPN $912,776) usaban β de giro y zona supuestos por el equipo; ver docs/METODOLOGIA.md y docs/VERIFICACION_DATOS.md. Lo vigilan `tests/modelo.test.mjs`, `scripts/validar_modelo.py` y la e2e. Cualquier cambio en el modelo debe reproducir estos números o documentar explícitamente por qué cambian.
+v1 (55.0 %, $41,899, 212.6 %, 6, $601,442) y v2 (55.0 %, $60,371, 302.9 %, 4, $970,106) usaban una S₀(t) aproximada y β₀ = −0.16; v3–v12 (51.6 %, rango 44.1–58.2 %, VPN $912,776) usaban β de giro y zona supuestos por el equipo; v13–v14 (38.0 %, rango 30.6–46.6 %, VPN $686,989) y v15 (38.0 %, rango 30.3–46.3 %) usaban los β del DENUE sin recalibrar; ver docs/METODOLOGIA.md y docs/VERIFICACION_DATOS.md. Lo vigilan `tests/modelo.test.mjs`, `scripts/validar_modelo.py` y la e2e. Cualquier cambio en el modelo debe reproducir estos números o documentar explícitamente por qué cambian.
 
 ## Identidad visual (FIJA)
 
@@ -180,3 +180,9 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - Palancas: `FACTOR_PLAN = 0.5`, `efectoPlan`, `pPlan` y `evidenciaPalanca` en app.js; úsalos siempre en lugar de `probDe(aplicarPalancas(...))`. Plan por etapas: `etapasPlan(e, mc)` (#wEtapas y PDF del plan).
 - Cifras de estimaciones en `src/index.html`: usa `@@DATO:carpeta/archivo:ruta[:pct|n]@@` (lee `data/carpeta/archivo.json`); el build falla si la ruta no existe.
 - Nunca prometas éxito ni «99 %»: el plan acota la pérdida; no garantiza la supervivencia.
+
+## v16: auditoría estricta
+
+- `monteCarlo` guarda las ventas de cada mes: `ventasMes.p05` es el P5 de UN mes (no del promedio anual) y `ventasMes.falsaAlarma` es la fracción de años con dos meses seguidos bajo el P5 sin que nada ande mal (4.2 % en la referencia). La regla de salida del plan usa esos valores.
+- `scripts/aplicar_betas.mjs` multiplica los β de giro y zona por `pendiente_calibracion` de `data/denue/validacion.json` (0.794) y aplica la herencia de clases compartidas (juguería ← cafetería, pastelería ← panadería). Si cambias el DENUE: `denue_supervivencia.py` → `validar_denue.py` → `aplicar_betas.mjs`.
+- Palancas: nada de porcentajes sin fuente verificada; cada `tasa` dice si es medido o supuesto.

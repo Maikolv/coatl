@@ -152,7 +152,7 @@ En Windows, las e2e usan Microsoft Edge (`COATL_CANAL=msedge`) porque el Chromiu
 
 | P (3 años) | Rango plausible | Utilidad/mes | ROI | Payback | VPN 3 años |
 |---|---|---|---|---|---|
-| 38.0 % | 30.3 %–46.3 % | $60,371 | 302.9 % | 4 meses | $686,989 |
+| 40.9 % | 33.4 %–48.9 % | $60,371 | 302.9 % | 4 meses | $736,085 |
 
 Los cambios frente a las versiones anteriores están en [docs/METODOLOGIA.md](docs/METODOLOGIA.md#escenario-de-referencia). Las fuentes de cada dato se verificaron en [docs/VERIFICACION_DATOS.md](docs/VERIFICACION_DATOS.md).
 
@@ -185,7 +185,7 @@ $ npm test
 ✔ cobro de piso y variables emocionales: neutras por defecto, con efecto al usarlas (1.6617ms)
 ✔ v11 fiscal: tabla del RESICO (art. 113-E LISR), tope de 3.5 millones y régimen general (0.8928ms)
 ✔ v11 diagnóstico: 30 puntos en 5 niveles, pesos que suman 1 e índice de 0 a 100 (1.7936ms)
-✔ referencia: rango plausible de P = 30.3–46.3 % (vigente desde v15) (66.1337ms)
+✔ referencia: rango plausible de P = 33.4–48.9 % (vigente desde v16) (66.1337ms)
 ℹ tests 19
 ℹ suites 0
 ℹ pass 19
@@ -205,11 +205,11 @@ $ uv run --no-project python scripts/validar_modelo.py
 z=-0.4878  margen de seguridad=0.6910  fijos=27000.00
 Monte Carlo: {'media': 757349.85, 'sd': 179398.86, 'p025': 449283.73, 'p05': 489097.41, 'p50': 744276.67, 'p95': 1072698.1, 'p975': 1149212.79, 'pPos': 1.0}
 S(t): [1, 0.6577, 0.4366, 0.3804, 0.3412, 0.3111, 0.2867, 0.2664, 0.2489, 0.2335, 0.2199]
-OK  P        obtenido=0.3804  referencia=0.38
+OK  P        obtenido=0.4091  referencia=0.4091
 OK  util     obtenido=60,370.7400  referencia=60,371
 OK  roi      obtenido=3.0294  referencia=3.029
 OK  payback  obtenido=4.1411  referencia=4
-OK  vpn      obtenido=686,989.2802  referencia=686,989
+OK  vpn      obtenido=736,084.7540  referencia=736,085
 ```
 <!-- /t:validador -->
 

@@ -22,6 +22,7 @@
 | v13 | 2026-11-17 | β de giro y zona estimados con el DENUE, perfiles cifrados y carga más rápida | 38.0 % | $60,371 | 302.9 % | 4.1 meses | $686,989 |
 | v14 | 2026-11-17 | β de formalidad estimado con el panel de la ENOE | 38.0 % | $60,371 | 302.9 % | 4.1 meses | $686,989 |
 | v15 | 2026-11-17 | Validación fuera de muestra, sin doble conteo y plan que acota la pérdida | 38.0 % | $60,371 | 302.9 % | 4.1 meses | $686,989 |
+| v16 | 2026-11-17 | Auditoría estricta: regla de salida corregida y β recalibrados | 40.9 % | $60,371 | 302.9 % | 4.1 meses | $736,085 |
 
 ## v1 · Importación inicial (12 de noviembre de 2026)
 
@@ -291,3 +292,20 @@ Confirmaciones: `14ae32d`.
 - Tabla de horizontes de cada coeficiente en METODOLOGIA.
 
 **Efecto en el modelo.** P y VPN de la referencia no cambian (38.0 %, $686,989). El rango plausible pasa de 30.6–46.6 % a 30.3–46.3 %, porque el sorteo de sensibilidad perturba una contribución menos.
+
+Confirmaciones: `410112b`.
+
+## v16 · Auditoría estricta: regla de salida corregida y β recalibrados (17 de noviembre de 2026)
+
+**Qué es.** Se corrigió la regla de salida del plan, que comparaba meses sueltos contra el P5 de un promedio anual y daba falsas alarmas. Los β de giro y zona se recalibraron con la pendiente medida fuera de muestra, juguería y pastelería heredan el β de su clase SCIAN y se retiraron cifras sin fuente de las palancas.
+
+**Por qué se hizo.** Una segunda auditoría encontró que el 22 % de los meses normales quedaba por debajo del umbral de salida, que la validación pedía achicar las diferencias entre giros y zonas y que varias palancas citaban porcentajes sin respaldo.
+
+- Monte Carlo: ventas de cada mes, P5 de un mes y tasa de falsas alarmas de la regla (4.2 % de los años en la referencia).
+- Regla de salida: dos meses seguidos bajo el P5 mensual → ajustar; el tercero → cerrar.
+- β de giro y zona × pendiente de calibración 0.794 (scripts/aplicar_betas.mjs).
+- Juguería y pastelería heredan el β de cafetería y panadería (antes conservaban el supuesto por un error de orden en el script).
+- Palancas sin cifras sin fuente; cada una dice si su efecto está medido o es supuesto.
+- Trazabilidad sin la competencia como parte de P; AUDITORIA con las secciones de v14 a v16.
+
+**Efecto en el modelo.** Cambian los β de giro y zona. La referencia pasa de P = 38.0 % (rango 30.3–46.3 %) a 40.9 % (rango 33.4–48.9 %) y el VPN de $686,989 a $736,085; utilidad, ROI y recuperación no cambian.

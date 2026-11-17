@@ -29,7 +29,7 @@ test('se puede llegar al asistente y usarlo solo con teclado', async ({ page }) 
   await expect(page.locator('#asisTexto')).toBeFocused();
   await page.keyboard.type('¿Cómo voy?');
   await page.keyboard.press('Enter');
-  await expect(page.locator('#asisLog')).toContainText('38.0%');
+  await expect(page.locator('#asisLog')).toContainText('40.9%');
   await page.keyboard.press('Escape');
   await expect(page.locator('#asisPanel')).toBeHidden();
   await expect(page.locator('#asisAbrir')).toBeFocused();

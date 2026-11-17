@@ -281,3 +281,35 @@ No se usó WebGL: CLAUDE.md lo rechaza. La profundidad se logra con SVG, 2.5D y 
 - **Clave olvidada:** los negocios de un perfil no se pueden recuperar sin su clave (por diseño). Se avisa al crear el perfil.
 - **Segunda cohorte:** cuando el INEGI publique la siguiente depuración censal, repetir la estimación con la cohorte de 2024 para comprobar la estabilidad de los β.
 - **Video:** sigue mostrando la referencia de v12 hasta que se regenere con las voces.
+
+## 16. v14 a v16 — datos, validación y auditoría estricta
+
+### v14 y v15: auditoría del modelo
+
+| # | Hallazgo | Estado |
+|---|---|---|
+| 1 | Nunca se comparó lo predicho con lo ocurrido | **Atendido (v15).** Validación fuera de muestra con 2,562 negocios de Coacalco (`scripts/validar_denue.py`): AUC 0.58, Brier 0.269 frente a 0.250 de una constante. Se publica tal cual en el sitio y en METODOLOGIA. |
+| 2 | Competencia y bloque financiero contados dos veces | **Atendido (v15).** La competencia ya no entra a P; margen + reserva + deuda acotados a [−0.50, +0.35]. |
+| 3 | Horizontes mezclados sin documentar | **Atendido (v15).** Tabla de horizontes en METODOLOGIA. |
+| 4 | Palancas presentadas como efecto garantizado | **Atendido (v15).** Etiqueta de evidencia y efecto contado a la mitad. |
+| 5 | Riesgo financiero separado de la supervivencia | **Atendido (v15).** Riesgo de quedarse sin efectivo en el primer año. |
+| 6 | Cuatro β sin datos (experiencia, reserva, marketing, deuda) | **En parte.** Formalidad se estimó con la ENOE (v14); las otras cuatro requieren la encuesta en Coacalco. Su peso se muestra aparte («P con solo lo medido»). |
+
+### v16: auditoría estricta
+
+| # | Hallazgo | Estado |
+|---|---|---|
+| 1 | La regla de salida comparaba meses sueltos contra el P5 del promedio anual: 22 % de los meses normales quedaba abajo | **Atendido.** P5 de un mes ($88,328 en la referencia) y tasa de falsas alarmas visible (4.2 % de los años). La regla pide ajustar antes de cerrar. |
+| 2 | Cifras sin fuente en las palancas («−50 %», «+12 %» como dato) | **Atendido.** Retiradas o rotuladas como supuesto; la cifra de Bain se aclara como efecto sobre utilidades. |
+| 3 | Pendiente de calibración 0.79 sin aplicar | **Atendido.** β de giro y zona multiplicados por la pendiente. Nueva referencia: P = 40.9 % (rango 33.4–48.9 %), VPN $736,085. |
+| 4 | La trazabilidad listaba la competencia como parte de P | **Atendido.** |
+| 5 | Esta auditoría no reflejaba v14 y v15 | **Atendido** (esta sección). |
+| 6 | Juguería y pastelería no heredaban el β de su clase SCIAN | **Atendido.** La herencia se aplica en `aplicar_betas.mjs`. |
+| 7 | Historial sin el commit de v15 | **Atendido.** |
+| 8 | Video con la referencia de v12 | **Pendiente:** el guion ya está al día; el video se regenera cuando lleguen las grabaciones del equipo. |
+
+### Límites que siguen vigentes
+
+- Giro y zona ordenan el riesgo apenas mejor que el azar: P orienta, no predice un negocio en particular.
+- El nivel de P sigue anclado a la tabla nacional del INEGI; el DENUE no sirve para corregirlo porque conserva negocios cerrados.
+- Ningún plan asegura que un negocio sobreviva. El plan por etapas acota la pérdida.

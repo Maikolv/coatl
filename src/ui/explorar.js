@@ -228,7 +228,7 @@ if(reduceMov()){ $("supPlano").checked=true; $("supEscena").classList.add("plana
 /* ===== Metodología · trazabilidad del resultado a su fuente ===== */
 const TRAZA=[
   {id:"P", r:"Probabilidad a 3 años (P)", v:()=>ultimoModelo?pct(ultimoModelo.P):"—", formula:"P = 1/(1+e^(−z)), z = β₀ + Σβᵢxᵢ",
-   vars:"Giro, zona, experiencia, reserva, competencia, formalidad, marketing, deuda, local, margen de seguridad, modelo de negocio, permisos, modalidad, horario",
+   vars:"Giro, zona, experiencia, reserva, formalidad, marketing, deuda, local, margen de seguridad (la competencia entra por los clientes, no a P), modelo de negocio, permisos, modalidad, horario",
    fuente:"β₀: INEGI, Demografía de los Negocios (tabla 1989–2019, S₀(3) = 0.426)", periodo:"1989–2019", tipo:"resultado", sup:"β de giro y zona estimados con el DENUE 2019→2024; los demás βᵢ son estimación del equipo", url:"https://www.inegi.org.mx/contenidos/programas/dn/2021/doc/Nota_Demo_Negocios.pdf"},
   {id:"rango", r:"Rango plausible de P (P5–P95)", v:()=>ultimoModelo?pct(rangoP(ultimoModelo).p05)+" – "+pct(rangoP(ultimoModelo).p95):"—", formula:"βᵢ·(1+0.30ε), β₀+0.15ε; 1,000 sorteos",
    vars:"Los mismos βᵢ del modelo logístico", fuente:"Análisis de sensibilidad del equipo (no es un intervalo muestral)", periodo:"—", tipo:"resultado", sup:"Desviaciones de 30 % y 0.15: estimación del equipo", url:""},

@@ -63,9 +63,10 @@ No incluyen ISR/RESICO, depreciación, sueldo del dueño, capital de trabajo ni 
 | v2 | ticket 95, CV 38 % (giro Cafetería), MC con choque anual | 55.0 % | $60,371 | 302.9 % | 4 | $970,106 |
 | v3 | S₀ oficial hasta el año 5, interpolada del 6 al 10 | 51.6 % | $60,371 | 302.9 % | 4.1 meses | $912,776 |
 | v5 a v12 | S₀ oficial hasta el año 10 | 51.6 % | $60,371 | 302.9 % | 4.1 meses | $912,776 |
-| **v13 (vigente)** | β de giro y zona estimados con el DENUE | **38.0 %** | **$60,371** | **302.9 %** | **4.1 meses** | **$686,989** |
+| v13 a v15 | β de giro y zona estimados con el DENUE | 38.0 % | $60,371 | 302.9 % | 4.1 meses | $686,989 |
+| **v16 (vigente)** | β de giro y zona × pendiente de calibración (0.794) | **40.9 %** | **$60,371** | **302.9 %** | **4.1 meses** | **$736,085** |
 
-Rango plausible de P: **30.3 %–46.3 %** desde v15 (30.6 %–46.6 % en v13 y v14, cuando la competencia aún entraba a P; 44.1 %–58.2 % de v9 a v12) (en v3 a v8 era 44.3 %–58.3 %). El cambio no viene de los datos ni de los coeficientes: v9 agregó tres variables neutras (extorsión, resiliencia y motivación) y `rangoP` hace un sorteo por cada variable, aunque su β sea 0, así que la secuencia del generador se recorre y el P5 y el P95 se mueven una o dos décimas. P, la utilidad, el ROI, el payback y el VPN no cambiaron. La v4 incorporó el recorrido exploratorio con el modelo v3. En v5 cambian los puntos de supervivencia de los años 6–10. P y el VPN dependen de los primeros tres años. La utilidad, el ROI y el payback se calculan sin S₀.
+Rango plausible de P: **33.4 %–48.9 %** desde v16 (30.3 %–46.3 % en v15; 30.6 %–46.6 % en v13 y v14, cuando la competencia aún entraba a P; 44.1 %–58.2 % de v9 a v12) (en v3 a v8 era 44.3 %–58.3 %). El cambio no viene de los datos ni de los coeficientes: v9 agregó tres variables neutras (extorsión, resiliencia y motivación) y `rangoP` hace un sorteo por cada variable, aunque su β sea 0, así que la secuencia del generador se recorre y el P5 y el P95 se mueven una o dos décimas. P, la utilidad, el ROI, el payback y el VPN no cambiaron. La v4 incorporó el recorrido exploratorio con el modelo v3. En v5 cambian los puntos de supervivencia de los años 6–10. P y el VPN dependen de los primeros tres años. La utilidad, el ROI y el payback se calculan sin S₀.
 Monte Carlo v2: DE $179,399; P5 $489,097; P50 $744,277; P95 $1,072,698.
 La prueba `compatibilidad` de `tests/modelo.test.mjs` confirma que con las entradas v1 se recuperan la utilidad y el VPN v1. Ninguna de las dos cantidades depende del Monte Carlo.
 
@@ -186,7 +187,7 @@ Ningún modelo asegura que un negocio sobreviva: en México, a 3 años sigue abi
 
 1. **Prueba de demanda** de 2 a 4 semanas. La meta es el punto de equilibrio en clientes al día; si no se alcanza, no se abre.
 2. **Inversión por tramos.** No más del 40 % de la inversión antes del mes 3.
-3. **Revisiones en los meses 3, 6 y 12** contra la mediana y el P5 de las ventas mensuales simuladas. Dos meses seguidos bajo el P5: ajustar a fondo o cerrar.
+3. **Revisiones en los meses 3, 6 y 12** contra la mediana y el P5 de las ventas de un mes (desde v16; antes se usaba por error el P5 del promedio anual). Dos meses seguidos bajo el P5: ajustar a fondo; si el tercero sigue abajo, cerrar.
 4. **Pérdida máxima** = la reserva. Si las pérdidas la alcanzan, se cierra; no se pide crédito para cubrirlas.
 5. **Datos reales.** Desde el mes 3, el historial se carga en Para empresas y P se recalcula.
 
@@ -195,3 +196,13 @@ Ningún modelo asegura que un negocio sobreviva: en México, a 3 años sigue abi
 - Las cifras de las estimaciones que aparecen en el sitio salen de `data/*.json` con el marcador `@@DATO:archivo:ruta@@` del build; ya no se escriben a mano.
 - Tres etiquetas, iguales en el sitio, los documentos y el video: **estimado con datos**, **supuesto del equipo** y **sensibilidad** (el rango plausible).
 - No se agregan variables nuevas hasta que la validación mejore: más variables sin datos suben la apariencia de precisión, no la exactitud.
+
+
+## Correcciones de la auditoría v16
+
+1. **Regla de salida con el umbral correcto.** El plan compara meses sueltos, pero el P5 se calculaba sobre el promedio de los 12 meses del año ($115,150 en la referencia), mucho más estable que un mes: el 22 % de los meses normales caía por debajo. Desde v16 el Monte Carlo guarda las ventas de cada mes y el umbral es el P5 de un mes ($88,328). También mide cuántas veces se activaría la regla por error en un negocio que va como se esperaba: dos meses seguidos bajo el P5 ocurren en el 4.2 % de los años simulados. Por eso la regla pide ajustar primero y cerrar solo si el tercer mes sigue abajo.
+2. **Recalibración de giro y zona.** La validación midió una pendiente de calibración de 0.794: las diferencias entre giros y zonas salían exageradas. `scripts/aplicar_betas.mjs` multiplica cada β de giro y zona (y su error estándar) por esa pendiente. La cafetería pasa de −0.33 a −0.26 y Los Héroes de −0.26 a −0.21. El nivel (promedio predicho frente a observado) no se corrige con el DENUE, porque el directorio conserva negocios que ya cerraron; sigue anclado a la tabla del INEGI.
+3. **Herencia de clases compartidas.** Juguería y pastelería debían heredar el β de cafetería y panadería, pero el script del DENUE agregaba la herencia después de guardar el archivo y se quedaban con el supuesto del equipo. Desde v16 `aplicar_betas.mjs` la aplica: juguería −0.26 (antes −0.06) y pastelería −0.05 (antes 0.00).
+4. **Afirmaciones de las palancas.** Se retiraron las cifras sin fuente verificable («−50 % de riesgo de cierre», «+12 % de alcance» como dato). Cada palanca dice si su efecto está medido (formalidad con la ENOE, zona con el DENUE) o es supuesto del equipo, y la cifra de Bain se rotula como efecto sobre utilidades, no sobre supervivencia.
+
+**Nueva referencia (v16):** P = 40.9 % (rango 33.4–48.9 %), utilidad $60,371, ROI 302.9 %, payback 4.1 meses, VPN $736,085. Con solo lo medido, P = 39.7 %.

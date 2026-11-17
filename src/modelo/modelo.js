@@ -75,32 +75,38 @@ function monteCarlo(e){
        a los 12 meses a la vez, por lo que no se compensa al sumar;
      · ruido mensual de clientes y de ticket (independiente por mes);
      · ruido anual en el costo variable (proveedores, merma). */
-  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA), res=new Array(N_SIM), ventas=new Array(N_SIM);
+  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA), res=new Array(N_SIM), mesVta=new Float64Array(N_SIM*12);
   const caja0=mesesReserva(e.resZ)*e.fijos; let sinCaja=0;
   for(let i=0;i<N_SIM;i++){
     const fAnual=Math.exp(gaussiana(rng)*U.demandaAnual - U.demandaAnual*U.demandaAnual/2);
     const cvSim=acota(e.cvEff + gaussiana(rng)*U.costoVariable, 0.02, 0.98);
-    let total=0, vtas=0, quiebra=false;
+    let total=0, quiebra=false;
     for(let m=0;m<12;m++){
       const rampa=Math.pow(1+(e.crec||0), m/12);
       const muM=e.mu*e.estacion[m]*rampa*fAnual;
       const cli=Math.max(0, muM + gaussiana(rng)*U.demandaMensual*muM);
       const tk =Math.max(1, e.ticket + gaussiana(rng)*U.ticket*e.ticket);
       const venta=cli*e.diasMes*tk;
-      vtas += venta;
+      mesVta[i*12+m]=venta;
       total += venta*(1-cvSim) - e.fijos;
       if(caja0+total<0) quiebra=true;   // la reserva no alcanzó a cubrir las pérdidas acumuladas
     }
-    res[i]=total; ventas[i]=vtas/12; if(quiebra) sinCaja++;
+    res[i]=total; if(quiebra) sinCaja++;
   }
-  res.sort((a,b)=>a-b); ventas.sort((a,b)=>a-b);
+  res.sort((a,b)=>a-b);
+  /* Ventas de UN mes (no el promedio del año): la regla de salida del plan compara meses sueltos.
+     falsaAlarma = años simulados en que hay dos meses seguidos bajo el P5 mensual aunque el negocio
+     va como lo esperado (el modelo ES el escenario esperado): cuántas veces la regla se activaría por error. */
+  const ordenMes=Array.from(mesVta).sort((a,b)=>a-b), p05Mes=cuantil(ordenMes,.05);
+  let alarmas=0;
+  for(let i=0;i<N_SIM;i++){ for(let m=1;m<12;m++){ if(mesVta[i*12+m-1]<p05Mes && mesVta[i*12+m]<p05Mes){ alarmas++; break; } } }
   const media=res.reduce((s,x)=>s+x,0)/N_SIM;
   const sd=Math.sqrt(res.reduce((s,x)=>s+(x-media)**2,0)/(N_SIM-1));
   return {res, media, sd, p025:cuantil(res,.025), p05:cuantil(res,.05), p50:cuantil(res,.5),
           p95:cuantil(res,.95), p975:cuantil(res,.975),
           pPos:res.filter(x=>x>0).length/N_SIM,
           pSinEfectivo:sinCaja/N_SIM, cajaInicial:caja0,
-          ventasMes:{p05:cuantil(ventas,.05), p50:cuantil(ventas,.5)}};
+          ventasMes:{p05:p05Mes, p50:cuantil(ordenMes,.5), falsaAlarma:alarmas/N_SIM}};
 }
 
 /* Cuantil empírico con interpolación lineal (tipo 7 de Hyndman–Fan, el de R/NumPy). */

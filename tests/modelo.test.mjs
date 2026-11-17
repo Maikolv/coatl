@@ -6,18 +6,18 @@ import { cargarModelo, escenarioReferencia } from './cargar.mjs';
 const M = cargarModelo();
 const cerca = (a, b, tol, msj) => assert.ok(Math.abs(a - b) <= tol, `${msj}: ${a} vs ${b}`);
 
-// Referencia v13: tabulado nacional del INEGI 1989–2019, β₀ = logit(S0(3)) y β de giro y zona estimados con el DENUE.
+// Referencia v16: tabla nacional del INEGI 1989–2019, β₀ = logit(S0(3)), β de giro y zona del DENUE recalibrados con la validación fuera de muestra (antes 38.0 %, VPN $686,989).
 test('escenario de referencia Cafetería · Los Héroes', () => {
   const e = escenarioReferencia(M);
   const m = M.modeloLogistico(e);
   const S = M.curvaSupervivencia(m.P);
   const mc = M.monteCarlo(e);
   const f = M.finanzas(e, mc, S);
-  cerca(m.P, 0.3800, 0.0005, 'P');
+  cerca(m.P, 0.4091, 0.0005, 'P');
   cerca(e.utilMes, 60371, 1, 'utilidad mensual');
   cerca(f.roi, 3.029, 0.0005, 'ROI');
   assert.equal(Math.round(f.payback), 4, 'payback');
-  cerca(f.vpn, 686989, 1, 'VPN');
+  cerca(f.vpn, 736085, 1, 'VPN');
 });
 
 test('compatibilidad: con ticket 85 y CV 45 % se recuperan utilidad y payback de la referencia v1', () => {
@@ -141,11 +141,11 @@ test('v11 diagnóstico: 30 puntos en 5 niveles, pesos que suman 1 e índice de 0
   assert.equal(M.indiceMadurez(n1).indice, 35);
 });
 
-// v15: sin competencia en P, el sorteo de sensibilidad perturba una contribución menos (antes 30.6–46.6 %).
-test('referencia: rango plausible de P = 30.3–46.3 % (vigente desde v15)', () => {
+// v16: β de giro y zona multiplicados por la pendiente de calibración (v15: 30.3–46.3 %; v13–v14: 30.6–46.6 %).
+test('referencia: rango plausible de P = 33.4–48.9 % (vigente desde v16)', () => {
   const r = M.rangoP(M.modeloLogistico(escenarioReferencia(M)));
-  assert.equal((r.p05 * 100).toFixed(1), '30.3');
-  assert.equal((r.p95 * 100).toFixed(1), '46.3');
+  assert.equal((r.p05 * 100).toFixed(1), '33.4');
+  assert.equal((r.p95 * 100).toFixed(1), '48.9');
 });
 
 test('v15: la competencia cercana no cambia P (la zona del DENUE ya la refleja)', () => {
@@ -164,7 +164,7 @@ test('v15: margen de seguridad + reserva + deuda no suman más de 0.35', () => {
 test('v15: P con solo lo medido y probabilidad de quedarse sin efectivo', () => {
   const e = escenarioReferencia(M);
   const m = M.modeloLogistico(e);
-  cerca(m.Pmedido, 0.369, 0.0005, 'P sin supuestos del equipo');
+  cerca(m.Pmedido, 0.397, 0.0005, 'P sin supuestos del equipo');
   assert.equal(M.monteCarlo(e).pSinEfectivo, 0);         // la referencia gana dinero desde el primer mes
   const flojo = M.derivar({ ...e, mu: Math.round(e.mu * 0.25) });   // pierde ≈ $5,000 al mes
   const sinReserva = M.monteCarlo({ ...flojo, resZ: -0.30 }).pSinEfectivo;
@@ -182,4 +182,12 @@ test('las opciones de formalidad del formulario coinciden con data/enoe/superviv
   const valores = [...sel.matchAll(/value="([-\d.]+)"/g)].map(x => +x[1]);
   assert.deepEqual(valores, [z.formal, z.gradual, z.informal]);
   assert.ok(z.formal > z.gradual && z.gradual > z.informal, 'formal > gradual > informal');
+});
+
+// v16: la regla de salida compara meses sueltos, así que su umbral es el P5 de UN mes.
+test('v16: P5 de un mes y tasa de falsas alarmas de la regla de salida', () => {
+  const mc = M.monteCarlo(escenarioReferencia(M));
+  cerca(mc.ventasMes.p05, 88328, 1, 'P5 de un mes');
+  assert.ok(mc.ventasMes.p05 < mc.ventasMes.p50);
+  cerca(mc.ventasMes.falsaAlarma, 0.0415, 1e-9, 'años con dos meses seguidos bajo el P5 sin que nada ande mal');
 });

@@ -13,8 +13,8 @@ ESTADO ACTUAL (v13, commit 25ecaf9)
 - β de giro y zona estimados con el DENUE (cohorte alta 2019-11 seguida a 2024_11, GLM binomial +
   contracción bayesiana empírica). Script: scripts/denue_supervivencia.py → data/denue/supervivencia.json
   → node scripts/aplicar_betas.mjs escribe z, ee, zEq, fz en src/datos/datos.js.
-- Escenario de referencia «Cafetería · Los Héroes»: P 38.0 % (rango plausible 30.3–46.3 %),
-  utilidad ≈ $60,371, ROI 302.9 %, payback 4 meses (4.1), VPN $686,989. Lo vigilan
+- Escenario de referencia «Cafetería · Los Héroes»: P 40.9 % (rango plausible 33.4–48.9 %),
+  utilidad ≈ $60,371, ROI 302.9 %, payback 4 meses (4.1), VPN $736,085. Lo vigilan
   tests/modelo.test.mjs, scripts/validar_modelo.py y las e2e. Si el modelo cambia, actualiza los cuatro
   lugares y documenta por qué en CLAUDE.md, README, METODOLOGIA y data/versiones.json (versión nueva).
 

@@ -80,15 +80,15 @@ function palancas(e, P0){
     const c=clon(e); c.resZ=0.20;
     L.push({clave:"reserva", titulo:"Construir 6 meses de capital de trabajo",
       que:"Aparta una reserva líquida equivalente a medio año de gastos fijos antes de operar al límite.",
-      base:"El <b>JPMorgan Chase Institute</b> halló que el negocio pequeño mediano sostiene apenas ~27 días de liquidez; quienes acumulan reservas mayores resisten los choques de flujo de efectivo, principal causa de cierre temprano.",
-      tasa:"−50% riesgo de cierre por iliquidez", P:probDe(c)});
+      base:"El <b>JPMorgan Chase Institute</b> halló que el negocio pequeño mediano sostiene apenas ~27 días de liquidez; con más días de reserva, un mal mes no obliga a cerrar. Cuánto baja el riesgo de cierre no está medido en México: el β es supuesto del equipo.",
+      tasa:"Supuesto: menos cierres por falta de efectivo", P:probDe(c)});
   }
   // 2 · Desapalancar
   if(e.credPct >= 0.30){
     const c=clon(e); c.credPct=0.15;
     L.push({clave:"deuda", titulo:"Reducir el apalancamiento por debajo del 30%",
       que:"Financia una mayor parte con capital propio o reinversión; baja el porcentaje a crédito y renegocia la tasa.",
-      base:"La carga financiera fija convierte cualquier caída de ventas en pérdida. La literatura de demografía de negocios asocia el alto apalancamiento con mayor mortalidad temprana.",
+      base:"La carga financiera fija convierte cualquier caída de ventas en pérdida. Cuánto sube el riesgo de cierre con la deuda no está medido en México: el β es supuesto del equipo.",
       tasa:"Menor costo fijo mensual", P:probDe(c)});
   }
   // 3 · Margen de contribución (costo variable / proveedores / precio)
@@ -105,15 +105,15 @@ function palancas(e, P0){
     L.push({clave:"marketing", titulo:"Activar marketing digital (redes + WhatsApp Business)",
       que:"Pasa de presencia orgánica básica a una estrategia activa con pauta local y catálogo en WhatsApp Business.",
       base:"El comercio electrónico en México creció más de <b>20% anual</b> (AMVO); una presencia digital activa amplía el alcance a un costo de adquisición bajo frente a medios tradicionales.",
-      tasa:"+12% alcance de clientes", P:probDe(c)});
+      tasa:"Supuesto del equipo: +12 % de clientes", P:probDe(c)});
   }
   // 5 · Formalización
   if(e.formZ < 0.10){
     const c=clon(e); c.formZ=0.10;
     L.push({clave:"formalidad", titulo:"Formalizarte ante SAT e IMSS desde el inicio",
       que:"Regístrate formalmente: habilita facturación, acceso a crédito y proveedores y clientes empresariales.",
-      base:"Datos del <b>INEGI</b> (Demografía de los Negocios) muestran que los negocios formales viven más que los informales y acceden a financiamiento que los informales no alcanzan.",
-      tasa:"Mayor esperanza de vida del negocio", P:probDe(c)});
+      base:"En el panel de la <b>ENOE</b> (INEGI), los negocios jóvenes formales siguen operando un año después con más frecuencia que los informales (ver Metodología). Es asociación: los negocios que ya van bien suelen formalizarse, así que no prueba que formalizarte cause la diferencia.",
+      tasa:"Medido: los formales siguen más", P:probDe(c)});
   }
   // 6 · Retención de clientes
   {
@@ -122,7 +122,7 @@ function palancas(e, P0){
     if(pc>P0+0.001) L.push({clave:"retencion", titulo:"Programa de fidelización y recompra",
       que:"Tarjeta de lealtad, seguimiento por WhatsApp y atención post-venta para elevar la frecuencia de compra.",
       base:"<b>Bain & Company</b> (Reichheld): aumentar la retención de clientes un 5% puede elevar las utilidades entre <b>25% y 95%</b>; retener cuesta 5–7× menos que adquirir.",
-      tasa:"+25% a +95% en utilidades", P:pc});
+      tasa:"Bain: utilidades, no supervivencia", P:pc});
   }
   // 7 · Mejor zona (del mapa)
   if(typeof datosMapa!=="undefined" && datosMapa.length){
@@ -130,8 +130,8 @@ function palancas(e, P0){
     if(mejor && mejor.k!==e.zonaKey && mejor.P>P0+0.005){
       L.push({clave:"zona", titulo:"Ubicarte en "+CORTOS[mejor.k],
         que:"Para este mismo negocio, esa zona ofrece mejor relación entre afluencia y renta. Evalúa el traslado o ábrela ahí.",
-        base:"El índice de afluencia por zona —construido a partir de la concentración comercial del Corredor López Portillo y la caracterización socioeconómica de las colonias— eleva la demanda esperada.",
-        tasa:"Mayor afluencia peatonal", P:mejor.P, esZona:true, zonaK:mejor.k});
+        base:"La supervivencia por zona se midió con el DENUE (2019 a 2024). Además, el índice de afluencia de cada zona, estimación del equipo, cambia los clientes esperados.",
+        tasa:"Medido: supervivencia por zona (DENUE)", P:mejor.P, esZona:true, zonaK:mejor.k});
     }
   }
   // 8 · Diferenciación ante competencia
@@ -140,15 +140,15 @@ function palancas(e, P0){
     L.push({clave:"diferenciacion", titulo:"Diferenciarte ante la competencia saturada",
       que:"Define una propuesta de valor única (especialidad, horario, servicio) que te saque de competir solo por precio.",
       base:"En zonas con 5+ competidores directos, la guerra de precios erosiona el margen; la diferenciación sostiene el ticket y la lealtad.",
-      tasa:"Defiende el ticket promedio", P:probDe(c)});
+      tasa:"Supuesto: defiende el ticket promedio", P:probDe(c)});
   }
   // 9 · Capacitación / experiencia
   if(e.expZ < 0.15){
     const c=clon(e); c.expZ=0.15;
     L.push({clave:"experiencia", titulo:"Capacitación y mentoría en el giro",
       que:"Toma formación específica del giro o busca un mentor; reduce los errores costosos de los primeros meses.",
-      base:"La experiencia previa del fundador correlaciona con la supervivencia del negocio; la curva de aprendizaje temprana es donde ocurre la mayoría de los cierres.",
-      tasa:"Menos errores en año 1", P:probDe(c)});
+      base:"La experiencia previa del fundador correlaciona con la supervivencia del negocio; según la tabla del INEGI, la mayoría de los cierres ocurre en los primeros tres años. Cuánto ayuda la experiencia no está medido en México.",
+      tasa:"Supuesto: menos errores en el año 1", P:probDe(c)});
   }
   return L.map(l=>{ const P=efectoPlan(P0,l.P); return {...l, P, lift:P-P0, evid:evidenciaPalanca(l.clave)}; }).filter(l=>l.lift>0.0005).sort((a,b)=>b.lift-a.lift);
 }
@@ -403,8 +403,8 @@ function etapasPlan(e, mc){
      d:"Compromete como máximo <strong>"+mxn.format(Math.round(e.inversion*0.40))+"</strong> (40 % de la inversión) antes de ver el mes 3. Renta flexible, equipo usado o rentado, sin remodelación definitiva.",
      salida:"El resto de la inversión solo se libera si el mes 3 pasa la revisión."},
     {t:"Revisiones en los meses 3, 6 y 12",
-     d:"Compara tus ventas mensuales reales con la mediana simulada (<strong>"+mxn.format(Math.round(vm.p50||0))+"</strong>) y con el escenario malo, P5 (<strong>"+mxn.format(Math.round(vm.p05||0))+"</strong>).",
-     salida:"Dos meses seguidos por debajo del P5: ajusta a fondo o cierra."},
+     d:"Compara las ventas de cada mes con lo que simula el modelo para un mes: mediana <strong>"+mxn.format(Math.round(vm.p50||0))+"</strong>, escenario malo P5 <strong>"+mxn.format(Math.round(vm.p05||0))+"</strong>. Un mes bajo el P5 puede ser mala suerte; dos seguidos ya es señal. Aun si el negocio va como se esperaba, esta regla se activa por error en el <strong>"+pct(vm.falsaAlarma||0)+"</strong> de los años: revisa la causa antes de cerrar.",
+     salida:"Dos meses seguidos por debajo del P5 mensual: ajusta a fondo; si el tercero sigue abajo, cierra."},
     {t:"Pérdida máxima decidida desde el día uno",
      d:"Tu reserva (≈ <strong>"+mxn.format(Math.round(mc.cajaInicial||0))+"</strong>) es el tope de lo que estás dispuesto a perder, y nada más. Con tus números, la probabilidad de agotarla en el primer año es de <strong>"+pct(mc.pSinEfectivo||0)+"</strong>.",
      salida:"Si las pérdidas acumuladas alcanzan la reserva, se cierra; no se pide crédito para cubrirlas."},

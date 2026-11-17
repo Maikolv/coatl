@@ -444,6 +444,32 @@
         "payback": "4.1 meses",
         "vpn": "$686,989"
       },
+      "commits": [
+        "410112b"
+      ]
+    },
+    {
+      "id": "v16",
+      "fecha": "2026-11-17",
+      "titulo": "Auditoría estricta: regla de salida corregida y β recalibrados",
+      "resumen": "Se corrigió la regla de salida del plan, que comparaba meses sueltos contra el P5 de un promedio anual y daba falsas alarmas. Los β de giro y zona se recalibraron con la pendiente medida fuera de muestra, juguería y pastelería heredan el β de su clase SCIAN y se retiraron cifras sin fuente de las palancas.",
+      "motivo": "Una segunda auditoría encontró que el 22 % de los meses normales quedaba por debajo del umbral de salida, que la validación pedía achicar las diferencias entre giros y zonas y que varias palancas citaban porcentajes sin respaldo.",
+      "cambios": [
+        "Monte Carlo: ventas de cada mes, P5 de un mes y tasa de falsas alarmas de la regla (4.2 % de los años en la referencia).",
+        "Regla de salida: dos meses seguidos bajo el P5 mensual → ajustar; el tercero → cerrar.",
+        "β de giro y zona × pendiente de calibración 0.794 (scripts/aplicar_betas.mjs).",
+        "Juguería y pastelería heredan el β de cafetería y panadería (antes conservaban el supuesto por un error de orden en el script).",
+        "Palancas sin cifras sin fuente; cada una dice si su efecto está medido o es supuesto.",
+        "Trazabilidad sin la competencia como parte de P; AUDITORIA con las secciones de v14 a v16."
+      ],
+      "modelo": "Cambian los β de giro y zona. La referencia pasa de P = 38.0 % (rango 30.3–46.3 %) a 40.9 % (rango 33.4–48.9 %) y el VPN de $686,989 a $736,085; utilidad, ROI y recuperación no cambian.",
+      "referencia": {
+        "P": "40.9 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$736,085"
+      },
       "commits": []
     }
   ]
