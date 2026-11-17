@@ -114,7 +114,7 @@ Pasillo → entrada por la izquierda                  salida por la derecha →
 | Sin energía | Operar las tres estaciones con las láminas, la carpeta y el pitch impreso. |
 | Sin pantalla | Recorrer los paneles y abrir en mesa la lámina del simulador y la ficha de resultados cuando surjan preguntas. |
 
-**Archivos e impresión.** Usar [COATL_Pitch_Inversionistas.pdf](../entregables/COATL_Pitch_Inversionistas.pdf), [COATL_Documento_Tecnico.pdf](../entregables/COATL_Documento_Tecnico.pdf), la [captura del mapa](capturas/mapa.png) y la de [metodología](capturas/metodologia.png). Con `npm run servir`, preparar Territorio y Simulador, con el caso base listo desde el equipo del stand. Imprimir tres paneles, dos juegos de láminas en doble carta con los detalles técnicos y el resumen del pitch en media carta. Conservar la atribución del mapa visible en la impresión.
+**Archivos e impresión.** Usar [COATL_Presentacion.pdf](../entregables/COATL_Presentacion.pdf), [COATL_Documento_Tecnico.pdf](../entregables/COATL_Documento_Tecnico.pdf), la [captura del mapa](capturas/mapa.png) y la de [metodología](capturas/metodologia.png). Con `npm run servir`, preparar Territorio y Simulador, con el caso base listo desde el equipo del stand. Imprimir tres paneles, dos juegos de láminas en doble carta con los detalles técnicos y el resumen del pitch en media carta. Conservar la atribución del mapa visible en la impresión.
 
 ## Comparación con [docs/STAND.md](STAND.md)
 

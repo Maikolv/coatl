@@ -19,6 +19,7 @@
 | v10 | 2026-11-15 | Herramientas del plan y entregables automáticos | 51.6 % | $60,371 | 302.9 % | 4.1 meses | $912,776 |
 | v11 | 2026-11-15 | Negocio con nombre, mejora del negocio y reporte propio | 51.6 % | $60,371 | 302.9 % | 4.1 meses | $912,776 |
 | v12 | 2026-11-16 | Resultado para llevar con QR y documentación extensa | 51.6 % | $60,371 | 302.9 % | 4.1 meses | $912,776 |
+| v13 | 2026-11-17 | β de giro y zona estimados con el DENUE, perfiles cifrados y carga más rápida | 38.0 % | $60,371 | 302.9 % | 4.1 meses | $686,989 |
 
 ## v1 · Importación inicial (12 de noviembre de 2026)
 
@@ -233,3 +234,22 @@ Confirmaciones: `8c9920d`, `a6c5061`, `7d5ef77`, `95fc92e`, `32e3b85`.
 - Video ampliado y pauta para grabar las voces de los tres autores.
 
 **Efecto en el modelo.** Sin cambios en el modelo.
+
+Confirmaciones: `f8b4a0e`, `9b1d262`.
+
+## v13 · β de giro y zona estimados con el DENUE, perfiles cifrados y carga más rápida (17 de noviembre de 2026)
+
+**Qué es.** Los coeficientes de giro y zona dejan de ser supuestos: se estiman con 305,313 negocios jóvenes del Estado de México seguidos en el DENUE de 2019 a 2024. Los negocios guardados quedan aislados por usuario y cifrados, y la página carga más rápido.
+
+**Por qué se hizo.** La auditoría señaló como limitación principal que todos los β eran supuestos del equipo. El DENUE se depura en cada censo económico (2019 y 2024) y los negocios que siguen conservan su identificador: eso permite medir supervivencia real por giro y por zona.
+
+- Script scripts/denue_supervivencia.py: cohorte de negocios incorporados en la actualización censal de 2019, seguida a la edición de 2024; regresión logística con errores estándar y contracción bayesiana.
+- β de 34 giros y 6 zonas estimados con datos; spa conserva el supuesto (sin clase SCIAN propia). Se guarda el supuesto anterior (zEq) para trazabilidad.
+- Hallazgos: el corredor López Portillo tiene más rotación de lo supuesto (β −0.26 en lugar de +0.30) y la cafetería es más riesgosa (−0.33 en lugar de −0.08).
+- Negocios guardados aislados por usuario: perfil con clave, cifrado AES-GCM con llave PBKDF2; sin perfil, solo en la pestaña.
+- Tipografías servidas desde el propio sitio y estilos del mapa incorporados: sin peticiones externas que bloqueen la carga.
+- La probabilidad se muestra en cuanto se calcula, sin esperar al Monte Carlo; indicador «cálculo listo» en la página (data-calculo).
+- El código QR toma el dominio de la propia página o, en local, la dirección canónica.
+- Se retiraron los documentos Word y el pitch heredados y sus generadores.
+
+**Efecto en el modelo.** Cambian los β de giro y zona. El escenario de referencia (cafetería en Los Héroes) pasa de P = 51.6 % a 38.0 % (rango 30.6–46.6 %) y el VPN de $912,776 a $686,989; utilidad, ROI y recuperación no cambian porque no dependen de los β.

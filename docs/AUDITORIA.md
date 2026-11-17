@@ -262,3 +262,22 @@ No se usó WebGL: CLAUDE.md lo rechaza. La profundidad se logra con SVG, 2.5D y 
 | 8 | Baja | El índice con números de página necesita `uv` + PyMuPDF. | Calcular las páginas en el navegador (CSS Paged Media) cuando Chromium lo soporte. |
 | 9 | Media | La primera carga en frío tarda ≈ 5 s hasta mostrar el resultado (≈ 2 s en cargas siguientes); las tipografías y bibliotecas externas bloquean el inicio. | Servir las tipografías desde el propio sitio con `font-display: swap`, diferir Leaflet y Chart.js hasta que su apartado se abra y mostrar el resultado del escenario de referencia precalculado. |
 | 10 | Baja | El escaneo dinámico de seguridad (HawkScan) no está configurado en este equipo. | Configurar `HAWK_API_KEY` y correrlo antes de la presentación. |
+
+## 15. v13 — atención a la auditoría v12
+
+| # (v12) | Punto | Estado |
+|---|---|---|
+| 1 | β supuestos por el equipo | **Atendido en parte.** Giro y zona se estiman con el DENUE (cohorte de 305,313 negocios incorporados en 2019, seguidos a 2024; regresión logística con errores estándar y contracción bayesiana). Los demás β siguen siendo supuestos: el DENUE no registra experiencia, reserva, formalidad ni marketing. La referencia pasa de P = 51.6 % a 38.0 %. |
+| 2 | Voces del video | **En espera** de las grabaciones del equipo (`docs/GUION_VOCES.md`). El video se regenerará con ellas y con las cifras de v13. |
+| 3 | Peso del video | Sin cambios (≈ 44 MB). |
+| 4 | DOCX y pitch heredados | **Atendido.** Se retiraron los documentos y sus generadores; quedan PDF, PPTX y XLSX de `scripts/documentos.mjs`. |
+| 5 | QR dependiente del dominio | **Atendido.** Usa la dirección de la propia página; en local, la canónica. |
+| 6 | Negocios visibles en equipos compartidos | **Atendido.** Perfiles con usuario y clave, cifrado AES-GCM con llave PBKDF2; sin perfil, solo en la pestaña. Prueba e2e: un usuario no ve los negocios de otro. |
+| 7 | Pruebas sensibles al tiempo | **Atendido.** Indicador `data-calculo="listo"` en `<html>`, usado por las pruebas que antes dependían de tiempos fijos. |
+| 9 | Carga inicial | **Atendido.** Tipografías propias, CSS de Leaflet incorporado y P pintada antes del Monte Carlo: primer resultado ≈ 0.5–1.2 s (antes 1.1–1.7 s) y ≈ 2.5 s en frío (antes ≈ 3.2 s), medido en local. |
+
+### Nuevos puntos a vigilar
+
+- **Clave olvidada:** los negocios de un perfil no se pueden recuperar sin su clave (por diseño). Se avisa al crear el perfil.
+- **Segunda cohorte:** cuando el INEGI publique la siguiente depuración censal, repetir la estimación con la cohorte de 2024 para comprobar la estabilidad de los β.
+- **Video:** sigue mostrando la referencia de v12 hasta que se regenere con las voces.

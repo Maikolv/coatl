@@ -663,3 +663,11 @@ body.sin-movimiento .legal-relleno::before{animation-play-state:paused!important
 .legal-resumen h3{font:700 1.1rem var(--display);margin-bottom:.4rem}
 .legal-resumen ul{margin:0 0 0 1.1rem;font-size:.88rem;color:var(--gris-texto)}
 .legal-resumen li{margin-bottom:.3rem}
+/* ---------- Perfil de usuario (negocios aislados y cifrados) ---------- */
+.perfil-barra{grid-column:1/-1;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr) auto auto;gap:.8rem;align-items:end;border:1px dashed rgba(255,201,207,.45);border-radius:12px;padding:.8rem;margin:0}
+.perfil-barra legend{padding:0 .4rem;font:700 .8rem var(--cuerpo);color:#FFC9CF}
+.perfil-barra .btn-widget{margin:0;min-height:2.7rem}
+.perfil-barra .btn-widget[hidden]{display:none}
+.perfil-barra .nota-widget{grid-column:1/-1;color:#F0D5D8;margin:0}
+.perfil-barra input:disabled{opacity:.7}
+@media (max-width:820px){.perfil-barra{grid-template-columns:minmax(0,1fr)}}

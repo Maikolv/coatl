@@ -1,7 +1,8 @@
 # Tipografías del proyecto (para documentos y video)
 
-Las mismas fuentes que carga el sitio desde Google Fonts, en TTF estático, para incrustarlas en los Word
-(`scripts/reporte_docx.mjs`, `scripts/documento_tecnico_docx.mjs`) y usarlas en el video (`scripts/video_presentacion.mjs`).
+Las mismas familias que usa el sitio. En `web/` están las versiones variables WOFF2 que el sitio sirve desde su propio
+dominio (paquetes @fontsource-variable, sin Google Fonts). Los TTF estáticos de esta carpeta se incrustan en los
+documentos PDF (`scripts/doc/`), en la presentación y en el video (`scripts/video_presentacion.mjs`).
 
 | Archivo | Familia | Licencia |
 |---|---|---|

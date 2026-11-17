@@ -86,8 +86,11 @@ Simulador estadístico que estima la **probabilidad de que un negocio siga opera
 
 </details>
 
-## Funciones principales (v12)
+## Funciones principales (v13)
 
+- **β de giro y zona con datos reales**: estimados con 305 mil negocios jóvenes del DENUE seguidos de 2019 a 2024 ([método](docs/METODOLOGIA.md)).
+- **Tus negocios, solo para ti**: perfil con usuario y clave; se guardan cifrados y nadie más en el mismo equipo puede verlos.
+- **Carga más rápida**: tipografías propias, sin peticiones externas que bloqueen, y la probabilidad aparece antes de terminar la simulación.
 - **Llévate todo tu resultado**: un código QR abre en el teléfono el reporte completo (simulador y estrategia), listo para guardarse en PDF; el resultado viaja dentro del enlace.
 - **PDF propio del plan** en Estrategia y video del proyecto en Inicio.
 - **Documentos extensos** (documento técnico, reporte, presentación y libro de Excel) con el [historial completo de versiones](docs/VERSIONES.md), generados con `npm run entregables`.
@@ -149,7 +152,7 @@ En Windows, las e2e usan Microsoft Edge (`COATL_CANAL=msedge`) porque el Chromiu
 
 | P (3 años) | Rango plausible | Utilidad/mes | ROI | Payback | VPN 3 años |
 |---|---|---|---|---|---|
-| 51.6 % | 44.1 %–58.2 % | $60,371 | 302.9 % | 4 meses | $912,776 |
+| 38.0 % | 30.6 %–46.6 % | $60,371 | 302.9 % | 4 meses | $686,989 |
 
 Los cambios frente a las versiones anteriores están en [docs/METODOLOGIA.md](docs/METODOLOGIA.md#escenario-de-referencia). Las fuentes de cada dato se verificaron en [docs/VERIFICACION_DATOS.md](docs/VERIFICACION_DATOS.md).
 
@@ -161,7 +164,7 @@ Salida real de los comandos de verificación, como texto (sin imágenes). La act
 _Generado el 2026-11-17._
 
 <!-- t:build -->
-**Construcción del sitio** · `npm run build` · código de salida 1 · 11.2 s
+**Construcción del sitio** · `npm run build` · código de salida 0 · 2.5 s
 
 ```text
 $ npm run build
@@ -169,37 +172,20 @@ $ npm run build
 > coatl@2.0.0 build
 > node scripts/build.mjs
 
-node:fs:2483
-    return binding.writeFileUtf8(
-                   ^
-
-Error: UNKNOWN: unknown error, open 'C:\Users\MIKE\Desktop\Repos\coatl\index.html'
-    at Object.writeFileSync (node:fs:2483:20)
-    at construir (file:///C:/Users/MIKE/Desktop/Repos/coatl/scripts/build.mjs:151:6)
-    at file:///C:/Users/MIKE/Desktop/Repos/coatl/scripts/build.mjs:180:58
-    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
-    at async node:internal/modules/esm/loader:643:26
-    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
-  errno: -4094,
-  code: 'UNKNOWN',
-  syscall: 'open',
-  path: 'C:\\Users\\MIKE\\Desktop\\Repos\\coatl\\index.html'
-}
-
-Node.js v24.19.0
+index.html y dist/index.html generados (595,865 bytes)
 ```
 <!-- /t:build -->
 
 <!-- t:unitarias -->
-**Pruebas unitarias del modelo y del intermediario de IA** · `npm test` · código de salida 0 · 6.3 s
+**Pruebas unitarias del modelo y del intermediario de IA** · `npm test` · código de salida 0 · 3.3 s
 
 ```text
 $ npm test
 … (se muestran las últimas 12 líneas)
-✔ cobro de piso y variables emocionales: neutras por defecto, con efecto al usarlas (1.6311ms)
-✔ v11 fiscal: tabla del RESICO (art. 113-E LISR), tope de 3.5 millones y régimen general (0.9413ms)
-✔ v11 diagnóstico: 30 puntos en 5 niveles, pesos que suman 1 e índice de 0 a 100 (1.4452ms)
-✔ referencia: rango plausible de P = 44.1–58.2 % (vigente desde v9) (60.0605ms)
+✔ cobro de piso y variables emocionales: neutras por defecto, con efecto al usarlas (1.6617ms)
+✔ v11 fiscal: tabla del RESICO (art. 113-E LISR), tope de 3.5 millones y régimen general (0.8928ms)
+✔ v11 diagnóstico: 30 puntos en 5 niveles, pesos que suman 1 e índice de 0 a 100 (1.7936ms)
+✔ referencia: rango plausible de P = 30.6–46.6 % (vigente desde v13, β del DENUE) (66.1337ms)
 ℹ tests 19
 ℹ suites 0
 ℹ pass 19
@@ -207,7 +193,7 @@ $ npm test
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 1556.5671
+ℹ duration_ms 1597.3938
 ```
 <!-- /t:unitarias -->
 
@@ -216,19 +202,19 @@ $ npm test
 
 ```text
 $ uv run --no-project python scripts/validar_modelo.py
-z=0.0622  margen de seguridad=0.6910  fijos=27000.00
+z=-0.4878  margen de seguridad=0.6910  fijos=27000.00
 Monte Carlo: {'media': 757349.85, 'sd': 179398.86, 'p025': 449283.73, 'p05': 489097.41, 'p50': 744276.67, 'p95': 1072698.1, 'p975': 1149212.79, 'pPos': 1.0}
-S(t): [1, 0.7503, 0.5666, 0.5155, 0.4785, 0.4492, 0.4247, 0.4038, 0.3854, 0.369, 0.3541]
-OK  P        obtenido=0.5155  referencia=0.5155
+S(t): [1, 0.6577, 0.4366, 0.3804, 0.3412, 0.3111, 0.2867, 0.2664, 0.2489, 0.2335, 0.2199]
+OK  P        obtenido=0.3804  referencia=0.38
 OK  util     obtenido=60,370.7400  referencia=60,371
 OK  roi      obtenido=3.0294  referencia=3.029
 OK  payback  obtenido=4.1411  referencia=4
-OK  vpn      obtenido=912,775.5843  referencia=912,776
+OK  vpn      obtenido=686,989.2802  referencia=686,989
 ```
 <!-- /t:validador -->
 
 <!-- t:auditoria -->
-**Auditoría de dependencias** · `npm audit` · código de salida 1 · 5.9 s
+**Auditoría de dependencias** · `npm audit` · código de salida 1 · 5.6 s
 
 ```text
 $ npm audit
@@ -252,25 +238,25 @@ To address all issues (including breaking changes), run:
 <!-- /t:auditoria -->
 
 <!-- t:e2e -->
-**Pruebas en navegador (computadora, teléfono y accesibilidad)** · `npx playwright test --reporter=line` · código de salida 1 · 470.4 s
+**Pruebas en navegador (computadora, teléfono y accesibilidad)** · `npx playwright test --reporter=line` · código de salida 0 · 312.7 s
 
 ```text
 $ npx playwright test --reporter=line
 … (se muestran las últimas 14 líneas)
-[165/174] [movil] › tests\e2e\paginas.spec.js:359:1 › v10: aviso legal con uso aceptable, licencias (ODbL) y revisión profesional
-[166/174] [movil] › tests\e2e\recorrido.spec.js:15:1 › el widget de inicio coincide con el motor y abre el simulador con su estado
-[167/174] [movil] › tests\e2e\paginas.spec.js:368:1 › v11: nombre del negocio, guardado local, alternativas, diagnóstico, fiscal y modelo 2.5D
-[168/174] [movil] › tests\e2e\recorrido.spec.js:27:1 › mapa de zonas: la lista se navega con teclado y la ficha muestra la procedencia
-[169/174] [movil] › tests\e2e\recorrido.spec.js:40:1 › escenario vigente y restablecer referencia
-[170/174] [movil] › tests\e2e\recorrido.spec.js:51:1 › el Worker y el respaldo síncrono reproducen la misma simulación
-[171/174] [movil] › tests\e2e\recorrido.spec.js:74:1 › supervivencia por año y meta de Monte Carlo responden
-[172/174] [movil] › tests\e2e\recorrido.spec.js:83:1 › superficie: lectura exacta, teclado y vista plana
-[173/174] [movil] › tests\e2e\recorrido.spec.js:95:1 › trazabilidad: de un resultado a su fuente
-[174/174] [movil] › tests\e2e\recorrido.spec.js:106:3 › movimiento reducido › la superficie arranca en vista plana con la misma información
-  1 failed
-    [escritorio] › tests\e2e\coatl.spec.js:11:1 › carga sin errores de consola y muestra el escenario de referencia 
+[167/178] [movil] › tests\e2e\paginas.spec.js:318:1 › v12: el aviso legal no deja huecos entre sus dos columnas
+[168/178] [movil] › tests\e2e\recorrido.spec.js:40:1 › escenario vigente y restablecer referencia
+[169/178] [movil] › tests\e2e\paginas.spec.js:331:1 › v12: el código QR lleva el resultado y abre el reporte completo
+[170/178] [movil] › tests\e2e\recorrido.spec.js:51:1 › el Worker y el respaldo síncrono reproducen la misma simulación
+[171/178] [movil] › tests\e2e\recorrido.spec.js:74:1 › supervivencia por año y meta de Monte Carlo responden
+[172/178] [movil] › tests\e2e\paginas.spec.js:359:1 › v10: aviso legal con uso aceptable, licencias (ODbL) y revisión profesional
+[173/178] [movil] › tests\e2e\recorrido.spec.js:83:1 › superficie: lectura exacta, teclado y vista plana
+[174/178] [movil] › tests\e2e\paginas.spec.js:368:1 › v11: nombre del negocio, guardado local, alternativas, diagnóstico, fiscal y modelo 2.5D
+[175/178] [movil] › tests\e2e\recorrido.spec.js:95:1 › trazabilidad: de un resultado a su fuente
+[176/178] [movil] › tests\e2e\recorrido.spec.js:106:3 › movimiento reducido › la superficie arranca en vista plana con la misma información
+[177/178] [movil] › tests\e2e\paginas.spec.js:396:1 › v13: los negocios guardados quedan aislados por usuario y cifrados
+[178/178] [movil] › tests\e2e\paginas.spec.js:426:1 › v13: indicador «cálculo listo» en la página
   26 skipped
-  147 passed (7.7m)
+  152 passed (5.2m)
 ```
 <!-- /t:e2e -->
 <!-- terminal:fin -->
@@ -288,16 +274,18 @@ src/
 scripts/                build, servidor, validador Python, diagrama UML, capturas
 tests/                  unitarias (node:test) y e2e (Playwright)
 docs/                   AUDITORIA, METODOLOGIA, diagrama de proceso, capturas
-entregables/            documento técnico y reporte Word, video, presentación PPTX/PDF, pitch y diagrama
+entregables/            documento técnico y reporte (PDF), presentación (PDF y PPTX), libro de Excel, video y diagrama
 ```
 
 ## Entregables
 
-- [Documento técnico (Word)](entregables/COATL_Documento_Tecnico.docx): cómo funciona COATL, de dónde sale la información y cómo se construyó.
+- [Documento técnico (PDF)](entregables/COATL_Documento_Tecnico.pdf): fundamento, datos, modelo, resultados, verificación, limitaciones e historial completo de versiones.
+- [Reporte técnico (PDF)](entregables/COATL_Reporte.pdf).
+- [Presentación (PDF)](entregables/COATL_Presentacion.pdf) y [PowerPoint editable](entregables/COATL_Presentacion.pptx).
+- [Libro técnico (Excel)](entregables/COATL_Libro_Tecnico.xlsx): todas las tablas del proyecto.
 - [Video para evaluadores](entregables/COATL_Video.mp4), con narración y subtítulos ([.srt](entregables/COATL_Video.srt)).
-- [Reporte técnico (Word)](entregables/COATL_Reporte.docx) y [presentación](entregables/COATL_Presentacion.pptx).
 
-Se regeneran con `node scripts/documento_tecnico_docx.mjs`, `node scripts/video_presentacion.mjs` y `node scripts/reporte_docx.mjs`.
+Todo se regenera con `npm run entregables` (el video, con `npm run entregables -- --video`).
 
 ## Metodología
 

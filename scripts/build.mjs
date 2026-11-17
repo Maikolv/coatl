@@ -117,7 +117,10 @@ export function construir() {
   const js = MODULOS_JS.filter((m) => fs.existsSync(path.join(raiz, m)))
     .map((m) => `/* ===== ${m} ===== */\n${leer(m)}`).join('\n')
     .replace('/*@@WORKER@@*/ null', () => JSON.stringify(worker).replace(/</g, '\\u003c'));
-  const css = leer('src/ui/estilos.css') + '\n' + leer('src/ui/estilos-explorar.css');
+  // Leaflet 1.9.4 (BSD-2) va dentro del estilo del sitio: una petición menos que bloquee el primer pintado.
+  // Sus iconos apuntan a la copia de cdnjs (permitida en img-src).
+  const leafletCss = leer('assets/vendor/leaflet-1.9.4.css').replace(/url\(images\//g, 'url(https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/');
+  const css = '/* Leaflet 1.9.4 (BSD-2) */\n' + leafletCss + '\n' + leer('src/ui/estilos.css') + '\n' + leer('src/ui/estilos-explorar.css');
   // Atributos style="" del HTML → reglas [data-ei] con !important (misma precedencia),
   // para que la CSP no necesite 'unsafe-inline' en style-src.
   const reglas = [];
@@ -157,6 +160,7 @@ export function construir() {
   copiarVideo();
   const plantillas = path.join(raiz, 'assets', 'plantillas');   // plantilla de Excel (scripts/plantilla_excel.mjs)
   if (fs.existsSync(plantillas)) fs.cpSync(plantillas, path.join(raiz, 'dist', 'assets', 'plantillas'), { recursive: true });
+  fs.cpSync(path.join(raiz, 'assets', 'fuentes', 'web'), path.join(raiz, 'dist', 'assets', 'fuentes', 'web'), { recursive: true });   // tipografías del sitio
   for (const sub of ['zonas', 'escenarios', 'iconos']) {   // fotos de zonas y de escenarios (scripts/fotos_sync.mjs)
     const fotos = path.join(raiz, 'assets', 'img', sub);
     if (fs.existsSync(fotos)) fs.cpSync(fotos, path.join(raiz, 'dist', 'assets', 'img', sub), { recursive: true });
@@ -184,9 +188,7 @@ if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.me
 // Uso: node scripts/build.mjs --artifact  →  dist-artifact/index.html
 if (process.argv.includes('--artifact')) {
   const base = fs.readFileSync(path.join(raiz, 'dist', 'index.html'), 'utf8');
-  const leafletCss = leer('assets/vendor/leaflet-1.9.4.css');
   const html = base
-    .replace(/<link rel="stylesheet" href="https:\/\/cdnjs\.cloudflare\.com\/ajax\/libs\/leaflet\/1\.9\.4\/leaflet\.css"[^>]*>/, () => `<style>/* Leaflet 1.9.4 (BSD-2) */\n${leafletCss}</style>`)
     .replace(/<meta http-equiv="Content-Security-Policy"[^>]*>\n?/, '')
     .replace('</style>\n</head>', '#exportarPNG{display:none!important}\n</style>\n</head>');
   fs.mkdirSync(path.join(raiz, 'dist-artifact'), { recursive: true });

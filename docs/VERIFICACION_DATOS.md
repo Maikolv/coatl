@@ -27,7 +27,7 @@ Cada cifra que muestra COATL se cotejó con su fuente primaria.
 ## Impacto en el modelo
 
 - **β₀** se recalibró con la regla documentada (un escenario neutro reproduce S₀(3)): pasa de −0.16 a ln(0.4261/0.5739) ≈ −0.298.
-- **Referencia v5:** P = 51.6 % (rango 44.3–58.3 %) y VPN = $912,776, iguales a la v3. Desde v9 el rango plausible es 44.1–58.2 % (ver METODOLOGIA.md); P y el VPN siguen iguales. El tabulado confirma los primeros cinco años a la precisión usada por el modelo.
+- **Referencia v5:** P = 51.6 % (rango 44.3–58.3 %) y VPN = $912,776, iguales a la v3. De v9 a v12 el rango plausible fue 44.1–58.2 %. Desde v13, con β de giro y zona estimados con el DENUE, la referencia es P = 38.0 % (rango 30.6–46.6 %) y VPN = $686,989 (ver METODOLOGIA.md). El tabulado confirma los primeros cinco años a la precisión usada por el modelo.
 - La utilidad, el ROI y el payback no dependen de S₀, por eso no cambian.
 
 ## Pasos para que verifiques tú (≈15 min)

@@ -10,7 +10,11 @@
 const GRAFICAS_REPORTE=[["graficaSupervivencia","Supervivencia a 10 años"],["graficaMC","Utilidad anual simulada (Monte Carlo, 2,000 años)"],
   ["graficaPE","Punto de equilibrio"],["graficaTornado","Qué mueve tu probabilidad"]];
 const LOGO_SVG='<svg viewBox="0 0 38 38" aria-hidden="true"><rect width="38" height="38" rx="9" fill="#C8102E"/><path d="M8 27 v-5 h5 v-5 h5 v-5 h12 v5 h-7 v5 h-5 v5 z" fill="#fff"/><circle cx="27.5" cy="14.5" r="1.8" fill="#C8102E"/></svg>';
-const URL_PUBLICA="https://maikolv.github.io/coatl/";
+/* Dirección del sitio para el QR: la propia página si está publicada en cualquier dominio; si se abre en el equipo
+   (localhost, 127.0.0.1 o archivo), la dirección canónica que declara la página (<link rel="canonical">), porque un
+   teléfono no puede abrir «localhost». Si el sitio cambia de dominio basta con actualizar el canonical de src/index.html. */
+const URL_PUBLICA=(document.querySelector('link[rel="canonical"]')||{}).href||"https://maikolv.github.io/coatl/";
+const SITIO_LOCAL=location.protocol==="file:"||/^(localhost|127\.\d+\.\d+\.\d+|\[::1\]|0\.0\.0\.0)$/.test(location.hostname)||/\.(local|test|localhost)$/.test(location.hostname);
 const VISTA_REPORTE=new URLSearchParams(location.search).get("reporte")==="1";
 const valorCampo=c=>c.type==="checkbox"?(c.checked?"1":"0"):c.value;
 /* Estado inicial del formulario (escenario de referencia): el QR solo codifica lo que difiere de él. */
@@ -135,7 +139,7 @@ function codificarResultado(){
   return btoa(b).replace(/\+/g,"-").replace(/\//g,"_").replace(/=+$/,"");
 }
 function enlaceResultado(reporte){
-  const base=/\.github\.io$/.test(location.hostname)?location.origin+location.pathname:URL_PUBLICA;   // el teléfono no alcanza a 127.0.0.1
+  const base=SITIO_LOCAL?URL_PUBLICA:location.origin+location.pathname;
   return base+(reporte?"?reporte=1":"")+"#r="+codificarResultado();
 }
 async function cargarResultado(hash){

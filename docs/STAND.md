@@ -73,14 +73,14 @@ El visitante escribe el nombre de su negocio, lo simula, ve su modelo 2.5D y se 
 
 ### Contenido impreso (sale del propio modelo)
 
-- **One-pager:** el problema (más de la mitad de los negocios no llega al tercer año según la tabla del INEGI), la solución, el escenario de referencia *Cafetería · Los Héroes* (P 51.6 %, rango plausible 44.1–58.2 %, ROI 302.9 %, payback 4.1 meses, VPN $912,776), el QR y los autores en este orden: Miguel Antonio Cruz García, Bruno Alejandro López Bautista, Alonso Arroyo Cortés.
+- **One-pager:** el problema (más de la mitad de los negocios no llega al tercer año según la tabla del INEGI), la solución, el escenario de referencia *Cafetería · Los Héroes* (P 38.0 %, rango plausible 30.6–46.6 %, ROI 302.9 %, payback 4.1 meses, VPN $686,989), el QR y los autores en este orden: Miguel Antonio Cruz García, Bruno Alejandro López Bautista, Alonso Arroyo Cortés.
 - **Póster:** diagrama de proceso (`entregables/diagrama-proceso.png`) y un recuadro de «qué NO es» (no predice con exactitud; los β son estimaciones del equipo).
 - Genera los archivos con `npm run entregables` justo antes de imprimir, para que las cifras coincidan con el sitio.
 
 ### Guion de demostración (3 minutos)
 
 1. **Gancho (15 s):** «¿Qué probabilidad tiene una cafetería en Los Héroes de seguir abierta en 3 años?» Que el visitante adivine.
-2. **Simular (60 s):** escribe el nombre del negocio, muestra el mapa de zonas y el 51.6 % con su rango plausible. Cambia la zona o el ticket para que vea moverse P.
+2. **Simular (60 s):** escribe el nombre del negocio, muestra el mapa de zonas y el 38.0 % con su rango plausible. Cambia la zona o el ticket para que vea moverse P.
 3. **Riesgo (45 s):** Monte Carlo (P5 / mediana / P95) y el cobro de piso: al subirlo baja la utilidad.
 4. **Mejorar (45 s):** alternativas para subir P, diagnóstico de 5 niveles con sus borradores, estimación fiscal y el modelo 2.5D de lo que el negocio puede llegar a ser.
 5. **Cierre (15 s):** guarda el negocio, imprime o descarga su reporte y entrega el one-pager con el QR.

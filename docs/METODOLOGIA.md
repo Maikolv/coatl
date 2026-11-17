@@ -62,9 +62,10 @@ No incluyen ISR/RESICO, depreciación, sueldo del dueño, capital de trabajo ni 
 | v1 (original) | ticket 85, CV 45 %, MC sin choque anual | 55.0 % | $41,899 | 212.6 % | 6 | $601,442 |
 | v2 | ticket 95, CV 38 % (giro Cafetería), MC con choque anual | 55.0 % | $60,371 | 302.9 % | 4 | $970,106 |
 | v3 | S₀ oficial hasta el año 5, interpolada del 6 al 10 | 51.6 % | $60,371 | 302.9 % | 4.1 meses | $912,776 |
-| **v5 (vigente)** | S₀ oficial hasta el año 10 | **51.6 %** | **$60,371** | **302.9 %** | **4.1 meses** | **$912,776** |
+| v5 a v12 | S₀ oficial hasta el año 10 | 51.6 % | $60,371 | 302.9 % | 4.1 meses | $912,776 |
+| **v13 (vigente)** | β de giro y zona estimados con el DENUE | **38.0 %** | **$60,371** | **302.9 %** | **4.1 meses** | **$686,989** |
 
-Rango plausible de P: **44.1 %–58.2 %** desde v9 (en v3 a v8 era 44.3 %–58.3 %). El cambio no viene de los datos ni de los coeficientes: v9 agregó tres variables neutras (extorsión, resiliencia y motivación) y `rangoP` hace un sorteo por cada variable, aunque su β sea 0, así que la secuencia del generador se recorre y el P5 y el P95 se mueven una o dos décimas. P, la utilidad, el ROI, el payback y el VPN no cambiaron. La v4 incorporó el recorrido exploratorio con el modelo v3. En v5 cambian los puntos de supervivencia de los años 6–10. P y el VPN dependen de los primeros tres años. La utilidad, el ROI y el payback se calculan sin S₀.
+Rango plausible de P: **30.6 %–46.6 %** desde v13 (44.1 %–58.2 % de v9 a v12) (en v3 a v8 era 44.3 %–58.3 %). El cambio no viene de los datos ni de los coeficientes: v9 agregó tres variables neutras (extorsión, resiliencia y motivación) y `rangoP` hace un sorteo por cada variable, aunque su β sea 0, así que la secuencia del generador se recorre y el P5 y el P95 se mueven una o dos décimas. P, la utilidad, el ROI, el payback y el VPN no cambiaron. La v4 incorporó el recorrido exploratorio con el modelo v3. En v5 cambian los puntos de supervivencia de los años 6–10. P y el VPN dependen de los primeros tres años. La utilidad, el ROI y el payback se calculan sin S₀.
 Monte Carlo v2: DE $179,399; P5 $489,097; P50 $744,277; P95 $1,072,698.
 La prueba `compatibilidad` de `tests/modelo.test.mjs` confirma que con las entradas v1 se recuperan la utilidad y el VPN v1. Ninguna de las dos cantidades depende del Monte Carlo.
 
@@ -84,3 +85,19 @@ La prueba `compatibilidad` de `tests/modelo.test.mjs` confirma que con las entra
 ## Zonas con límites oficiales
 
 `scripts/ageb_sync.mjs` descarga las 70 AGEB urbanas de Coacalco (INEGI, servicio wscatgeo, Marco Geoestadístico de diciembre de 2025, con población del Censo 2020) y asigna cada una a la zona del equipo que contiene su centroide (64 AGEB) o a la más cercana (6). El mapa real dibuja esos límites; el modelo no cambia.
+
+## Coeficientes de giro y zona estimados con el DENUE (v13)
+
+Hasta la versión 12 todos los β eran supuestos del equipo. Desde la 13, los de **giro** y **zona** se estiman con datos:
+
+1. **Por qué funciona.** El DENUE casi no cambia entre censos (99 % de los registros se repite de un año a otro entre 2019 y 2022). El INEGI lo depura cuando levanta los Censos Económicos: ediciones de noviembre de 2019 y de 2024. Los negocios que siguen conservan su identificador; los que cerraron desaparecen.
+2. **Cohorte.** 305,313 negocios incorporados al DENUE en la actualización censal de 2019 en el Estado de México (fecha de alta 2019-11; ninguno estaba en la edición de 2018). 4,654 están en Coacalco.
+3. **Resultado.** Si siguen en la edición de noviembre de 2024: el 54.7 % (66.5 % de todos los negocios del directorio).
+4. **Modelo.** Regresión logística binomial (statsmodels): giro + tamaño en el Estado de México; zona en Coacalco con el resto como desplazamiento. Efectos centrados en el promedio y contraídos por Bayes empírico: β* = β·τ²/(τ² + EE²).
+5. **Aplicación.** `scripts/aplicar_betas.mjs` escribe en `src/datos/datos.js` el β contraído (`z`), su error estándar (`ee`) y el supuesto anterior (`zEq`). Spa conserva el supuesto (no tiene clase SCIAN propia); juguería y pastelería heredan el β de cafetería y panadería (comparten clase).
+
+**Hallazgos.** El corredor López Portillo pasa de +0.30 (supuesto) a −0.26: atrae más negocios, pero también más rotación. La cafetería pasa de −0.08 a −0.33. El escenario de referencia baja de 51.6 % a 38.0 %; utilidad, ROI y recuperación no cambian.
+
+**Límites.** Desaparecer del DENUE no siempre es cerrar (cambio de domicilio o de giro). La cohorte se sigue cinco años y no tres, y empieza con negocios de hasta cinco años. Por eso solo se usan diferencias entre giros y zonas; el nivel de P lo sigue fijando β₀ con la tabla oficial del INEGI. Los β de experiencia, reserva, formalidad, marketing, deuda y demás variables siguen siendo supuestos del equipo.
+
+Detalle por giro y zona, con errores estándar: `data/denue/supervivencia.json`, el documento técnico (capítulo 5) y el libro de Excel (hojas «β DENUE»).

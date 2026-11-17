@@ -6,18 +6,18 @@ import { cargarModelo, escenarioReferencia } from './cargar.mjs';
 const M = cargarModelo();
 const cerca = (a, b, tol, msj) => assert.ok(Math.abs(a - b) <= tol, `${msj}: ${a} vs ${b}`);
 
-// Referencia v5: tabulado nacional del INEGI 1989–2019 y β₀ = logit(S0(3)).
+// Referencia v13: tabulado nacional del INEGI 1989–2019, β₀ = logit(S0(3)) y β de giro y zona estimados con el DENUE.
 test('escenario de referencia Cafetería · Los Héroes', () => {
   const e = escenarioReferencia(M);
   const m = M.modeloLogistico(e);
   const S = M.curvaSupervivencia(m.P);
   const mc = M.monteCarlo(e);
   const f = M.finanzas(e, mc, S);
-  cerca(m.P, 0.5155, 0.0005, 'P');
+  cerca(m.P, 0.3800, 0.0005, 'P');
   cerca(e.utilMes, 60371, 1, 'utilidad mensual');
   cerca(f.roi, 3.029, 0.0005, 'ROI');
   assert.equal(Math.round(f.payback), 4, 'payback');
-  cerca(f.vpn, 912776, 1, 'VPN');
+  cerca(f.vpn, 686989, 1, 'VPN');
 });
 
 test('compatibilidad: con ticket 85 y CV 45 % se recuperan utilidad y payback de la referencia v1', () => {
@@ -141,8 +141,8 @@ test('v11 diagnóstico: 30 puntos en 5 niveles, pesos que suman 1 e índice de 0
   assert.equal(M.indiceMadurez(n1).indice, 35);
 });
 
-test('referencia: rango plausible de P = 44.1–58.2 % (vigente desde v9)', () => {
+test('referencia: rango plausible de P = 30.6–46.6 % (vigente desde v13, β del DENUE)', () => {
   const r = M.rangoP(M.modeloLogistico(escenarioReferencia(M)));
-  assert.equal((r.p05 * 100).toFixed(1), '44.1');
-  assert.equal((r.p95 * 100).toFixed(1), '58.2');
+  assert.equal((r.p05 * 100).toFixed(1), '30.6');
+  assert.equal((r.p95 * 100).toFixed(1), '46.6');
 });

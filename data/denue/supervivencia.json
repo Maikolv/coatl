@@ -1,0 +1,312 @@
+{
+ "fuente": "INEGI, DENUE, descarga masiva por entidad (Estado de México), ediciones 2018_11, 2019_11, 2024_11",
+ "url": "https://www.inegi.org.mx/app/descarga/?ti=6",
+ "generado": "2026-11-17T07:09:42+00:00",
+ "metodo": "Cohortes de negocios nuevos (presentes en la edición de alta y ausentes en la anterior) seguidos 3 años. Regresión logística binomial (statsmodels GLM) con giro, tamaño y cohorte en el Estado de México; zona con los negocios de Coacalco y el resto como desplazamiento. Efectos centrados en el promedio y contraídos hacia 0 por Bayes empírico.",
+ "limitaciones": "Desaparecer del DENUE no siempre significa cerrar (cambio de domicilio o de giro, actualización del directorio). Por eso solo se usan diferencias entre giros y zonas; el nivel absoluto sigue anclado a la tabla oficial del INEGI.",
+ "cohortes": [
+  {
+   "cohorte": "alta 2019-11 → edición 2024_11",
+   "nuevos": 305313,
+   "sobreviven": 167047,
+   "tasa_nuevos": 0.5471,
+   "tasa_todos": 0.6649,
+   "ya_estaban_en_2018": 0
+  }
+ ],
+ "n": 305313,
+ "n_coacalco": 4654,
+ "tamano": {
+  "6-10": [
+   0.2877,
+   0.0212
+  ],
+  "11-30": [
+   0.2324,
+   0.0287
+  ],
+  "31+": [
+   0.0652,
+   0.0466
+  ]
+ },
+ "tau_giro": 0.2475,
+ "tau_zona": 0.2452,
+ "giros": {
+  "abarrotes": {
+   "beta": 0.232,
+   "beta_sin_contraer": 0.2323,
+   "ee": 0.0131,
+   "n": 30457,
+   "sobreviven": 18952
+  },
+  "autolavado": {
+   "beta": -0.17,
+   "beta_sin_contraer": -0.1786,
+   "ee": 0.0551,
+   "n": 1335,
+   "sobreviven": 704
+  },
+  "cafeteria": {
+   "beta": -0.33,
+   "beta_sin_contraer": -0.3332,
+   "ee": 0.0253,
+   "n": 6556,
+   "sobreviven": 3183
+  },
+  "carniceria": {
+   "beta": -0.002,
+   "beta_sin_contraer": -0.0021,
+   "ee": 0.0211,
+   "n": 9818,
+   "sobreviven": 5560
+  },
+  "celulares": {
+   "beta": -0.141,
+   "beta_sin_contraer": -0.1456,
+   "ee": 0.044,
+   "n": 2104,
+   "sobreviven": 1118
+  },
+  "ciber": {
+   "beta": -0.398,
+   "beta_sin_contraer": -0.404,
+   "ee": 0.0306,
+   "n": 4441,
+   "sobreviven": 2068
+  },
+  "consultorio": {
+   "beta": -0.145,
+   "beta_sin_contraer": -0.1484,
+   "ee": 0.0368,
+   "n": 3046,
+   "sobreviven": 1628
+  },
+  "dental": {
+   "beta": 0.481,
+   "beta_sin_contraer": 0.4913,
+   "ee": 0.037,
+   "n": 3439,
+   "sobreviven": 2345
+  },
+  "educacion": {
+   "beta": -0.593,
+   "beta_sin_contraer": -0.6533,
+   "ee": 0.0789,
+   "n": 666,
+   "sobreviven": 277
+  },
+  "estetica": {
+   "beta": 0.005,
+   "beta_sin_contraer": 0.005,
+   "ee": 0.0169,
+   "n": 15997,
+   "sobreviven": 9085
+  },
+  "farmacia": {
+   "beta": 0.234,
+   "beta_sin_contraer": 0.2373,
+   "ee": 0.0309,
+   "n": 4631,
+   "sobreviven": 2891
+  },
+  "ferreteria": {
+   "beta": 0.377,
+   "beta_sin_contraer": 0.3861,
+   "ee": 0.0375,
+   "n": 3247,
+   "sobreviven": 2141
+  },
+  "floreria": {
+   "beta": 0.116,
+   "beta_sin_contraer": 0.1197,
+   "ee": 0.0473,
+   "n": 1881,
+   "sobreviven": 1121
+  },
+  "fonda": {
+   "beta": -0.291,
+   "beta_sin_contraer": -0.2997,
+   "ee": 0.0427,
+   "n": 2244,
+   "sobreviven": 1137
+  },
+  "fruteria": {
+   "beta": -0.239,
+   "beta_sin_contraer": -0.2412,
+   "ee": 0.025,
+   "n": 6749,
+   "sobreviven": 3420
+  },
+  "gimnasio": {
+   "beta": -0.18,
+   "beta_sin_contraer": -0.1852,
+   "ee": 0.0435,
+   "n": 2161,
+   "sobreviven": 1137
+  },
+  "joyeria": {
+   "beta": -0.208,
+   "beta_sin_contraer": -0.2165,
+   "ee": 0.0507,
+   "n": 1577,
+   "sobreviven": 809
+  },
+  "lavanderia": {
+   "beta": -0.116,
+   "beta_sin_contraer": -0.1187,
+   "ee": 0.0385,
+   "n": 2780,
+   "sobreviven": 1494
+  },
+  "naturista": {
+   "beta": -0.109,
+   "beta_sin_contraer": -0.1137,
+   "ee": 0.0506,
+   "n": 1595,
+   "sobreviven": 861
+  },
+  "optica": {
+   "beta": 0.214,
+   "beta_sin_contraer": 0.2268,
+   "ee": 0.0612,
+   "n": 1145,
+   "sobreviven": 712
+  },
+  "panaderia": {
+   "beta": -0.066,
+   "beta_sin_contraer": -0.0673,
+   "ee": 0.0319,
+   "n": 4091,
+   "sobreviven": 2265
+  },
+  "papeleria": {
+   "beta": 0.22,
+   "beta_sin_contraer": 0.2215,
+   "ee": 0.0211,
+   "n": 10270,
+   "sobreviven": 6363
+  },
+  "pizzeria": {
+   "beta": -0.347,
+   "beta_sin_contraer": -0.3532,
+   "ee": 0.0342,
+   "n": 3522,
+   "sobreviven": 1692
+  },
+  "refaccionaria": {
+   "beta": 0.085,
+   "beta_sin_contraer": 0.0878,
+   "ee": 0.041,
+   "n": 2504,
+   "sobreviven": 1478
+  },
+  "restaurante": {
+   "beta": -0.178,
+   "beta_sin_contraer": -0.1926,
+   "ee": 0.0712,
+   "n": 798,
+   "sobreviven": 420
+  },
+  "ropa": {
+   "beta": -0.169,
+   "beta_sin_contraer": -0.1701,
+   "ee": 0.0193,
+   "n": 11782,
+   "sobreviven": 6179
+  },
+  "taller": {
+   "beta": 0.226,
+   "beta_sin_contraer": 0.2282,
+   "ee": 0.0262,
+   "n": 6499,
+   "sobreviven": 4045
+  },
+  "taqueria": {
+   "beta": -0.229,
+   "beta_sin_contraer": -0.2299,
+   "ee": 0.0174,
+   "n": 14799,
+   "sobreviven": 7569
+  },
+  "tecnologia": {
+   "beta": -0.245,
+   "beta_sin_contraer": -0.2615,
+   "ee": 0.0637,
+   "n": 993,
+   "sobreviven": 499
+  },
+  "tortilleria": {
+   "beta": 0.073,
+   "beta_sin_contraer": 0.074,
+   "ee": 0.0264,
+   "n": 6209,
+   "sobreviven": 3631
+  },
+  "veterinaria": {
+   "beta": 0.27,
+   "beta_sin_contraer": 0.2903,
+   "ee": 0.067,
+   "n": 971,
+   "sobreviven": 619
+  },
+  "vinateria": {
+   "beta": -0.072,
+   "beta_sin_contraer": -0.0764,
+   "ee": 0.0639,
+   "n": 998,
+   "sobreviven": 547
+  }
+ },
+ "zonas": {
+  "centro": {
+   "beta": 0.059,
+   "beta_sin_contraer": 0.061,
+   "ee": 0.0505,
+   "n": 1586,
+   "sobreviven": 767
+  },
+  "corredor": {
+   "beta": -0.257,
+   "beta_sin_contraer": -0.2823,
+   "ee": 0.0777,
+   "n": 698,
+   "sobreviven": 278
+  },
+  "flores": {
+   "beta": 0.289,
+   "beta_sin_contraer": 0.3217,
+   "ee": 0.0827,
+   "n": 598,
+   "sobreviven": 332
+  },
+  "heroes": {
+   "beta": -0.26,
+   "beta_sin_contraer": -0.285,
+   "ee": 0.0766,
+   "n": 715,
+   "sobreviven": 289
+  },
+  "periferia": {
+   "beta": 0.219,
+   "beta_sin_contraer": 0.4339,
+   "ee": 0.2425,
+   "n": 70,
+   "sobreviven": 40
+  },
+  "popular": {
+   "beta": 0.077,
+   "beta_sin_contraer": 0.0824,
+   "ee": 0.064,
+   "n": 987,
+   "sobreviven": 485
+  }
+ },
+ "sin_clase_propia": [
+  "spa"
+ ],
+ "comparte_clase_con": {
+  "jugueria": "cafeteria",
+  "pasteleria": "panaderia"
+ }
+}

@@ -30,8 +30,14 @@ $("dado").addEventListener("click",()=>{
   toast("🎲 Escenario sorpresa generado: revisa qué variables lo hacen fuerte o frágil.");
 });
 let tVivo=null;
+/* Indicador «cálculo listo» para quien automatiza o prueba el sitio: <html data-calculo="pendiente|listo">.
+   Pasa a «listo» cuando terminó el cálculo de la última versión, se pintaron todos los apartados y acabó la
+   animación del contador; data-calculo-version cuenta los cálculos terminados. */
+function estadoCalculo(estado){ document.documentElement.dataset.calculo=estado; }
+estadoCalculo("pendiente");
 ["input","change"].forEach(ev=>$("forma").addEventListener(ev,()=>{
   solicitudCalculo=null;
+  estadoCalculo("pendiente");
   marcarPendiente();
   clearTimeout(tVivo); tVivo=setTimeout(calcular,220);
 }));
@@ -285,7 +291,9 @@ function calcular(){
   const e=leerEscenario();
   const modelo=modeloLogistico(e);
   solicitudCalculo={id:++versionCalculo,e,modelo};
+  estadoCalculo("pendiente");
   if(workerActivo){
+    pintarVeredicto(modelo.P);   // la probabilidad logística es inmediata: se muestra sin esperar al Monte Carlo
     marcarPendiente();
     try{
       workerActivo.postMessage(solicitudCalculo);
@@ -310,6 +318,7 @@ function terminarCalculo({id,e,modelo},mc,rango){
      para no bloquear el hilo principal; una versión nueva cancela la anterior. */
   [()=>pintarGraficas(e,mc,S,modelo), ()=>pintarMapa(e,modelo), ()=>pintarFODA(e,modelo,mc), ()=>pintarWidgets(e,modelo,mc,S), ()=>pintarExplorar(e,modelo,mc,S), ()=>pintarMejora(e,modelo,mc,fin)]
     .forEach(f=>setTimeout(()=>{ if(id===versionCalculo) f(); },0));
+  setTimeout(()=>{ if(id===versionCalculo&&!solicitudCalculo&&!tVivo){ estadoCalculo("listo"); document.documentElement.dataset.calculoVersion=String(id); } },700);   // 650 ms dura el contador animado
 }
 /* ---------- 15. Barra de progreso y navegación activa ---------- */
 (function navViva(){

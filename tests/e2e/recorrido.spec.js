@@ -14,14 +14,14 @@ test('los seis widgets terminan en estado «listo» y sin errores', async ({ pag
 
 test('el widget de inicio coincide con el motor y abre el simulador con su estado', async ({ page }) => {
   await ir(page);
-  await expect(page.locator('#demoP')).toHaveText('51.6%');
+  await expect(page.locator('#demoP')).toHaveText('38%');
   await page.locator('#demoClientes').fill('120');
   await expect(page.locator('#demoClientesV')).toHaveText('120');
   const pDemo = await page.locator('#demoP').textContent();
   await page.click('#demoAbrir');
   await expect(page.locator('#clientes')).toHaveValue('120');
   await page.waitForTimeout(1200);
-  await expect(page.locator('#probNum')).toHaveText(pDemo);
+  await expect(page.locator('#probNum')).toHaveText(parseFloat(pDemo).toFixed(1) + '%');   // el widget usa «38%» y el medidor «38.0%»
 });
 
 test('mapa de zonas: la lista se navega con teclado y la ficha muestra la procedencia', async ({ page }) => {
@@ -42,9 +42,9 @@ test('escenario vigente y restablecer referencia', async ({ page }) => {
   await expect(page.locator('#evNombre')).toContainText('Cafetería');
   await page.locator('#experiencia').selectOption('0.38', { force: true });
   await page.waitForTimeout(1200);
-  await expect(page.locator('#probNum')).not.toHaveText('51.6%');
+  await expect(page.locator('#probNum')).not.toHaveText('38.0%');
   await page.click('#restablecer');
-  await expect(page.locator('#probNum')).toHaveText('51.6%', { timeout: 5000 });
+  await expect(page.locator('#probNum')).toHaveText('38.0%', { timeout: 5000 });
   await expect(page.locator('#escVigente')).toHaveAttribute('data-estado', 'vigente');
 });
 
@@ -73,7 +73,7 @@ test('el Worker y el respaldo síncrono reproducen la misma simulación', async 
 
 test('supervivencia por año y meta de Monte Carlo responden', async ({ page }) => {
   await ir(page);
-  await expect(page.locator('#supTabla')).toContainText('51.6%');
+  await expect(page.locator('#supTabla')).toContainText('38%');
   await page.locator('#supAnio').fill('5');
   await expect(page.locator('#supAnioV')).toHaveText('5');
   await page.locator('#mcMeta').fill('0');

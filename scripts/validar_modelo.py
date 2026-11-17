@@ -14,8 +14,8 @@ import sys
 S0 = [1, 0.6908, 0.4812, 0.4261, 0.3871, 0.3568, 0.3320, 0.3111, 0.2930, 0.2770, 0.2627]
 BETA0 = math.log(S0[3] / (1 - S0[3]))
 N_SIM, SEMILLA = 2000, 20262
-GIRO_CAFETERIA_Z = -0.08
-ZONA_HEROES_Z = 0.04
+GIRO_CAFETERIA_Z = -0.33   # estimado con el DENUE (data/denue/supervivencia.json)
+ZONA_HEROES_Z = -0.26     # estimado con el DENUE
 
 # ---- Valores por defecto del formulario (atributos value/selected del HTML) ----
 DEF = dict(
@@ -28,7 +28,7 @@ DEF = dict(
 )
 
 # Referencia v5: tabulado nacional completo del INEGI, β₀ = logit(S0(3)).
-REFERENCIA = dict(P=0.5155, util=60371, roi=3.029, payback=4, vpn=912776)
+REFERENCIA = dict(P=0.3800, util=60371, roi=3.029, payback=4, vpn=686989)
 INC = dict(demandaMensual=0.22, ticket=0.08, demandaAnual=0.15, costoVariable=0.02)
 
 

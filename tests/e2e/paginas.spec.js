@@ -49,19 +49,19 @@ test('cualquier actividad del SCIAN se puede usar como giro, con su competencia 
 
 test('costos propios ilimitados entran al modelo', async ({ page }) => {
   await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('#probNum')).toHaveText('51.6%');
+  await expect(page.locator('#probNum')).toHaveText('38.0%');
   await page.click('#t-finanzas');
   for (let i = 0; i < 3; i++) {
     // Cada captura dispara un recálculo en vivo: se espera a que termine antes del siguiente clic
     // (en CI, un clic dado a medio recálculo llegó a perderse y el total quedaba en $40,000).
-    await expect(page.locator('#escVigente')).toHaveAttribute('data-estado', 'vigente');
+    await expect(page.locator('html')).toHaveAttribute('data-calculo', 'listo');   // indicador «cálculo listo»
     await page.click('#extrasAgregar');
     await expect(page.locator('#extrasLista li')).toHaveCount(i + 1);
     await page.locator('#extrasLista li').last().locator('input[type=number]').fill('20000');
     await expect(page.locator('#extrasTotal')).toHaveText('$' + (20 * (i + 1)) + ',000');
   }
   await expect(page.locator('#extrasTotal')).toHaveText('$60,000');
-  await expect(page.locator('#probNum')).not.toHaveText('51.6%', { timeout: 5000 });
+  await expect(page.locator('#probNum')).not.toHaveText('38.0%', { timeout: 5000 });
 });
 
 test('cada apartado abre por su nombre (#territorio, pestañas y asistente)', async ({ page }) => {
@@ -84,7 +84,7 @@ test('asistente: siempre visible, responde con el motor y ajusta el simulador', 
   }
   await page.click('#asisAbrir');
   await page.click('#asisChips button:has-text("¿Cómo voy?")');
-  await expect(page.locator('#asisLog')).toContainText('51.6%');
+  await expect(page.locator('#asisLog')).toContainText('38.0%');
   await page.fill('#asisTexto', 'farmacia en Villa de las Flores con 90 clientes al día');
   await page.press('#asisTexto', 'Enter');
   await expect(page.locator('#giro')).toHaveValue('farmacia');
@@ -103,7 +103,7 @@ test('asistente con la IA de COATL: el visitante no pone clave y solo viaja el r
     await ruta.fulfill({ json: { texto: 'Respuesta <b>simulada</b> de Gemini.' } });
   });
   await page.goto('/?ia=1#simulador', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('input[type="password"], #descClave')).toHaveCount(0);   // ya no se pide clave
+  await expect(page.locator('input[type="password"]:not(#perfilClave), #descClave')).toHaveCount(0);   // no se pide clave de IA (la de #perfilClave es la del perfil local)
   await page.click('#asisAbrir');
   await expect(page.locator('#asisModo')).toHaveText('IA de COATL · Gemini');
   await page.fill('#asisTexto', '¿Qué opinas de la competencia en mi zona?');
@@ -124,7 +124,7 @@ test('si la IA de COATL no responde, el asistente avisa y sigue en modo local', 
   await page.press('#asisTexto', 'Enter');
   await expect(page.locator('#asisLog .bot').last()).toContainText('límite gratuito');
   await page.click('#asisChips button:has-text("¿Cómo voy?")');
-  await expect(page.locator('#asisLog .bot').last()).toContainText('51.6%');   // el motor local sigue respondiendo
+  await expect(page.locator('#asisLog .bot').last()).toContainText('38.0%');   // el motor local sigue respondiendo
 });
 
 test('describe tu negocio con la IA de COATL: JSON validado ajusta el simulador', async ({ page }) => {
@@ -203,10 +203,10 @@ test('contraste con el censo: dato oficial por giro y opción de aplicarlo', asy
   const caja = page.locator('#censoRef');
   await expect(caja).toBeVisible({ timeout: 15000 });
   await expect(caja).toContainText('241');            // cafeterías de 0 a 10 personas en Coacalco (CE 2019)
-  await expect(page.locator('#probNum')).toHaveText('51.6%');   // los valores por defecto no cambian
+  await expect(page.locator('#probNum')).toHaveText('38.0%');   // los valores por defecto no cambian
   await page.click('#censoAplicar');
   await expect(page.locator('#cvar')).toHaveValue('48');
-  await expect(page.locator('#probNum')).not.toHaveText('51.6%');
+  await expect(page.locator('#probNum')).not.toHaveText('38.0%');
 });
 
 test('mapa real: límites oficiales de AGEB del INEGI', async ({ page }) => {
@@ -217,21 +217,21 @@ test('mapa real: límites oficiales de AGEB del INEGI', async ({ page }) => {
 
 test('v9: extorsión y variables emocionales cambian el resultado; el pago de piso baja la utilidad', async ({ page }) => {
   await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('#probNum')).toHaveText('51.6%');   // neutras por defecto
+  await expect(page.locator('#probNum')).toHaveText('38.0%');   // neutras por defecto
   const util = page.locator('#kpis .kpi', { hasText: 'Utilidad mensual esperada' }).locator('.v');
   await expect(util).toHaveText('$60,371');
   await page.click('#t-ubicacion');
   await page.selectOption('#extorsion', '-0.45');
-  await expect(page.locator('#probNum')).not.toHaveText('51.6%');
+  await expect(page.locator('#probNum')).not.toHaveText('38.0%');
   await page.selectOption('#extorsion', '0');
-  await expect(page.locator('#probNum')).toHaveText('51.6%');
+  await expect(page.locator('#probNum')).toHaveText('38.0%');
   await page.fill('#cobroPiso', '5000');
   await page.locator('#cobroPiso').dispatchEvent('input');
   await expect(util).toHaveText('$55,371');   // la cuota sale completa de la utilidad
   await page.fill('#cobroPiso', '0'); await page.locator('#cobroPiso').dispatchEvent('input');
   await page.click('#t-negocio');
   await page.selectOption('#resiliencia', '-0.15');
-  await expect(page.locator('#probNum')).not.toHaveText('51.6%');
+  await expect(page.locator('#probNum')).not.toHaveText('38.0%');
 });
 
 test('v9: la lista de giros incluye todas las actividades presentes en Coacalco (DENUE)', async ({ page }) => {
@@ -272,7 +272,7 @@ test('v9: ninguna foto del sitio se repite y todas cargan', async ({ page }) => 
 test('v10: simulador de plan, matriz de impacto y calendario de 90 días', async ({ page }) => {
   await page.goto('/?vista=todo#estrategia', { waitUntil: 'load' });
   for (const w of ['wPlan', 'wRiesgo', 'wCalendario']) await expect(page.locator('#' + w)).toHaveAttribute('data-estado', 'listo');
-  await expect(page.locator('#planRes')).toContainText('51.6% →');
+  await expect(page.locator('#planRes')).toContainText('38.0% →');
   const antes = await page.locator('#planRes strong').textContent();
   await page.locator('#planOpciones input:checked').first().click();
   await expect(page.locator('#planRes strong')).not.toHaveText(antes);
@@ -330,10 +330,10 @@ test('v12: el aviso legal no deja huecos entre sus dos columnas', async ({ page 
 
 test('v12: el código QR lleva el resultado y abre el reporte completo', async ({ page, context }) => {
   await page.goto('/#simulador', { waitUntil: 'load' });
-  await expect(page.locator('#probNum')).toHaveText('51.6%');
+  await expect(page.locator('#probNum')).toHaveText('38.0%');
   await page.fill('#negocioNombre', 'Café La Serpiente');
   await page.click('#t-ubicacion'); await page.selectOption('#zona', 'centro');
-  await expect(page.locator('#probNum')).toHaveText('53.5%');
+  await expect(page.locator('#probNum')).toHaveText('45.8%');
   await page.click('#qrResultado');
   await expect(page.locator('#dlgQR')).toBeVisible();
   const url = await page.locator('#dlgQR').getAttribute('data-url');
@@ -347,7 +347,7 @@ test('v12: el código QR lleva el resultado y abre el reporte completo', async (
   await tel.goto('/' + url.slice(url.indexOf('?')), { waitUntil: 'load' });
   const rep = tel.locator('#reporteNegocio[data-listo="1"]');
   await expect(rep).toBeVisible({ timeout: 60000 });
-  for (const t of ['Café La Serpiente', 'Centro', '53.5%', 'Parte 1 · Resultado del simulador', 'Parte 2 · Estrategia y plan de acción', 'Calendario de 90 días']) await expect(rep).toContainText(t);
+  for (const t of ['Café La Serpiente', 'Centro', '45.8%', 'Parte 1 · Resultado del simulador', 'Parte 2 · Estrategia y plan de acción', 'Calendario de 90 días']) await expect(rep).toContainText(t);
   await expect(tel.locator('#repGuardar')).toBeVisible();
   expect(await tel.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
   // Un enlace dañado no rompe el sitio
@@ -373,14 +373,16 @@ test('v11: nombre del negocio, guardado local, alternativas, diagnóstico, fisca
   await expect(page.locator('#madB-uvp')).toContainText('Café La Serpiente');
   await page.click('#negocioGuardar');
   await expect(page.locator('#negocioLista option')).toHaveCount(2);
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('coatl-negocios')).length)).toBe(1);
+  expect(await page.evaluate(() => JSON.parse(sessionStorage.getItem('coatl-negocios-sesion')).length)).toBe(1);   // sin perfil: solo esta pestaña
+  expect(await page.evaluate(() => Object.keys(localStorage).filter((k) => k.startsWith('coatl-')).length)).toBe(0);
   await expect(page.locator('#madurezNiveles .mad-item')).toHaveCount(30);
   await expect(page.locator('#fiscalCuerpo')).toContainText('RESICO');
   await expect(page.locator('#escenaNegocio svg')).toBeVisible();
   await page.click('#escenaPotencial');
   await expect(page.locator('#escenaPotencial')).toHaveAttribute('aria-pressed', 'true');
-  await expect(page.locator('#probNum')).toHaveText('51.6%');   // el contador del score es animado: se espera el valor final
-  const antes = '51.6%';
+  await expect(page.locator('html')).toHaveAttribute('data-calculo', 'listo');   // cálculo terminado y contador detenido
+  await expect(page.locator('#probNum')).toHaveText('38.0%');
+  const antes = '38.0%';
   await page.locator('#alternativas button').first().click();
   await expect(page.locator('#altDeshacer')).toBeVisible();
   await expect(page.locator('#probNum')).not.toHaveText(antes);
@@ -388,5 +390,48 @@ test('v11: nombre del negocio, guardado local, alternativas, diagnóstico, fisca
   await expect(page.locator('#probNum')).toHaveText(antes);
   await page.selectOption('#negocioLista', 'Café La Serpiente');
   await page.click('#negocioEliminar');
-  expect(await page.evaluate(() => JSON.parse(localStorage.getItem('coatl-negocios')).length)).toBe(0);
+  expect(await page.evaluate(() => JSON.parse(sessionStorage.getItem('coatl-negocios-sesion')).length)).toBe(0);
+});
+
+test('v13: los negocios guardados quedan aislados por usuario y cifrados', async ({ page, context }) => {
+  await page.goto('/#simulador', { waitUntil: 'load' });
+  const entrar = async (u, c) => { await page.fill('#perfilUsuario', u); await page.fill('#perfilClave', c); await page.click('#perfilEntrar'); };
+  // Ana crea su perfil y guarda un negocio
+  await entrar('ana', 'clave-ana');
+  await expect(page.locator('#perfilSalir')).toBeVisible();
+  await page.fill('#negocioNombre', 'Florería de Ana');
+  await page.click('#negocioGuardar');
+  await expect(page.locator('#negocioLista option')).toHaveCount(2);
+  // En el almacenamiento no aparece ni el usuario ni el nombre del negocio
+  const crudo = await page.evaluate(() => Object.entries(localStorage).filter(([k]) => k.startsWith('coatl-')).map(([k, v]) => k + v).join(''));
+  expect(crudo).not.toContain('Florer'); expect(crudo).not.toContain('ana');
+  await page.click('#perfilSalir');
+  await expect(page.locator('#negocioLista option')).toHaveCount(1);
+  // Beto, en el mismo navegador, no ve nada de Ana
+  await entrar('beto', 'clave-beto');
+  await expect(page.locator('#perfilSalir')).toBeVisible();
+  await expect(page.locator('#negocioLista option')).toHaveCount(1);
+  await page.click('#perfilSalir');
+  // Con la clave equivocada no se abre
+  await entrar('ana', 'otra-clave');
+  await expect(page.locator('#negocioNota')).toContainText('incorrectos');
+  await expect(page.locator('#perfilSalir')).toBeHidden();
+  // Con la correcta, en otra pestaña, Ana recupera su negocio
+  const otra = await context.newPage();
+  await otra.goto('/#simulador', { waitUntil: 'load' });
+  await otra.fill('#perfilUsuario', 'Ana'); await otra.fill('#perfilClave', 'clave-ana'); await otra.click('#perfilEntrar');
+  await expect(otra.locator('#negocioLista')).toContainText('Florería de Ana');
+});
+
+test('v13: indicador «cálculo listo» en la página', async ({ page }) => {
+  await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
+  const html = page.locator('html');
+  await expect(html).toHaveAttribute('data-calculo', 'listo', { timeout: 20000 });
+  const v0 = Number(await html.getAttribute('data-calculo-version'));
+  await expect(page.locator('#probNum')).toHaveText('38.0%');
+  await page.selectOption('#experiencia', '0.30');   // cambia un β: la probabilidad tiene que moverse
+  await expect(html).toHaveAttribute('data-calculo', 'pendiente');
+  await expect(html).toHaveAttribute('data-calculo', 'listo');
+  expect(Number(await html.getAttribute('data-calculo-version'))).toBeGreaterThan(v0);
+  await expect(page.locator('#probNum')).not.toHaveText('38.0%');
 });

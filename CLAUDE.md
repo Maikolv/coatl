@@ -20,14 +20,14 @@ index.html             GENERADO por `npm run build` (no editar a mano); también
 tests/                 modelo.test.mjs (node:test) y e2e/ (Playwright)
 scripts/               build, servir, validar_modelo.py, diagrama_uml.mjs, capturas.mjs
 docs/                  AUDITORIA.md, METODOLOGIA.md, diagrama-proceso.svg/png, capturas/
-entregables/           Pitch PPTX y diagrama
+entregables/           Documento técnico, reporte y presentación (PDF/PPTX), libro de Excel, video y diagrama
 .github/workflows/     Pruebas → build → deploy de dist/ a GitHub Pages
 ```
 
 ## Stack
 
 - HTML/CSS/JS autocontenido (originalmente React/Vite empaquetado). Sin backend.
-- Leaflet **1.9.4** y Chart.js **4.4.1**, ambos desde cdnjs con SRI sha384; OpenStreetMap / Esri; Google Fonts. CSP en meta.
+- Leaflet **1.9.4** y Chart.js **4.4.1**, ambos desde cdnjs con SRI sha384 (CSS de Leaflet incorporado); OpenStreetMap / Esri; tipografías propias en `assets/fuentes/web/`. CSP en meta.
 - Deploy: GitHub Pages vía GitHub Actions (`.nojekyll` presente).
 - Documentos: `docx` (Node), `pptxgenjs`, Sharp, matplotlib, LibreOffice headless, `pdftoppm`.
 
@@ -44,19 +44,19 @@ Funciones núcleo: `modeloLogistico`, `rangoP`, `monteCarlo`, `curvaSupervivenci
 
 Alcance funcional: 35 giros de negocio, 36 variables en 4 pestañas (incluye riesgo de extorsión, pago de piso, resiliencia y motivación; neutras por defecto), 6 zonas con polígonos de color en el mapa.
 
-### Escenario de referencia (prueba de regresión) — v5 (S₀ oficial INEGI hasta el año 10)
+### Escenario de referencia (prueba de regresión) — v13 (S₀ oficial INEGI y β de giro y zona estimados con el DENUE)
 
 **Cafetería · Los Héroes** (valores por defecto: ticket 95, CV 38 %) debe dar:
 
 | Métrica | Valor |
 |---|---|
-| P(supervivencia 3 años) | 51.6 % (rango plausible 44.1–58.2 %; era 44.3–58.3 % hasta v8) |
+| P(supervivencia 3 años) | 38.0 % (rango plausible 30.6–46.6 %) |
 | Utilidad mensual | ≈ $60,371 |
 | ROI | 302.9 % |
 | Payback | 4 meses (4.1) |
-| VPN | $912,776 |
+| VPN | $686,989 |
 
-v1 (55.0 %, $41,899, 212.6 %, 6, $601,442) y v2 (55.0 %, $60,371, 302.9 %, 4, $970,106) usaban una S₀(t) aproximada y β₀ = −0.16; ver docs/METODOLOGIA.md y docs/VERIFICACION_DATOS.md. Lo vigilan `tests/modelo.test.mjs`, `scripts/validar_modelo.py` y la e2e. Cualquier cambio en el modelo debe reproducir estos números o documentar explícitamente por qué cambian.
+v1 (55.0 %, $41,899, 212.6 %, 6, $601,442) y v2 (55.0 %, $60,371, 302.9 %, 4, $970,106) usaban una S₀(t) aproximada y β₀ = −0.16; v3–v12 (51.6 %, rango 44.1–58.2 %, VPN $912,776) usaban β de giro y zona supuestos por el equipo; ver docs/METODOLOGIA.md y docs/VERIFICACION_DATOS.md. Lo vigilan `tests/modelo.test.mjs`, `scripts/validar_modelo.py` y la e2e. Cualquier cambio en el modelo debe reproducir estos números o documentar explícitamente por qué cambian.
 
 ## Identidad visual (FIJA)
 
@@ -137,7 +137,7 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - Grecas animadas (`grecaMarcha`); pausa global con #pausaMovimiento (`body.sin-movimiento`).
 - Plantilla de Excel: `node scripts/plantilla_excel.mjs` → `assets/plantillas/` (el build la copia a dist). Requiere `exceljs`.
 - Orden de módulos: negocios, mejora y reporte van ANTES de app.js (app.js calcula al cargar).
-- Rango plausible de referencia: 44.1–58.2 % desde v9 (antes 44.3–58.3 %); lo vigila `tests/modelo.test.mjs`. Ver docs/METODOLOGIA.md.
+- Rango plausible de referencia: ver v13.
 
 ## v12: resultado para llevar, documentos y video
 
@@ -147,12 +147,21 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - Documentos: `node scripts/documentos.mjs [tecnico|reporte|presentacion|excel|versiones]` (`scripts/doc/`: datos.mjs, kit.mjs, contenido.mjs, presentacion.mjs, libro_excel.mjs). PDF compuestos con Chromium y las fuentes del sitio; nunca con LibreOffice (descoloca β y S₀). Historial ÚNICO en `data/versiones.json`: al publicar una versión, agregarla ahí.
 - Video: narrador por escena; grabaciones en `entregables/voces/NN-escena.*` (no se versionan); pauta `docs/GUION_VOCES.md` (`--guion`).
 
+## v13: β estimados, perfiles cifrados y carga
+
+- β de giro y zona estimados con el DENUE: `uv run --no-project --with numpy --with statsmodels python scripts/denue_supervivencia.py` (descarga las ediciones 2018_11, 2019_11 y 2024_11 del Estado de México a `.cache/denue/historico/`, ≈ 450 MB) → `data/denue/supervivencia.json`; luego `node scripts/aplicar_betas.mjs` escribe `z`, `ee`, `zEq` (supuesto anterior) y `fz` en `src/datos/datos.js`. Cohorte = alta 2019-11; resultado = sigue en 2024_11. Solo diferencias; el nivel lo fija β₀.
+- `src/ui/negocios.js`: perfiles con usuario y clave (PBKDF2 250k + AES-GCM, llave solo en memoria); sin perfil → `sessionStorage`. La clave vieja `coatl-negocios` se migra a la pestaña y se borra.
+- Carga: tipografías en `assets/fuentes/web/` (woff2 variables, @fontsource-variable) con `font-src 'self'`; Leaflet CSS dentro del estilo (build); P se pinta antes del Monte Carlo.
+- Indicador `<html data-calculo="pendiente|listo" data-calculo-version>`: en pruebas, espera `listo` en vez de tiempos fijos.
+- QR: base = la página si no es local; si es local, `<link rel="canonical">`.
+- Documentos Word y pitch heredados retirados; los entregables son PDF, PPTX y XLSX de `scripts/documentos.mjs`.
+
 ## Pendiente
 
 - Monte Carlo y el rango plausible de P se calculan en un Web Worker desde un Blob generado por el build. Si falla el Worker, se usa el motor síncrono.
 
 - S₀(t) usa el tabulado nacional del INEGI 1989–2019 para t = 1…10. Los datos por giro siguen siendo estimaciones del equipo.
-- Documento técnico: `node scripts/documento_tecnico_docx.mjs` → `entregables/COATL_Documento_Tecnico.docx`. Video para evaluadores: `node scripts/video_presentacion.mjs` → `entregables/COATL_Video.mp4` + `.srt` (Windows: voz Sabina, Edge y ffmpeg). Todo documento usa la paleta, la greca y las tipografías del sitio (`assets/fuentes/`, incrustadas).
+- Video para evaluadores: `node scripts/video_presentacion.mjs` → `entregables/COATL_Video.mp4` + `.srt` (Windows: voz Sabina, Edge y ffmpeg). Todo documento usa la paleta, la greca y las tipografías del sitio (`assets/fuentes/`, incrustadas).
 - Teléfono: `tests/e2e/orientacion.spec.js` revisa vertical, horizontal y rotación; en horizontal bajo la barra superior no es fija.
-- Reporte y presentación se generan con `node scripts/reporte_docx.mjs` y `node scripts/presentacion_pptx.mjs` (cifras tomadas del propio modelo). La foto de contexto es obra de ProtoplasmaKid, publicada en Wikimedia Commons bajo CC BY-SA 4.0. [Ficha de la foto](https://commons.wikimedia.org/wiki/File:Coacalco_Estado_Mexico.JPG).
+- La foto de contexto es obra de ProtoplasmaKid, publicada en Wikimedia Commons bajo CC BY-SA 4.0. [Ficha de la foto](https://commons.wikimedia.org/wiki/File:Coacalco_Estado_Mexico.JPG).
 - Diagrama UML de 6 carriles: hecho (`scripts/diagrama_uml.mjs` → docs/ y entregables/).

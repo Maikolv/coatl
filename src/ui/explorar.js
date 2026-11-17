@@ -76,7 +76,7 @@ function pintarFicha25(){
     '<div><dt>Utilidad mensual esperada</dt><dd>'+mxn.format(Math.round(d.util))+' <span class="proc proc-modelo">resultado del modelo</span></dd></div>'+
     '<div><dt>Afluencia relativa</dt><dd>'+d.z.afl.toFixed(2)+' (1.00 = promedio) <span class="proc proc-supuesto">estimación del equipo</span></dd></div>'+
     '<div><dt>Renta de referencia</dt><dd>$'+d.z.rm2+'/m²·mes <span class="proc proc-supuesto">estimación del equipo</span></dd></div>'+
-    '<div><dt>Ajuste β de la zona</dt><dd>'+(d.z.z>0?"+":"")+d.z.z.toFixed(2)+' <span class="proc proc-supuesto">estimación del equipo</span></dd></div></dl></div>';
+    '<div><dt>Ajuste β de la zona</dt><dd>'+(d.z.z>0?"+":"")+d.z.z.toFixed(2)+(d.z.fz==="denue"?' ± '+d.z.ee.toFixed(2)+' <span class="proc proc-oficial">estimado con el DENUE</span>':' <span class="proc proc-supuesto">estimación del equipo</span>')+'</dd></div></dl></div>';
   $("mapa25Abrir").textContent=d.k===escZonaActual?"Esta ya es la zona del simulador ↓":"Abrir el simulador en "+CORTOS[d.k]+" →";
 }
 $("mapa25Lista").addEventListener("click",ev=>{const li=ev.target.closest("li[data-zona]"); if(li) elegirZona25(li.dataset.zona)});
@@ -229,7 +229,7 @@ if(reduceMov()){ $("supPlano").checked=true; $("supEscena").classList.add("plana
 const TRAZA=[
   {id:"P", r:"Probabilidad a 3 años (P)", v:()=>ultimoModelo?pct(ultimoModelo.P):"—", formula:"P = 1/(1+e^(−z)), z = β₀ + Σβᵢxᵢ",
    vars:"Giro, zona, experiencia, reserva, competencia, formalidad, marketing, deuda, local, margen de seguridad, modelo de negocio, permisos, modalidad, horario",
-   fuente:"β₀: INEGI, Demografía de los Negocios (tabla 1989–2019, S₀(3) = 0.426)", periodo:"1989–2019", tipo:"resultado", sup:"Los βᵢ son estimación del equipo", url:"https://www.inegi.org.mx/contenidos/programas/dn/2021/doc/Nota_Demo_Negocios.pdf"},
+   fuente:"β₀: INEGI, Demografía de los Negocios (tabla 1989–2019, S₀(3) = 0.426)", periodo:"1989–2019", tipo:"resultado", sup:"β de giro y zona estimados con el DENUE 2019→2024; los demás βᵢ son estimación del equipo", url:"https://www.inegi.org.mx/contenidos/programas/dn/2021/doc/Nota_Demo_Negocios.pdf"},
   {id:"rango", r:"Rango plausible de P (P5–P95)", v:()=>ultimoModelo?pct(rangoP(ultimoModelo).p05)+" – "+pct(rangoP(ultimoModelo).p95):"—", formula:"βᵢ·(1+0.30ε), β₀+0.15ε; 1,000 sorteos",
    vars:"Los mismos βᵢ del modelo logístico", fuente:"Análisis de sensibilidad del equipo (no es un intervalo muestral)", periodo:"—", tipo:"resultado", sup:"Desviaciones de 30 % y 0.15: estimación del equipo", url:""},
   {id:"S", r:"Curva de supervivencia S(t)", v:()=>ultimoS?"S(5) = "+pct(ultimoS[5]):"—", formula:"S(t) = S₀(t)^h, h = ln P / ln S₀(3)",

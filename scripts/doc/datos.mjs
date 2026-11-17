@@ -55,8 +55,16 @@ export const REF = {
 };
 
 // ---------- Giros, zonas y matriz giro × zona ----------
-export const GIROS = Object.entries(M.GIROS).map(([k, g]) => ({ k, n: g.n, ticket: g.ticket, cv: g.cv, dem: g.dem, z: g.z }));
-export const ZONAS = Object.entries(M.ZONAS).map(([k, z]) => ({ k, n: z.n, afl: z.afl, rm2: z.rm2, z: z.z }));
+export const GIROS = Object.entries(M.GIROS).map(([k, g]) => ({ k, n: g.n, ticket: g.ticket, cv: g.cv, dem: g.dem, z: g.z, ee: g.ee, zEq: g.zEq, fz: g.fz }));
+export const ZONAS = Object.entries(M.ZONAS).map(([k, z]) => ({ k, n: z.n, afl: z.afl, rm2: z.rm2, z: z.z, ee: z.ee, zEq: z.zEq, fz: z.fz }));
+// Estimación de los β de giro y zona con ediciones sucesivas del DENUE (scripts/denue_supervivencia.py).
+export const SUP = JSON.parse(leer('data/denue/supervivencia.json'));
+const sg = (x) => (x > 0 ? '+' : x < 0 ? '−' : '') + Math.abs(x).toFixed(2);
+export const TABLA_BETA_GIROS = GIROS.map((g) => { const s = SUP.giros[g.k];
+  return s ? [g.n, sg(s.beta), '± ' + s.ee.toFixed(3), sg(s.beta_sin_contraer), s.n.toLocaleString('es-MX'), pct(s.sobreviven / Math.max(1, s.n)), sg(g.zEq), s.comparte_clase_con ? 'comparte clase con ' + M.GIROS[s.comparte_clase_con].n : 'DENUE']
+    : [g.n, sg(g.z), '—', '—', '—', '—', sg(g.zEq), 'equipo*']; });
+export const TABLA_BETA_ZONAS = ZONAS.map((z) => { const s = SUP.zonas[z.k];
+  return [z.n, sg(s.beta), '± ' + s.ee.toFixed(3), sg(s.beta_sin_contraer), s.n.toLocaleString('es-MX'), pct(s.sobreviven / Math.max(1, s.n)), sg(z.zEq)]; });
 const escenarioDe = (g, z) => escenarioReferencia(M, { giro: M.GIROS[g.k], zona: M.ZONAS[z.k], zonaKey: z.k, ticket: g.ticket, cv: g.cv / 100, mu: Math.max(1, Math.round(g.dem * z.afl)), renta: z.rm2 * 50 });
 export const MATRIZ = GIROS.map((g) => ({ giro: g.n, celdas: ZONAS.map((z) => { const x = escenarioDe(g, z); return { P: M.modeloLogistico(x).P, util: x.utilMes }; }) }));
 

@@ -2,120 +2,394 @@
   "_nota": "Fuente única del historial de versiones de COATL. La leen el documento técnico, el reporte, la presentación, el libro de Excel y docs/VERSIONES.md. Al publicar una versión nueva se agrega aquí una entrada y se ejecuta `npm run entregables`.",
   "versiones": [
     {
-      "id": "v1", "fecha": "2026-11-12", "titulo": "Importación inicial",
+      "id": "v1",
+      "fecha": "2026-11-12",
+      "titulo": "Importación inicial",
       "resumen": "Primera versión funcional: un solo archivo HTML con el modelo logístico, la curva de supervivencia, el Monte Carlo y las finanzas.",
       "motivo": "Punto de partida del proyecto de Probabilidad y Estadística: demostrar que la supervivencia de un negocio en Coacalco puede estimarse con un modelo reproducible.",
-      "cambios": ["Aplicación de una sola página con 35 giros y 6 zonas.", "Modelo logístico con coeficientes del equipo, supervivencia aproximada y Monte Carlo sin choque anual.", "Auditoría inicial y validador del modelo en Python para vigilar el escenario de referencia."],
+      "cambios": [
+        "Aplicación de una sola página con 35 giros y 6 zonas.",
+        "Modelo logístico con coeficientes del equipo, supervivencia aproximada y Monte Carlo sin choque anual.",
+        "Auditoría inicial y validador del modelo en Python para vigilar el escenario de referencia."
+      ],
       "modelo": "β₀ = −0.16; S₀(t) aproximada; ticket 85 y costo variable 45 % en el escenario de referencia.",
-      "referencia": { "P": "55.0 %", "utilidad": "$41,899", "roi": "212.6 %", "payback": "6 meses", "vpn": "$601,442" },
-      "commits": ["69509f3", "ed5ec65"]
+      "referencia": {
+        "P": "55.0 %",
+        "utilidad": "$41,899",
+        "roi": "212.6 %",
+        "payback": "6 meses",
+        "vpn": "$601,442"
+      },
+      "commits": [
+        "69509f3",
+        "ed5ec65"
+      ]
     },
     {
-      "id": "v2", "fecha": "2026-11-12", "titulo": "Modelo v2, módulos y pruebas",
+      "id": "v2",
+      "fecha": "2026-11-12",
+      "titulo": "Modelo v2, módulos y pruebas",
       "resumen": "El código se separa en módulos con un build autocontenido; el Monte Carlo incorpora un choque anual común y se reportan P5, mediana y P95; aparece el rango plausible de P.",
       "motivo": "Una auditoría mostró que el Monte Carlo subestimaba la dispersión (cada mes era independiente) y que P se presentaba como cifra exacta.",
-      "cambios": ["Separación de index.html en src/ (datos, modelo, interfaz, mapa) con build sin dependencias.", "Monte Carlo con choque anual de demanda, ruido mensual y ruido de costo variable; cuantil tipo 7.", "Rango plausible de P perturbando los β (sensibilidad, no intervalo de confianza).", "Widgets: tornado de β, banda de supervivencia, comparador de escenarios, exportar y compartir.", "Pruebas unitarias, pruebas de navegador con Playwright y CI que prueba antes de publicar.", "Diagrama UML de 6 carriles y documento de metodología.", "Revisión de Codex: validación de entradas, controles conectados al modelo y accesibilidad."],
+      "cambios": [
+        "Separación de index.html en src/ (datos, modelo, interfaz, mapa) con build sin dependencias.",
+        "Monte Carlo con choque anual de demanda, ruido mensual y ruido de costo variable; cuantil tipo 7.",
+        "Rango plausible de P perturbando los β (sensibilidad, no intervalo de confianza).",
+        "Widgets: tornado de β, banda de supervivencia, comparador de escenarios, exportar y compartir.",
+        "Pruebas unitarias, pruebas de navegador con Playwright y CI que prueba antes de publicar.",
+        "Diagrama UML de 6 carriles y documento de metodología.",
+        "Revisión de Codex: validación de entradas, controles conectados al modelo y accesibilidad."
+      ],
       "modelo": "Valores por defecto de Cafetería: ticket 95 y costo variable 38 %. Monte Carlo con choque anual.",
-      "referencia": { "P": "55.0 %", "utilidad": "$60,371", "roi": "302.9 %", "payback": "4 meses", "vpn": "$970,106" },
-      "commits": ["e988ea4", "d1838b4", "b5cd60a", "8352ca5", "e4b679f", "ceb519b", "a245ce2"]
+      "referencia": {
+        "P": "55.0 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4 meses",
+        "vpn": "$970,106"
+      },
+      "commits": [
+        "e988ea4",
+        "d1838b4",
+        "b5cd60a",
+        "8352ca5",
+        "e4b679f",
+        "ceb519b",
+        "a245ce2"
+      ]
     },
     {
-      "id": "v3", "fecha": "2026-11-12", "titulo": "Datos verificados del INEGI",
+      "id": "v3",
+      "fecha": "2026-11-12",
+      "titulo": "Datos verificados del INEGI",
       "resumen": "La supervivencia base pasa a ser la tabla oficial del INEGI 1989–2019 y β₀ se recalibra para reproducir la supervivencia nacional a 3 años.",
       "motivo": "La S₀(t) original era una aproximación. Con la tabla oficial, un escenario neutro debe dar la supervivencia nacional (42.6 % a 3 años).",
-      "cambios": ["S₀(t) oficial hasta el año 5 e interpolada del 6 al 10.", "β₀ = ln(0.4261/0.5739) ≈ −0.298.", "Reporte en Word y presentación generados directamente del modelo.", "Documento de verificación de datos (VERIFICACION_DATOS.md).", "Seguridad: política de contenido con hashes y cabeceras, tras un escaneo dinámico.", "Desglose sectorial con los conteos oficiales del DENUE para Coacalco."],
+      "cambios": [
+        "S₀(t) oficial hasta el año 5 e interpolada del 6 al 10.",
+        "β₀ = ln(0.4261/0.5739) ≈ −0.298.",
+        "Reporte en Word y presentación generados directamente del modelo.",
+        "Documento de verificación de datos (VERIFICACION_DATOS.md).",
+        "Seguridad: política de contenido con hashes y cabeceras, tras un escaneo dinámico.",
+        "Desglose sectorial con los conteos oficiales del DENUE para Coacalco."
+      ],
       "modelo": "β₀ ≈ −0.298; S₀(3) = 0.4261. La probabilidad de referencia baja de 55.0 % a 51.6 % y el VPN de $970,106 a $912,776.",
-      "referencia": { "P": "51.6 %", "utilidad": "$60,371", "roi": "302.9 %", "payback": "4.1 meses", "vpn": "$912,776" },
-      "commits": ["ef8940e", "af302d3", "3414905", "6c01118", "e7acfa2"]
+      "referencia": {
+        "P": "51.6 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$912,776"
+      },
+      "commits": [
+        "ef8940e",
+        "af302d3",
+        "3414905",
+        "6c01118",
+        "e7acfa2"
+      ]
     },
     {
-      "id": "v4", "fecha": "2026-11-12", "titulo": "Recorrido exploratorio",
+      "id": "v4",
+      "fecha": "2026-11-12",
+      "titulo": "Recorrido exploratorio",
       "resumen": "El sitio deja de ser un formulario con resultados y se vuelve un recorrido: cada widget plantea una pregunta, permite una interacción y responde con el mismo motor.",
       "motivo": "Los evaluadores entendían mejor el modelo cuando podían mover un supuesto y ver el efecto de inmediato.",
-      "cambios": ["Widgets de inicio (clientes por día y mapa de zonas) con estados cargando, listo, vacío y error.", "Profundidad con SVG isométrico y capas; sin WebGL.", "Trazabilidad: de cada resultado a su fuente.", "Pruebas de teclado, movimiento reducido y coincidencia con el motor."],
+      "cambios": [
+        "Widgets de inicio (clientes por día y mapa de zonas) con estados cargando, listo, vacío y error.",
+        "Profundidad con SVG isométrico y capas; sin WebGL.",
+        "Trazabilidad: de cada resultado a su fuente.",
+        "Pruebas de teclado, movimiento reducido y coincidencia con el motor."
+      ],
       "modelo": "Sin cambios en el modelo (el de v3).",
-      "referencia": { "P": "51.6 %", "utilidad": "$60,371", "roi": "302.9 %", "payback": "4.1 meses", "vpn": "$912,776" },
-      "commits": ["1580230", "4ff0e6e", "b05a2fb"]
+      "referencia": {
+        "P": "51.6 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$912,776"
+      },
+      "commits": [
+        "1580230",
+        "4ff0e6e",
+        "b05a2fb"
+      ]
     },
     {
-      "id": "v5", "fecha": "2026-11-12", "titulo": "S₀ oficial hasta el año 10 y cálculo en segundo plano",
+      "id": "v5",
+      "fecha": "2026-11-12",
+      "titulo": "S₀ oficial hasta el año 10 y cálculo en segundo plano",
       "resumen": "La curva base usa el tabulado oficial completo (t = 1…10) y el Monte Carlo y el rango plausible se calculan en un Web Worker.",
       "motivo": "Eliminar la interpolación de los años 6 a 10 y evitar que 2,000 simulaciones bloquearan la página en teléfonos.",
-      "cambios": ["S₀(t) oficial del INEGI para t = 1…10.", "Monte Carlo y rango de P en un Web Worker, con respaldo síncrono.", "Foto de contexto de Coacalco con su licencia.", "Reporte y presentación actualizados con la referencia v5."],
+      "cambios": [
+        "S₀(t) oficial del INEGI para t = 1…10.",
+        "Monte Carlo y rango de P en un Web Worker, con respaldo síncrono.",
+        "Foto de contexto de Coacalco con su licencia.",
+        "Reporte y presentación actualizados con la referencia v5."
+      ],
       "modelo": "Cambian los puntos de supervivencia de los años 6 a 10; P y VPN (que dependen de los tres primeros años) no cambian.",
-      "referencia": { "P": "51.6 %", "utilidad": "$60,371", "roi": "302.9 %", "payback": "4.1 meses", "vpn": "$912,776" },
-      "commits": ["2f93be5", "8f0f7cd", "1be9500"]
+      "referencia": {
+        "P": "51.6 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$912,776"
+      },
+      "commits": [
+        "2f93be5",
+        "8f0f7cd",
+        "1be9500"
+      ]
     },
     {
-      "id": "v5.1", "fecha": "2026-11-13", "titulo": "DENUE nacional y apartado para empresas",
+      "id": "v5.1",
+      "fecha": "2026-11-13",
+      "titulo": "DENUE nacional y apartado para empresas",
       "resumen": "Se agregan los conteos del DENUE para todo el país, sincronizados cada semana, y un apartado donde una empresa analiza su propio historial sin que salga del navegador.",
       "motivo": "Dar contexto de competencia con datos oficiales y permitir sustituir los supuestos del equipo por datos reales del negocio.",
-      "cambios": ["Sincronización semanal con la descarga oficial del INEGI (solo conteos, nunca datos de contacto).", "Explorador del DENUE por entidad, municipio y actividad.", "Apartado «Para empresas»: bootstrap de los meses del historial, 100 % local.", "Prueba automática de que los archivos de empresa no se envían a ningún servidor."],
+      "cambios": [
+        "Sincronización semanal con la descarga oficial del INEGI (solo conteos, nunca datos de contacto).",
+        "Explorador del DENUE por entidad, municipio y actividad.",
+        "Apartado «Para empresas»: bootstrap de los meses del historial, 100 % local.",
+        "Prueba automática de que los archivos de empresa no se envían a ningún servidor."
+      ],
       "modelo": "Sin cambios en el modelo.",
-      "referencia": { "P": "51.6 %", "utilidad": "$60,371", "roi": "302.9 %", "payback": "4.1 meses", "vpn": "$912,776" },
-      "commits": ["f6b8fb4", "1981e6e", "a0829d7"]
+      "referencia": {
+        "P": "51.6 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$912,776"
+      },
+      "commits": [
+        "f6b8fb4",
+        "1981e6e",
+        "a0829d7"
+      ]
     },
     {
-      "id": "v6", "fecha": "2026-11-13", "titulo": "Páginas por apartado, asistente y giros del SCIAN",
+      "id": "v6",
+      "fecha": "2026-11-13",
+      "titulo": "Páginas por apartado, asistente y giros del SCIAN",
       "resumen": "Cada apartado se abre como página propia; se puede describir el negocio por texto o voz; cualquier actividad del SCIAN sirve como giro; aparece el asistente.",
       "motivo": "El sitio en una sola página era largo de recorrer y limitaba al usuario a 35 giros.",
-      "cambios": ["Vistas por apartado con dirección propia y navegación atrás/adelante.", "«Describe tu negocio» con intérprete local y dictado por voz.", "989 actividades del SCIAN como giros, con la plantilla del giro más cercano.", "Asistente flotante en todas las páginas y giros propios con cualquier nombre.", "Fotos reales de cada zona con su cita."],
+      "cambios": [
+        "Vistas por apartado con dirección propia y navegación atrás/adelante.",
+        "«Describe tu negocio» con intérprete local y dictado por voz.",
+        "989 actividades del SCIAN como giros, con la plantilla del giro más cercano.",
+        "Asistente flotante en todas las páginas y giros propios con cualquier nombre.",
+        "Fotos reales de cada zona con su cita."
+      ],
       "modelo": "Sin cambios en el modelo.",
-      "referencia": { "P": "51.6 %", "utilidad": "$60,371", "roi": "302.9 %", "payback": "4.1 meses", "vpn": "$912,776" },
-      "commits": ["9fba421", "f0cd365", "f65de58"]
+      "referencia": {
+        "P": "51.6 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$912,776"
+      },
+      "commits": [
+        "9fba421",
+        "f0cd365",
+        "f65de58"
+      ]
     },
     {
-      "id": "v7", "fecha": "2026-11-13", "titulo": "Pestañas, censo, AGEB y accesibilidad verificada",
+      "id": "v7",
+      "fecha": "2026-11-13",
+      "titulo": "Pestañas, censo, AGEB y accesibilidad verificada",
       "resumen": "Pestañas de apartados abiertos, contraste de cada giro con los Censos Económicos 2019, límites oficiales de las AGEB en el mapa y accesibilidad WCAG 2.1 AA verificada.",
       "motivo": "Acercar los supuestos por giro a datos oficiales y garantizar que el sitio pueda usarse con teclado y lector de pantalla.",
-      "cambios": ["Pestañas reordenables dentro del proyecto; se retira el modo oscuro a petición del equipo.", "v7.1: contraste con los Censos Económicos 2019 sin cambiar los valores por defecto.", "v7.1: 70 AGEB urbanas del INEGI agrupadas en las seis zonas.", "v7.1: axe-core sin violaciones en todos los apartados.", "v7.2 y v7.3: preguntas libres del asistente e intérprete con Gemini; documentación de seguridad.", "v7.4: teléfono vertical y horizontal, documento técnico y video para evaluadores."],
+      "cambios": [
+        "Pestañas reordenables dentro del proyecto; se retira el modo oscuro a petición del equipo.",
+        "v7.1: contraste con los Censos Económicos 2019 sin cambiar los valores por defecto.",
+        "v7.1: 70 AGEB urbanas del INEGI agrupadas en las seis zonas.",
+        "v7.1: axe-core sin violaciones en todos los apartados.",
+        "v7.2 y v7.3: preguntas libres del asistente e intérprete con Gemini; documentación de seguridad.",
+        "v7.4: teléfono vertical y horizontal, documento técnico y video para evaluadores."
+      ],
       "modelo": "Sin cambios en el modelo.",
-      "referencia": { "P": "51.6 %", "utilidad": "$60,371", "roi": "302.9 %", "payback": "4.1 meses", "vpn": "$912,776" },
-      "commits": ["d42899e", "c594d22", "e834ec9", "967cb9a", "058b0e1", "9b2f2b7"]
+      "referencia": {
+        "P": "51.6 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$912,776"
+      },
+      "commits": [
+        "d42899e",
+        "c594d22",
+        "e834ec9",
+        "967cb9a",
+        "058b0e1",
+        "9b2f2b7"
+      ]
     },
     {
-      "id": "v8", "fecha": "2026-11-14", "titulo": "IA del proyecto sin clave del visitante y mapa real",
+      "id": "v8",
+      "fecha": "2026-11-14",
+      "titulo": "IA del proyecto sin clave del visitante y mapa real",
       "resumen": "La IA pasa a un intermediario del proyecto: el visitante ya no necesita una clave. Inicio y Simulador comparten el mapa real y las fotos no se repiten.",
       "motivo": "Pedir una clave al visitante era una barrera y un riesgo; el esquema dibujado por el equipo no correspondía con los límites oficiales.",
-      "cambios": ["Intermediario de IA en Vercel con lista de orígenes, tope de extensión y límite de solicitudes.", "Mapa real con las AGEB en Inicio y en el Simulador.", "Fotos de escenarios de Wikimedia Commons; el build falla si una se repite.", "Simulador sin huecos: el formulario acompaña a los resultados.", "v8.1: modelo de lenguaje rápido primero y diagnóstico de errores sin exponer la clave."],
+      "cambios": [
+        "Intermediario de IA en Vercel con lista de orígenes, tope de extensión y límite de solicitudes.",
+        "Mapa real con las AGEB en Inicio y en el Simulador.",
+        "Fotos de escenarios de Wikimedia Commons; el build falla si una se repite.",
+        "Simulador sin huecos: el formulario acompaña a los resultados.",
+        "v8.1: modelo de lenguaje rápido primero y diagnóstico de errores sin exponer la clave."
+      ],
       "modelo": "Sin cambios en el modelo.",
-      "referencia": { "P": "51.6 %", "utilidad": "$60,371", "roi": "302.9 %", "payback": "4.1 meses", "vpn": "$912,776" },
-      "commits": ["d0d734c", "c0bb8e1", "faf8370"]
+      "referencia": {
+        "P": "51.6 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$912,776"
+      },
+      "commits": [
+        "d0d734c",
+        "c0bb8e1",
+        "faf8370"
+      ]
     },
     {
-      "id": "v9", "fecha": "2026-11-15", "titulo": "Cobro de piso, variables emocionales y giros de Coacalco",
+      "id": "v9",
+      "fecha": "2026-11-15",
+      "titulo": "Cobro de piso, variables emocionales y giros de Coacalco",
       "resumen": "Se agregan cuatro variables neutras por defecto (riesgo de extorsión, pago de piso, resiliencia y motivación) y la lista de las 424 actividades presentes en Coacalco.",
       "motivo": "La extorsión y el desgaste del emprendedor son causas reales de cierre que el modelo no consideraba; se incorporan como supuestos que el usuario elige.",
-      "cambios": ["36 variables en cuatro pestañas; las cuatro nuevas no alteran el resultado si no se tocan.", "El pago de piso entra completo a los costos fijos.", "424 actividades del DENUE de Coacalco como giros.", "Carrusel de zonas y aviso legal actualizado a la nueva ley de datos personales.", "Balance FODA con conteo de factores a favor y en contra."],
+      "cambios": [
+        "36 variables en cuatro pestañas; las cuatro nuevas no alteran el resultado si no se tocan.",
+        "El pago de piso entra completo a los costos fijos.",
+        "424 actividades del DENUE de Coacalco como giros.",
+        "Carrusel de zonas y aviso legal actualizado a la nueva ley de datos personales.",
+        "Balance FODA con conteo de factores a favor y en contra."
+      ],
       "modelo": "P, utilidad, ROI, payback y VPN de referencia no cambian. El rango plausible pasa de 44.3–58.3 % a 44.1–58.2 % porque las variables nuevas consumen sorteos del generador aunque su β sea 0.",
-      "referencia": { "P": "51.6 %", "utilidad": "$60,371", "roi": "302.9 %", "payback": "4.1 meses", "vpn": "$912,776" },
-      "commits": ["1f105de", "a80c253"]
+      "referencia": {
+        "P": "51.6 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$912,776"
+      },
+      "commits": [
+        "1f105de",
+        "a80c253"
+      ]
     },
     {
-      "id": "v10", "fecha": "2026-11-15", "titulo": "Herramientas del plan y entregables automáticos",
+      "id": "v10",
+      "fecha": "2026-11-15",
+      "titulo": "Herramientas del plan y entregables automáticos",
       "resumen": "Estrategia gana un simulador de plan, una matriz de impacto y control y un calendario de 90 días; los entregables se regeneran con un comando.",
       "motivo": "Saber la probabilidad no bastaba: hacía falta combinar acciones y convertirlas en un plan con fechas.",
-      "cambios": ["Simulador de plan que aplica juntas las acciones marcadas (no suma puntos).", "Matriz de impacto y control; se declara que la probabilidad de cada riesgo no está medida.", "Calendario de 90 días con indicadores de seguimiento.", "Aviso legal: uso aceptable, licencias de terceros y recomendación de revisión por un abogado.", "`npm run entregables` y flujo de GitHub que convierte a PDF con LibreOffice.", "Propuesta de stand físico."],
+      "cambios": [
+        "Simulador de plan que aplica juntas las acciones marcadas (no suma puntos).",
+        "Matriz de impacto y control; se declara que la probabilidad de cada riesgo no está medida.",
+        "Calendario de 90 días con indicadores de seguimiento.",
+        "Aviso legal: uso aceptable, licencias de terceros y recomendación de revisión por un abogado.",
+        "`npm run entregables` y flujo de GitHub que convierte a PDF con LibreOffice.",
+        "Propuesta de stand físico."
+      ],
       "modelo": "Sin cambios en el modelo.",
-      "referencia": { "P": "51.6 %", "utilidad": "$60,371", "roi": "302.9 %", "payback": "4.1 meses", "vpn": "$912,776" },
-      "commits": ["65c99fb"]
+      "referencia": {
+        "P": "51.6 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$912,776"
+      },
+      "commits": [
+        "65c99fb"
+      ]
     },
     {
-      "id": "v11", "fecha": "2026-11-15", "titulo": "Negocio con nombre, mejora del negocio y reporte propio",
+      "id": "v11",
+      "fecha": "2026-11-15",
+      "titulo": "Negocio con nombre, mejora del negocio y reporte propio",
       "resumen": "El usuario nombra y guarda su negocio; un apartado nuevo propone alternativas, un diagnóstico de 5 niveles con borradores, una estimación fiscal y un modelo 2.5D; el reporte deja de ser una captura del sitio.",
       "motivo": "Pasar de «cuál es mi probabilidad» a «qué hago con ella», con algo que el usuario pueda llevarse.",
-      "cambios": ["Nombre del negocio y negocios guardados en el navegador.", "Alternativas con su efecto real en P y botón para probarlas.", "Diagnóstico de solidez: 30 puntos en 5 niveles, con borrador a la medida (no cambia P).", "Estimación fiscal: RESICO de personas físicas o régimen general.", "Modelo 2.5D del negocio en SVG isométrico.", "Reporte propio en PDF e imagen de 3,200 px.", "Plantilla de Excel con identidad y guía.", "Grecas en movimiento con pausa; carruseles en Inicio y Territorio.", "Correcciones: contraste AA, navegación con cambios rápidos y documentos con el rango 44.1–58.2 %."],
+      "cambios": [
+        "Nombre del negocio y negocios guardados en el navegador.",
+        "Alternativas con su efecto real en P y botón para probarlas.",
+        "Diagnóstico de solidez: 30 puntos en 5 niveles, con borrador a la medida (no cambia P).",
+        "Estimación fiscal: RESICO de personas físicas o régimen general.",
+        "Modelo 2.5D del negocio en SVG isométrico.",
+        "Reporte propio en PDF e imagen de 3,200 px.",
+        "Plantilla de Excel con identidad y guía.",
+        "Grecas en movimiento con pausa; carruseles en Inicio y Territorio.",
+        "Correcciones: contraste AA, navegación con cambios rápidos y documentos con el rango 44.1–58.2 %."
+      ],
       "modelo": "Sin cambios en el modelo. Se agrega una prueba que vigila el rango plausible.",
-      "referencia": { "P": "51.6 %", "utilidad": "$60,371", "roi": "302.9 %", "payback": "4.1 meses", "vpn": "$912,776" },
-      "commits": ["8c9920d", "a6c5061", "7d5ef77", "95fc92e", "32e3b85"]
+      "referencia": {
+        "P": "51.6 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$912,776"
+      },
+      "commits": [
+        "8c9920d",
+        "a6c5061",
+        "7d5ef77",
+        "95fc92e",
+        "32e3b85"
+      ]
     },
     {
-      "id": "v12", "fecha": "2026-11-16", "titulo": "Resultado para llevar con QR y documentación extensa",
+      "id": "v12",
+      "fecha": "2026-11-16",
+      "titulo": "Resultado para llevar con QR y documentación extensa",
       "resumen": "El usuario se lleva todo su resultado (simulador y estrategia) con un código QR que abre su reporte completo; Estrategia tiene su propio PDF; los documentos crecen a nivel de tesis con el historial completo de versiones.",
       "motivo": "En un stand, el visitante necesita irse con su resultado en el teléfono; y los evaluadores, con documentos que expliquen cada decisión del proyecto.",
-      "cambios": ["Código QR que lleva el resultado dentro del enlace y abre el reporte completo en el teléfono.", "PDF propio del plan de Estrategia y reporte completo en dos partes.", "Menú con los mismos nombres que las pestañas.", "Micrófono con la identidad del proyecto en los botones de dictado.", "Aviso legal en dos columnas equilibradas, sin huecos.", "Grecas en movimiento en el pie de página y video del proyecto en Inicio.", "Documentos con las tipografías del sitio instaladas antes de convertir a PDF y símbolos β y S₀ escritos de forma explícita.", "Documento técnico, reporte, presentación y libro de Excel extensos, con este historial.", "Video ampliado y pauta para grabar las voces de los tres autores."],
+      "cambios": [
+        "Código QR que lleva el resultado dentro del enlace y abre el reporte completo en el teléfono.",
+        "PDF propio del plan de Estrategia y reporte completo en dos partes.",
+        "Menú con los mismos nombres que las pestañas.",
+        "Micrófono con la identidad del proyecto en los botones de dictado.",
+        "Aviso legal en dos columnas equilibradas, sin huecos.",
+        "Grecas en movimiento en el pie de página y video del proyecto en Inicio.",
+        "Documentos con las tipografías del sitio instaladas antes de convertir a PDF y símbolos β y S₀ escritos de forma explícita.",
+        "Documento técnico, reporte, presentación y libro de Excel extensos, con este historial.",
+        "Video ampliado y pauta para grabar las voces de los tres autores."
+      ],
       "modelo": "Sin cambios en el modelo.",
-      "referencia": { "P": "51.6 %", "utilidad": "$60,371", "roi": "302.9 %", "payback": "4.1 meses", "vpn": "$912,776" },
+      "referencia": {
+        "P": "51.6 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$912,776"
+      },
+      "commits": [
+        "f8b4a0e",
+        "9b1d262"
+      ]
+    },
+    {
+      "id": "v13",
+      "fecha": "2026-11-17",
+      "titulo": "β de giro y zona estimados con el DENUE, perfiles cifrados y carga más rápida",
+      "resumen": "Los coeficientes de giro y zona dejan de ser supuestos: se estiman con 305,313 negocios jóvenes del Estado de México seguidos en el DENUE de 2019 a 2024. Los negocios guardados quedan aislados por usuario y cifrados, y la página carga más rápido.",
+      "motivo": "La auditoría señaló como limitación principal que todos los β eran supuestos del equipo. El DENUE se depura en cada censo económico (2019 y 2024) y los negocios que siguen conservan su identificador: eso permite medir supervivencia real por giro y por zona.",
+      "cambios": [
+        "Script scripts/denue_supervivencia.py: cohorte de negocios incorporados en la actualización censal de 2019, seguida a la edición de 2024; regresión logística con errores estándar y contracción bayesiana.",
+        "β de 34 giros y 6 zonas estimados con datos; spa conserva el supuesto (sin clase SCIAN propia). Se guarda el supuesto anterior (zEq) para trazabilidad.",
+        "Hallazgos: el corredor López Portillo tiene más rotación de lo supuesto (β −0.26 en lugar de +0.30) y la cafetería es más riesgosa (−0.33 en lugar de −0.08).",
+        "Negocios guardados aislados por usuario: perfil con clave, cifrado AES-GCM con llave PBKDF2; sin perfil, solo en la pestaña.",
+        "Tipografías servidas desde el propio sitio y estilos del mapa incorporados: sin peticiones externas que bloqueen la carga.",
+        "La probabilidad se muestra en cuanto se calcula, sin esperar al Monte Carlo; indicador «cálculo listo» en la página (data-calculo).",
+        "El código QR toma el dominio de la propia página o, en local, la dirección canónica.",
+        "Se retiraron los documentos Word y el pitch heredados y sus generadores."
+      ],
+      "modelo": "Cambian los β de giro y zona. El escenario de referencia (cafetería en Los Héroes) pasa de P = 51.6 % a 38.0 % (rango 30.6–46.6 %) y el VPN de $912,776 a $686,989; utilidad, ROI y recuperación no cambian porque no dependen de los β.",
+      "referencia": {
+        "P": "38.0 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$686,989"
+      },
       "commits": []
     }
   ]

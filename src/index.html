@@ -5,11 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>COATL · Probabilidad de éxito de negocios en Coacalco de Berriozábal</title>
 <meta name="description" content="Simulador estadístico de probabilidad de éxito y rentabilidad para negocios en Coacalco de Berriozábal, Estado de México. Proyecto de Probabilidad y Estadística — Jornada Académica de Negocios.">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Hanken+Grotesk:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<link rel="preload" href="assets/fuentes/web/hanken-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fuentes/web/bricolage-grotesque-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' @@IA_ORIGEN@@; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'unsafe-inline'; font-src 'self'; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' @@IA_ORIGEN@@; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -18,7 +17,6 @@
 <meta property="og:url" content="https://maikolv.github.io/coatl/">
 <link rel="canonical" href="https://maikolv.github.io/coatl/">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%23C8102E'/%3E%3Cpath d='M6 22h6v-6h6v-6h8' fill='none' stroke='%23FBF6F3' stroke-width='3'/%3E%3C/svg%3E">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.css" integrity="sha384-sHL9NAb7lN7rfvG5lfHpm643Xkcjzp4jFvuavGOndn6pjVqS6ny56CAt3nsEVT4H" crossorigin="anonymous" referrerpolicy="no-referrer">
 <style>
 /*@@CSS@@*/
 </style>
@@ -241,11 +239,18 @@
       <li><strong>Mejóralo</strong><span>Al final: alternativas, diagnóstico de 5 niveles, estimación fiscal, modelo 2.5D y tu reporte.</span></li>
     </ol>
     <div class="negocio-barra" id="negocioBarra">
+      <fieldset class="perfil-barra" id="perfilBarra"><legend>Tu perfil (opcional): tus negocios, solo para ti</legend>
+        <div class="campo-negocio"><label for="perfilUsuario">Usuario</label><input type="text" id="perfilUsuario" maxlength="40" autocomplete="username" placeholder="Ej.: miguel"></div>
+        <div class="campo-negocio"><label for="perfilClave">Clave</label><input type="password" id="perfilClave" maxlength="64" autocomplete="current-password" placeholder="Mínimo 4 caracteres"></div>
+        <button type="button" class="btn btn-widget" id="perfilEntrar">Entrar</button>
+        <button type="button" class="btn btn-widget btn-sec" id="perfilSalir" hidden>Salir</button>
+        <p class="nota-widget" id="perfilEstado" role="status"></p>
+      </fieldset>
       <div class="campo-negocio"><label for="negocioNombre">Nombre de tu negocio</label><input type="text" id="negocioNombre" maxlength="60" placeholder="Ej.: Café La Serpiente" autocomplete="off"></div>
       <button type="button" class="btn btn-widget" id="negocioGuardar">Guardar negocio</button>
       <div class="campo-negocio"><label for="negocioLista">Mis negocios</label><select id="negocioLista"><option value="">— Ninguno guardado —</option></select></div>
       <button type="button" class="btn btn-widget btn-sec" id="negocioEliminar" disabled>Eliminar</button>
-      <p class="nota-widget" id="negocioNota" role="status">Tus negocios se guardan solo en este navegador: no se envían a ningún servidor y puedes eliminarlos cuando quieras.</p>
+      <p class="nota-widget" id="negocioNota" role="status">Nada se envía a ningún servidor. Sin perfil, lo que guardes vive solo en esta pestaña; con perfil, se guarda cifrado con tu clave y nadie más en este equipo puede verlo.</p>
     </div>
 
     <article class="widget widget-describir" id="wDescribir" data-estado="vacio" aria-labelledby="wDescribir-q">
@@ -879,7 +884,7 @@
       <h3>Modelo logístico de puntaje</h3>
       <p>La probabilidad de éxito a 3 años se obtiene con una función logística: cada variable del escenario aporta un coeficiente β (positivo si protege al negocio, negativo si lo arriesga) y la suma z se transforma en una probabilidad entre 0 y 1.</p>
       <div class="formula" tabindex="0">P(éxito) = 1 / (1 + e^(−z)),&nbsp;&nbsp; z = β₀ + β₁x₁ + β₂x₂ + … + βₖxₖ</div>
-      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI 1989–2019 (42.6 %): β₀ = ln(0.4261/0.5739) ≈ −0.298. Los coeficientes de zona, experiencia, reserva de capital, competencia, deuda y margen de seguridad se asignaron por criterio del equipo a partir de la literatura de demografía de negocios. Como ningún β tiene error estándar, el simulador no presenta P como cifra exacta: perturba cada βᵢ con una desviación relativa de 30 % (y β₀ con 0.15) en 1,000 sorteos y reporta el <strong>rango plausible P5–P95</strong>. Es un análisis de sensibilidad, no un intervalo de confianza muestral.</p>
+      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI 1989–2019 (42.6 %): β₀ = ln(0.4261/0.5739) ≈ −0.298. Los coeficientes de <strong>giro y zona</strong> se estimaron con datos reales: se siguió a 305,313 negocios que el INEGI incorporó al DENUE en la actualización censal de 2019 en el Estado de México (4,654 en Coacalco) hasta la edición de 2024, y se ajustó una regresión logística con errores estándar (efectos centrados y contraídos por Bayes empírico). Los de experiencia, reserva de capital, competencia, deuda, margen de seguridad y las demás variables siguen siendo criterio del equipo, porque el DENUE no los registra. Como esos β no tienen error estándar, el simulador no presenta P como cifra exacta: perturba cada βᵢ con una desviación relativa de 30 % (y β₀ con 0.15) en 1,000 sorteos y reporta el <strong>rango plausible P5–P95</strong>. Es un análisis de sensibilidad, no un intervalo de confianza muestral.</p>
       <p class="uso">Conceptos del curso: probabilidad condicional, función logística, variables explicativas.</p>
     </article>
 
@@ -961,7 +966,7 @@
   <div class="limitaciones" id="supuestos">
     <h3>Supuestos declarados</h3>
     <ul class="lista-supuestos">
-      <li><strong>Coeficientes β:</strong> asignados por el equipo, no estimados con microdatos; por eso P se acompaña de un rango plausible.</li>
+      <li><strong>Coeficientes β:</strong> los de giro y zona se estimaron con ediciones sucesivas del DENUE (2019 → 2024); los demás son criterio del equipo, por eso P se acompaña de un rango plausible. Desaparecer del DENUE no siempre significa cerrar, y la cohorte se sigue cinco años (no tres): solo se usan diferencias entre giros y zonas, mientras el nivel sigue anclado a la tabla del INEGI.</li>
       <li><strong>Supervivencia base S₀(t):</strong> tabla nacional del INEGI 1989–2019 para t = 1…10. Se aplica a Coacalco sin ajuste municipal.</li>
       <li><strong>Riesgos proporcionales:</strong> se impone S(3) = P; la forma de la curva es la nacional.</li>
       <li><strong>Incertidumbre del Monte Carlo:</strong> σ de demanda mensual 22 %, de ticket 8 %, choque anual 15 % y costo variable ±2 pp, todos supuestos del equipo.</li>
@@ -997,10 +1002,10 @@
       <p>COATL <strong>no pide registro, no usa cookies propias ni analítica y no vende ni comparte datos</strong>. Los cálculos del simulador se hacen en tu navegador. Hay dos excepciones que debes conocer, en términos del artículo 14 de la <a href="https://www.diputados.gob.mx/LeyesBiblio/pdf/LFPDPPP.pdf" target="_blank" rel="noopener">Ley Federal de Protección de Datos Personales en Posesión de los Particulares</a> (nueva ley, DOF 20-03-2025; última reforma DOF 14-11-2025):</p>
       <ul>
         <li><strong>Asistente de IA y «Describe tu negocio».</strong> Cuando escribes una pregunta libre o una descripción, ese texto y un resumen del escenario (giro, zona, probabilidad, utilidad, clientes y ticket) se envían al intermediario de COATL en Vercel Inc. y de ahí a la API de Gemini de Google LLC, en Estados Unidos, solo para generar la respuesta. COATL no guarda la conversación y pide a Google no almacenarla (<code>store:false</code>); en el plan gratuito, Google puede usar el contenido conforme a sus términos. <strong>No escribas datos personales, de contacto ni de terceros.</strong> Las preguntas de los botones («¿Cómo voy?», etc.) se responden en tu navegador sin enviar nada.</li>
-        <li><strong>Mapas, fuentes y bibliotecas.</strong> Al cargar el mapa, las tipografías y las bibliotecas, tu navegador pide recursos a OpenStreetMap, Esri, Google Fonts y cdnjs (Cloudflare), que reciben tu dirección IP como en cualquier sitio web.</li>
+        <li><strong>Mapas, fuentes y bibliotecas.</strong> Al cargar el mapa y las bibliotecas, tu navegador pide recursos a OpenStreetMap, Esri y cdnjs (Cloudflare), que reciben tu dirección IP como en cualquier sitio web.</li>
       </ul>
       <p>Para dudas o para ejercer tus derechos (acceso, rectificación, cancelación u oposición) escribe en <a href="https://github.com/Maikolv/coatl/issues" target="_blank" rel="noopener">github.com/Maikolv/coatl/issues</a>. La autoridad en la materia es la Secretaría Anticorrupción y Buen Gobierno.</p>
-      <p><strong>Negocios guardados.</strong> Si escribes el nombre de tu negocio y pulsas «Guardar negocio», ese nombre, las variables del simulador y tus respuestas del diagnóstico se guardan en el almacenamiento local de <em>este</em> navegador (clave <code>coatl-negocios</code>, máximo 20). No se envían a ningún servidor, no viajan en el enlace para compartir y no los ve el equipo. Se borran con «Eliminar» o al limpiar los datos del sitio en tu navegador. Si usas un equipo compartido, elimina tus negocios al terminar. El sitio también recuerda, solo durante la sesión, qué pestañas tienes abiertas y si pausaste el movimiento.</p>
+      <p><strong>Negocios guardados, aislados por usuario.</strong> Si guardas un negocio <em>sin perfil</em>, el nombre, las variables del simulador y tus respuestas del diagnóstico viven solo en esta pestaña del navegador y se borran al cerrarla. Si entras con un <em>usuario y una clave</em>, se guardan en este equipo <strong>cifrados</strong> (AES-GCM de 256 bits con una llave derivada de tu clave mediante PBKDF2); en el almacenamiento solo queda un identificador derivado del usuario y datos ilegibles, de modo que otra persona que use el mismo equipo no puede ver ni los nombres de tus negocios. El perfil se cierra al pulsar «Salir», al cerrar la pestaña o tras 15 minutos sin actividad. Nada de esto se envía a ningún servidor ni viaja en el enlace para compartir, y el equipo de COATL no puede verlo. <strong>Si olvidas tu clave, tus negocios no se pueden recuperar.</strong> El sitio también recuerda, solo durante la sesión, qué pestañas tienes abiertas y si pausaste el movimiento.</p>
       <p><strong>Archivos de empresas.</strong> Los archivos que cargues en la sección «Para empresas» se leen únicamente en tu navegador: no se envían a ningún servidor (la política de seguridad del sitio lo impide), no se guardan en el dispositivo y se eliminan al recargar la página o al pulsar «Borrar mis datos». COATL no tiene acceso a ellos. Si eliges un archivo de Excel, el navegador descarga el lector SheetJS desde cdnjs; esa descarga no incluye tus datos.</p>
       <p><strong>DENUE.</strong> Se publican solo conteos agregados del Directorio Estadístico Nacional de Unidades Económicas (INEGI), información pública; no se muestran nombres, direcciones ni contactos de los establecimientos.</p>
     </article>
@@ -1011,7 +1016,7 @@
       <li><strong>Datos estadísticos.</strong> Fuentes oficiales de libre uso citando la fuente (INEGI, IGECEM, CONEVAL). Los datos del INEGI se usan conforme a sus <a href="https://www.inegi.org.mx/inegi/terminos.html" target="_blank" rel="noopener">términos de uso</a>; las cifras por giro y por zona que no provienen de esas fuentes están marcadas como estimaciones del equipo.</li>
       <li><strong>Fotografías.</strong> Provienen de Wikimedia Commons y se usan con la licencia indicada en su pie (CC BY o CC BY-SA). El autor, la fuente y la licencia de cada una están en el <a href="https://github.com/Maikolv/coatl/blob/main/docs/RECURSOS.md" target="_blank" rel="noopener">registro de recursos</a>. Fueron recortadas y convertidas a WebP; las obras derivadas conservan la misma licencia.</li>
       <li><strong>Cartografía.</strong> © colaboradores de <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap</a> bajo la licencia <a href="https://opendatacommons.org/licenses/odbl/" target="_blank" rel="noopener">ODbL</a>; la imagen satelital es cortesía de Esri y sus proveedores. Los límites de las AGEB son del Marco Geoestadístico del INEGI.</li>
-      <li><strong>Bibliotecas y tipografías.</strong> <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a> (BSD-2), <a href="https://www.chartjs.org/" target="_blank" rel="noopener">Chart.js</a> (MIT), SheetJS (Apache-2.0, solo si subes un Excel) y tipografías de <a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts</a> bajo la <a href="https://openfontlicense.org/" target="_blank" rel="noopener">SIL Open Font License</a>.</li>
+      <li><strong>Bibliotecas y tipografías.</strong> <a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet</a> (BSD-2), <a href="https://www.chartjs.org/" target="_blank" rel="noopener">Chart.js</a> (MIT), SheetJS (Apache-2.0, solo si subes un Excel) y tipografías Bricolage Grotesque, Hanken Grotesk y Spline Sans Mono, servidas desde el propio sitio, bajo la <a href="https://openfontlicense.org/" target="_blank" rel="noopener">SIL Open Font License</a>.</li>
       <li><strong>Marcas.</strong> Los nombres comerciales y logotipos que aparecen en las fotografías pertenecen a sus titulares y se muestran solo como parte del paisaje urbano documentado.</li>
       </ul>
       <p>Si eres titular de algún recurso y consideras que su uso no es correcto, escríbenos por el enlace de contacto y lo corregiremos o retiraremos.</p>
@@ -1098,7 +1103,8 @@
       <li><a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener">OpenStreetMap Foundation. Copyright y licencia ODbL.</a> Cartografía base del mapa real.</li>
       <li><a href="https://leafletjs.com/" target="_blank" rel="noopener">Leaflet (BSD-2-Clause).</a> Biblioteca de mapas interactivos.</li>
       <li><a href="https://www.chartjs.org/" target="_blank" rel="noopener">Chart.js (MIT).</a> Biblioteca de gráficas estadísticas.</li>
-      <li><a href="https://fonts.google.com/" target="_blank" rel="noopener">Google Fonts (SIL Open Font License).</a> Tipografías Bricolage Grotesque, Hanken Grotesk y Spline Sans Mono.</li>
+      <li><a href="https://openfontlicense.org/" target="_blank" rel="noopener">SIL Open Font License.</a> Tipografías Bricolage Grotesque, Hanken Grotesk y Spline Sans Mono, servidas desde el propio sitio.</li>
+      <li><a href="https://www.inegi.org.mx/app/descarga/?ti=6" target="_blank" rel="noopener">INEGI. DENUE, ediciones de noviembre de 2018, 2019 y 2024 (descarga masiva).</a> Estimación de los coeficientes de giro y zona.</li>
     </ol>
   </div>
 </section>
