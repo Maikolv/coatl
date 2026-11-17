@@ -41,12 +41,17 @@ function fiesta(){
   setTimeout(()=>{capa.innerHTML=""},2400);
 }
 
+/* Validación fuera de muestra (data/denue/validacion.json); el build la inserta. */
+const VALIDACION=/*@@VALIDACION@@*/ null;
+
 function pintarKPIs(e,mc,S,modelo){
   const f=finanzas(e,mc,S), rp=rangoP(modelo);
   const datos=[
     ["Probabilidad a 3 años: rango plausible", pct(rp.p05)+" a "+pct(rp.p95), "P5–P95 al perturbar los β (sensibilidad, no intervalo muestral)"],
     ["Utilidad mensual esperada", mxn.format(Math.round(e.utilMes)), "modelo determinista de costo–volumen, antes de impuestos"],
     ["P(utilidad anual > 0)", pct(mc.pPos), "frecuencia empírica en 2,000 corridas"],
+    ["Riesgo de quedarse sin efectivo (año 1)", mc.pSinEfectivo==null?"—":pct(mc.pSinEfectivo), "años simulados en que las pérdidas acumuladas superan tu reserva (≈ "+mxn.format(Math.round(mc.cajaInicial||0))+")"],
+    ["Probabilidad con solo lo medido", pct(modelo.Pmedido), "sin los supuestos del equipo (experiencia, reserva, marketing, deuda…): "+((modelo.P-modelo.Pmedido)>=0?"+":"−")+Math.abs((modelo.P-modelo.Pmedido)*100).toFixed(1)+" pts dependen de supuestos"],
     ["Utilidad anual P5 · P50 · P95", mxn.format(Math.round(mc.p05))+" · "+mxn.format(Math.round(mc.p50))+" · "+mxn.format(Math.round(mc.p95)), "escenarios pesimista, mediano y optimista del Monte Carlo"],
     ["Punto de equilibrio", isFinite(e.peDia)?Math.ceil(e.peDia)+" clientes/día":"No alcanzable", mxn.format(Math.round(e.pePesos))+" en ventas mensuales"],
     ["Margen de seguridad", pct(e.ms), e.ms>=0?"ventas por encima del equilibrio":"ventas por debajo del equilibrio"],
@@ -65,6 +70,8 @@ function pintarLectura(e,mc,modelo,vpn){
   const peor=ordenados[0], mejor=ordenados[ordenados.length-1];
   if(peor[1]<0) frases.push("La variable que más resta es <strong>"+peor[0].toLowerCase()+"</strong> (β = "+peor[1].toFixed(2)+"); es el primer candidato para el análisis de sensibilidad.");
   if(mejor[1]>0) frases.push("La variable que más suma es <strong>"+mejor[0].toLowerCase()+"</strong> (β = +"+mejor[1].toFixed(2)+").");
+  if(mc.pSinEfectivo!=null) frases.push("Con la reserva que declaraste (≈ "+mxn.format(Math.round(mc.cajaInicial))+"), en el <strong>"+pct(mc.pSinEfectivo)+"</strong> de los años simulados las pérdidas acumuladas se la acaban antes de cumplir 12 meses. Este dato sale de tus propios números, no de un supuesto del equipo.");
+  if(VALIDACION) frases.push("Contra lo que pasó de verdad: con negocios de Coacalco que el modelo no usó para estimarse, giro y zona ordenan el riesgo apenas mejor que el azar (AUC "+VALIDACION.auc.toFixed(2)+"; 0.5 = azar). Por eso P orienta, pero no predice tu caso.");
   frases.push("En la simulación Monte Carlo, el "+pct(mc.pPos)+" de los 2,000 años simulados terminó con utilidad positiva; la utilidad anual media fue de "+mxn.format(Math.round(mc.media))+" con desviación estándar de "+mxn.format(Math.round(mc.sd))+".");
   if(isFinite(e.peDia)) frases.push("Necesitas ≈<strong>"+Math.ceil(e.peDia)+" clientes/día</strong> para el punto de equilibrio y esperas "+Math.round(e.mu)+"; el margen de seguridad es de "+pct(e.ms)+".");
   else frases.push("Con este ticket y costo variable el margen de contribución es nulo o negativo: <strong>no existe punto de equilibrio alcanzable</strong>; revisa precio y costos antes que cualquier otra variable.");

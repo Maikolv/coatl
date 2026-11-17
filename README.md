@@ -152,7 +152,7 @@ En Windows, las e2e usan Microsoft Edge (`COATL_CANAL=msedge`) porque el Chromiu
 
 | P (3 años) | Rango plausible | Utilidad/mes | ROI | Payback | VPN 3 años |
 |---|---|---|---|---|---|
-| 38.0 % | 30.6 %–46.6 % | $60,371 | 302.9 % | 4 meses | $686,989 |
+| 38.0 % | 30.3 %–46.3 % | $60,371 | 302.9 % | 4 meses | $686,989 |
 
 Los cambios frente a las versiones anteriores están en [docs/METODOLOGIA.md](docs/METODOLOGIA.md#escenario-de-referencia). Las fuentes de cada dato se verificaron en [docs/VERIFICACION_DATOS.md](docs/VERIFICACION_DATOS.md).
 
@@ -185,7 +185,7 @@ $ npm test
 ✔ cobro de piso y variables emocionales: neutras por defecto, con efecto al usarlas (1.6617ms)
 ✔ v11 fiscal: tabla del RESICO (art. 113-E LISR), tope de 3.5 millones y régimen general (0.8928ms)
 ✔ v11 diagnóstico: 30 puntos en 5 niveles, pesos que suman 1 e índice de 0 a 100 (1.7936ms)
-✔ referencia: rango plausible de P = 30.6–46.6 % (vigente desde v13, β del DENUE) (66.1337ms)
+✔ referencia: rango plausible de P = 30.3–46.3 % (vigente desde v15) (66.1337ms)
 ℹ tests 19
 ℹ suites 0
 ℹ pass 19

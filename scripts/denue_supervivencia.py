@@ -206,7 +206,7 @@ def main() -> None:
         "fuente": "INEGI, DENUE, descarga masiva por entidad (Estado de México), ediciones " + ", ".join(sorted(ediciones)),
         "url": "https://www.inegi.org.mx/app/descarga/?ti=6",
         "generado": datetime.now(timezone.utc).isoformat(timespec="seconds"),
-        "metodo": "Cohortes de negocios nuevos (presentes en la edición de alta y ausentes en la anterior) seguidos 3 años. "
+        "metodo": "Cohortes de negocios nuevos (presentes en la edición de alta y ausentes en la anterior) seguidos 5 años (2019 → 2024). "
                   "Regresión logística binomial (statsmodels GLM) con giro, tamaño y cohorte en el Estado de México; zona con los negocios "
                   "de Coacalco y el resto como desplazamiento. Efectos centrados en el promedio y contraídos hacia 0 por Bayes empírico.",
         "limitaciones": "Desaparecer del DENUE no siempre significa cerrar (cambio de domicilio o de giro, actualización del directorio). "

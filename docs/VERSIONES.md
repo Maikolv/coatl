@@ -21,6 +21,7 @@
 | v12 | 2026-11-16 | Resultado para llevar con QR y documentación extensa | 51.6 % | $60,371 | 302.9 % | 4.1 meses | $912,776 |
 | v13 | 2026-11-17 | β de giro y zona estimados con el DENUE, perfiles cifrados y carga más rápida | 38.0 % | $60,371 | 302.9 % | 4.1 meses | $686,989 |
 | v14 | 2026-11-17 | β de formalidad estimado con el panel de la ENOE | 38.0 % | $60,371 | 302.9 % | 4.1 meses | $686,989 |
+| v15 | 2026-11-17 | Validación fuera de muestra, sin doble conteo y plan que acota la pérdida | 38.0 % | $60,371 | 302.9 % | 4.1 meses | $686,989 |
 
 ## v1 · Importación inicial (12 de noviembre de 2026)
 
@@ -271,3 +272,22 @@ Confirmaciones: `25ecaf9`.
 - Guion del video actualizado (cifras v13–v14, fuentes y límites).
 
 **Efecto en el modelo.** Cambian los β de «Formalización gradual» e «Informal». El escenario de referencia usa «Formal desde el inicio», que no cambia, así que sus cifras se mantienen: P = 38.0 % (rango 30.6–46.6 %), VPN 86,989.
+
+Confirmaciones: `14ae32d`.
+
+## v15 · Validación fuera de muestra, sin doble conteo y plan que acota la pérdida (17 de noviembre de 2026)
+
+**Qué es.** Se comprobó por primera vez si el modelo acierta, con 2,562 negocios de Coacalco que no usó para estimarse: ordena el riesgo apenas mejor que el azar (AUC 0.576) y el resultado se publica tal cual. Se quitó el doble conteo de competencia y del bloque financiero, las palancas cuentan la mitad de su efecto y Estrategia propone un plan por etapas con criterios de salida.
+
+**Por qué se hizo.** Una auditoría estricta encontró que nunca se había comparado lo predicho con lo ocurrido, que la competencia y el bloque financiero se contaban dos veces, que se mezclaban horizontes sin documentarlo y que el plan presentaba asociaciones como efectos garantizados.
+
+- Script scripts/validar_denue.py: giro estimado sin Coacalco y zona con validación cruzada de 5 grupos; Brier 0.2691 (constante 0.25), AUC 0.576, tabla por deciles. Se publica en el sitio y en METODOLOGIA.
+- La competencia cercana deja de entrar a P (la zona del DENUE ya la refleja); sigue afectando los clientes esperados.
+- Margen de seguridad + reserva + deuda acotados a [−0.50, +0.35].
+- Nuevos indicadores: riesgo de quedarse sin efectivo en el primer año (Monte Carlo mes a mes contra la reserva) y probabilidad con solo lo medido (sin supuestos del equipo).
+- Palancas etiquetadas como asociación medida con datos o supuesto del equipo; el plan cuenta la mitad de su efecto.
+- Plan por etapas con criterios de salida en Estrategia y en el PDF del plan: prueba de demanda, inversión por tramos, revisiones en meses 3, 6 y 12, pérdida máxima.
+- Una sola fuente de verdad: las cifras de las estimaciones del sitio salen de data/*.json (marcador @@DATO@@ del build).
+- Tabla de horizontes de cada coeficiente en METODOLOGIA.
+
+**Efecto en el modelo.** P y VPN de la referencia no cambian (38.0 %, $686,989). El rango plausible pasa de 30.6–46.6 % a 30.3–46.3 %, porque el sorteo de sensibilidad perturba una contribución menos.

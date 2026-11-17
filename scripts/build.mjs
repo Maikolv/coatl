@@ -7,6 +7,14 @@ import { fileURLToPath } from 'node:url';
 
 const raiz = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const leer = (p) => fs.readFileSync(path.join(raiz, p), 'utf8').replace(/\r\n/g, '\n');
+/* Una sola fuente de verdad: las cifras de las estimaciones salen de data/*.json, nunca escritas a mano. */
+const datoJSON = (f) => JSON.parse(leer('data/' + f + '.json'));
+function formatoDato(v, fmt, donde) {
+  if (v == null) throw new Error('@@DATO@@ sin valor: ' + donde);
+  if (fmt === 'pct') return (v * 100).toLocaleString('es-MX', { maximumFractionDigits: 1 }) + ' %';
+  if (fmt === 'n') return Number(v).toLocaleString('es-MX');
+  return String(v);
+}
 
 // Orden importa: datos → modelo → formato → UI → mapa → orquestación.
 export const MODULOS_JS = [
@@ -133,6 +141,8 @@ export function construir() {
   let html = plantilla
     .replace('/*@@CSS@@*/', () => cssFinal)
     .replace('/*@@JS@@*/', () => js)
+    .replace('/*@@VALIDACION@@*/ null', () => JSON.stringify(datoJSON('denue/validacion')))
+    .replace(/@@DATO:([a-z]+\/[a-z_]+):([a-z0-9_.]+)(?::(pct|n))?@@/gi, (_, f, ruta, fmt) => formatoDato(ruta.split('.').reduce((o, k) => o?.[k], datoJSON(f)), fmt, f + ':' + ruta))
     .replace('@@IA_URL@@', () => IA_URL)
     .replace('@@IA_ORIGEN@@', () => (IA_URL ? new URL(IA_URL).origin : ''))
     .replace(/@@FOTO:([a-z-]+):([a-z-]+)@@/g, (_, id, clase) => figuraFoto(id, clase))

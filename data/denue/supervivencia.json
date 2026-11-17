@@ -2,7 +2,7 @@
  "fuente": "INEGI, DENUE, descarga masiva por entidad (Estado de México), ediciones 2018_11, 2019_11, 2024_11",
  "url": "https://www.inegi.org.mx/app/descarga/?ti=6",
  "generado": "2026-11-17T07:09:42+00:00",
- "metodo": "Cohortes de negocios nuevos (presentes en la edición de alta y ausentes en la anterior) seguidos 3 años. Regresión logística binomial (statsmodels GLM) con giro, tamaño y cohorte en el Estado de México; zona con los negocios de Coacalco y el resto como desplazamiento. Efectos centrados en el promedio y contraídos hacia 0 por Bayes empírico.",
+ "metodo": "Cohortes de negocios nuevos (presentes en la edición de alta y ausentes en la anterior) seguidos 5 años (2019 → 2024). Regresión logística binomial (statsmodels GLM) con giro, tamaño y cohorte en el Estado de México; zona con los negocios de Coacalco y el resto como desplazamiento. Efectos centrados en el promedio y contraídos hacia 0 por Bayes empírico.",
  "limitaciones": "Desaparecer del DENUE no siempre significa cerrar (cambio de domicilio o de giro, actualización del directorio). Por eso solo se usan diferencias entre giros y zonas; el nivel absoluto sigue anclado a la tabla oficial del INEGI.",
  "cohortes": [
   {

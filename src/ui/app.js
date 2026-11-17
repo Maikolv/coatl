@@ -64,6 +64,13 @@ estadoCalculo("pendiente");
    modelo y mide el salto real de probabilidad (ΔP). Es análisis de
    sensibilidad honesto convertido en recomendaciones accionables. */
 function probDe(e2){ return modeloLogistico(derivar(e2)).P; }
+/* Las palancas usan β que son asociación (giro, zona y formalidad, medidos con datos) o supuesto del
+   equipo, nunca efecto causal probado: el plan cuenta solo la MITAD del salto que da el modelo. */
+const FACTOR_PLAN=0.5;
+const EVIDENCIA_PALANCA={formalidad:"Asociación medida con datos (ENOE)", zona:"Asociación medida con datos (DENUE)"};
+function evidenciaPalanca(clave){ return EVIDENCIA_PALANCA[clave]||"Supuesto del equipo"; }
+function efectoPlan(P0, P1){ return P0+Math.max(0,P1-P0)*FACTOR_PLAN; }
+function pPlan(e, lista, P0){ return lista.length?efectoPlan(P0, probDe(aplicarPalancas(e,lista))):P0; }
 function clon(e){ return Object.assign({}, e); }
 
 function palancas(e, P0){
@@ -143,7 +150,7 @@ function palancas(e, P0){
       base:"La experiencia previa del fundador correlaciona con la supervivencia del negocio; la curva de aprendizaje temprana es donde ocurre la mayoría de los cierres.",
       tasa:"Menos errores en año 1", P:probDe(c)});
   }
-  return L.map(l=>({...l, lift:l.P-P0})).filter(l=>l.lift>0.0005).sort((a,b)=>b.lift-a.lift);
+  return L.map(l=>{ const P=efectoPlan(P0,l.P); return {...l, P, lift:P-P0, evid:evidenciaPalanca(l.clave)}; }).filter(l=>l.lift>0.0005).sort((a,b)=>b.lift-a.lift);
 }
 
 function clasificarFODA(e, modelo){
@@ -218,8 +225,7 @@ function pintarFODA(e, modelo, mc){
 
   const L=palancas(e, P0);
   // Techo realista: aplicar simultáneamente las 3 palancas de mayor impacto
-  const cTecho=aplicarPalancas(e, L.slice(0,3));
-  const techo = L.length ? Math.max(P0, probDe(cTecho)) : P0;
+  const techo = pPlan(e, L.slice(0,3), P0);
   $("fodaP").textContent=(P0*100).toFixed(1)+"%";
   $("fodaTecho").textContent="potencial con el plan: "+(techo*100).toFixed(1)+"%";
   // Balance FODA: cuántos factores hay en cada cuadrante y cuánto pesan (Σβ) los internos frente a los externos.
@@ -229,6 +235,9 @@ function pintarFODA(e, modelo, mc){
     (mayorA?"Amenaza principal: <strong>"+esc(mayorA[0])+"</strong>.":"Sin amenazas externas marcadas.");
 
   pintarHerramientasPlan(e, modelo, L, P0);
+  seguro("wEtapas",()=>{
+    $("etapas").innerHTML=etapasPlan(e, mc).map(x=>'<li><p class="cal-t">'+x.t+'</p><p>'+x.d+'</p><p class="etapa-salida"><strong>Criterio de salida:</strong> '+x.salida+'</p></li>').join("");
+  });
   if(!L.length){
     $("acciones").innerHTML='<div class="accion"><div class="rank">✓</div><div class="cuerpo"><h3>Escenario muy sólido</h3><p class="que">El modelo no encuentra palancas con mejora significativa: tu configuración ya es robusta. Mantén la reserva de capital y vigila la competencia y la inflación.</p></div><div class="impacto"><div class="lift">—</div><div class="lift-k">sin brecha</div></div></div>';
     $("planCierre").innerHTML="<b>Lectura:</b> conserva la disciplina financiera; incluso con probabilidad alta, la cola izquierda del Monte Carlo existe. Reevalúa el plan si cambian renta, competencia o inflación.";
@@ -241,7 +250,7 @@ function pintarFODA(e, modelo, mc){
     const cursor = l.esZona ? ' data-clic="1"' : '';   // cursor vía CSS: la CSP no permite style="" en línea
     return '<div class="accion"'+accZona+cursor+'><div class="rank">'+(i+1)+'</div><div class="cuerpo"><h3>'+
       l.titulo+'</h3><p class="que">'+l.que+'</p><p class="base">'+l.base+
-      '</p><span class="tasa">Evidencia: '+l.tasa+'</span></div><div class="impacto"><div class="lift">+'+dp+
+      '</p><span class="tasa">Referencia: '+l.tasa+'</span> <span class="evid">'+l.evid+' · efecto contado a la mitad</span></div><div class="impacto"><div class="lift">+'+dp+
       '</div><div class="lift-k">puntos de prob.</div><div class="proy">→ '+proy+'%</div></div></div>';
   }).join("");
   // clic en acción de zona traslada el escenario
@@ -382,6 +391,28 @@ function factoresImpacto(modelo){
   const sig=x=>1/(1+Math.exp(-x)), z=modelo.z;
   return modelo.contribs.filter(c=>Math.abs(c[1])>0.001).map(([n,b])=>({n:n.replace(/ \(.+\)$/,""), b, imp:Math.abs(sig(z)-sig(z-b)), ctrl:INT.some(k=>n.startsWith(k))}));
 }
+/* Plan por etapas con criterios de salida. No promete que el negocio sobreviva: acota la pérdida.
+   Cada meta sale de los números del propio negocio (punto de equilibrio, inversión, reserva) y del Monte Carlo. */
+function etapasPlan(e, mc){
+  const peDia=isFinite(e.peDia)?Math.ceil(e.peDia):null, vm=mc.ventasMes||{};
+  return [
+    {t:"Antes de invertir · prueba de demanda (2 a 4 semanas)",
+     d:peDia?"Vende en pequeño (pedidos, puesto temporal o preventa). Meta: <strong>"+peDia+" clientes al día</strong>, tu punto de equilibrio. Si no la alcanzas, no abras todavía: ajusta precio, giro o zona y repite la prueba.":"Con este precio y costo variable no hay punto de equilibrio: corrige precio o costos antes de cualquier prueba.",
+     salida:"Sin la meta de clientes, no se abre."},
+    {t:"Inversión por tramos (meses 0 a 3)",
+     d:"Compromete como máximo <strong>"+mxn.format(Math.round(e.inversion*0.40))+"</strong> (40 % de la inversión) antes de ver el mes 3. Renta flexible, equipo usado o rentado, sin remodelación definitiva.",
+     salida:"El resto de la inversión solo se libera si el mes 3 pasa la revisión."},
+    {t:"Revisiones en los meses 3, 6 y 12",
+     d:"Compara tus ventas mensuales reales con la mediana simulada (<strong>"+mxn.format(Math.round(vm.p50||0))+"</strong>) y con el escenario malo, P5 (<strong>"+mxn.format(Math.round(vm.p05||0))+"</strong>).",
+     salida:"Dos meses seguidos por debajo del P5: ajusta a fondo o cierra."},
+    {t:"Pérdida máxima decidida desde el día uno",
+     d:"Tu reserva (≈ <strong>"+mxn.format(Math.round(mc.cajaInicial||0))+"</strong>) es el tope de lo que estás dispuesto a perder, y nada más. Con tus números, la probabilidad de agotarla en el primer año es de <strong>"+pct(mc.pSinEfectivo||0)+"</strong>.",
+     salida:"Si las pérdidas acumuladas alcanzan la reserva, se cierra; no se pide crédito para cubrirlas."},
+    {t:"Con datos reales, vuelve a calcular",
+     d:"Desde el mes 3, carga tu historial en <strong>Para empresas</strong>: P y los escenarios se recalculan con tus ventas, no con supuestos.",
+     salida:"Las decisiones de los meses 6 y 12 usan tus datos."}
+  ];
+}
 function pintarHerramientasPlan(e, modelo, L, P0){
   // Simulador de plan: mismas palancas, aplicadas juntas con aplicarPalancas()
   seguro("wPlan",()=>{
@@ -392,7 +423,7 @@ function pintarHerramientasPlan(e, modelo, L, P0){
     $("planOpciones").innerHTML=L.map(l=>'<label class="plan-op"><input type="checkbox" value="'+l.clave+'"'+(planSel.includes(l.clave)?" checked":"")+'> '+l.titulo+' <span class="plan-dp">+'+(l.lift*100).toFixed(1)+' pts sola</span></label>').join("");
     if(foco){ const f=$("planOpciones").querySelector("input[value=\""+foco+"\"]"); if(f) f.focus(); }
     const elegidas=L.filter(l=>planSel.includes(l.clave));
-    const Pplan=elegidas.length?Math.max(P0,probDe(aplicarPalancas(e,elegidas))):P0;
+    const Pplan=pPlan(e, elegidas, P0);
     $("planRes").innerHTML='<span class="plan-p">'+(P0*100).toFixed(1)+'% → <strong>'+(Pplan*100).toFixed(1)+'%</strong></span> con '+elegidas.length+(elegidas.length===1?" acción":" acciones")+' (+'+((Pplan-P0)*100).toFixed(1)+' pts)';
   });
   // Matriz de impacto y control: ΔP si el factor fuera neutro

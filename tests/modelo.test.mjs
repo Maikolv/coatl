@@ -141,10 +141,36 @@ test('v11 diagnóstico: 30 puntos en 5 niveles, pesos que suman 1 e índice de 0
   assert.equal(M.indiceMadurez(n1).indice, 35);
 });
 
-test('referencia: rango plausible de P = 30.6–46.6 % (vigente desde v13, β del DENUE)', () => {
+// v15: sin competencia en P, el sorteo de sensibilidad perturba una contribución menos (antes 30.6–46.6 %).
+test('referencia: rango plausible de P = 30.3–46.3 % (vigente desde v15)', () => {
   const r = M.rangoP(M.modeloLogistico(escenarioReferencia(M)));
-  assert.equal((r.p05 * 100).toFixed(1), '30.6');
-  assert.equal((r.p95 * 100).toFixed(1), '46.6');
+  assert.equal((r.p05 * 100).toFixed(1), '30.3');
+  assert.equal((r.p95 * 100).toFixed(1), '46.3');
+});
+
+test('v15: la competencia cercana no cambia P (la zona del DENUE ya la refleja)', () => {
+  const e = escenarioReferencia(M);
+  const P0 = M.modeloLogistico(e).P;
+  assert.equal(M.modeloLogistico({ ...e, compZ: -0.35 }).P, P0);
+});
+
+test('v15: margen de seguridad + reserva + deuda no suman más de 0.35', () => {
+  const e = escenarioReferencia(M);                      // margen de seguridad alto (+0.25)
+  const m = M.modeloLogistico({ ...e, resZ: 0.35, credPct: 0 });
+  const fin = m.contribs.filter(c => /Margen de seguridad|Reserva|deuda|Tope del bloque/.test(c[0])).reduce((a, c) => a + c[1], 0);
+  cerca(fin, 0.35, 1e-9, 'bloque financiero acotado');
+});
+
+test('v15: P con solo lo medido y probabilidad de quedarse sin efectivo', () => {
+  const e = escenarioReferencia(M);
+  const m = M.modeloLogistico(e);
+  cerca(m.Pmedido, 0.369, 0.0005, 'P sin supuestos del equipo');
+  assert.equal(M.monteCarlo(e).pSinEfectivo, 0);         // la referencia gana dinero desde el primer mes
+  const flojo = M.derivar({ ...e, mu: Math.round(e.mu * 0.25) });   // pierde ≈ $5,000 al mes
+  const sinReserva = M.monteCarlo({ ...flojo, resZ: -0.30 }).pSinEfectivo;
+  const conReserva = M.monteCarlo({ ...flojo, resZ: 0.35 }).pSinEfectivo;
+  assert.ok(sinReserva > conReserva, `más reserva, menos riesgo: ${sinReserva} vs ${conReserva}`);
+  assert.ok(sinReserva > 0.5, 'con pocas ventas y sin reserva casi siempre se acaba el efectivo');
 });
 
 // v14: β de formalidad estimado con el panel de la ENOE (scripts/enoe_supervivencia.py).

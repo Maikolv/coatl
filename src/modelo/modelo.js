@@ -22,18 +22,23 @@ function derivar(e){
 }
 
 /* ---------- 6. Modelo logístico con contribuciones etiquetadas ---------- */
+/* Fuente de cada contribución: "datos" (estimado con microdatos del INEGI), "propio" (sale de los
+   números del propio negocio) o "supuesto" (criterio del equipo, sin datos que lo liguen al cierre). */
+const TOPE_FINANCIERO=[-0.50, 0.35];   // margen de seguridad + reserva + deuda miden casi lo mismo: no se apilan sin límite
 function modeloLogistico(e){
   const msZ = e.ms>=0.30?0.25 : e.ms>=0.15?0.10 : e.ms>=0?-0.10 : -0.50;
   const deudaZ = e.credPct>=0.6?-0.20 : e.credPct>=0.3?-0.08 : e.credPct>0?0:0.05;
+  const fin = msZ+e.resZ+deudaZ, ajusteFin = acota(fin, TOPE_FINANCIERO[0], TOPE_FINANCIERO[1]) - fin;
+  /* La competencia cercana ya no entra a P: el β de zona (DENUE) ya refleja la densidad de negocios.
+     Su efecto llega por la demanda (clientes) y de ahí al margen de seguridad. */
   const contribs=[
-    ["Giro ("+e.giro.n+")", e.giro.z],
-    ["Zona ("+e.zona.n+")", e.zona.z],
-    ["Experiencia en el giro", e.expZ],
-    ["Reserva de capital", e.resZ],
-    ["Competencia cercana", e.compZ],
-    ["Formalidad fiscal", e.formZ],
-    ["Marketing", e.mktZ],
-    ["Estructura de deuda", deudaZ],
+    ["Giro ("+e.giro.n+")", e.giro.z, e.giro.fz==="denue"?"datos":"supuesto"],
+    ["Zona ("+e.zona.n+")", e.zona.z, e.zona.fz==="denue"?"datos":"supuesto"],
+    ["Experiencia en el giro", e.expZ, "supuesto"],
+    ["Reserva de capital", e.resZ, "supuesto"],
+    ["Formalidad fiscal", e.formZ, "datos"],
+    ["Marketing", e.mktZ, "supuesto"],
+    ["Estructura de deuda", deudaZ, "supuesto"],
     ["Local propio", e.propio?0.10:0],
     ["Modelo de negocio", e.modZ||0],
     ["Permisos municipales", e.permZ||0],
@@ -42,11 +47,19 @@ function modeloLogistico(e){
     ["Riesgo de extorsión (cobro de piso)", e.extZ||0],
     ["Resiliencia del emprendedor", e.resilZ||0],
     ["Motivación para emprender", e.motivZ||0],
-    ["Margen de seguridad financiero", msZ]
+    ["Margen de seguridad financiero", msZ, "propio"]
   ];
+  if(Math.abs(ajusteFin)>1e-9) contribs.push(["Tope del bloque financiero (margen + reserva + deuda)", ajusteFin, "propio"]);
+  contribs.forEach(c=>{ if(!c[2]) c[2]="supuesto"; });
   const z=BETA0+contribs.reduce((s,c)=>s+c[1],0);
-  return {P:acota(sigmoide(z),0.04,0.93), z, contribs};
+  const zSupuestos=contribs.filter(c=>c[2]==="supuesto").reduce((s,c)=>s+c[1],0);
+  /* P con solo lo medido (datos + números propios): cuánto de P depende de supuestos del equipo. */
+  const Pmedido=acota(sigmoide(z-zSupuestos),0.04,0.93);
+  return {P:acota(sigmoide(z),0.04,0.93), z, contribs, Pmedido, zSupuestos};
 }
+
+/* Meses de gastos fijos que cubre la reserva declarada (límite inferior de cada opción, conservador). */
+function mesesReserva(resZ){ return resZ>=0.35?12 : resZ>=0.20?6 : resZ>=0?3 : 1.5; }
 
 /* ---------- 7. Curva de supervivencia personalizada ---------- */
 function curvaSupervivencia(P){
@@ -62,26 +75,32 @@ function monteCarlo(e){
        a los 12 meses a la vez, por lo que no se compensa al sumar;
      · ruido mensual de clientes y de ticket (independiente por mes);
      · ruido anual en el costo variable (proveedores, merma). */
-  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA), res=new Array(N_SIM);
+  const U=INCERTIDUMBRE, rng=mulberry32(SEMILLA), res=new Array(N_SIM), ventas=new Array(N_SIM);
+  const caja0=mesesReserva(e.resZ)*e.fijos; let sinCaja=0;
   for(let i=0;i<N_SIM;i++){
     const fAnual=Math.exp(gaussiana(rng)*U.demandaAnual - U.demandaAnual*U.demandaAnual/2);
     const cvSim=acota(e.cvEff + gaussiana(rng)*U.costoVariable, 0.02, 0.98);
-    let total=0;
+    let total=0, vtas=0, quiebra=false;
     for(let m=0;m<12;m++){
       const rampa=Math.pow(1+(e.crec||0), m/12);
       const muM=e.mu*e.estacion[m]*rampa*fAnual;
       const cli=Math.max(0, muM + gaussiana(rng)*U.demandaMensual*muM);
       const tk =Math.max(1, e.ticket + gaussiana(rng)*U.ticket*e.ticket);
-      total += cli*e.diasMes*tk*(1-cvSim) - e.fijos;
+      const venta=cli*e.diasMes*tk;
+      vtas += venta;
+      total += venta*(1-cvSim) - e.fijos;
+      if(caja0+total<0) quiebra=true;   // la reserva no alcanzó a cubrir las pérdidas acumuladas
     }
-    res[i]=total;
+    res[i]=total; ventas[i]=vtas/12; if(quiebra) sinCaja++;
   }
-  res.sort((a,b)=>a-b);
+  res.sort((a,b)=>a-b); ventas.sort((a,b)=>a-b);
   const media=res.reduce((s,x)=>s+x,0)/N_SIM;
   const sd=Math.sqrt(res.reduce((s,x)=>s+(x-media)**2,0)/(N_SIM-1));
   return {res, media, sd, p025:cuantil(res,.025), p05:cuantil(res,.05), p50:cuantil(res,.5),
           p95:cuantil(res,.95), p975:cuantil(res,.975),
-          pPos:res.filter(x=>x>0).length/N_SIM};
+          pPos:res.filter(x=>x>0).length/N_SIM,
+          pSinEfectivo:sinCaja/N_SIM, cajaInicial:caja0,
+          ventasMes:{p05:cuantil(ventas,.05), p50:cuantil(ventas,.5)}};
 }
 
 /* Cuantil empírico con interpolación lineal (tipo 7 de Hyndman–Fan, el de R/NumPy). */

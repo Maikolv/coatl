@@ -39,7 +39,7 @@ function datosReporte(){
   const est=estadosMadurez(c), mad=indiceMadurez(est);
   const L=palancas(e,P0);
   const elegidas=(typeof planSel!=="undefined"&&planSel?L.filter(l=>planSel.includes(l.clave)):L.slice(0,3));
-  const Pplan=elegidas.length?Math.max(P0,probDe(aplicarPalancas(e,elegidas))):P0;
+  const Pplan=pPlan(e, elegidas, P0);
   return {c, r, mad, e, L, elegidas, Pplan, foda:clasificarFODA(e,c.modelo), fac:factoresImpacto(c.modelo),
     titulo:c.nombre, sub:e.giro.n+" · "+c.zona, fecha:new Date().toLocaleDateString("es-MX",{year:"numeric",month:"long",day:"numeric"}),
     kpis:[["Probabilidad a 3 años",pct(r.P),"rango plausible "+r.rango],["Utilidad mensual",d(r.util),"antes de impuestos"],["ROI anual",pct(r.roi),"sobre la inversión"],
@@ -95,6 +95,8 @@ function cuerpoPlan(D){
       celda("Controlas · impacto alto",D.fac.filter(f=>f.ctrl&&alto(f)))+celda("Externo · impacto alto",D.fac.filter(f=>!f.ctrl&&alto(f)))+
       celda("Controlas · impacto bajo",D.fac.filter(f=>f.ctrl&&!alto(f)))+celda("Externo · impacto bajo",D.fac.filter(f=>!f.ctrl&&!alto(f)))+"</div>"+
       '<p class="rep-nota">Impacto = puntos de probabilidad que cambiarían si ese factor fuera neutro. La probabilidad de que ocurra cada riesgo no está medida.</p>'+
+    '<p class="rep-h">Plan por etapas con criterios de salida</p><ol class="rep-lista">'+etapasPlan(D.e,D.c.mc).map(x=>"<li><strong>"+x.t+".</strong> "+x.d+" <em>Criterio de salida: "+x.salida+"</em></li>").join("")+"</ol>"+
+      '<p class="rep-nota">Ningún modelo asegura que un negocio sobreviva. Este plan acota la pérdida; las acciones de arriba cuentan la mitad del efecto que da el modelo, porque sus coeficientes son asociación o supuesto, no efecto probado.</p>'+
     (conHitos.length?'<p class="rep-h">Calendario de 90 días</p><div class="rep-cal">'+["Días 1 a 30","Días 31 a 60","Días 61 a 90"].map((t,m)=>
         '<div class="rep-caja"><p class="rep-caja-t">'+t+'</p><ul class="rep-lista">'+conHitos.map(l=>"<li>"+HITOS_PLAN[l.clave].m[m]+"</li>").join("")+"</ul></div>").join("")+"</div>"+
       '<p class="rep-h">Indicadores de seguimiento</p><ul class="rep-lista">'+conHitos.map(l=>"<li><strong>"+l.titulo+":</strong> "+HITOS_PLAN[l.clave].kpi+"</li>").join("")+"</ul>":"")+

@@ -44,13 +44,13 @@ Funciones núcleo: `modeloLogistico`, `rangoP`, `monteCarlo`, `curvaSupervivenci
 
 Alcance funcional: 35 giros de negocio, 36 variables en 4 pestañas (incluye riesgo de extorsión, pago de piso, resiliencia y motivación; neutras por defecto), 6 zonas con polígonos de color en el mapa.
 
-### Escenario de referencia (prueba de regresión) — v13 (S₀ oficial INEGI y β de giro y zona estimados con el DENUE)
+### Escenario de referencia (prueba de regresión) — v15 (S₀ oficial INEGI, β de giro y zona con el DENUE, formalidad con la ENOE)
 
 **Cafetería · Los Héroes** (valores por defecto: ticket 95, CV 38 %) debe dar:
 
 | Métrica | Valor |
 |---|---|
-| P(supervivencia 3 años) | 38.0 % (rango plausible 30.6–46.6 %) |
+| P(supervivencia 3 años) | 38.0 % (rango plausible 30.3–46.3 %) |
 | Utilidad mensual | ≈ $60,371 |
 | ROI | 302.9 % |
 | Payback | 4 meses (4.1) |
@@ -172,3 +172,11 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - Sobrevive quien sigue como dueño en la misma rama. Formal = `tue_ppal == 2`. Diferencia formal − informal 0.23 (antes 0.16). «Formal desde el inicio» queda en 0.10 (default; la referencia no cambia). Gradual −0.02, informal −0.13. Una prueba en `tests/modelo.test.mjs` exige que el `<select id="formalidad">` coincida con el JSON.
 - Experiencia, reserva, marketing y deuda siguen siendo supuestos: la ENAMIN acabó en 2012 y ninguna fuente pública los liga con el cierre. La ruta para estimarlas está en docs/METODOLOGIA.md.
 - Prompts: `docs/PROMPT_CODEX_CONTINUAR.md` y `docs/PROMPT_HELP_QUOTE_TERMINAL.md` (Help Quote Terminal está en `Repos/actinver-terminal`).
+
+## v15: validación, sin doble conteo y plan por etapas
+
+- `scripts/validar_denue.py` → `data/denue/validacion.json`: validación fuera de muestra con la cohorte del DENUE de Coacalco (giro sin Coacalco, zona con validación cruzada de 5 grupos). AUC 0.58, Brier 0.269 contra 0.250 de una constante: se publica tal cual. El build la inserta en `resultados.js` (`/*@@VALIDACION@@*/`).
+- `modeloLogistico`: la competencia ya no entra a P; bloque margen + reserva + deuda acotado a [−0.50, 0.35] (`TOPE_FINANCIERO`); cada contribución trae su fuente (`datos`, `propio`, `supuesto`) y el modelo devuelve `Pmedido`. `monteCarlo` devuelve `pSinEfectivo`, `cajaInicial` y `ventasMes` sin llamadas extra al generador.
+- Palancas: `FACTOR_PLAN = 0.5`, `efectoPlan`, `pPlan` y `evidenciaPalanca` en app.js; úsalos siempre en lugar de `probDe(aplicarPalancas(...))`. Plan por etapas: `etapasPlan(e, mc)` (#wEtapas y PDF del plan).
+- Cifras de estimaciones en `src/index.html`: usa `@@DATO:carpeta/archivo:ruta[:pct|n]@@` (lee `data/carpeta/archivo.json`); el build falla si la ruta no existe.
+- Nunca prometas éxito ni «99 %»: el plan acota la pérdida; no garantiza la supervivencia.

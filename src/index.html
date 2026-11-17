@@ -336,7 +336,7 @@
                 <option value="-0.02">Formalización gradual</option>
                 <option value="-0.13">Informal</option>
               </select>
-              <span class="ayuda">Diferencia estimada con el panel de la ENOE (INEGI): un año después sigue operando el 53 % de los negocios jóvenes formales contra el 43 % de los informales.</span>
+              <span class="ayuda">Diferencia estimada con el panel de la ENOE (INEGI): un año después sigue operando el @@DATO:enoe/supervivencia:supervivencia_1a.formal:pct@@ de los negocios jóvenes formales contra el @@DATO:enoe/supervivencia:supervivencia_1a.informal:pct@@ de los informales (asociación, no efecto garantizado).</span>
             </div>
             <div class="campo">
               <label for="marketing">Estrategia de marketing</label>
@@ -848,6 +848,13 @@
   <div class="acciones" id="acciones"></div>
   <p class="plan-cierre" id="planCierre"></p>
 
+  <article class="widget widget-claro widget-etapas" id="wEtapas" data-estado="cargando" aria-labelledby="wEtapas-q">
+    <p class="widget-pregunta" id="wEtapas-q">¿Cómo abro sin arriesgar más de lo que puedo perder?</p>
+    <ol class="calendario etapas" id="etapas"></ol>
+    <p class="nota-widget">Ningún modelo asegura que un negocio sobreviva: en México, a 3 años sigue abierto el 42.6 % (INEGI). Este plan por etapas no sube esa cifra por sí solo; <strong>acota la pérdida</strong>. Las metas salen de tus números y del Monte Carlo.</p>
+    <p class="widget-estado" role="status" id="wEtapas-estado">Calculando…</p>
+  </article>
+
   <div class="plan-herramientas" id="planHerramientas">
     <article class="widget widget-claro" id="wPlan" data-estado="cargando" aria-labelledby="wPlan-q">
       <p class="widget-pregunta" id="wPlan-q">¿Qué pasa si aplico varias acciones a la vez?</p>
@@ -884,7 +891,10 @@
       <h3>Modelo logístico de puntaje</h3>
       <p>La probabilidad de éxito a 3 años se obtiene con una función logística: cada variable del escenario aporta un coeficiente β (positivo si protege al negocio, negativo si lo arriesga) y la suma z se transforma en una probabilidad entre 0 y 1.</p>
       <div class="formula" tabindex="0">P(éxito) = 1 / (1 + e^(−z)),&nbsp;&nbsp; z = β₀ + β₁x₁ + β₂x₂ + … + βₖxₖ</div>
-      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI 1989–2019 (42.6 %): β₀ = ln(0.4261/0.5739) ≈ −0.298. Los coeficientes de <strong>giro y zona</strong> se estimaron con datos reales: se siguió a 305,313 negocios que el INEGI incorporó al DENUE en la actualización censal de 2019 en el Estado de México (4,654 en Coacalco) hasta la edición de 2024, y se ajustó una regresión logística con errores estándar (efectos centrados y contraídos por Bayes empírico). El de <strong>formalidad</strong> se estimó con el panel de la ENOE del INEGI (5,245 dueños de negocios jóvenes seguidos un año). Los de experiencia, reserva de capital, competencia, deuda, marketing, margen de seguridad y las demás variables siguen siendo criterio del equipo, porque ninguna fuente pública los liga con el cierre. Como esos β no tienen error estándar, el simulador no presenta P como cifra exacta: perturba cada βᵢ con una desviación relativa de 30 % (y β₀ con 0.15) en 1,000 sorteos y reporta el <strong>rango plausible P5–P95</strong>. Es un análisis de sensibilidad, no un intervalo de confianza muestral.</p>
+      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI 1989–2019 (42.6 %): β₀ = ln(0.4261/0.5739) ≈ −0.298. Los coeficientes de <strong>giro y zona</strong> se estimaron con datos reales: se siguió a @@DATO:denue/supervivencia:n:n@@ negocios que el INEGI incorporó al DENUE en la actualización censal de 2019 en el Estado de México (@@DATO:denue/supervivencia:n_coacalco:n@@ en Coacalco) hasta la edición de 2024, y se ajustó una regresión logística con errores estándar (efectos centrados y contraídos por Bayes empírico). El de <strong>formalidad</strong> se estimó con el panel de la ENOE del INEGI (@@DATO:enoe/supervivencia:muestra.seguidos_visita5:n@@ dueños de negocios jóvenes seguidos un año). Experiencia, reserva de capital, marketing, deuda y las demás variables siguen siendo <strong>supuesto del equipo</strong>, porque ninguna fuente pública las liga con el cierre; el simulador muestra aparte la probabilidad con solo lo medido. La competencia cercana ya no suma a P, porque el coeficiente de zona ya refleja la densidad de negocios: afecta a los clientes esperados. Margen de seguridad, reserva y deuda juntos suman como máximo +0.35, porque miden casi lo mismo.</p>
+      <p><strong>Horizontes.</strong> Cada fuente mide un plazo distinto y todo se lleva a 3 años: la tabla del INEGI ya es a 3 años; giro y zona (DENUE, 5 años) solo aportan diferencias entre categorías, y el nivel lo fija β₀; formalidad (ENOE, 1 año) se convierte con riesgos proporcionales, S₃ = S₀(3)<sup>HR</sup>.</p>
+      <p><strong>¿Acierta?</strong> Se probó con @@DATO:denue/validacion:n:n@@ negocios de Coacalco que el modelo no usó para estimarse (giro estimado sin Coacalco; zona con validación cruzada de 5 grupos). A 5 años, COATL predijo en promedio @@DATO:denue/validacion:predicho_promedio:pct@@ y siguió el @@DATO:denue/validacion:observado:pct@@: el nivel está desfasado, en parte porque el directorio conserva negocios que ya cerraron. Para ordenar el riesgo, el AUC es @@DATO:denue/validacion:auc@@ (0.5 = azar) y la puntuación de Brier, @@DATO:denue/validacion:brier@@, frente a @@DATO:denue/validacion:brier_constante@@ de un pronóstico constante. Giro y zona ordenan el riesgo apenas mejor que el azar: P orienta, no predice un negocio en particular.</p>
+      <p>Como varios β no tienen error estándar, el simulador no presenta P como cifra exacta: perturba cada βᵢ con una desviación relativa de 30 % (y β₀ con 0.15) en 1,000 sorteos y reporta el <strong>rango plausible P5–P95</strong>. Es <strong>sensibilidad</strong>, no un intervalo de confianza muestral.</p>
       <p class="uso">Conceptos del curso: probabilidad condicional, función logística, variables explicativas.</p>
     </article>
 

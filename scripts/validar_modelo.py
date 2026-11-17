@@ -58,8 +58,11 @@ def modelo_logistico(e):
     msZ = 0.25 if ms >= 0.30 else 0.10 if ms >= 0.15 else -0.10 if ms >= 0 else -0.50
     c = e["credPct"]
     deudaZ = -0.20 if c >= 0.6 else -0.08 if c >= 0.3 else 0 if c > 0 else 0.05
-    z = (BETA0 + GIRO_CAFETERIA_Z + ZONA_HEROES_Z + e["expZ"] + e["resZ"] + e["compZ"]
-         + e["formZ"] + e["mktZ"] + deudaZ + (0.10 if e["propio"] else 0) + msZ
+    # v15: la competencia cercana ya no entra a P (la zona del DENUE ya la refleja) y el bloque
+    # financiero (margen de seguridad + reserva + deuda) se acota a [-0.50, 0.35].
+    fin = acota(msZ + e["resZ"] + deudaZ, -0.50, 0.35)
+    z = (BETA0 + GIRO_CAFETERIA_Z + ZONA_HEROES_Z + e["expZ"] + fin
+         + e["formZ"] + e["mktZ"] + (0.10 if e["propio"] else 0)
          + e["modZ"] + e["permZ"] + e["modalZ"] + e["horZ"])
     return acota(1 / (1 + math.exp(-z)), 0.04, 0.93), z
 

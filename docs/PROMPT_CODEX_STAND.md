@@ -30,7 +30,7 @@ RESTRICCIONES
 - Autores en este orden exacto: Miguel Antonio Cruz García, Bruno Alejandro López Bautista,
   Alonso Arroyo Cortés.
 - Usa solo cifras que existan en el repositorio (escenario de referencia: P 38.0 %, rango
-  plausible 30.6–46.6 %, ROI 302.9 %, payback 4.1 meses, VPN $686,989). Nunca afirmes «99 % de exactitud»
+  plausible 30.3–46.3 %, ROI 302.9 %, payback 4.1 meses, VPN $686,989). Nunca afirmes «99 % de exactitud»
   ni que el modelo predice con certeza.
 - Los precios son estimaciones: dilo y recomienda cotizar. No inventes proveedores ni enlaces.
 - No recolectes datos personales de visitantes en ninguna propuesta.

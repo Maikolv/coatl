@@ -497,6 +497,7 @@ img{max-width:100%}
 .accion .lift-k{font-family:var(--mono);font-size:.6rem;letter-spacing:.08em;text-transform:uppercase;color:#6E464B;margin-top:.2rem}
 .accion .proy{font-size:.7rem;color:var(--granate);font-weight:700;margin-top:.35rem}
 .accion .tasa{display:inline-block;margin-top:.4rem;font-family:var(--mono);font-size:.64rem;font-weight:700;color:#2563A8;background:#EAF1FA;padding:.2rem .5rem;border-radius:999px}
+.accion .evid{display:inline-block;margin-top:.4rem;font-family:var(--mono);font-size:.64rem;font-weight:700;color:#7A0C1F;background:#FBF6F3;border:1px solid #E5CFC9;padding:.2rem .5rem;border-radius:999px}
 .plan-cierre{margin-top:1.4rem;background:var(--niebla);border-left:5px solid var(--granate);border-radius:12px;padding:1.1rem 1.4rem;font-size:.9rem;color:var(--gris-texto)}
 .plan-cierre b{color:var(--granate)}
 .foda-resumen{font-family:var(--mono);font-size:.78rem;color:var(--granate);background:#fff;border:1px dashed var(--niebla-2);border-radius:10px;padding:.7rem .9rem;text-align:center}

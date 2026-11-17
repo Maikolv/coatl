@@ -405,6 +405,9 @@ body.vista-todo .pestanas-app{display:none}
 .calendario{list-style:none;margin:0;padding:0;display:grid;gap:.6rem}
 .calendario>li{border-left:4px solid #C8102E;padding:.3rem .7rem;background:#FBF6F3;border-radius:0 8px 8px 0}
 .calendario>li.cal-kpi{border-left-color:#7A0C1F}
+.widget-etapas{margin:1.2rem 0}
+.etapas>li p{margin:.2rem 0}
+.etapa-salida{color:#7A0C1F;font-size:.9rem}
 .cal-t{font-weight:700;margin:0 0 .2rem;color:#7A0C1F}
 .calendario ul{margin:0;padding-left:1.1rem;font-size:.88rem}
 #imprimirPlan{margin-top:.75rem;width:100%}

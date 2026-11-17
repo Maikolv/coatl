@@ -435,3 +435,18 @@ test('v13: indicador «cálculo listo» en la página', async ({ page }) => {
   expect(Number(await html.getAttribute('data-calculo-version'))).toBeGreaterThan(v0);
   await expect(page.locator('#probNum')).not.toHaveText('38.0%');
 });
+
+test('v15: plan por etapas, palancas etiquetadas, riesgo de efectivo y validación publicada', async ({ page }) => {
+  await page.goto('/?vista=todo', { waitUntil: 'load' });
+  await expect(page.locator('html')).toHaveAttribute('data-calculo', 'listo', { timeout: 15000 });
+  await expect(page.locator('#wEtapas')).toHaveAttribute('data-estado', 'listo');
+  await expect(page.locator('#etapas > li')).toHaveCount(5);
+  await expect(page.locator('#etapas')).toContainText('Criterio de salida');
+  await expect(page.locator('#kpis')).toContainText('Riesgo de quedarse sin efectivo');
+  await expect(page.locator('#kpis')).toContainText('Probabilidad con solo lo medido');
+  const evid = await page.locator('#acciones .evid').allTextContents();
+  expect(evid.length).toBeGreaterThan(0);
+  for (const t of evid) expect(t).toMatch(/^(Asociación medida con datos|Supuesto del equipo) .* efecto contado a la mitad$/);
+  await expect(page.locator('body')).toContainText('ordenan el riesgo apenas mejor que el azar');
+  await expect(page.locator('body')).not.toContainText('@@DATO');
+});

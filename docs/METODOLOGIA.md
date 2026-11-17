@@ -12,7 +12,7 @@ z = β₀ + Σ βᵢ·xᵢ        β₀ = logit(S₀(3)) = ln(0.4261/0.5739) ≈
 P = acota( 1 / (1 + e^(−z)), 0.04, 0.93 )
 ```
 
-Hay 10 contribuciones: giro, zona, experiencia, reserva, competencia, formalidad, marketing, deuda, local propio y margen de seguridad (MS, del bloque determinista).
+Hay 9 contribuciones principales: giro, zona, experiencia, reserva, formalidad, marketing, deuda, local propio y margen de seguridad (MS, del bloque determinista). Desde v15 la competencia cercana no entra a P (ver «Doble conteo»).
 **Supuesto:** los β los asignó el equipo; no se estimaron con microdatos.
 
 **Rango plausible de P** (`rangoP`): 1,000 sorteos con `βᵢ·(1 + 0.30·ε)` y `β₀ + 0.15·ε`, con ε ~ N(0,1) y semilla 20263. Se reportan P5–P95.
@@ -65,7 +65,7 @@ No incluyen ISR/RESICO, depreciación, sueldo del dueño, capital de trabajo ni 
 | v5 a v12 | S₀ oficial hasta el año 10 | 51.6 % | $60,371 | 302.9 % | 4.1 meses | $912,776 |
 | **v13 (vigente)** | β de giro y zona estimados con el DENUE | **38.0 %** | **$60,371** | **302.9 %** | **4.1 meses** | **$686,989** |
 
-Rango plausible de P: **30.6 %–46.6 %** desde v13 (44.1 %–58.2 % de v9 a v12) (en v3 a v8 era 44.3 %–58.3 %). El cambio no viene de los datos ni de los coeficientes: v9 agregó tres variables neutras (extorsión, resiliencia y motivación) y `rangoP` hace un sorteo por cada variable, aunque su β sea 0, así que la secuencia del generador se recorre y el P5 y el P95 se mueven una o dos décimas. P, la utilidad, el ROI, el payback y el VPN no cambiaron. La v4 incorporó el recorrido exploratorio con el modelo v3. En v5 cambian los puntos de supervivencia de los años 6–10. P y el VPN dependen de los primeros tres años. La utilidad, el ROI y el payback se calculan sin S₀.
+Rango plausible de P: **30.3 %–46.3 %** desde v15 (30.6 %–46.6 % en v13 y v14, cuando la competencia aún entraba a P; 44.1 %–58.2 % de v9 a v12) (en v3 a v8 era 44.3 %–58.3 %). El cambio no viene de los datos ni de los coeficientes: v9 agregó tres variables neutras (extorsión, resiliencia y motivación) y `rangoP` hace un sorteo por cada variable, aunque su β sea 0, así que la secuencia del generador se recorre y el P5 y el P95 se mueven una o dos décimas. P, la utilidad, el ROI, el payback y el VPN no cambiaron. La v4 incorporó el recorrido exploratorio con el modelo v3. En v5 cambian los puntos de supervivencia de los años 6–10. P y el VPN dependen de los primeros tres años. La utilidad, el ROI y el payback se calculan sin S₀.
 Monte Carlo v2: DE $179,399; P5 $489,097; P50 $744,277; P95 $1,072,698.
 La prueba `compatibilidad` de `tests/modelo.test.mjs` confirma que con las entradas v1 se recuperan la utilidad y el VPN v1. Ninguna de las dos cantidades depende del Monte Carlo.
 
@@ -124,3 +124,74 @@ El DENUE no registra experiencia, reserva, formalidad, marketing ni deuda. Se bu
 **Límites.** Seguir como dueño en la misma rama no prueba que sea el mismo negocio. La ENOE mide personas, no establecimientos, y su muestra es nacional, no de Coacalco. El 14.6 % que no se volvió a encontrar puede tener otra supervivencia. Pasar de 1 a 3 años supone riesgos proporcionales. «Formal» es la definición del INEGI (fuera del sector informal: con registros contables o constituido como sociedad), que no es lo mismo que estar inscrito en el SAT o el IMSS.
 
 **Cómo estimar las otras cuatro.** Hace falta un seguimiento propio. La ruta más barata es una encuesta corta a negocios abiertos en Coacalco que pregunte experiencia previa, meses de reserva, gasto en publicidad y porcentaje financiado con crédito. Después se ve qué negocios siguen en la siguiente edición del DENUE, con el mismo método de v13. Para detectar una diferencia de 10 puntos (45 % contra 55 %) con 80 % de potencia y α = 0.05 hacen falta unos 400 negocios por grupo.
+
+
+
+## ¿Acierta el modelo? Validación fuera de muestra (v15)
+
+`scripts/validar_denue.py` → `data/denue/validacion.json`. Se predice si cada negocio que el INEGI incorporó al DENUE de Coacalco en 2019 sigue en la edición de 2024, **sin usar ese negocio para estimar**: el β de giro se reestima con el Estado de México sin Coacalco y el de zona, con validación cruzada de 5 grupos dentro de Coacalco. La predicción es la de COATL: z = β₀ + giro + zona (lo demás en neutro, porque el DENUE no lo registra), P a 3 años y S(5) = S₀(5)^h.
+
+| Métrica | Resultado | Lectura |
+|---|---|---|
+| Negocios | 2,562 | Coacalco, giros de COATL |
+| Promedio predicho vs observado a 5 años | 35.5 % vs 50.6 % | Nivel desfasado: el directorio conserva negocios cerrados y la curva base es nacional |
+| Brier | 0.2691 (constante: 0.25) | Sin corregir el nivel, peor que pronosticar la tasa observada |
+| Brier con el nivel corregido | 0.2463 | 1.5 % mejor que la constante |
+| AUC | 0.576 | 0.5 = azar: giro y zona ordenan el riesgo apenas mejor que el azar |
+| Pendiente de calibración | 0.794 | Menor que 1: las diferencias entre giros y zonas están un poco exageradas |
+
+| Decil | n | Predicho | Predicho (nivel corregido) | Observado |
+|---|---|---|---|---|
+| 1 | 257 | 24.4 % | 37.8 % | 42.8 % |
+| 2 | 249 | 28.1 % | 42.6 % | 38.6 % |
+| 3 | 263 | 30.1 % | 44.9 % | 41.4 % |
+| 4 | 252 | 31.7 % | 46.8 % | 46.4 % |
+| 5 | 252 | 33.6 % | 48.9 % | 55.2 % |
+| 6 | 262 | 35.9 % | 51.4 % | 56.9 % |
+| 7 | 258 | 37.8 % | 53.5 % | 48.4 % |
+| 8 | 240 | 41.0 % | 56.8 % | 57.5 % |
+| 9 | 271 | 42.7 % | 58.5 % | 57.2 % |
+| 10 | 258 | 49.3 % | 64.7 % | 61.6 % |
+
+**Conclusión honesta.** Giro y zona orientan, pero no predicen un negocio en particular. La mayor parte de lo que decide si un negocio sigue no está en el DENUE. Por eso el sitio publica esta validación, muestra P con su rango y propone un plan que acota la pérdida en lugar de prometer éxito.
+
+## Horizonte de cada coeficiente (v15)
+
+| Fuente | Qué estima | Horizonte medido | Cómo se lleva a 3 años |
+|---|---|---|---|
+| Tabla del INEGI 1989–2019 | Nivel (β₀) y curva S₀(t) | 1 a 10 años | Ya es a 3 años: β₀ = logit(S₀(3)) |
+| DENUE 2019 → 2024 | Giro y zona | 5 años | Solo diferencias entre categorías (centradas); el nivel lo fija β₀. Supone que el orden entre giros y zonas es el mismo a 3 y a 5 años |
+| ENOE (panel de 1 año) | Formalidad | 1 año | Riesgos proporcionales: S₃ = S₀(3)^HR, con HR medido a 1 año |
+| Números del negocio | Margen de seguridad, riesgo de efectivo | Mes a mes y 1 año (Monte Carlo) | No se convierte: es del propio negocio |
+| Supuesto del equipo | Experiencia, reserva, marketing, deuda y demás | Sin horizonte medido | Sin datos; se muestran aparte («P con solo lo medido») |
+
+## Doble conteo corregido (v15)
+
+1. **Competencia.** El β de zona del DENUE ya refleja la densidad de negocios: contar además «Competencia cercana» en P era contarla dos veces. Desde v15 no entra a P; sigue afectando los clientes esperados (`factorCompetencia`) y, por ahí, el margen de seguridad y el Monte Carlo.
+2. **Bloque financiero.** Margen de seguridad, reserva y deuda salen de los mismos números de ventas y costos. Su suma se acota a [−0.50, +0.35] (el máximo es el de la reserva más alta), para que no se apilen.
+
+El escenario de referencia no cambia (P = 38.0 %, VPN $686,989). El rango plausible pasa de 30.6–46.6 % a 30.3–46.3 %, porque el sorteo de sensibilidad perturba una contribución menos.
+
+## Palancas del plan: asociación o supuesto, efecto a la mitad (v15)
+
+Que los negocios formales sobrevivan más no prueba que formalizarse cause la supervivencia: los mejores negocios suelen formalizarse. Cada palanca de Estrategia se etiqueta como **«Asociación medida con datos»** (formalidad y zona) o **«Supuesto del equipo»** (las demás). Todas cuentan la **mitad** del salto que da el modelo (`FACTOR_PLAN = 0.5` en `src/ui/app.js`): en el plan, en el simulador de plan, en Mejora tu negocio y en los reportes.
+
+## Riesgo de quedarse sin efectivo (v15)
+
+El Monte Carlo sigue la caja mes a mes: reserva declarada (límite inferior de cada opción: 1.5, 3, 6 o 12 meses de gastos fijos) más la utilidad acumulada. Si en algún mes del primer año queda por debajo de cero, ese año cuenta como «sin efectivo». No agrega llamadas al generador aleatorio, así que los demás resultados no cambian. Es un dato del propio negocio, no un supuesto del equipo. La referencia da 0 %, porque gana dinero desde el primer mes; con 25 % de su demanda y sin reserva, da 67 %.
+
+## Plan por etapas con criterios de salida (v15)
+
+Ningún modelo asegura que un negocio sobreviva: en México, a 3 años sigue abierto el 42.6 %. Estrategia ya no promete éxito; propone un plan que **acota la pérdida** (`etapasPlan` en `src/ui/app.js`, también en el PDF del plan):
+
+1. **Prueba de demanda** de 2 a 4 semanas. La meta es el punto de equilibrio en clientes al día; si no se alcanza, no se abre.
+2. **Inversión por tramos.** No más del 40 % de la inversión antes del mes 3.
+3. **Revisiones en los meses 3, 6 y 12** contra la mediana y el P5 de las ventas mensuales simuladas. Dos meses seguidos bajo el P5: ajustar a fondo o cerrar.
+4. **Pérdida máxima** = la reserva. Si las pérdidas la alcanzan, se cierra; no se pide crédito para cubrirlas.
+5. **Datos reales.** Desde el mes 3, el historial se carga en Para empresas y P se recalcula.
+
+## Una sola fuente de verdad y un solo lenguaje (v15)
+
+- Las cifras de las estimaciones que aparecen en el sitio salen de `data/*.json` con el marcador `@@DATO:archivo:ruta@@` del build; ya no se escriben a mano.
+- Tres etiquetas, iguales en el sitio, los documentos y el video: **estimado con datos**, **supuesto del equipo** y **sensibilidad** (el rango plausible).
+- No se agregan variables nuevas hasta que la validación mejore: más variables sin datos suben la apariencia de precisión, no la exactitud.
