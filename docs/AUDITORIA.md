@@ -260,4 +260,5 @@ No se usó WebGL: CLAUDE.md lo rechaza. La profundidad se logra con SVG, 2.5D y 
 | 6 | Media | Los negocios guardados viven en `localStorage`: en equipos compartidos (stand) quedan visibles para el siguiente visitante. | Agregar un «modo stand» que borre los negocios al cerrar la pestaña. |
 | 7 | Baja | Hay pruebas de navegador sensibles al tiempo (recálculo en vivo, contador animado) que fallaron de forma intermitente en CI. | Exponer un indicador «cálculo listo» en el DOM y esperar a él en todas las pruebas. |
 | 8 | Baja | El índice con números de página necesita `uv` + PyMuPDF. | Calcular las páginas en el navegador (CSS Paged Media) cuando Chromium lo soporte. |
-| 9 | Baja | El escaneo dinámico de seguridad (HawkScan) no está configurado en este equipo. | Configurar `HAWK_API_KEY` y correrlo antes de la presentación. |
+| 9 | Media | La primera carga en frío tarda ≈ 5 s hasta mostrar el resultado (≈ 2 s en cargas siguientes); las tipografías y bibliotecas externas bloquean el inicio. | Servir las tipografías desde el propio sitio con `font-display: swap`, diferir Leaflet y Chart.js hasta que su apartado se abra y mostrar el resultado del escenario de referencia precalculado. |
+| 10 | Baja | El escaneo dinámico de seguridad (HawkScan) no está configurado en este equipo. | Configurar `HAWK_API_KEY` y correrlo antes de la presentación. |

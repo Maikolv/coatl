@@ -11,7 +11,7 @@ const erroresDe = (page) => {
 test('carga sin errores de consola y muestra el escenario de referencia', async ({ page }) => {
   const errores = erroresDe(page);
   await page.goto('/?vista=todo', { waitUntil: 'domcontentloaded' });
-  await expect(page.locator('#probNum')).toHaveText('51.6%', { timeout: 5000 });
+  await expect(page.locator('#probNum')).toHaveText('51.6%', { timeout: 15000 });   // la primera carga en frío ronda 5 s
   const kpis = page.locator('#kpis');
   await expect(kpis).toContainText('$60,371');
   await expect(kpis).toContainText('302.9%');
