@@ -181,7 +181,7 @@ function pintarTriplete(mc){
 
 function liUL(arr, vacio){
   if(!arr.length) return '<li class="vacio">'+vacio+"</li>";
-  return arr.map(([nom])=>'<li><span class="factor">'+nom+"</span></li>").join("");
+  return arr.map(([nom])=>'<li><span class="factor">'+esc(nom)+"</span></li>").join("");   // el nombre del giro puede venir del usuario (giro propio)
 }
 
 /* Aplica varias palancas a la vez sobre una copia del escenario (la usan el techo del plan y el simulador de plan). */
@@ -367,6 +367,12 @@ const HITOS_PLAN={
   zona:{m:["Visitar locales disponibles en la zona sugerida","Comparar renta y afluencia en campo","Decidir la ubicación"],kpi:"Renta por m² y peatones por hora"}
 };
 let planSel=null;
+/* Impacto de cada factor = puntos de probabilidad que cambiarían si fuera neutro (β = 0); ctrl = depende del negocio. */
+function factoresImpacto(modelo){
+  const INT=["Experiencia","Reserva","Formalidad","Marketing","Estructura de deuda","Local propio","Margen de seguridad","Resiliencia","Motivación","Modelo de negocio","Permisos","Modalidad","Horario"];
+  const sig=x=>1/(1+Math.exp(-x)), z=modelo.z;
+  return modelo.contribs.filter(c=>Math.abs(c[1])>0.001).map(([n,b])=>({n:n.replace(/ \(.+\)$/,""), b, imp:Math.abs(sig(z)-sig(z-b)), ctrl:INT.some(k=>n.startsWith(k))}));
+}
 function pintarHerramientasPlan(e, modelo, L, P0){
   // Simulador de plan: mismas palancas, aplicadas juntas con aplicarPalancas()
   seguro("wPlan",()=>{
@@ -382,9 +388,7 @@ function pintarHerramientasPlan(e, modelo, L, P0){
   });
   // Matriz de impacto y control: ΔP si el factor fuera neutro
   seguro("wRiesgo",()=>{
-    const INT=["Experiencia","Reserva","Formalidad","Marketing","Estructura de deuda","Local propio","Margen de seguridad","Resiliencia","Motivación","Modelo de negocio","Permisos","Modalidad","Horario"];
-    const sig=x=>1/(1+Math.exp(-x)), z=modelo.z;
-    const fac=modelo.contribs.filter(c=>Math.abs(c[1])>0.001).map(([n,b])=>({n:n.replace(/ \(.+\)$/,""), b, imp:Math.abs(sig(z)-sig(z-b)), ctrl:INT.some(k=>n.startsWith(k))}));
+    const fac=factoresImpacto(modelo);
     if(!fac.length){ estadoWidget("wRiesgo","vacio","Todos los factores están en posición neutra."); return false; }
     const alto=f=>f.imp>=0.03;
     const celda=(t,f)=>'<div class="mr-celda"><p class="mr-t">'+t+'</p><ul>'+(f.length?f.sort((a,b)=>b.imp-a.imp).map(x=>'<li class="'+(x.b<0?"neg":"pos")+'">'+esc(x.n)+' <span>'+(x.b<0?"−":"+")+(x.imp*100).toFixed(1)+' pts</span></li>').join(""):'<li class="vacio">Ninguno</li>')+"</ul></div>";
@@ -400,4 +404,3 @@ function pintarHerramientasPlan(e, modelo, L, P0){
   });
 }
 $("planOpciones").addEventListener("change",()=>{ planSel=[...$("planOpciones").querySelectorAll("input:checked")].map(i=>i.value); calcular(); });
-$("imprimirPlan").addEventListener("click",()=>{ document.body.classList.add("imprimir-plan"); print(); setTimeout(()=>document.body.classList.remove("imprimir-plan"),500); });

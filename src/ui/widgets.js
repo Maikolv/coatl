@@ -40,7 +40,7 @@ function pintarComparador(){
   if(!guardados.length){t.innerHTML=cap+'<tbody><tr><td class="vacio">Aún no hay escenarios guardados.</td></tr></tbody>';return}
   const fila=(et,fn)=>'<tr><th scope="row">'+et+"</th>"+guardados.map(g=>"<td>"+fn(g)+"</td>").join("")+"</tr>";
   t.innerHTML=cap+'<thead><tr><th scope="col">Métrica</th>'+
-    guardados.map((g,i)=>'<th scope="col"><a href="#'+g.hash+'" data-cargar="'+i+'">'+String.fromCharCode(65+i)+". "+g.nombre+"</a></th>").join("")+"</tr></thead><tbody>"+
+    guardados.map((g,i)=>'<th scope="col"><a href="#'+g.hash+'" data-cargar="'+i+'">'+String.fromCharCode(65+i)+". "+esc(g.nombre)+"</a></th>").join("")+"</tr></thead><tbody>"+
     fila("P a 3 años",g=>pct(g.P))+fila("Rango plausible",g=>g.rango)+
     fila("Utilidad/mes",g=>mxn.format(Math.round(g.util)))+
     fila("Utilidad anual P5–P95",g=>mxn.format(Math.round(g.p05))+" a "+mxn.format(Math.round(g.p95)))+

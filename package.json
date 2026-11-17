@@ -19,7 +19,8 @@
     "@playwright/test": "^1.65.1",
     "docx": "^9.15.3",
     "exceljs": "^4.4.0",
-    "pptxgenjs": "^3.12.0"
+    "pptxgenjs": "^3.12.0",
+    "qrcode-generator": "^1.4.4"
   },
   "overrides": {
     "pptxgenjs": {

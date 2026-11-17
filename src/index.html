@@ -42,12 +42,12 @@
     <div class="nav-links">
       <a href="#inicio" data-vista="inicio">Inicio</a>
       <a href="#contexto" data-vista="territorio">Territorio</a>
-      <a href="#denue" data-vista="denue">DENUE</a>
+      <a href="#denue" data-vista="denue">DENUE nacional</a>
       <a href="#simulador" data-vista="simulador">Simulador</a>
-      <a href="#empresas" data-vista="empresas">Empresas</a>
+      <a href="#empresas" data-vista="empresas">Para empresas</a>
       <a href="#estrategia" data-vista="estrategia">Estrategia</a>
       <a href="#metodologia" data-vista="metodologia">Metodología</a>
-      <a href="#legal" data-vista="legal">Legal</a>
+      <a href="#legal" data-vista="legal">Aviso legal</a>
     </div>
   </div>
 </nav>
@@ -123,6 +123,7 @@
       <button type="button" class="btn btn-widget" id="mapa25Abrir">Abrir el simulador en esta zona →</button>
     </article>
   </div>
+  @@VIDEO@@
   <div class="banda-fotos">
     <h3 class="banda-fotos-t">Coacalco, el territorio que modela COATL</h3>
     @@CARRUSEL:inicio@@
@@ -255,7 +256,7 @@
           <textarea id="descTexto" rows="4" placeholder="Ej.: Quiero abrir una cafetería en Los Héroes, espero 70 clientes al día con un ticket de 90 pesos. La renta es de 8 mil, tendré 2 empleados y voy a invertir 300 mil con 20 % a crédito. Tengo 4 años de experiencia."></textarea>
           <div class="acciones-widget">
             <button type="button" class="btn btn-widget" id="descAplicar">Ajustar el simulador</button>
-            <button type="button" class="btn btn-widget btn-sec boton-voz" id="descVoz" aria-pressed="false"><b aria-hidden="true">🎙️</b> <span>Dictar</span></button>
+            <button type="button" class="btn btn-widget btn-sec boton-voz" id="descVoz" aria-pressed="false"><img class="ico-mic" src="assets/img/iconos/microfono.webp" alt="" width="149" height="192"> <span>Dictar</span></button>
           </div>
           <p class="nota-widget" id="descModo">Intérprete: local, sin conexión</p>
         </div>
@@ -628,6 +629,7 @@
           <button type="button" class="btn btn-widget" id="compartirURL">🔗 Copiar enlace del escenario</button>
           <button type="button" class="btn btn-widget" id="exportarPNG">🖼 Descargar reporte en imagen (PNG)</button>
           <button type="button" class="btn btn-widget" id="exportarPDF">📄 Reporte del negocio en PDF</button>
+          <button type="button" class="btn btn-widget btn-sec" id="qrResultado">📱 Llevarme todo mi resultado (QR y PDF)</button>
         </div>
         <p class="nota-widget" id="notaCompartir" aria-live="polite"></p>
       </div>
@@ -860,7 +862,8 @@
       <ol class="calendario" id="calendario"></ol>
       <p class="nota-widget">Hitos e indicadores sugeridos por el equipo para las acciones marcadas en el simulador de plan.</p>
       <p class="widget-estado" role="status" id="wCalendario-estado">Calculando…</p>
-      <button type="button" class="btn btn-widget" id="imprimirPlan">📄 Imprimir o guardar mi plan en PDF</button>
+      <button type="button" class="btn btn-widget" id="imprimirPlan">📄 Plan del negocio en PDF</button>
+      <button type="button" class="btn btn-widget btn-sec" id="qrPlan">📱 Llevarme todo mi resultado (QR y PDF)</button>
     </article>
   </div>
 </section>
@@ -1101,10 +1104,27 @@
 </section>
 </main>
 
+<div class="rep-barra" id="repBarra" hidden>
+  <strong>Tu reporte COATL</strong>
+  <button type="button" class="btn btn-widget" id="repGuardar">📄 Guardar como PDF</button>
+  <a class="btn btn-widget btn-sec" id="repAbrir" href="./">Abrir en el simulador</a>
+</div>
 <section class="reporte" id="reporteNegocio" aria-label="Reporte del negocio" hidden></section>
+<dialog class="dlg-qr" id="dlgQR" aria-labelledby="dlgQR-t">
+  <h2 id="dlgQR-t">Llévate todo tu resultado</h2>
+  <p>Escanea el código con tu teléfono: se abre COATL con este mismo negocio y su <strong>reporte completo</strong> (simulador y estrategia), listo para guardarse en PDF.</p>
+  <canvas id="qrLienzo" width="720" height="720" role="img" aria-label="Código QR con el enlace a tu reporte completo"></canvas>
+  <p class="nota-widget" id="qrNota" role="status"></p>
+  <div class="acciones-widget columna">
+    <button type="button" class="btn btn-widget" id="qrPDF">📄 Reporte completo en PDF (aquí mismo)</button>
+    <button type="button" class="btn btn-widget btn-sec" id="qrCopiar">🔗 Copiar el enlace</button>
+    <button type="button" class="btn btn-widget btn-sec" id="qrCerrar">Cerrar</button>
+  </div>
+</dialog>
 
 <!-- ============ PIE ============ -->
 <footer class="pie" id="creditos">
+  <div class="greca invertida pie-greca" aria-hidden="true"></div>
   <div class="pie-inner">
     <div>
       <h4>Proyecto realizado por</h4>
@@ -1138,6 +1158,7 @@
   </div>
   <p class="pie-control"><button type="button" class="pausa-movimiento" id="pausaMovimiento" aria-pressed="false">❚❚ Pausar el movimiento</button></p>
   <p class="pie-legal">© 2026 Miguel Antonio Cruz García, Bruno Alejandro López Bautista y Alonso Arroyo Cortés. Todos los derechos reservados. COATL es una herramienta académica de apoyo a la decisión; sus resultados no constituyen asesoría financiera, legal ni de inversión. Consulta el <a href="#legal">Aviso legal</a> completo. Coacalco de Berriozábal, Estado de México · 2026.</p>
+  <div class="greca pie-greca pie-greca-final" aria-hidden="true"></div>
 </footer>
 
 <template id="libLeaflet"><script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous" referrerpolicy="no-referrer"></script></template>

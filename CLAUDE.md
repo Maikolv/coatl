@@ -139,6 +139,14 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - Orden de módulos: negocios, mejora y reporte van ANTES de app.js (app.js calcula al cargar).
 - Rango plausible de referencia: 44.1–58.2 % desde v9 (antes 44.3–58.3 %); lo vigila `tests/modelo.test.mjs`. Ver docs/METODOLOGIA.md.
 
+## v12: resultado para llevar, documentos y video
+
+- `src/ui/reporte.js`: reportes «negocio», «plan» (Estrategia) y «completo»; QR (`qrcode-generator` incluido en `assets/vendor/`) con el resultado en `#r=` y vista `?reporte=1`. `URL_PUBLICA` = sitio en GitHub Pages.
+- `src/ui/legal.js`: aviso legal en dos columnas equilibradas con cenefa de relleno de altura exacta.
+- Menú = nombres de las pestañas (DENUE nacional, Para empresas, Aviso legal). Micrófono: `assets/img/iconos/microfono.webp` (clase `ico-mic`). Video en Inicio: `@@VIDEO@@` (el build copia `entregables/COATL_Video.mp4` y genera el .vtt).
+- Documentos: `node scripts/documentos.mjs [tecnico|reporte|presentacion|excel|versiones]` (`scripts/doc/`: datos.mjs, kit.mjs, contenido.mjs, presentacion.mjs, libro_excel.mjs). PDF compuestos con Chromium y las fuentes del sitio; nunca con LibreOffice (descoloca β y S₀). Historial ÚNICO en `data/versiones.json`: al publicar una versión, agregarla ahí.
+- Video: narrador por escena; grabaciones en `entregables/voces/NN-escena.*` (no se versionan); pauta `docs/GUION_VOCES.md` (`--guion`).
+
 ## Pendiente
 
 - Monte Carlo y el rango plausible de P se calculan en un Web Worker desde un Blob generado por el build. Si falla el Worker, se usa el motor síncrono.

@@ -11,3 +11,7 @@ playwright-report/
 .herramientas/
 dist-artifact/
 .cache/
+
+# Grabaciones de voz del equipo: no se versionan (solo el video final las contiene)
+entregables/voces/*
+!entregables/voces/LEEME.md

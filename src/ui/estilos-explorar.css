@@ -409,11 +409,6 @@ body.vista-todo .pestanas-app{display:none}
 .calendario ul{margin:0;padding-left:1.1rem;font-size:.88rem}
 #imprimirPlan{margin-top:.75rem;width:100%}
 @media (max-width:480px){.matriz-riesgo{grid-template-columns:1fr}}
-@media print{
-  body.imprimir-plan>*:not(main),body.imprimir-plan .nav,body.imprimir-plan .pestanas-app,body.imprimir-plan .asis,body.imprimir-plan #imprimirPlan{display:none!important}
-  body.imprimir-plan main>*:not(#estrategia):not(:has(#estrategia)),body.imprimir-plan [data-pagina]:not(#estrategia):not(:has(#estrategia)){display:none!important}
-  body.imprimir-plan #estrategia{display:block!important}
-}
 
 /* ================= v11 ================= */
 /* ---------- Grecas en movimiento (identidad viva) ---------- */
@@ -555,41 +550,116 @@ body.sin-movimiento .escena25 [class^="e25-"]{animation-play-state:paused!import
 /* ---------- Icono del asistente (globo con greca) ---------- */
 .asis-icono{width:1.7rem;height:1.7rem;flex:none}
 
-/* ---------- Reporte del negocio (solo se ve al imprimir o guardar como PDF) ---------- */
-.reporte{display:none}
-@media print{
-  body.imprimir-reporte>*:not(#reporteNegocio){display:none!important}
-  body.imprimir-reporte #reporteNegocio{display:block!important;font-size:10.5pt;color:#38070F}
-  @page{size:letter;margin:12mm}
-  .rep-cab{display:flex;align-items:center;gap:12px;border-bottom:3px solid #C8102E;padding-bottom:8px}
-  .rep-cab svg{width:44px;height:44px;flex:none}
-  .rep-marca{font:800 20pt var(--display);line-height:1}
-  .rep-marca small{display:block;font:600 7pt var(--mono);letter-spacing:.14em;color:#7A0C1F;margin-top:3px}
-  .rep-fecha{margin-left:auto;text-align:right;font:500 8pt var(--mono);color:#6B5457}
-  .rep-greca{height:10px;background:var(--greca-img) repeat-x;background-size:auto 10px;margin:6px 0 10px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .rep-titulo{font:800 18pt/1.15 var(--display);margin:0}
-  .rep-sub{font-size:10pt;color:#7A0C1F;margin:2px 0 10px}
-  .rep-kpis{display:grid;grid-template-columns:repeat(5,1fr);gap:6px;margin-bottom:10px}
-  .rep-kpi{border:1px solid #EFD6D4;border-top:4px solid #C8102E;border-radius:6px;padding:6px 8px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .rep-kpi span{display:block;font:600 6.5pt var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#6B5457}
-  .rep-kpi strong{font:800 13pt var(--display)}
-  .rep-kpi em{display:block;font:500 7pt var(--cuerpo);font-style:normal;color:#6B5457}
-  .rep-h{font:800 11.5pt var(--display);color:#7A0C1F;margin:12px 0 4px;break-after:avoid}
-  .rep-dos{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-  .rep-tabla{width:100%;border-collapse:collapse;font-size:9pt}
-  .rep-tabla th{text-align:left;font-weight:600;color:#4A3A3C;padding:3px 4px;border-bottom:1px solid #F4E2E1}
-  .rep-tabla td{text-align:right;font:600 9pt var(--mono);padding:3px 4px;border-bottom:1px solid #F4E2E1}
-  .rep-tabla thead th{background:#C8102E;color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
-  .rep-graf{display:grid;grid-template-columns:1fr 1fr;gap:8px}
-  .rep-graf figure{margin:0;border:1px solid #EFD6D4;border-radius:6px;padding:4px;break-inside:avoid}
-  .rep-graf img{width:100%;display:block}
-  .rep-graf figcaption{font:600 8pt var(--cuerpo);color:#7A0C1F;padding:2px 4px}
-  .rep-lista{margin:2px 0 0 14px;font-size:9.5pt}
-  .rep-lista li{margin-bottom:2px}
-  .rep-escena{border:1px solid #EFD6D4;border-radius:6px;break-inside:avoid;max-width:420px;margin:0 auto}
-  .rep-escena svg{width:100%;height:auto;display:block}
-  .rep-bloque{break-inside:avoid}
-  .rep-pie{margin-top:12px;border-top:1px solid #EFD6D4;padding-top:6px;font:500 7.5pt var(--cuerpo);color:#6B5457}
-}
 .pie-control{max-width:1200px;margin:0 auto;text-align:left}
 @media (max-width:560px){.pasos-guia{grid-template-columns:1fr 1fr;gap:.6rem;margin-bottom:1.4rem}.pasos-guia li{padding:2.6rem .7rem .7rem}.pasos-guia li::before{left:.7rem;top:.6rem}.pasos-guia span{font-size:.78rem}}
+
+/* ================= v12 ================= */
+/* ---------- Micrófono del proyecto en los botones de dictado ---------- */
+.ico-mic{height:1.45em;width:auto;vertical-align:-.32em;flex:none}
+.asis-voz .ico-mic{height:1.55rem;vertical-align:middle}
+.escuchando .ico-mic{filter:brightness(0) invert(1)}
+
+/* ---------- Aviso legal sin huecos: dos columnas equilibradas y cenefa de relleno ---------- */
+#legal .metodos.legal-equilibrado{columns:auto;display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:1.5rem;align-items:start}
+.legal-col{display:flex;flex-direction:column;gap:1.5rem;min-width:0}
+.legal-col[hidden]{display:none}
+#legal .legal-equilibrado .metodo{margin-bottom:0}
+.legal-relleno{flex:none;position:relative;overflow:hidden;border-radius:var(--radio);background:linear-gradient(160deg,#FFFFFF,#F8ECEA)}
+.legal-relleno::before{content:"";position:absolute;inset:0;background:var(--greca-img);background-size:144px 36px;opacity:.3;animation:grecaRelleno 16s linear infinite}
+@keyframes grecaRelleno{to{background-position:-144px 0}}
+@media (max-width:900px){#legal .metodos.legal-equilibrado{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- Pie de página con grecas en movimiento ---------- */
+.pie{position:relative}
+.pie-greca{position:absolute;left:0;right:0;top:0}
+.pie-greca-final{top:auto;bottom:0;filter:brightness(0) invert(1);opacity:.45}
+
+/* ---------- Video del proyecto (Inicio) ---------- */
+.video-proyecto{margin-top:2rem}
+.video-marco{border-radius:14px;overflow:hidden;box-shadow:var(--sombra);background:#1A0508;border:3px solid var(--rojo);aspect-ratio:16/9}
+.video-marco video{display:block;width:100%;height:100%;object-fit:contain;background:#1A0508}
+.video-espera{display:grid;place-items:center;height:100%;color:#F4E2E1;font:700 1.2rem var(--display)}
+.video-proyecto .nota-widget{margin-top:.5rem}
+
+/* ---------- Diálogo del código QR ---------- */
+.dlg-qr{border:0;border-top:6px solid var(--rojo);border-radius:16px;padding:1.4rem;width:min(92vw,430px);max-height:92vh;color:var(--tinta);background:var(--hueso);box-shadow:0 24px 60px rgba(56,7,15,.4)}
+.dlg-qr::backdrop{background:rgba(42,5,11,.66)}
+.dlg-qr h2{font:800 1.3rem/1.2 var(--display);margin-bottom:.4rem}
+.dlg-qr p{font-size:.9rem;color:var(--gris-texto)}
+.dlg-qr canvas{display:block;width:min(100%,290px);height:auto;margin:.8rem auto;border-radius:10px;border:1px solid var(--niebla-2);background:#fff}
+.dlg-qr canvas[hidden]{display:none}
+.dlg-qr .btn-widget{margin:0}
+.dlg-qr .acciones-widget{margin-top:.8rem}
+
+/* ---------- Reportes (negocio, plan y completo): mismos estilos al imprimir y en la vista de reporte ---------- */
+.reporte{display:none;font:400 10.5pt/1.45 var(--cuerpo);color:#38070F}
+.rep-cab{display:flex;align-items:center;gap:12px;border-bottom:3px solid #C8102E;padding-bottom:8px}
+.rep-cab svg{width:44px;height:44px;flex:none}
+.rep-marca{font:800 20pt/1 var(--display)}
+.rep-marca small{display:block;font:600 7pt var(--mono);letter-spacing:.14em;color:#7A0C1F;margin-top:3px}
+.rep-fecha{margin-left:auto;text-align:right;font:500 8pt var(--mono);color:#6B5457}
+.rep-greca{height:10px;background:var(--greca-img) repeat-x;background-size:auto 10px;margin:6px 0 10px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rep-titulo{font:800 18pt/1.15 var(--display);margin:0}
+.rep-sub{font-size:10pt;color:#7A0C1F;margin:2px 0 10px}
+.rep-kpis{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin-bottom:10px}
+.rep-kpi{border:1px solid #EFD6D4;border-top:4px solid #C8102E;border-radius:6px;padding:6px 8px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rep-kpi span{display:block;font:600 6.5pt var(--mono);letter-spacing:.06em;text-transform:uppercase;color:#6B5457}
+.rep-kpi strong{font:800 13pt var(--display)}
+.rep-kpi em{display:block;font:500 7pt var(--cuerpo);font-style:normal;color:#6B5457}
+.rep-h{font:800 11.5pt var(--display);color:#7A0C1F;margin:12px 0 4px;break-after:avoid}
+.rep-dos{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:10px}
+.rep-tabla{width:100%;border-collapse:collapse;font-size:9pt}
+.rep-tabla th{text-align:left;font-weight:600;color:#4A3A3C;padding:3px 4px;border-bottom:1px solid #F4E2E1}
+.rep-tabla td{text-align:right;font:600 9pt var(--mono);padding:3px 4px;border-bottom:1px solid #F4E2E1}
+.rep-tabla thead th{background:#C8102E;color:#fff;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rep-plan td{font:500 9pt var(--cuerpo);text-align:left;vertical-align:top}
+.rep-plan td:first-child{text-align:center;width:1.8em;font-weight:800;color:#C8102E}
+.rep-plan td:last-child{text-align:right;font-family:var(--mono);white-space:nowrap}
+.rep-plan tbody th{vertical-align:top;color:#38070F;font-weight:700;width:26%}
+.rep-plan tr{break-inside:avoid}
+.rep-graf{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.rep-graf figure{margin:0;border:1px solid #EFD6D4;border-radius:6px;padding:4px;break-inside:avoid}
+.rep-graf img{width:100%;display:block}
+.rep-graf figcaption{font:600 8pt var(--cuerpo);color:#7A0C1F;padding:2px 4px}
+.rep-lista{margin:2px 0 0 14px;font-size:9.5pt}
+.rep-lista li{margin-bottom:2px}
+.rep-escena{border:1px solid #EFD6D4;border-radius:6px;break-inside:avoid;max-width:420px;margin:0 auto}
+.rep-escena svg{width:100%;height:auto;display:block}
+.rep-bloque{break-inside:avoid}
+.rep-foda{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px}
+.rep-cal{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.rep-caja{border:1px solid #EFD6D4;border-left:4px solid #C8102E;border-radius:6px;padding:6px 9px;break-inside:avoid;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rep-caja-t{font:700 9pt var(--cuerpo);color:#7A0C1F;margin-bottom:2px}
+.rep-caja p{font-size:9pt}
+.rep-nota{font-size:8.5pt;color:#6B5457;margin-top:4px}
+.rep-parte{font:800 12.5pt var(--display);color:#fff;background:#7A0C1F;padding:5px 10px;border-radius:6px;margin:10px 0 8px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.rep-salto{break-before:page}
+.rep-pie{margin-top:12px;border-top:1px solid #EFD6D4;padding-top:6px;font:500 7.5pt var(--cuerpo);color:#6B5457}
+.rep-barra{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;gap:.6rem;align-items:center;flex-wrap:wrap;padding:.5rem 1rem;background:var(--tinta);color:#fff}
+.rep-barra[hidden]{display:none}
+.rep-barra strong{margin-right:auto;font-family:var(--display)}
+.rep-barra .btn-widget{margin:0}
+.rep-barra .btn-sec{color:#fff;border-color:#FFC9CF}
+@media print{
+  body.imprimir-reporte>*:not(#reporteNegocio),body.vista-reporte>*:not(#reporteNegocio){display:none!important}
+  body.imprimir-reporte #reporteNegocio,body.vista-reporte #reporteNegocio{display:block!important}
+  @page{size:letter;margin:12mm}
+}
+@media screen{
+  body.vista-reporte{background:#EFE3E0}
+  /* El sitio sigue montado fuera de la pantalla: las gráficas necesitan tamaño real para dibujarse */
+  body.vista-reporte>*:not(#reporteNegocio):not(#repBarra):not(dialog){position:fixed!important;left:-3000px!important;top:0!important;width:1280px!important;visibility:hidden!important;pointer-events:none}
+  body.vista-reporte #reporteNegocio{display:block;max-width:820px;margin:4.4rem auto 2rem;padding:22px;background:#fff;border-radius:10px;box-shadow:var(--sombra)}
+}
+@media screen and (max-width:700px){
+  body.vista-reporte #reporteNegocio{margin:6.2rem .5rem 1rem;padding:14px}
+  body.vista-reporte .rep-kpis{grid-template-columns:minmax(0,1fr) minmax(0,1fr)}
+  body.vista-reporte .rep-dos,body.vista-reporte .rep-graf,body.vista-reporte .rep-foda,body.vista-reporte .rep-cal{grid-template-columns:minmax(0,1fr)}
+}
+@media (prefers-reduced-motion:reduce){.legal-relleno::before{animation:none!important}}
+body.sin-movimiento .legal-relleno::before{animation-play-state:paused!important}
+.legal-resumen{position:relative;margin:1.2rem;padding:1.1rem 1.3rem;background:rgba(255,255,255,.92);border-radius:12px;border-left:5px solid var(--rojo);box-shadow:var(--sombra)}
+.legal-resumen[hidden]{display:none}
+.legal-resumen h3{font:700 1.1rem var(--display);margin-bottom:.4rem}
+.legal-resumen ul{margin:0 0 0 1.1rem;font-size:.88rem;color:var(--gris-texto)}
+.legal-resumen li{margin-bottom:.3rem}

@@ -238,3 +238,26 @@ No se usó WebGL: CLAUDE.md lo rechaza. La profundidad se logra con SVG, 2.5D y 
 - **Plantilla de Excel.** `node scripts/plantilla_excel.mjs` genera `assets/plantillas/COATL-plantilla-empresa.xlsx` con logotipo, greca, guía de llenado y hoja «Datos» sin cifras de ejemplo. El lector acepta el encabezado aunque no esté en la primera fila.
 - **Modelo 2.5D.** `src/ui/escena25.js` es SVG isométrico generado por código (sin WebGL); el dibujo lo escribió Codex a partir de un encargo del equipo (`.herramientas/codex25/prompt.txt` no se versiona) y se revisó a ojo en siete combinaciones.
 - **Hallazgo resuelto (documentos corregidos).** Desde v9 el rango plausible del escenario de referencia es **44.1–58.2 %** en el sitio; CLAUDE.md y README decían 44.3–58.3 %: las tres variables neutras agregadas en v9 consumen sorteos del generador en `rangoP`. P, utilidad, ROI, payback y VPN no cambiaron. Se corrigieron los documentos (el cálculo no se tocó) y `tests/modelo.test.mjs` vigila ahora el rango.
+
+## 14. v12 — resultado para llevar con QR, documentos extensos y video con voces del equipo
+
+- **Resultado para llevar.** «Llevarme todo mi resultado» (Simulador y Estrategia) abre un diálogo con un código QR. El enlace lleva el resultado en el fragmento `#r=` (base64url de las variables que difieren del escenario de referencia, el nombre, las respuestas del diagnóstico y las acciones del plan); el navegador no envía el fragmento al servidor. `?reporte=1` abre una vista de reporte completo (simulador + estrategia) con «Guardar como PDF». El enlace se valida campo por campo con `cargarEscenario`; un enlace dañado muestra un aviso. Biblioteca `qrcode-generator` 1.4.4 (MIT) incluida en el build: funciona sin conexión.
+- **PDF de Estrategia.** Ya no imprime la página: arma un documento propio (FODA, plan priorizado, plan combinado, impacto y control, calendario, siguientes pasos), como el del simulador.
+- **Interfaz.** Menú con los mismos nombres que las pestañas (DENUE nacional, Para empresas, Aviso legal); micrófono con la identidad del proyecto en los dos botones de dictado; grecas en movimiento arriba y abajo del pie; video del proyecto en Inicio (`preload="none"`, subtítulos WebVTT generados del SRT, portada).
+- **Aviso legal sin huecos.** `src/ui/legal.js` reparte los artículos en dos columnas de altura parecida (orden §1…§n intacto) y completa la más corta con una cenefa animada de altura exacta; si sobra espacio, agrega un resumen en lenguaje claro.
+- **Documentos.** `scripts/documentos.mjs` compone los PDF con el navegador y las tipografías del sitio incrustadas, por lo que β y S₀ ya no se desordenan (el defecto venía de LibreOffice sin las fuentes del proyecto). Documento técnico de 19 capítulos y 3 apéndices, reporte técnico, presentación de 56 láminas (PDF y PPTX editable) y libro de Excel de 19 hojas. Todas las cifras salen del modelo y el historial, de `data/versiones.json` (también `docs/VERSIONES.md`).
+- **Video.** 19 escenas con narrador asignado (Miguel, Bruno, Alonso). Si hay grabaciones en `entregables/voces/` se usan normalizadas y se muestra «Narra: …»; si no, voz provisional. Pauta en `docs/GUION_VOCES.md`.
+
+### Auditoría v12: puntos a mejorar (priorizados)
+
+| # | Prioridad | Hallazgo | Propuesta |
+|---|---|---|---|
+| 1 | Alta | Los coeficientes β siguen siendo supuestos del equipo; es la limitación principal ante evaluadores. | Levantar una encuesta corta en Coacalco (negocios abiertos y cerrados vía ediciones sucesivas del DENUE) y ajustar una regresión logística real con errores estándar. |
+| 2 | Alta | Las voces del video aún son sintéticas. | Grabar las 19 escenas según `docs/GUION_VOCES.md` y regenerar el video. |
+| 3 | Media | El video (≈ 44 MB, 5 min) se publica en GitHub Pages; pesa mucho más que todo el sitio y se acerca al aviso de 50 MB de GitHub. | Si se pasa de 50 MB, alojarlo en YouTube o en un lanzamiento de GitHub y enlazarlo. |
+| 4 | Media | Los DOCX heredados (`COATL_Documento_Tecnico.docx`, `COATL_Reporte.docx`) y el pitch PPTX ya no se regeneran y no tienen el historial. | Decidir si se retiran o si se regeneran desde los mismos bloques (exportador a DOCX). |
+| 5 | Media | El QR depende de que el sitio esté publicado en `maikolv.github.io`; en local apunta al sitio público. | Documentarlo en el stand; si cambia el dominio, actualizar `URL_PUBLICA` en `src/ui/reporte.js`. |
+| 6 | Media | Los negocios guardados viven en `localStorage`: en equipos compartidos (stand) quedan visibles para el siguiente visitante. | Agregar un «modo stand» que borre los negocios al cerrar la pestaña. |
+| 7 | Baja | Hay pruebas de navegador sensibles al tiempo (recálculo en vivo, contador animado) que fallaron de forma intermitente en CI. | Exponer un indicador «cálculo listo» en el DOM y esperar a él en todas las pruebas. |
+| 8 | Baja | El índice con números de página necesita `uv` + PyMuPDF. | Calcular las páginas en el navegador (CSS Paged Media) cuando Chromium lo soporte. |
+| 9 | Baja | El escaneo dinámico de seguridad (HawkScan) no está configurado en este equipo. | Configurar `HAWK_API_KEY` y correrlo antes de la presentación. |

@@ -86,7 +86,12 @@ Simulador estadístico que estima la **probabilidad de que un negocio siga opera
 
 </details>
 
-## Funciones principales (v11)
+## Funciones principales (v12)
+
+- **Llévate todo tu resultado**: un código QR abre en el teléfono el reporte completo (simulador y estrategia), listo para guardarse en PDF; el resultado viaja dentro del enlace.
+- **PDF propio del plan** en Estrategia y video del proyecto en Inicio.
+- **Documentos extensos** (documento técnico, reporte, presentación y libro de Excel) con el [historial completo de versiones](docs/VERSIONES.md), generados con `npm run entregables`.
+- **Voces del equipo en el video**: pauta de grabación en [docs/GUION_VOCES.md](docs/GUION_VOCES.md).
 
 - **Tu negocio con nombre**: escribe el nombre, guárdalo en «Mis negocios» (solo en tu navegador) y vuelve a él cuando quieras.
 - **Mejora tu negocio**: alternativas con su efecto real en la probabilidad y botón para probarlas; diagnóstico de 5 niveles y 30 puntos con un borrador a tu medida en cada uno; estimación fiscal (RESICO o régimen general) y lista de obligaciones.
@@ -153,10 +158,10 @@ Los cambios frente a las versiones anteriores están en [docs/METODOLOGIA.md](do
 Salida real de los comandos de verificación, como texto (sin imágenes). La actualiza `node scripts/capturas_terminal.mjs` al ejecutar cada comando.
 
 <!-- terminal:inicio -->
-_Generado el 2026-11-16._
+_Generado el 2026-11-17._
 
 <!-- t:build -->
-**Construcción del sitio** · `npm run build` · código de salida 0 · 2.7 s
+**Construcción del sitio** · `npm run build` · código de salida 1 · 11.2 s
 
 ```text
 $ npm run build
@@ -164,20 +169,37 @@ $ npm run build
 > coatl@2.0.0 build
 > node scripts/build.mjs
 
-index.html y dist/index.html generados (485,343 bytes)
+node:fs:2483
+    return binding.writeFileUtf8(
+                   ^
+
+Error: UNKNOWN: unknown error, open 'C:\Users\MIKE\Desktop\Repos\coatl\index.html'
+    at Object.writeFileSync (node:fs:2483:20)
+    at construir (file:///C:/Users/MIKE/Desktop/Repos/coatl/scripts/build.mjs:151:6)
+    at file:///C:/Users/MIKE/Desktop/Repos/coatl/scripts/build.mjs:180:58
+    at ModuleJob.run (node:internal/modules/esm/module_job:439:25)
+    at async node:internal/modules/esm/loader:643:26
+    at async asyncRunEntryPointWithESMLoader (node:internal/modules/run_main:101:5) {
+  errno: -4094,
+  code: 'UNKNOWN',
+  syscall: 'open',
+  path: 'C:\\Users\\MIKE\\Desktop\\Repos\\coatl\\index.html'
+}
+
+Node.js v24.19.0
 ```
 <!-- /t:build -->
 
 <!-- t:unitarias -->
-**Pruebas unitarias del modelo y del intermediario de IA** · `npm test` · código de salida 0 · 2.4 s
+**Pruebas unitarias del modelo y del intermediario de IA** · `npm test` · código de salida 0 · 6.3 s
 
 ```text
 $ npm test
 … (se muestran las últimas 12 líneas)
-✔ cobro de piso y variables emocionales: neutras por defecto, con efecto al usarlas (0.9047ms)
-✔ v11 fiscal: tabla del RESICO (art. 113-E LISR), tope de 3.5 millones y régimen general (0.8047ms)
-✔ v11 diagnóstico: 30 puntos en 5 niveles, pesos que suman 1 e índice de 0 a 100 (1.0632ms)
-✔ referencia: rango plausible de P = 44.1–58.2 % (vigente desde v9) (42.7048ms)
+✔ cobro de piso y variables emocionales: neutras por defecto, con efecto al usarlas (1.6311ms)
+✔ v11 fiscal: tabla del RESICO (art. 113-E LISR), tope de 3.5 millones y régimen general (0.9413ms)
+✔ v11 diagnóstico: 30 puntos en 5 niveles, pesos que suman 1 e índice de 0 a 100 (1.4452ms)
+✔ referencia: rango plausible de P = 44.1–58.2 % (vigente desde v9) (60.0605ms)
 ℹ tests 19
 ℹ suites 0
 ℹ pass 19
@@ -185,12 +207,12 @@ $ npm test
 ℹ cancelled 0
 ℹ skipped 0
 ℹ todo 0
-ℹ duration_ms 1128.0753
+ℹ duration_ms 1556.5671
 ```
 <!-- /t:unitarias -->
 
 <!-- t:validador -->
-**Validación cruzada del modelo en Python** · `uv run --no-project python scripts/validar_modelo.py` · código de salida 0 · 0.7 s
+**Validación cruzada del modelo en Python** · `uv run --no-project python scripts/validar_modelo.py` · código de salida 0 · 0.9 s
 
 ```text
 $ uv run --no-project python scripts/validar_modelo.py
@@ -206,7 +228,7 @@ OK  vpn      obtenido=912,775.5843  referencia=912,776
 <!-- /t:validador -->
 
 <!-- t:auditoria -->
-**Auditoría de dependencias** · `npm audit` · código de salida 1 · 7.8 s
+**Auditoría de dependencias** · `npm audit` · código de salida 1 · 5.9 s
 
 ```text
 $ npm audit
@@ -230,25 +252,25 @@ To address all issues (including breaking changes), run:
 <!-- /t:auditoria -->
 
 <!-- t:e2e -->
-**Pruebas en navegador (computadora, teléfono y accesibilidad)** · `npx playwright test --reporter=line` · código de salida 0 · 364.7 s
+**Pruebas en navegador (computadora, teléfono y accesibilidad)** · `npx playwright test --reporter=line` · código de salida 1 · 470.4 s
 
 ```text
 $ npx playwright test --reporter=line
 … (se muestran las últimas 14 líneas)
-[157/168] [movil] › tests\e2e\paginas.spec.js:298:1 › v11: nombre del negocio, guardado local, alternativas, diagnóstico, fiscal y modelo 2.5D
-[158/168] [movil] › tests\e2e\orientacion.spec.js:38:1 › al girar el teléfono, la barra fija ocupa poco y la tira de pestañas se reacomoda
-[159/168] [movil] › tests\e2e\privacidad-ia.spec.js:4:1 › Empresas: la IA de COATL no recibe datos del archivo cargado
-[160/168] [movil] › tests\e2e\recorrido.spec.js:7:1 › los seis widgets terminan en estado «listo» y sin errores
-[161/168] [movil] › tests\e2e\recorrido.spec.js:15:1 › el widget de inicio coincide con el motor y abre el simulador con su estado
-[162/168] [movil] › tests\e2e\recorrido.spec.js:27:1 › mapa de zonas: la lista se navega con teclado y la ficha muestra la procedencia
-[163/168] [movil] › tests\e2e\recorrido.spec.js:40:1 › escenario vigente y restablecer referencia
-[164/168] [movil] › tests\e2e\recorrido.spec.js:51:1 › el Worker y el respaldo síncrono reproducen la misma simulación
-[165/168] [movil] › tests\e2e\recorrido.spec.js:74:1 › supervivencia por año y meta de Monte Carlo responden
-[166/168] [movil] › tests\e2e\recorrido.spec.js:83:1 › superficie: lectura exacta, teclado y vista plana
-[167/168] [movil] › tests\e2e\recorrido.spec.js:95:1 › trazabilidad: de un resultado a su fuente
-[168/168] [movil] › tests\e2e\recorrido.spec.js:106:3 › movimiento reducido › la superficie arranca en vista plana con la misma información
-  25 skipped
-  143 passed (6.0m)
+[165/174] [movil] › tests\e2e\paginas.spec.js:359:1 › v10: aviso legal con uso aceptable, licencias (ODbL) y revisión profesional
+[166/174] [movil] › tests\e2e\recorrido.spec.js:15:1 › el widget de inicio coincide con el motor y abre el simulador con su estado
+[167/174] [movil] › tests\e2e\paginas.spec.js:368:1 › v11: nombre del negocio, guardado local, alternativas, diagnóstico, fiscal y modelo 2.5D
+[168/174] [movil] › tests\e2e\recorrido.spec.js:27:1 › mapa de zonas: la lista se navega con teclado y la ficha muestra la procedencia
+[169/174] [movil] › tests\e2e\recorrido.spec.js:40:1 › escenario vigente y restablecer referencia
+[170/174] [movil] › tests\e2e\recorrido.spec.js:51:1 › el Worker y el respaldo síncrono reproducen la misma simulación
+[171/174] [movil] › tests\e2e\recorrido.spec.js:74:1 › supervivencia por año y meta de Monte Carlo responden
+[172/174] [movil] › tests\e2e\recorrido.spec.js:83:1 › superficie: lectura exacta, teclado y vista plana
+[173/174] [movil] › tests\e2e\recorrido.spec.js:95:1 › trazabilidad: de un resultado a su fuente
+[174/174] [movil] › tests\e2e\recorrido.spec.js:106:3 › movimiento reducido › la superficie arranca en vista plana con la misma información
+  1 failed
+    [escritorio] › tests\e2e\coatl.spec.js:11:1 › carga sin errores de consola y muestra el escenario de referencia 
+  26 skipped
+  147 passed (7.7m)
 ```
 <!-- /t:e2e -->
 <!-- terminal:fin -->

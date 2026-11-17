@@ -101,7 +101,7 @@ function mostrarVista(v, destino, desplazar){
 }
 function enrutar(desplazar, hash){
   let h=""; try{ h=decodeURIComponent((hash==null?location.hash:hash).slice(1)); }catch(_){}
-  if(/(^|&)e=/.test(h)){ mostrarVista(VISTAS.find(v=>v.id==="simulador"),null,false); return; }   // escenario compartido
+  if(/(^|&)[er]=/.test(h)){ mostrarVista(VISTAS.find(v=>v.id==="simulador"),null,false); return; }   // escenario compartido
   const v=vistaDe(h)||VISTAS[0];
   mostrarVista(v, h?document.getElementById(h):null, desplazar);
 }

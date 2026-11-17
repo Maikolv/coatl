@@ -31,7 +31,9 @@ export const MODULOS_JS = [
   'src/ui/escena25.js',
   'src/ui/negocios.js',
   'src/ui/mejora.js',
+  'assets/vendor/qrcode-generator-1.4.4.js',   // códigos QR (MIT), incluido para que funcione sin conexión
   'src/ui/reporte.js',
+  'src/ui/legal.js',
   'src/ui/app.js',
 ];
 
@@ -75,6 +77,36 @@ function carrusel(grupo) {
     </section>`;
 }
 
+// Video del proyecto en Inicio. Sale de entregables/COATL_Video.mp4 (scripts/video_presentacion.mjs); el build lo
+// copia a dist/assets/video/ junto con los subtítulos (SRT → WebVTT). Si aún no hay video, queda el espacio reservado.
+const VIDEO = 'entregables/COATL_Video.mp4', SUBS = 'entregables/COATL_Video.srt';
+function videoProyecto() {
+  const hay = fs.existsSync(path.join(raiz, VIDEO));
+  const cuerpo = hay
+    ? `<video id="videoCoatl" controls preload="none" playsinline width="1920" height="1080" poster="assets/video/poster.jpg" aria-describedby="videoNota">
+        <source src="assets/video/coatl.mp4" type="video/mp4">
+        ${fs.existsSync(path.join(raiz, SUBS)) ? '<track kind="captions" srclang="es" label="Español" src="assets/video/coatl.vtt" default>' : ''}
+        Tu navegador no reproduce video. <a href="assets/video/coatl.mp4">Descárgalo aquí</a>.
+      </video>`
+    : '<div class="video-espera" role="img" aria-label="Espacio reservado para el video del proyecto"><p>Aquí estará el video del proyecto.</p></div>';
+  return `<div class="video-proyecto" id="videoProyecto">
+    <h3 class="banda-fotos-t">COATL en video</h3>
+    <div class="video-marco">${cuerpo}</div>
+    <p class="nota-widget" id="videoNota">Recorrido guiado por el sitio, narrado por el equipo y con subtítulos en español. Se reproduce solo cuando tú lo pides.</p>
+  </div>`;
+}
+function copiarVideo() {
+  if (!fs.existsSync(path.join(raiz, VIDEO))) return;
+  const dir = path.join(raiz, 'dist', 'assets', 'video'); fs.mkdirSync(dir, { recursive: true });
+  fs.copyFileSync(path.join(raiz, VIDEO), path.join(dir, 'coatl.mp4'));
+  const poster = path.join(raiz, 'assets', 'video', 'poster.jpg');
+  if (fs.existsSync(poster)) fs.copyFileSync(poster, path.join(dir, 'poster.jpg'));
+  if (fs.existsSync(path.join(raiz, SUBS))) {
+    const srt = leer(SUBS).replace(/^\uFEFF/, '');
+    fs.writeFileSync(path.join(dir, 'coatl.vtt'), 'WEBVTT\n\n' + srt.replace(/(\d{2}:\d{2}:\d{2}),(\d{3})/g, '$1.$2'));
+  }
+}
+
 // Intermediario de IA del proyecto (servicios/ia en Vercel): la clave de Gemini vive allá, nunca en el sitio.
 // Se puede cambiar con COATL_IA_URL; vacío desactiva la IA y deja solo el motor local.
 const IA_URL = process.env.COATL_IA_URL ?? 'https://coatl-ia.vercel.app/api/coatl';
@@ -102,6 +134,7 @@ export function construir() {
     .replace('@@IA_ORIGEN@@', () => (IA_URL ? new URL(IA_URL).origin : ''))
     .replace(/@@FOTO:([a-z-]+):([a-z-]+)@@/g, (_, id, clase) => figuraFoto(id, clase))
     .replace(/@@CARRUSEL:([a-z]+)@@/g, (_, g) => carrusel(g))
+    .replace('@@VIDEO@@', () => videoProyecto())
     .replace('@@FOTO_PALACIO@@', () => fs.readFileSync(path.join(raiz, 'assets/img/palacio-coacalco.webp')).toString('base64'));
   // CSP sin 'unsafe-inline' para scripts: se autoriza solo el script en línea por su hash
   //.
@@ -121,9 +154,10 @@ export function construir() {
   fs.writeFileSync(path.join(raiz, 'dist', '.nojekyll'), '');
   fs.writeFileSync(path.join(raiz, 'dist', 'robots.txt'), 'User-agent: *\nAllow: /\n');
   // Agregados del DENUE (scripts/denue_sync.py): se publican junto al sitio.
+  copiarVideo();
   const plantillas = path.join(raiz, 'assets', 'plantillas');   // plantilla de Excel (scripts/plantilla_excel.mjs)
   if (fs.existsSync(plantillas)) fs.cpSync(plantillas, path.join(raiz, 'dist', 'assets', 'plantillas'), { recursive: true });
-  for (const sub of ['zonas', 'escenarios']) {   // fotos de zonas y de escenarios (scripts/fotos_sync.mjs)
+  for (const sub of ['zonas', 'escenarios', 'iconos']) {   // fotos de zonas y de escenarios (scripts/fotos_sync.mjs)
     const fotos = path.join(raiz, 'assets', 'img', sub);
     if (fs.existsSync(fotos)) fs.cpSync(fotos, path.join(raiz, 'dist', 'assets', 'img', sub), { recursive: true });
   }

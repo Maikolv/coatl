@@ -257,14 +257,14 @@ test('v11: carruseles en Inicio y Territorio con fotos distintas; sin fotos en D
   }
   const fuentes = await page.locator('.car-slide img').evaluateAll((im) => im.map((x) => x.getAttribute('src')));
   expect(new Set(fuentes).size).toBe(fuentes.length);
-  for (const sel of ['#denue', '#simulador', '#mejora', '#empresas', '#estrategia', '#legal', '#lectura']) await expect(page.locator(sel + ' img')).toHaveCount(0);
+  for (const sel of ['#denue', '#simulador', '#mejora', '#empresas', '#estrategia', '#legal', '#lectura']) await expect(page.locator(sel + ' img:not(.ico-mic)')).toHaveCount(0);   // el micrófono de «Dictar» es un icono, no una foto
   await expect(page.locator('.folio').filter({ hasText: /Sección \d/ })).toHaveCount(0);
   await expect(page.locator('#fodaBalance')).toBeAttached();
 });
 
 test('v9: ninguna foto del sitio se repite y todas cargan', async ({ page }) => {
   await page.goto('/?vista=todo', { waitUntil: 'load' });
-  const fotos = await page.locator('img[src*="assets/img/"]').evaluateAll((i) => i.map((x) => x.getAttribute('src')));
+  const fotos = await page.locator('img[src*="assets/img/"]:not(.ico-mic)').evaluateAll((i) => i.map((x) => x.getAttribute('src')));
   expect(new Set(fotos).size).toBe(fotos.length);
   for (const f of new Set(fotos)) expect((await page.request.get(f)).status(), f).toBe(200);
 });
@@ -287,11 +287,73 @@ test('v10: simulador de plan, matriz de impacto y calendario de 90 días', async
     await expect(page.locator('#planOpciones input:checked')).toHaveCount(n - 1);
   }
   await expect(page.locator('#wCalendario')).toHaveAttribute('data-estado', 'vacio');
-  // Impresión: solo Estrategia queda visible
-  await page.evaluate(() => document.body.classList.add('imprimir-plan'));
+  // PDF del plan: un documento propio (no la página impresa), con la marca y las secciones del plan
+  await page.evaluate(() => { window.print = () => { window.__imprimio = true; }; });
+  await page.click('#imprimirPlan');
+  await expect.poll(() => page.evaluate(() => window.__imprimio === true)).toBe(true);
+  const plan = page.locator('#reporteNegocio');
+  for (const t of ['Plan del negocio', 'Diagnóstico FODA', 'Plan de acción priorizado', 'Qué factores pesan más']) await expect(plan).toContainText(t);
   await page.emulateMedia({ media: 'print' });
-  await expect(page.locator('#estrategia')).toBeVisible();
-  await expect(page.locator('#legal')).toBeHidden();
+  await expect(plan).toBeVisible();
+  await expect(page.locator('main')).toBeHidden();
+});
+
+test('v12: el menú usa los mismos nombres que las pestañas; micrófono, video y grecas del pie', async ({ page }) => {
+  await page.goto('/#legal', { waitUntil: 'load' });
+  for (const [vista, nombre] of [['denue', 'DENUE nacional'], ['empresas', 'Para empresas'], ['legal', 'Aviso legal'], ['simulador', 'Simulador']]) {
+    await page.click(`.nav-links a[data-vista="${vista}"]`);
+    await expect(page.locator(`.nav-links a[data-vista="${vista}"]`)).toHaveText(nombre);
+    await expect(page.locator('#pestanasApp .pa-tab.activa a')).toHaveText(nombre);
+  }
+  await expect(page.locator('#descVoz img.ico-mic')).toBeVisible();
+  expect((await page.request.get('assets/img/iconos/microfono.webp')).status()).toBe(200);
+  await expect(page.locator('#creditos .pie-greca')).toHaveCount(2);
+  await page.click('.nav-links a[data-vista="inicio"]');
+  const video = page.locator('#videoCoatl');
+  await expect(video).toHaveAttribute('preload', 'none');
+  await expect(video.locator('track[kind="captions"]')).toHaveCount(1);
+  for (const f of ['assets/video/poster.jpg', 'assets/video/coatl.vtt']) expect((await page.request.get(f)).status(), f).toBe(200);
+});
+
+test('v12: el aviso legal no deja huecos entre sus dos columnas', async ({ page }, info) => {
+  test.skip(info.project.name === 'movil', 'en teléfono hay una sola columna');
+  await page.goto('/#legal', { waitUntil: 'load' });
+  await expect(page.locator('#legal .legal-col').nth(1)).toBeVisible();
+  await expect.poll(() => page.evaluate(() => {
+    const cols = [...document.querySelectorAll('#legal .legal-col')];
+    // offsetTop/offsetHeight: miden la maqueta sin la animación de aparición (translateY) de los artículos
+    return cols.map((c) => Math.max(0, Math.round(c.offsetHeight - (c.lastElementChild.offsetTop - c.offsetTop + c.lastElementChild.offsetHeight)) - 1)).concat(Math.max(0, Math.abs(cols[0].offsetHeight - cols[1].offsetHeight) - 1)).join();
+  })).toBe('0,0,0');
+  const nums = await page.locator('#legal article.metodo').evaluateAll((a) => a.map((x) => x.dataset.num));
+  expect(nums).toEqual(nums.map((_, i) => '§' + (i + 1)));
+});
+
+test('v12: el código QR lleva el resultado y abre el reporte completo', async ({ page, context }) => {
+  await page.goto('/#simulador', { waitUntil: 'load' });
+  await expect(page.locator('#probNum')).toHaveText('51.6%');
+  await page.fill('#negocioNombre', 'Café La Serpiente');
+  await page.click('#t-ubicacion'); await page.selectOption('#zona', 'centro');
+  await expect(page.locator('#probNum')).toHaveText('53.5%');
+  await page.click('#qrResultado');
+  await expect(page.locator('#dlgQR')).toBeVisible();
+  const url = await page.locator('#dlgQR').getAttribute('data-url');
+  expect(url).toMatch(/^https:\/\/maikolv\.github\.io\/coatl\/\?reporte=1#r=[A-Za-z0-9_-]+$/);
+  expect(url.length).toBeLessThan(400);
+  // El lienzo tiene módulos oscuros y claros (el QR sí se dibujó)
+  expect(await page.evaluate(() => { const c = document.getElementById('qrLienzo'), d = c.getContext('2d').getImageData(0, 0, c.width, c.height).data; let o = 0; for (let i = 0; i < d.length; i += 4) if (d[i] < 128) o++; return o / (d.length / 4); })).toBeGreaterThan(0.15);
+  await page.click('#qrCerrar');
+  // Lo que abre el teléfono: mismo enlace, servido por el sitio de pruebas
+  const tel = await context.newPage();
+  await tel.goto('/' + url.slice(url.indexOf('?')), { waitUntil: 'load' });
+  const rep = tel.locator('#reporteNegocio[data-listo="1"]');
+  await expect(rep).toBeVisible({ timeout: 60000 });
+  for (const t of ['Café La Serpiente', 'Centro', '53.5%', 'Parte 1 · Resultado del simulador', 'Parte 2 · Estrategia y plan de acción', 'Calendario de 90 días']) await expect(rep).toContainText(t);
+  await expect(tel.locator('#repGuardar')).toBeVisible();
+  expect(await tel.evaluate(() => document.documentElement.scrollWidth - innerWidth)).toBeLessThanOrEqual(1);
+  // Un enlace dañado no rompe el sitio
+  const otra = await context.newPage();   // solo cambia el #: en la misma pestaña el navegador no recargaría
+  await otra.goto('/?reporte=1#r=%%%', { waitUntil: 'load' });
+  await expect(otra.locator('#reporteNegocio')).toContainText('no contiene un resultado válido');
 });
 
 test('v10: aviso legal con uso aceptable, licencias (ODbL) y revisión profesional', async ({ page }) => {

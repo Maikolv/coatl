@@ -11,7 +11,7 @@
       '<div class="asis-chips" id="asisChips">'+["¿Cómo voy?","¿Qué zona me conviene?","¿Cómo subo mi probabilidad?","Abrir el DENUE"].map(c=>'<button type="button">'+c+'</button>').join("")+'</div>'+
       '<form class="asis-forma" id="asisForma"><label class="sr-only" for="asisTexto">Escribe al asistente</label>'+
         '<input id="asisTexto" autocomplete="off" placeholder="Ej.: farmacia en el Centro con 90 clientes al día">'+
-        '<button type="button" class="asis-voz" id="asisVoz" aria-pressed="false" aria-label="Dictar por voz">🎙️</button>'+
+        '<button type="button" class="asis-voz" id="asisVoz" aria-pressed="false" aria-label="Dictar por voz"><img class="ico-mic" src="assets/img/iconos/microfono.webp" alt="" width="149" height="192"></button>'+
         '<button type="submit" class="asis-enviar" aria-label="Enviar">➤</button></form>'+
     '</section>';
   document.body.appendChild(caja);

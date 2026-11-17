@@ -173,4 +173,4 @@ function repintarMejora(){
   pintarEscena(c,r.nivel);
   pintarFicha(c,r);
 }
-function pintarMejora(e,modelo,mc,fin){ ultimoMejora={e,modelo,mc,fin}; repintarMejora(); }
+function pintarMejora(e,modelo,mc,fin){ ultimoMejora={e,modelo,mc,fin,v:versionCalculo}; repintarMejora(); }
