@@ -51,7 +51,7 @@ function interpretarLocal(texto){
   if(/local propio|es mio|propiedad propia|sin renta/.test(t)){r.local="propio"; entendido.push("local propio");}
   if(/mucha competencia|muy competido|saturad/.test(t)){r.competencia="-0.20"; entendido.push("competencia alta");}
   else if(/poca competencia|sin competencia|no hay competencia/.test(t)){r.competencia="0.15"; entendido.push("competencia baja");}
-  if(/informal|sin factura|sin registro/.test(t)){r.formalidad="-0.06"; entendido.push("operación informal");}
+  if(/informal|sin factura|sin registro/.test(t)){r.formalidad="-0.13"; entendido.push("operación informal");}
   if(/cobro de piso|extorsi|me cobran cuota|derecho de piso/.test(t)){r.extorsion="-0.45"; entendido.push("riesgo de extorsión en la zona");}
   if(/por necesidad|me quede sin (trabajo|empleo)|me corrieron|desemplead/.test(t)){r.motivacion="-0.10"; entendido.push("emprende por necesidad");}
   if(/estres|agotad|cansad|ansiedad/.test(t)){r.resiliencia="-0.15"; entendido.push("desgaste emocional");}

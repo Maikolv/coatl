@@ -8,7 +8,7 @@
 <link rel="preload" href="assets/fuentes/web/hanken-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fuentes/web/bricolage-grotesque-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-WrXTOl8BrJFcBZxVvUxpcGRUhQ3nw0C/3V7LHU7Cuyw=' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'sha256-U271zt79lkqQ0xGAYDIdmIOeqjxhyFkXBCZMtVA2TJ4='; font-src 'self'; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://coatl-ia.vercel.app; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'sha256-DRNjMRGtEQa3L+9JxzaxnTwjpEIYR/4QsT+GerTF4Vc=' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'sha256-U271zt79lkqQ0xGAYDIdmIOeqjxhyFkXBCZMtVA2TJ4='; font-src 'self'; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://coatl-ia.vercel.app; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -2276,10 +2276,10 @@ body.sin-movimiento .legal-relleno::before{animation-play-state:paused!important
               <label for="formalidad">Formalidad fiscal</label>
               <select id="formalidad">
                 <option value="0.10" selected>Formal desde el inicio (SAT/IMSS)</option>
-                <option value="0.02">Formalización gradual</option>
-                <option value="-0.06">Informal</option>
+                <option value="-0.02">Formalización gradual</option>
+                <option value="-0.13">Informal</option>
               </select>
-              <span class="ayuda">La formalidad abre acceso a crédito, proveedores y clientes empresariales.</span>
+              <span class="ayuda">Diferencia estimada con el panel de la ENOE (INEGI): un año después sigue operando el 53 % de los negocios jóvenes formales contra el 43 % de los informales.</span>
             </div>
             <div class="campo">
               <label for="marketing">Estrategia de marketing</label>
@@ -2827,7 +2827,7 @@ body.sin-movimiento .legal-relleno::before{animation-play-state:paused!important
       <h3>Modelo logístico de puntaje</h3>
       <p>La probabilidad de éxito a 3 años se obtiene con una función logística: cada variable del escenario aporta un coeficiente β (positivo si protege al negocio, negativo si lo arriesga) y la suma z se transforma en una probabilidad entre 0 y 1.</p>
       <div class="formula" tabindex="0">P(éxito) = 1 / (1 + e^(−z)),&nbsp;&nbsp; z = β₀ + β₁x₁ + β₂x₂ + … + βₖxₖ</div>
-      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI 1989–2019 (42.6 %): β₀ = ln(0.4261/0.5739) ≈ −0.298. Los coeficientes de <strong>giro y zona</strong> se estimaron con datos reales: se siguió a 305,313 negocios que el INEGI incorporó al DENUE en la actualización censal de 2019 en el Estado de México (4,654 en Coacalco) hasta la edición de 2024, y se ajustó una regresión logística con errores estándar (efectos centrados y contraídos por Bayes empírico). Los de experiencia, reserva de capital, competencia, deuda, margen de seguridad y las demás variables siguen siendo criterio del equipo, porque el DENUE no los registra. Como esos β no tienen error estándar, el simulador no presenta P como cifra exacta: perturba cada βᵢ con una desviación relativa de 30 % (y β₀ con 0.15) en 1,000 sorteos y reporta el <strong>rango plausible P5–P95</strong>. Es un análisis de sensibilidad, no un intervalo de confianza muestral.</p>
+      <p>β₀ se calibró para que un escenario típico (comercio micro, zona media, sin ventajas ni desventajas) reproduzca la supervivencia nacional a 3 años de la tabla del INEGI 1989–2019 (42.6 %): β₀ = ln(0.4261/0.5739) ≈ −0.298. Los coeficientes de <strong>giro y zona</strong> se estimaron con datos reales: se siguió a 305,313 negocios que el INEGI incorporó al DENUE en la actualización censal de 2019 en el Estado de México (4,654 en Coacalco) hasta la edición de 2024, y se ajustó una regresión logística con errores estándar (efectos centrados y contraídos por Bayes empírico). El de <strong>formalidad</strong> se estimó con el panel de la ENOE del INEGI (5,245 dueños de negocios jóvenes seguidos un año). Los de experiencia, reserva de capital, competencia, deuda, marketing, margen de seguridad y las demás variables siguen siendo criterio del equipo, porque ninguna fuente pública los liga con el cierre. Como esos β no tienen error estándar, el simulador no presenta P como cifra exacta: perturba cada βᵢ con una desviación relativa de 30 % (y β₀ con 0.15) en 1,000 sorteos y reporta el <strong>rango plausible P5–P95</strong>. Es un análisis de sensibilidad, no un intervalo de confianza muestral.</p>
       <p class="uso">Conceptos del curso: probabilidad condicional, función logística, variables explicativas.</p>
     </article>
 
@@ -4862,7 +4862,7 @@ function interpretarLocal(texto){
   if(/local propio|es mio|propiedad propia|sin renta/.test(t)){r.local="propio"; entendido.push("local propio");}
   if(/mucha competencia|muy competido|saturad/.test(t)){r.competencia="-0.20"; entendido.push("competencia alta");}
   else if(/poca competencia|sin competencia|no hay competencia/.test(t)){r.competencia="0.15"; entendido.push("competencia baja");}
-  if(/informal|sin factura|sin registro/.test(t)){r.formalidad="-0.06"; entendido.push("operación informal");}
+  if(/informal|sin factura|sin registro/.test(t)){r.formalidad="-0.13"; entendido.push("operación informal");}
   if(/cobro de piso|extorsi|me cobran cuota|derecho de piso/.test(t)){r.extorsion="-0.45"; entendido.push("riesgo de extorsión en la zona");}
   if(/por necesidad|me quede sin (trabajo|empleo)|me corrieron|desemplead/.test(t)){r.motivacion="-0.10"; entendido.push("emprende por necesidad");}
   if(/estres|agotad|cansad|ansiedad/.test(t)){r.resiliencia="-0.15"; entendido.push("desgaste emocional");}

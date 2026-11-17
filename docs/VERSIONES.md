@@ -20,6 +20,7 @@
 | v11 | 2026-11-15 | Negocio con nombre, mejora del negocio y reporte propio | 51.6 % | $60,371 | 302.9 % | 4.1 meses | $912,776 |
 | v12 | 2026-11-16 | Resultado para llevar con QR y documentación extensa | 51.6 % | $60,371 | 302.9 % | 4.1 meses | $912,776 |
 | v13 | 2026-11-17 | β de giro y zona estimados con el DENUE, perfiles cifrados y carga más rápida | 38.0 % | $60,371 | 302.9 % | 4.1 meses | $686,989 |
+| v14 | 2026-11-17 | β de formalidad estimado con el panel de la ENOE | 38.0 % | $60,371 | 302.9 % | 4.1 meses | $686,989 |
 
 ## v1 · Importación inicial (12 de noviembre de 2026)
 
@@ -253,3 +254,20 @@ Confirmaciones: `f8b4a0e`, `9b1d262`.
 - Se retiraron los documentos Word y el pitch heredados y sus generadores.
 
 **Efecto en el modelo.** Cambian los β de giro y zona. El escenario de referencia (cafetería en Los Héroes) pasa de P = 51.6 % a 38.0 % (rango 30.6–46.6 %) y el VPN de $912,776 a $686,989; utilidad, ROI y recuperación no cambian porque no dependen de los β.
+
+Confirmaciones: `25ecaf9`.
+
+## v14 · β de formalidad estimado con el panel de la ENOE (17 de noviembre de 2026)
+
+**Qué es.** La formalidad deja de ser un supuesto: se estima siguiendo durante un año a 5,245 dueños de negocios jóvenes en la Encuesta Nacional de Ocupación y Empleo del INEGI. Experiencia, reserva, marketing y deuda siguen como supuestos porque ninguna fuente pública los liga con la supervivencia.
+
+**Por qué se hizo.** Tras v13 quedaban cinco β supuestos que el DENUE no registra. La ENAMIN, que medía micronegocios, se levantó por última vez en 2012. La ENOE sí es un panel: entrevista al mismo hogar cinco trimestres y clasifica cada negocio como formal o del sector informal.
+
+- Script scripts/enoe_supervivencia.py: parejas 2023T1→2024T1 y 2024T1→2025T1; dueños (empleadores y cuenta propia) de negocios con 3 años o menos; sobrevive quien un año después sigue como dueño en la misma rama de actividad; regresión logística con errores agrupados por UPM.
+- Resultado: un año después sigue el 53 % de los negocios formales y el 43 % de los informales. Llevado a 3 años con riesgos proporcionales y contraído hacia el supuesto del equipo, la diferencia formal − informal pasa de 0.16 a 0.23.
+- Formulario: «Formalización gradual» pasa de 0.02 a −0.02 e «Informal» de −0.06 a −0.13; «Formal desde el inicio» conserva 0.10 (la ENOE identifica la diferencia, no el nivel).
+- Prueba nueva: las opciones del formulario deben coincidir con data/enoe/supervivencia.json.
+- Prompts para Codex: continuar el trabajo (docs/PROMPT_CODEX_CONTINUAR.md) y llevar las prácticas de COATL a Help Quote Terminal (docs/PROMPT_HELP_QUOTE_TERMINAL.md).
+- Guion del video actualizado (cifras v13–v14, fuentes y límites).
+
+**Efecto en el modelo.** Cambian los β de «Formalización gradual» e «Informal». El escenario de referencia usa «Formal desde el inicio», que no cambia, así que sus cifras se mantienen: P = 38.0 % (rango 30.6–46.6 %), VPN 86,989.

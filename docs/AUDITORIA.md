@@ -267,7 +267,7 @@ No se usó WebGL: CLAUDE.md lo rechaza. La profundidad se logra con SVG, 2.5D y 
 
 | # (v12) | Punto | Estado |
 |---|---|---|
-| 1 | β supuestos por el equipo | **Atendido en parte.** Giro y zona se estiman con el DENUE (cohorte de 305,313 negocios incorporados en 2019, seguidos a 2024; regresión logística con errores estándar y contracción bayesiana). Los demás β siguen siendo supuestos: el DENUE no registra experiencia, reserva, formalidad ni marketing. La referencia pasa de P = 51.6 % a 38.0 %. |
+| 1 | β supuestos por el equipo | **Atendido en parte.** Giro y zona se estiman con el DENUE (cohorte de 305,313 negocios incorporados en 2019, seguidos a 2024; regresión logística con errores estándar y contracción bayesiana). Desde v14, formalidad se estima con el panel de la ENOE (diferencia formal − informal 0.23). Experiencia, reserva, marketing y deuda siguen siendo supuestos: ninguna fuente pública los liga con la supervivencia. La referencia pasa de P = 51.6 % a 38.0 %. |
 | 2 | Voces del video | **En espera** de las grabaciones del equipo (`docs/GUION_VOCES.md`). El video se regenerará con ellas y con las cifras de v13. |
 | 3 | Peso del video | Sin cambios (≈ 44 MB). |
 | 4 | DOCX y pitch heredados | **Atendido.** Se retiraron los documentos y sus generadores; quedan PDF, PPTX y XLSX de `scripts/documentos.mjs`. |

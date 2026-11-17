@@ -22,7 +22,8 @@ Cada cifra que muestra COATL se cotejó con su fuente primaria.
 | Esperanza de vida por sector (9.7 / 8.0 / 6.9) | — | ✏️ **Eliminado** | No se encontró en la edición 1989–2019. Las cifras sectoriales que circulan son de otra edición |
 | Supervivencia nacional a 3 años (referencia en la lectura) | 42.6 % | ✏️ Antes 46 % | S₀(3) del INEGI |
 | Distribución sectorial de Coacalco | 45.9 % comercio al por menor · 45.0 % servicios · 6.0 % manufactura · 3.0 % otros | ✅ Confirmada | INEGI, DENUE 05/2026, CSV del Estado de México |
-| Afluencia y renta por zona, ticket / CV / demanda por giro, coeficientes β | — | ⚠️ | Supuestos del equipo, declarados y editables en el simulador |
+| Afluencia y renta por zona, ticket / CV / demanda por giro, β de experiencia, reserva, marketing y deuda | — | ⚠️ | Supuestos del equipo, declarados y editables en el simulador |
+| β de formalidad (v14) | Formal − informal = 0.23 en logit a 3 años | ✅ Estimado | INEGI, ENOE, microdatos del 1.er trimestre de 2023, 2024 y 2025 ([página de microdatos](https://www.inegi.org.mx/programas/enoe/15ymas/#microdatos); archivos `enoe_AAAA_trim1_csv.zip`). Ver METODOLOGIA.md |
 
 ## Impacto en el modelo
 

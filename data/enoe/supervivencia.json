@@ -1,0 +1,39 @@
+{
+  "fuente": "INEGI, ENOE (microdatos trimestrales, panel de 5 visitas)",
+  "parejas": [
+    "2023T1 → 2024T1",
+    "2024T1 → 2025T1"
+  ],
+  "muestra": {
+    "duenos_jovenes_visita1": 6144,
+    "seguidos_visita5": 5245,
+    "seguimiento": 0.854,
+    "formales": 1259
+  },
+  "supervivencia_1a": {
+    "informal": 0.433,
+    "formal": 0.531
+  },
+  "logit_1a": {
+    "beta_formal": 0.2646,
+    "ee": 0.089
+  },
+  "riesgo_relativo": 0.835,
+  "diferencia_3a": {
+    "estimada": 0.259,
+    "ee": 0.087,
+    "supuesto_equipo": 0.16,
+    "peso_datos": 0.748,
+    "final": 0.234
+  },
+  "z": {
+    "formal": 0.1,
+    "gradual": -0.02,
+    "informal": -0.13
+  },
+  "zEq": {
+    "formal": 0.1,
+    "gradual": 0.02,
+    "informal": -0.06
+  }
+}

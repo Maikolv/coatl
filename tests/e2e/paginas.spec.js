@@ -397,14 +397,14 @@ test('v13: los negocios guardados quedan aislados por usuario y cifrados', async
   await page.goto('/#simulador', { waitUntil: 'load' });
   const entrar = async (u, c) => { await page.fill('#perfilUsuario', u); await page.fill('#perfilClave', c); await page.click('#perfilEntrar'); };
   // Ana crea su perfil y guarda un negocio
-  await entrar('ana', 'clave-ana');
+  await entrar('usuaria-ana', 'clave-ana');
   await expect(page.locator('#perfilSalir')).toBeVisible();
   await page.fill('#negocioNombre', 'Florería de Ana');
   await page.click('#negocioGuardar');
   await expect(page.locator('#negocioLista option')).toHaveCount(2);
   // En el almacenamiento no aparece ni el usuario ni el nombre del negocio
   const crudo = await page.evaluate(() => Object.entries(localStorage).filter(([k]) => k.startsWith('coatl-')).map(([k, v]) => k + v).join(''));
-  expect(crudo).not.toContain('Florer'); expect(crudo).not.toContain('ana');
+  expect(crudo).not.toContain('Florer'); expect(crudo.toLowerCase()).not.toContain('usuaria-ana'); // texto largo: un cifrado al azar contiene «ana» por casualidad
   await page.click('#perfilSalir');
   await expect(page.locator('#negocioLista option')).toHaveCount(1);
   // Beto, en el mismo navegador, no ve nada de Ana
@@ -413,13 +413,13 @@ test('v13: los negocios guardados quedan aislados por usuario y cifrados', async
   await expect(page.locator('#negocioLista option')).toHaveCount(1);
   await page.click('#perfilSalir');
   // Con la clave equivocada no se abre
-  await entrar('ana', 'otra-clave');
+  await entrar('usuaria-ana', 'otra-clave');
   await expect(page.locator('#negocioNota')).toContainText('incorrectos');
   await expect(page.locator('#perfilSalir')).toBeHidden();
   // Con la correcta, en otra pestaña, Ana recupera su negocio
   const otra = await context.newPage();
   await otra.goto('/#simulador', { waitUntil: 'load' });
-  await otra.fill('#perfilUsuario', 'Ana'); await otra.fill('#perfilClave', 'clave-ana'); await otra.click('#perfilEntrar');
+  await otra.fill('#perfilUsuario', 'Usuaria-Ana'); await otra.fill('#perfilClave', 'clave-ana'); await otra.click('#perfilEntrar');
   await expect(otra.locator('#negocioLista')).toContainText('Florería de Ana');
 });
 

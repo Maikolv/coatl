@@ -98,6 +98,29 @@ Hasta la versión 12 todos los β eran supuestos del equipo. Desde la 13, los de
 
 **Hallazgos.** El corredor López Portillo pasa de +0.30 (supuesto) a −0.26: atrae más negocios, pero también más rotación. La cafetería pasa de −0.08 a −0.33. El escenario de referencia baja de 51.6 % a 38.0 %; utilidad, ROI y recuperación no cambian.
 
-**Límites.** Desaparecer del DENUE no siempre es cerrar (cambio de domicilio o de giro). La cohorte se sigue cinco años y no tres, y empieza con negocios de hasta cinco años. Por eso solo se usan diferencias entre giros y zonas; el nivel de P lo sigue fijando β₀ con la tabla oficial del INEGI. Los β de experiencia, reserva, formalidad, marketing, deuda y demás variables siguen siendo supuestos del equipo.
+**Límites.** Desaparecer del DENUE no siempre es cerrar (cambio de domicilio o de giro). La cohorte se sigue cinco años y no tres, y empieza con negocios de hasta cinco años. Por eso solo se usan diferencias entre giros y zonas; el nivel de P lo sigue fijando β₀ con la tabla oficial del INEGI. El de formalidad se estima con la ENOE desde la v14 (sección siguiente); experiencia, reserva, marketing, deuda y demás variables siguen siendo supuestos del equipo.
 
 Detalle por giro y zona, con errores estándar: `data/denue/supervivencia.json`, el documento técnico (capítulo 5) y el libro de Excel (hojas «β DENUE»).
+
+## Formalidad estimada con el panel de la ENOE (v14)
+
+El DENUE no registra experiencia, reserva, formalidad, marketing ni deuda. Se buscó una fuente pública que las ligue con la supervivencia:
+
+| Variable | Fuente pública con supervivencia | Resultado |
+|---|---|---|
+| Formalidad | ENOE: panel de 5 visitas y clasificación oficial del sector informal (`tue_ppal`) | **Estimada** |
+| Experiencia en el giro | ENOE solo pregunta la antigüedad en el trabajo actual (es la edad del negocio, no la experiencia previa); la ENAMIN, que preguntaba trayectoria, se levantó por última vez en 2012 | Supuesto del equipo |
+| Reserva de capital | Ninguna encuesta pública pregunta meses de gastos cubiertos | Supuesto del equipo |
+| Marketing | Ninguna encuesta pública lo liga con el cierre | Supuesto del equipo |
+| Deuda | La ENAFIN mide crédito, pero es transversal: no sigue a los negocios | Supuesto del equipo |
+
+1. **Panel.** La ENOE entrevista a cada hogar cinco trimestres seguidos: quien está en su 1.ª visita en el primer trimestre está en la 5.ª un año después. Se usan las parejas 2023T1 → 2024T1 y 2024T1 → 2025T1, porque el año de inicio del negocio (`p3r_anio`) solo viene en el cuestionario ampliado del primer trimestre.
+2. **Muestra.** 6,144 dueños (empleadores y trabajadores por cuenta propia) de negocios con 3 años o menos; 5,245 (85.4 %) se volvieron a encontrar, con el mismo sexo y una edad coherente. 1,259 tienen negocio formal.
+3. **Resultado.** Sobrevive quien, un año después, sigue como dueño en la misma rama de actividad. Se descartó usar el mismo año de inicio porque la respuesta cambia mucho entre visitas (error de memoria). Siguen el 53.1 % de los formales y el 43.3 % de los informales.
+4. **Modelo.** Regresión logística con antigüedad del negocio, empleador o cuenta propia, sexo, edad, rama y pareja; errores agrupados por unidad primaria de muestreo. β(formal, 1 año) = 0.26 (EE 0.09).
+5. **De 1 a 3 años.** Con riesgos proporcionales, S₃ = S₀(3)^HR, donde HR = 0.835 es el riesgo relativo formal/informal. La diferencia en escala logit a 3 años es 0.26 (EE 0.09). Se contrae hacia el supuesto anterior (0.16, desviación previa 0.15) y queda en **0.23**, con 75 % del peso en los datos.
+6. **Aplicación.** «Formal desde el inicio» conserva 0.10, porque la ENOE identifica la diferencia, no el nivel, que lo fija β₀. «Informal» pasa de −0.06 a −0.13 y «Formalización gradual», a la mitad, de 0.02 a −0.02. El escenario de referencia usa «Formal desde el inicio», así que sus cifras no cambian. Una prueba exige que el formulario coincida con `data/enoe/supervivencia.json`.
+
+**Límites.** Seguir como dueño en la misma rama no prueba que sea el mismo negocio. La ENOE mide personas, no establecimientos, y su muestra es nacional, no de Coacalco. El 14.6 % que no se volvió a encontrar puede tener otra supervivencia. Pasar de 1 a 3 años supone riesgos proporcionales. «Formal» es la definición del INEGI (fuera del sector informal: con registros contables o constituido como sociedad), que no es lo mismo que estar inscrito en el SAT o el IMSS.
+
+**Cómo estimar las otras cuatro.** Hace falta un seguimiento propio. La ruta más barata es una encuesta corta a negocios abiertos en Coacalco que pregunte experiencia previa, meses de reserva, gasto en publicidad y porcentaje financiado con crédito. Después se ve qué negocios siguen en la siguiente edición del DENUE, con el mismo método de v13. Para detectar una diferencia de 10 puntos (45 % contra 55 %) con 80 % de potencia y α = 0.05 hacen falta unos 400 negocios por grupo.

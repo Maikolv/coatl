@@ -146,3 +146,14 @@ test('referencia: rango plausible de P = 30.6–46.6 % (vigente desde v13, β de
   assert.equal((r.p05 * 100).toFixed(1), '30.6');
   assert.equal((r.p95 * 100).toFixed(1), '46.6');
 });
+
+// v14: β de formalidad estimado con el panel de la ENOE (scripts/enoe_supervivencia.py).
+test('las opciones de formalidad del formulario coinciden con data/enoe/supervivencia.json', async () => {
+  const { readFileSync } = await import('node:fs');
+  const z = JSON.parse(readFileSync(new URL('../data/enoe/supervivencia.json', import.meta.url), 'utf8')).z;
+  const html = readFileSync(new URL('../src/index.html', import.meta.url), 'utf8');
+  const sel = html.match(/<select id="formalidad">([\s\S]*?)<\/select>/)[1];
+  const valores = [...sel.matchAll(/value="([-\d.]+)"/g)].map(x => +x[1]);
+  assert.deepEqual(valores, [z.formal, z.gradual, z.informal]);
+  assert.ok(z.formal > z.gradual && z.gradual > z.informal, 'formal > gradual > informal');
+});

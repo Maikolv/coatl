@@ -165,3 +165,10 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - Teléfono: `tests/e2e/orientacion.spec.js` revisa vertical, horizontal y rotación; en horizontal bajo la barra superior no es fija.
 - La foto de contexto es obra de ProtoplasmaKid, publicada en Wikimedia Commons bajo CC BY-SA 4.0. [Ficha de la foto](https://commons.wikimedia.org/wiki/File:Coacalco_Estado_Mexico.JPG).
 - Diagrama UML de 6 carriles: hecho (`scripts/diagrama_uml.mjs` → docs/ y entregables/).
+
+## v14: formalidad estimada con la ENOE
+
+- `scripts/enoe_supervivencia.py` (uv con numpy, pandas, statsmodels) lee `.cache/enoe/enoe_AAAA_trim1_csv.zip` y escribe `data/enoe/supervivencia.json`. Usa el panel de la ENOE: 1.ª visita en T1, 5.ª visita en T1 del año siguiente. Solo T1, porque `p3r_anio` viene en el cuestionario ampliado. La descarga necesita un User-Agent de navegador y el Referer de la página de la ENOE.
+- Sobrevive quien sigue como dueño en la misma rama. Formal = `tue_ppal == 2`. Diferencia formal − informal 0.23 (antes 0.16). «Formal desde el inicio» queda en 0.10 (default; la referencia no cambia). Gradual −0.02, informal −0.13. Una prueba en `tests/modelo.test.mjs` exige que el `<select id="formalidad">` coincida con el JSON.
+- Experiencia, reserva, marketing y deuda siguen siendo supuestos: la ENAMIN acabó en 2012 y ninguna fuente pública los liga con el cierre. La ruta para estimarlas está en docs/METODOLOGIA.md.
+- Prompts: `docs/PROMPT_CODEX_CONTINUAR.md` y `docs/PROMPT_HELP_QUOTE_TERMINAL.md` (Help Quote Terminal está en `Repos/actinver-terminal`).

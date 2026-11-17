@@ -390,6 +390,32 @@
         "payback": "4.1 meses",
         "vpn": "$686,989"
       },
+      "commits": [
+        "25ecaf9"
+      ]
+    },
+    {
+      "id": "v14",
+      "fecha": "2026-11-17",
+      "titulo": "β de formalidad estimado con el panel de la ENOE",
+      "resumen": "La formalidad deja de ser un supuesto: se estima siguiendo durante un año a 5,245 dueños de negocios jóvenes en la Encuesta Nacional de Ocupación y Empleo del INEGI. Experiencia, reserva, marketing y deuda siguen como supuestos porque ninguna fuente pública los liga con la supervivencia.",
+      "motivo": "Tras v13 quedaban cinco β supuestos que el DENUE no registra. La ENAMIN, que medía micronegocios, se levantó por última vez en 2012. La ENOE sí es un panel: entrevista al mismo hogar cinco trimestres y clasifica cada negocio como formal o del sector informal.",
+      "cambios": [
+        "Script scripts/enoe_supervivencia.py: parejas 2023T1→2024T1 y 2024T1→2025T1; dueños (empleadores y cuenta propia) de negocios con 3 años o menos; sobrevive quien un año después sigue como dueño en la misma rama de actividad; regresión logística con errores agrupados por UPM.",
+        "Resultado: un año después sigue el 53 % de los negocios formales y el 43 % de los informales. Llevado a 3 años con riesgos proporcionales y contraído hacia el supuesto del equipo, la diferencia formal − informal pasa de 0.16 a 0.23.",
+        "Formulario: «Formalización gradual» pasa de 0.02 a −0.02 e «Informal» de −0.06 a −0.13; «Formal desde el inicio» conserva 0.10 (la ENOE identifica la diferencia, no el nivel).",
+        "Prueba nueva: las opciones del formulario deben coincidir con data/enoe/supervivencia.json.",
+        "Prompts para Codex: continuar el trabajo (docs/PROMPT_CODEX_CONTINUAR.md) y llevar las prácticas de COATL a Help Quote Terminal (docs/PROMPT_HELP_QUOTE_TERMINAL.md).",
+        "Guion del video actualizado (cifras v13–v14, fuentes y límites)."
+      ],
+      "modelo": "Cambian los β de «Formalización gradual» e «Informal». El escenario de referencia usa «Formal desde el inicio», que no cambia, así que sus cifras se mantienen: P = 38.0 % (rango 30.6–46.6 %), VPN 86,989.",
+      "referencia": {
+        "P": "38.0 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$686,989"
+      },
       "commits": []
     }
   ]

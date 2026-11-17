@@ -12,7 +12,7 @@ Con todos los negocios de esa cohorte en el Estado de México se ajusta una regr
 con errores estándar, y cada β se contrae hacia cero según su incertidumbre (Bayes empírico):
 β* = β · τ² / (τ² + EE²). Así un giro con pocos negocios no recibe un efecto extremo por azar.
 
-Qué NO puede estimar el DENUE: experiencia, reserva, formalidad, marketing, deuda, etc. Esos β siguen siendo
+Qué NO puede estimar el DENUE: experiencia, reserva, formalidad, marketing, deuda, etc. (formalidad: ver scripts/enoe_supervivencia.py). Esos β siguen siendo
 supuestos del equipo. El DENUE tampoco distingue «cerró» de «dejó de registrarse»: la tasa absoluta no se usa
 (el intercepto del modelo sigue calibrado con la tabla oficial del INEGI); solo se usan DIFERENCIAS entre giros
 y entre zonas.
