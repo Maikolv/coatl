@@ -1,6 +1,8 @@
 /* ---------- 9. Render de resultados ---------- */
 let ultimoP=0, ultimoNivel="";
-function pintarVeredicto(P){
+/* vpn: se conoce hasta terminar el Monte Carlo. Con P alta pero VPN negativo el negocio puede seguir abierto
+   sin recuperar la inversión a 3 años: no se celebra ni se llama «sólido». */
+function pintarVeredicto(P, vpn){
   const p100=Math.round(P*100), el=$("probNum"), de=ultimoP;
   const t0=performance.now(), dur=650;
   function paso(t){
@@ -13,15 +15,17 @@ function pintarVeredicto(P){
   $("aguja").style.transform="translateX(-50%) rotate("+(-90+P*180)+"deg)";
   const sem=$("semaforo");
   let nivel;
-  if(P>=0.65){nivel="alto";sem.className="semaforo alto";sem.textContent="Escenario sólido"}
+  const pierde = vpn!=null && vpn<0;
+  if(P>=0.65 && pierde){nivel="medio";sem.className="semaforo medio";sem.textContent="Sobrevive, pero no recupera la inversión"}
+  else if(P>=0.65){nivel="alto";sem.className="semaforo alto";sem.textContent="Escenario sólido"}
   else if(P>=0.45){nivel="medio";sem.className="semaforo medio";sem.textContent="Escenario condicionado"}
   else {nivel="bajo";sem.className="semaforo bajo";sem.textContent="Escenario frágil"}
-  if(nivel==="alto"&&ultimoNivel!=="alto"&&ultimoNivel!=="")fiesta();
-  ultimoNivel=nivel;
+  if(vpn!=null&&nivel==="alto"&&ultimoNivel!=="alto"&&ultimoNivel!=="")fiesta();   // solo con el resultado completo
+  if(vpn!=null) ultimoNivel=nivel;
   const mg=$("miniGrid");
   if(!mg.children.length){for(let i=0;i<100;i++){const c=document.createElement("div");c.className="celda";mg.appendChild(c)}}
   [...mg.children].forEach((c,i)=>c.classList.toggle("viva",i<p100));
-  $("miniLeyenda").textContent="De 100 escenarios como el tuyo, ≈"+p100+" llegarían operando y rentables al año 3.";
+  $("miniLeyenda").textContent="De 100 escenarios como el tuyo, ≈"+p100+" llegarían operando al año 3"+(pierde?", aunque a tu tasa de descuento la inversión no se recupera en ese plazo.":" y rentables.");
 }
 function fiesta(){
   if(window.matchMedia("(prefers-reduced-motion: reduce)").matches)return;

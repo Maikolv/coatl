@@ -450,3 +450,18 @@ test('v15: plan por etapas, palancas etiquetadas, riesgo de efectivo y validaci�
   await expect(page.locator('body')).toContainText('ordenan el riesgo apenas mejor que el azar');
   await expect(page.locator('body')).not.toContainText('@@DATO');
 });
+
+test('v17: con P alta pero VPN negativo no se llama «sólido» ni hay confeti', async ({ page }) => {
+  await page.goto('/#simulador', { waitUntil: 'domcontentloaded' });
+  const html = page.locator('html');
+  await expect(html).toHaveAttribute('data-calculo', 'listo', { timeout: 20000 });
+  for (const [id, v] of [['zona', 'flores'], ['experiencia', '0.38'], ['reserva', '0.35'], ['marketing', '0.12'], ['local', 'propio']]) await page.locator('#' + id).selectOption(v, { force: true });
+  await page.evaluate(() => { for (const [id, v] of [['inversion', '3000000'], ['credito', '0']]) { const r = document.getElementById(id); r.value = v; r.dispatchEvent(new Event('input', { bubbles: true })); r.dispatchEvent(new Event('change', { bubbles: true })); } });
+  await expect(html).toHaveAttribute('data-calculo', 'listo', { timeout: 20000 });
+  await expect(page.locator('#kpis')).toContainText('-$');   // VPN negativo con una inversión de $3 millones
+  const P = parseFloat(await page.locator('#probNum').innerText());
+  expect(P).toBeGreaterThanOrEqual(65);
+  await expect(page.locator('#semaforo')).toHaveText('Sobrevive, pero no recupera la inversión');
+  await expect(page.locator('#miniLeyenda')).toContainText('no se recupera');
+  await expect(page.locator('#confeti *')).toHaveCount(0);
+});

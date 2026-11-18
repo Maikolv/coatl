@@ -313,3 +313,13 @@ No se usó WebGL: CLAUDE.md lo rechaza. La profundidad se logra con SVG, 2.5D y 
 - Giro y zona ordenan el riesgo apenas mejor que el azar: P orienta, no predice un negocio en particular.
 - El nivel de P sigue anclado a la tabla nacional del INEGI; el DENUE no sirve para corregirlo porque conserva negocios cerrados.
 - Ningún plan asegura que un negocio sobreviva. El plan por etapas acota la pérdida.
+
+## 17. v17 — auditoría de mejora
+
+| # | Hallazgo | Estado |
+|---|---|---|
+| 1 | Con P de 65 % o más el sitio decía «Escenario sólido» y lanzaba confeti aunque el VPN fuera negativo (caso real: 69.9 % con VPN de −$784,304) | **Atendido.** El letrero cambia a «Sobrevive, pero no recupera la inversión», sin confeti, y la leyenda lo explica. Prueba e2e. |
+| 2 | Cuatro β sin datos | **En curso.** Encuesta creada (docs/ENCUESTA.md); falta el trabajo de campo. |
+| 3 | La encuesta llevaba el enlace del sitio | **Atendido.** Sin enlaces; el proyecto se describe en texto y se avisa que COATL nunca pide contraseñas, datos bancarios ni pagos. |
+| 4 | Costos del stand sin cotizar | **Atendido.** Cotización por partida con referencias de mercado. |
+| 5 | Video con la referencia de v12 | **Pendiente:** espera las voces del equipo. |

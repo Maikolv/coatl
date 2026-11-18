@@ -186,3 +186,8 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - `monteCarlo` guarda las ventas de cada mes: `ventasMes.p05` es el P5 de UN mes (no del promedio anual) y `ventasMes.falsaAlarma` es la fracción de años con dos meses seguidos bajo el P5 sin que nada ande mal (4.2 % en la referencia). La regla de salida del plan usa esos valores.
 - `scripts/aplicar_betas.mjs` multiplica los β de giro y zona por `pendiente_calibracion` de `data/denue/validacion.json` (0.794) y aplica la herencia de clases compartidas (juguería ← cafetería, pastelería ← panadería). Si cambias el DENUE: `denue_supervivencia.py` → `validar_denue.py` → `aplicar_betas.mjs`.
 - Palancas: nada de porcentajes sin fuente verificada; cada `tasa` dice si es medido o supuesto.
+
+## v17: encuesta y veredicto
+
+- Encuesta: `node scripts/encuesta.mjs` → `entregables/encuesta/` (Apps Script, encabezados, codificación). **Sin enlaces** en el formulario ni en el repositorio (ni el del sitio ni el del propio formulario): evita fugas y suplantaciones. Respuestas solo en la hoja privada del equipo.
+- `pintarVeredicto(P, vpn)`: con P ≥ 65 % y VPN < 0 el letrero es «Sobrevive, pero no recupera la inversión» y no hay confeti; el confeti solo se decide con el resultado completo (vpn conocido).

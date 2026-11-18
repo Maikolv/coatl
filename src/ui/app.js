@@ -318,8 +318,8 @@ function terminarCalculo({id,e,modelo},mc,rango){
   solicitudCalculo=null;
   if(rango) modelo._rangoP=rango;
   const S=curvaSupervivencia(modelo.P);
-  pintarVeredicto(modelo.P);
   const vpn=pintarKPIs(e,mc,S,modelo);
+  pintarVeredicto(modelo.P, vpn);
   pintarLectura(e,mc,modelo,vpn);
   const fin=finanzas(e,mc,S);
   ultimoResumen=resumenEscenario(e,modelo,mc,fin);

@@ -1,11 +1,11 @@
 # Stand físico de COATL — tres propuestas
 
-Objetivo común: que un evaluador o inversionista entienda en **30 segundos** qué es COATL y en **3 minutos** lo vea funcionar con un negocio real de Coacalco. Identidad fija en las tres: rojo `#C8102E`, granate `#7A0C1F`, blanco hueso `#FBF6F3` y greca escalonada. Los precios son **aproximados en MXN**: cotiza en la papelería o imprenta local antes de comprar.
+Objetivo común: que un evaluador o inversionista entienda en **30 segundos** qué es COATL y en **3 minutos** lo vea funcionar con un negocio real de Coacalco. Identidad fija en las tres: rojo `#C8102E`, granate `#7A0C1F`, blanco hueso `#FBF6F3` y greca escalonada. Los precios son **aproximados en MXN**: cotiza en la papelería o imprenta local antes de comprar. **Cotización detallada por partida, con referencias de mercado y guía de montaje:** [`entregables/COATL_Stand_Cotizacion.pdf`](../entregables/COATL_Stand_Cotizacion.pdf) (rangos de un día, con recolección propia; pedir precio final con IVA, flete y montaje).
 
 | | A · Esencial | B · Profesional (recomendada) | C · Inmersiva |
 |---|---|---|---|
 | Idea | Una mesa bien vestida y una demo impecable | Mesa + pantalla + lona: se ve desde lejos | El visitante simula **su** negocio y se lleva su reporte |
-| Costo aproximado | $900 – 1,800 | $3,500 – 6,500 | $9,000 – 16,000 |
+| Costo cotizado (16 nov 2026) | $1,395 – 2,585 | $2,655 – 5,105 | $10,215 – 16,815 |
 | Tiempo de preparación | 2 días | 1 semana | 2 a 3 semanas |
 | Personas en el stand | 2 | 3 | 3 a 4 |
 | Espacio | Mesa de 1.2 m | Mesa de 1.8 m + 1 m² | 3 × 2 m |
@@ -27,7 +27,7 @@ Para cuando el presupuesto es mínimo o el espacio es una mesa compartida.
 | Gafetes con nombre (los tres autores) | Imagen de equipo | $60 – 120 |
 | Extensión, multicontacto y cargadores | Energía | Propios |
 | Hotspot del teléfono | Solo la IA necesita internet | Propio |
-| **Total** | | **≈ $900 – 1,800** |
+| **Total cotizado** | | **≈ $1,395 – 2,585** (ver PDF de cotización) |
 
 **Fortalezas:** barata, rápida y sin riesgo técnico. **Debilidad:** de lejos no llama la atención; todo depende de quien presenta.
 
@@ -45,7 +45,7 @@ Equilibrio entre costo e impacto. Es la que conviene para una jornada académica
 | Tarjetas de presentación con QR, 100 piezas | Contacto | $180 – 350 |
 | Playeras rojas tipo polo con el logotipo (3) | Equipo identificable | $750 – 1,200 |
 | Cable HDMI, adaptador, memoria USB con el video | Respaldo | $150 – 300 |
-| **Total** | | **≈ $3,500 – 6,500** |
+| **Total cotizado** | | **≈ $2,655 – 5,105** con monitor prestado (ver PDF) |
 
 **Fortalezas:** presencia visual, dos puntos de atención (video y demo) y material para llevar. **Debilidad:** hay que conseguir la pantalla y ensayar el montaje.
 
@@ -63,7 +63,7 @@ El visitante escribe el nombre de su negocio, lo simula, ve su modelo 2.5D y se 
 | Módem o plan de datos dedicado | La IA y el mapa en línea | $200 – 500 |
 | Stickers de greca y del logotipo, 200 piezas | Recuerdo y difusión | $350 – 700 |
 | Regleta con respaldo (no-break pequeño) | Que no se apague la demo | $0 – 900 |
-| **Total** | | **≈ $9,000 – 16,000** |
+| **Total cotizado** | | **≈ $10,215 – 16,815** con fondo comprado (ver PDF) |
 
 **Fortalezas:** experiencia memorable y evidencia de uso real (cada reporte impreso es una demo). **Debilidad:** más cosas pueden fallar; exige ensayo general y un plan B sin internet.
 

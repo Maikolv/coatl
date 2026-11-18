@@ -471,8 +471,31 @@
         "vpn": "$736,085"
       },
       "commits": [
-        "b406eb6"
+        "b406eb6",
+        "9f364d1"
       ]
+    },
+    {
+      "id": "v17",
+      "fecha": "2026-11-18",
+      "titulo": "Encuesta a negocios, veredicto honesto con VPN negativo y cotización del stand",
+      "resumen": "Se creó la encuesta a negocios de Coacalco para estimar experiencia, reserva, marketing y deuda, sin enlaces ni datos que puedan filtrarse. El veredicto deja de llamar «sólido» a un negocio que sobrevive pero no recupera la inversión, y el stand tiene una cotización por partida.",
+      "motivo": "Quedaban cuatro coeficientes sin datos. Además, un reporte de un caso real mostraba 69.9 % de probabilidad con VPN de −$784,304 bajo el letrero «Escenario sólido» y con confeti.",
+      "cambios": [
+        "Encuesta (scripts/encuesta.mjs): 5 secciones, 22 preguntas, aviso de privacidad con consentimiento, codificación a los niveles del simulador y encabezado con la identidad de COATL; sin enlaces y con aviso contra suplantaciones.",
+        "Veredicto: con P de 65 % o más y VPN negativo, el letrero dice «Sobrevive, pero no recupera la inversión», no hay confeti y la leyenda lo aclara.",
+        "Cotización del stand por partida (entregables/COATL_Stand_Cotizacion.pdf) y totales actualizados en docs/STAND.md.",
+        "Documentos con v14 a v16 y escena de Estrategia del guion actualizada."
+      ],
+      "modelo": "El modelo no cambia: P = 40.9 % (rango 33.4–48.9 %), VPN $736,085.",
+      "referencia": {
+        "P": "40.9 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$736,085"
+      },
+      "commits": []
     }
   ]
 }

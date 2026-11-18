@@ -17,7 +17,8 @@ const RAIZ = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace
 const SALIDA = path.join(RAIZ, 'entregables', 'encuesta');
 fs.mkdirSync(SALIDA, { recursive: true });
 
-const SITIO = 'https://maikolv.github.io/coatl/';
+// Sin enlaces: la encuesta no lleva direcciones web, para evitar fugas de datos y suplantaciones.
+const SEGURIDAD = 'COATL nunca te pedirá contraseñas, datos bancarios ni pagos. Si alguien lo hace en nombre del proyecto, no respondas.';
 const AUTORES = 'Miguel Antonio Cruz García, Bruno Alejandro López Bautista y Alonso Arroyo Cortés';
 const GIROS = Object.values(M.GIROS).map((g) => g.n).sort((a, b) => a.localeCompare(b, 'es'));
 const ZONAS = Object.values(M.ZONAS).map((z) => z.n);
@@ -28,7 +29,8 @@ Responsables: ${AUTORES}, autores del proyecto académico COATL (materia de Prob
 Finalidad única: estimar con datos reales cómo se relacionan la experiencia, la reserva de efectivo, el marketing y la deuda con la supervivencia de los negocios de Coacalco. No hay fines comerciales ni de cobranza.
 Qué datos: características de tu negocio. El nombre comercial, la calle y el contacto son OPCIONALES y solo sirven para buscar el negocio en el DENUE del INEGI dentro de un año; no se publican.
 Qué se publica: solo resultados agregados (conteos, porcentajes y coeficientes), nunca respuestas individuales. Las respuestas no se suben al repositorio del proyecto ni se envían a servicios de inteligencia artificial.
-Tus derechos: puedes pedir el acceso, la corrección o la eliminación de tus respuestas a los autores del proyecto (${SITIO}). Participar es voluntario y puedes dejar preguntas sin contestar salvo las marcadas como obligatorias.`;
+Tus derechos: puedes pedir el acceso, la corrección o la eliminación de tus respuestas en persona al equipo que te invitó a responder. ${SEGURIDAD}
+Participar es voluntario y puedes dejar preguntas sin contestar salvo las marcadas como obligatorias.`;
 
 const SECCIONES = [
   { titulo: 'Tu negocio', ayuda: 'Datos generales. Con ellos ubicamos tu negocio en el giro y la zona que usa COATL.', preguntas: [
@@ -88,12 +90,12 @@ const gs = `/**
  */
 function crearFormulario() {
   var f = FormApp.create('COATL · Encuesta a negocios de Coacalco');
-  f.setDescription(${js('Esta encuesta, de unos 5 minutos, ayuda a medir con datos reales qué hace que un negocio de Coacalco siga abierto. Es parte de COATL, un proyecto académico de Probabilidad y Estadística: ' + SITIO)});
+  f.setDescription(${js('Esta encuesta, de unos 5 minutos, ayuda a medir con datos reales qué hace que un negocio de Coacalco siga abierto. Es parte de COATL (Cálculo de Oportunidad y Análisis Territorial Local), un proyecto académico de la materia de Probabilidad y Estadística. ' + SEGURIDAD)});
   f.setProgressBar(true);
   f.setCollectEmail(false);
   f.setAllowResponseEdits(false);
   f.setShowLinkToRespondAgain(false);
-  f.setConfirmationMessage(${js('¡Gracias! Tu respuesta ayuda a que COATL mida con datos lo que hoy son supuestos. Puedes simular tu negocio en ' + SITIO)});
+  f.setConfirmationMessage(${js('¡Gracias! Tu respuesta ayuda a que COATL mida con datos lo que hoy son supuestos. Si quieres ver cómo funciona el simulador, pide una demostración al equipo de COATL.')});
 
   // Aviso de privacidad y consentimiento: si no acepta, el formulario termina aquí.
   f.addSectionHeaderItem().setTitle('Aviso de privacidad').setHelpText(${js(AVISO)});

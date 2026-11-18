@@ -23,6 +23,7 @@
 | v14 | 2026-11-17 | β de formalidad estimado con el panel de la ENOE | 38.0 % | $60,371 | 302.9 % | 4.1 meses | $686,989 |
 | v15 | 2026-11-17 | Validación fuera de muestra, sin doble conteo y plan que acota la pérdida | 38.0 % | $60,371 | 302.9 % | 4.1 meses | $686,989 |
 | v16 | 2026-11-17 | Auditoría estricta: regla de salida corregida y β recalibrados | 40.9 % | $60,371 | 302.9 % | 4.1 meses | $736,085 |
+| v17 | 2026-11-18 | Encuesta a negocios, veredicto honesto con VPN negativo y cotización del stand | 40.9 % | $60,371 | 302.9 % | 4.1 meses | $736,085 |
 
 ## v1 · Importación inicial (12 de noviembre de 2026)
 
@@ -310,4 +311,17 @@ Confirmaciones: `410112b`.
 
 **Efecto en el modelo.** Cambian los β de giro y zona. La referencia pasa de P = 38.0 % (rango 30.3–46.3 %) a 40.9 % (rango 33.4–48.9 %) y el VPN de $686,989 a $736,085; utilidad, ROI y recuperación no cambian.
 
-Confirmaciones: `b406eb6`.
+Confirmaciones: `b406eb6`, `9f364d1`.
+
+## v17 · Encuesta a negocios, veredicto honesto con VPN negativo y cotización del stand (18 de noviembre de 2026)
+
+**Qué es.** Se creó la encuesta a negocios de Coacalco para estimar experiencia, reserva, marketing y deuda, sin enlaces ni datos que puedan filtrarse. El veredicto deja de llamar «sólido» a un negocio que sobrevive pero no recupera la inversión, y el stand tiene una cotización por partida.
+
+**Por qué se hizo.** Quedaban cuatro coeficientes sin datos. Además, un reporte de un caso real mostraba 69.9 % de probabilidad con VPN de −$784,304 bajo el letrero «Escenario sólido» y con confeti.
+
+- Encuesta (scripts/encuesta.mjs): 5 secciones, 22 preguntas, aviso de privacidad con consentimiento, codificación a los niveles del simulador y encabezado con la identidad de COATL; sin enlaces y con aviso contra suplantaciones.
+- Veredicto: con P de 65 % o más y VPN negativo, el letrero dice «Sobrevive, pero no recupera la inversión», no hay confeti y la leyenda lo aclara.
+- Cotización del stand por partida (entregables/COATL_Stand_Cotizacion.pdf) y totales actualizados en docs/STAND.md.
+- Documentos con v14 a v16 y escena de Estrategia del guion actualizada.
+
+**Efecto en el modelo.** El modelo no cambia: P = 40.9 % (rango 33.4–48.9 %), VPN $736,085.
