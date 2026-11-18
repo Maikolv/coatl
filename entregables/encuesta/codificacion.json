@@ -1,0 +1,27 @@
+{
+  "nota": "Respuesta → valor del simulador (src/index.html). Deuda = porcentaje financiado típico de cada tramo.",
+  "experiencia": {
+    "Ninguna": -0.25,
+    "Menos de 1 año": -0.25,
+    "1 a 3 años": 0,
+    "3 a 5 años": 0.15,
+    "Más de 5 años": 0.3
+  },
+  "reserva": {
+    "Menos de 3 meses": -0.3,
+    "3 a 6 meses": 0,
+    "6 a 12 meses": 0.2,
+    "Más de 12 meses": 0.35
+  },
+  "marketing": {
+    "No lo promocioné": -0.08,
+    "Básico: redes sociales sin pagar": 0.05,
+    "Activo: redes, publicidad pagada y WhatsApp Business": 0.12
+  },
+  "deuda": {
+    "Nada (0 %)": 0,
+    "Menos de la tercera parte (1 % a 29 %)": 0.15,
+    "Entre la tercera parte y la mitad (30 % a 59 %)": 0.45,
+    "La mayor parte (60 % o más)": 0.7
+  }
+}
