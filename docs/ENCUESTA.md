@@ -2,7 +2,7 @@
 
 Sirve para estimar con datos los cuatro coeficientes que siguen siendo supuestos del equipo: **experiencia, reserva, marketing y deuda** (ver METODOLOGIA.md, «Coeficientes que siguen sin datos»).
 
-**Formulario publicado:** [responder la encuesta](https://docs.google.com/forms/d/e/1FAIpQLSeMKs5uOsodn1e6qoEV-BUCnqRMKmZKv0ejB0_Vu_xCSO0-UQ/viewform). Creado el 17 de noviembre de 2026 con el script de abajo y con el tema de COATL ya aplicado: encabezado con greca, color `#C8102E`, fondo claro, Bricolage Grotesque en títulos y Hanken Grotesk en preguntas y texto, las mismas tipografías del sitio. Las respuestas van a una hoja de cálculo privada de la cuenta dueña del formulario.
+**Formulario publicado:** el enlace lo comparte el equipo en el trabajo de campo; no se publica en el repositorio. Creado el 17 de noviembre de 2026 con el script de abajo y con el tema de COATL ya aplicado: encabezado con greca, color `#C8102E`, fondo claro, Bricolage Grotesque en títulos y Hanken Grotesk en preguntas y texto, las mismas tipografías del sitio. Las respuestas van a una hoja de cálculo privada de la cuenta dueña del formulario.
 
 ## Archivos
 
