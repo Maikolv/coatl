@@ -2,6 +2,8 @@
 
 Sirve para estimar con datos los cuatro coeficientes que siguen siendo supuestos del equipo: **experiencia, reserva, marketing y deuda** (ver METODOLOGIA.md, «Coeficientes que siguen sin datos»).
 
+**Formulario publicado:** [responder la encuesta](https://docs.google.com/forms/d/e/1FAIpQLSeMKs5uOsodn1e6qoEV-BUCnqRMKmZKv0ejB0_Vu_xCSO0-UQ/viewform). Creado el 17 de noviembre de 2026 con el script de abajo y con el tema de COATL ya aplicado: encabezado con greca, color `#C8102E`, fondo claro, Bricolage Grotesque en títulos y Hanken Grotesk en preguntas y texto, las mismas tipografías del sitio. Las respuestas van a una hoja de cálculo privada de la cuenta dueña del formulario.
+
 ## Archivos
 
 | Archivo | Qué es |
@@ -35,9 +37,9 @@ Regenerar: `node scripts/encuesta.mjs`.
 La API de Google Forms no permite fijar el tema; se hace en el editor:
 
 1. Abre el formulario (enlace «para editar») → ícono de **paleta** (Personalizar tema).
-2. **Encabezado** → Elegir imagen → Subir → `entregables/encuesta/encabezado.png`.
-3. **Color** → «+» (personalizado) → `#C8102E` (rojo de COATL). El fondo se ajusta solo a un tono claro; elige el más claro, que es el más cercano al blanco hueso `#FBF6F3`.
-4. **Estilo de texto:** encabezado en «Lexend» o «Montserrat» 24; preguntas y texto en «Roboto». Google Forms no permite subir las tipografías del sitio; estas son las más cercanas a Bricolage Grotesque y Hanken Grotesk.
+2. **Encabezado** → Seleccionar imagen → **Mediante URL** → `https://raw.githubusercontent.com/Maikolv/coatl/main/entregables/encuesta/encabezado.png` → Insertar → Guardar. (La pestaña «Subir» abre el explorador de archivos; también sirve.)
+3. **Color** → «+» (personalizado) → `#C8102E` (rojo de COATL) → Agregar. En **Fondo** elige el más claro, que es el más cercano al blanco hueso `#FBF6F3`.
+4. **Estilo de texto** → lista de fuentes → **Más fuentes** → busca y marca «Bricolage Grotesque» y «Hanken Grotesk» → Listo. Encabezado: Bricolage Grotesque 24; Pregunta y Texto: Hanken Grotesk. Son las mismas tipografías del sitio, disponibles en Google Fonts.
 5. **Configuración → Respuestas:** deja apagado «Recopilar direcciones de correo electrónico» y «Limitar a 1 respuesta» (exige iniciar sesión y reduce la participación).
 
 ## Muestra y análisis
