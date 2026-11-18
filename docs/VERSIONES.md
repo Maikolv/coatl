@@ -309,3 +309,5 @@ Confirmaciones: `410112b`.
 - Trazabilidad sin la competencia como parte de P; AUDITORIA con las secciones de v14 a v16.
 
 **Efecto en el modelo.** Cambian los β de giro y zona. La referencia pasa de P = 38.0 % (rango 30.3–46.3 %) a 40.9 % (rango 33.4–48.9 %) y el VPN de $686,989 a $736,085; utilidad, ROI y recuperación no cambian.
+
+Confirmaciones: `b406eb6`.

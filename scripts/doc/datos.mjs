@@ -36,6 +36,10 @@ export const REF = {
     ['Utilidad anual Monte Carlo: P5 · mediana · P95', `${mxn(mc.p05)} · ${mxn(mc.p50)} · ${mxn(mc.p95)}`],
     ['Utilidad anual Monte Carlo: media y desviación estándar', `${mxn(mc.media)} · ${mxn(mc.sd)}`],
     ['P(utilidad anual > 0)', pct(mc.pPos)],
+    ['Riesgo de quedarse sin efectivo en el primer año', pct(mc.pSinEfectivo)],
+    ['Probabilidad con solo lo medido (sin supuestos del equipo)', pct(modelo.Pmedido)],
+    ['Ventas de un mes: P5 · mediana', `${mxn(mc.ventasMes.p05)} · ${mxn(mc.ventasMes.p50)}`],
+    ['Falsas alarmas de la regla de salida (años)', pct(mc.ventasMes.falsaAlarma)],
     ['ROI anual esperado', pct(fin.roi)],
     ['Recuperación de la inversión', fin.payback.toFixed(1) + ' meses'],
     ['VPN a 3 años (tasa de descuento 12 %)', mxn(fin.vpn)],
@@ -59,12 +63,19 @@ export const GIROS = Object.entries(M.GIROS).map(([k, g]) => ({ k, n: g.n, ticke
 export const ZONAS = Object.entries(M.ZONAS).map(([k, z]) => ({ k, n: z.n, afl: z.afl, rm2: z.rm2, z: z.z, ee: z.ee, zEq: z.zEq, fz: z.fz }));
 // Estimación de los β de giro y zona con ediciones sucesivas del DENUE (scripts/denue_supervivencia.py).
 export const SUP = JSON.parse(leer('data/denue/supervivencia.json'));
+// Validación fuera de muestra (scripts/validar_denue.py) y formalidad con la ENOE (scripts/enoe_supervivencia.py).
+export const VAL = JSON.parse(leer('data/denue/validacion.json'));
+export const ENOE = JSON.parse(leer('data/enoe/supervivencia.json'));
+export const PENDIENTE = VAL.pendiente_calibracion;
 const sg = (x) => (x > 0 ? '+' : x < 0 ? '−' : '') + Math.abs(x).toFixed(2);
-export const TABLA_BETA_GIROS = GIROS.map((g) => { const s = SUP.giros[g.k];
-  return s ? [g.n, sg(s.beta), '± ' + s.ee.toFixed(3), sg(s.beta_sin_contraer), s.n.toLocaleString('es-MX'), pct(s.sobreviven / Math.max(1, s.n)), sg(g.zEq), s.comparte_clase_con ? 'comparte clase con ' + M.GIROS[s.comparte_clase_con].n : 'DENUE']
+// β del modelo (src/datos/datos.js): contraído por Bayes empírico × pendiente de calibración. Mismo valor que usa el sitio.
+const HEREDA = SUP.comparte_clase_con || {};
+export const TABLA_BETA_GIROS = GIROS.map((g) => { const de = HEREDA[g.k], s = SUP.giros[g.k] || SUP.giros[de];
+  return s && g.fz === 'denue' ? [g.n, sg(g.z), '± ' + g.ee.toFixed(3), sg(s.beta_sin_contraer), s.n.toLocaleString('es-MX'), pct(s.sobreviven / Math.max(1, s.n)), sg(g.zEq), de ? 'hereda de ' + M.GIROS[de].n : 'DENUE']
     : [g.n, sg(g.z), '—', '—', '—', '—', sg(g.zEq), 'equipo*']; });
 export const TABLA_BETA_ZONAS = ZONAS.map((z) => { const s = SUP.zonas[z.k];
-  return [z.n, sg(s.beta), '± ' + s.ee.toFixed(3), sg(s.beta_sin_contraer), s.n.toLocaleString('es-MX'), pct(s.sobreviven / Math.max(1, s.n)), sg(z.zEq)]; });
+  return [z.n, sg(z.z), '± ' + z.ee.toFixed(3), sg(s.beta_sin_contraer), s.n.toLocaleString('es-MX'), pct(s.sobreviven / Math.max(1, s.n)), sg(z.zEq)]; });
+export const TABLA_VALIDACION = VAL.deciles.map((d) => [String(d.decil), d.n.toLocaleString('es-MX'), pct(d.predicho), pct(d.predicho_nivel_corregido), pct(d.observado)]);
 const escenarioDe = (g, z) => escenarioReferencia(M, { giro: M.GIROS[g.k], zona: M.ZONAS[z.k], zonaKey: z.k, ticket: g.ticket, cv: g.cv / 100, mu: Math.max(1, Math.round(g.dem * z.afl)), renta: z.rm2 * 50 });
 export const MATRIZ = GIROS.map((g) => ({ giro: g.n, celdas: ZONAS.map((z) => { const x = escenarioDe(g, z); return { P: M.modeloLogistico(x).P, util: x.utilMes }; }) }));
 
