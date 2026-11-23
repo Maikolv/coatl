@@ -9,7 +9,7 @@
 <link rel="preload" href="assets/fuentes/web/hanken-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fuentes/web/bricolage-grotesque-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'sha256-CC8YWOty9ImzNX4w9VxZCBxIWaMJumiak8BUih0VfVM='; font-src 'self'; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://coatl-ia.vercel.app; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'sha256-clvruiIoYNSUpUlCLj3D2NdzG+mqXmWRH907YOwR8/E='; font-src 'self'; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://coatl-ia.vercel.app; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -1620,7 +1620,7 @@ body.vista-todo .pestanas-app{display:none}
 .car-puntos{display:flex;gap:0;flex-wrap:wrap;justify-content:center}
 /* área táctil de 24 px (WCAG 2.5.8) con el punto visible de .7rem: el relleno no se pinta */
 .car-punto{width:1.5rem;height:1.5rem;border-radius:50%;border:0;background:#E5CFCB;background-clip:content-box;cursor:pointer;padding:.4rem}
-.car-punto[aria-current="true"]{background:var(--rojo);transform:scale(1.25)}
+.car-punto[aria-current="true"]{background:var(--rojo);padding:.3rem}   /* punto más grande sin agrandar el área: no invade a sus vecinos */
 .car-punto:focus-visible{outline:2px solid var(--granate);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.car-pista{scroll-behavior:auto}}
 /* Balance FODA en lugar de foto */
