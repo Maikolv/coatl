@@ -191,3 +191,12 @@ test('v16: P5 de un mes y tasa de falsas alarmas de la regla de salida', () => {
   assert.ok(mc.ventasMes.p05 < mc.ventasMes.p50);
   cerca(mc.ventasMes.falsaAlarma, 0.0415, 1e-9, 'años con dos meses seguidos bajo el P5 sin que nada ande mal');
 });
+
+// v17: COATL no tiene modo oscuro; el navegador no debe oscurecerlo a la fuerza (modo oscuro automático de Edge y Chrome).
+test('la página declara el esquema de color solo claro', async () => {
+  const { readFileSync } = await import('node:fs');
+  const html = readFileSync(new URL('../src/index.html', import.meta.url), 'utf8');
+  const css = readFileSync(new URL('../src/ui/estilos.css', import.meta.url), 'utf8');
+  assert.match(html, /<meta name="color-scheme" content="only light">/);
+  assert.match(css, /:root\{\s*color-scheme:only light;/);
+});

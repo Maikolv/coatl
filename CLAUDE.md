@@ -191,3 +191,4 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 
 - Encuesta: `node scripts/encuesta.mjs` → `entregables/encuesta/` (Apps Script, encabezados, codificación). **Sin enlaces** en el formulario ni en el repositorio (ni el del sitio ni el del propio formulario): evita fugas y suplantaciones. Respuestas solo en la hoja privada del equipo.
 - `pintarVeredicto(P, vpn)`: con P ≥ 65 % y VPN < 0 el letrero es «Sobrevive, pero no recupera la inversión» y no hay confeti; el confeti solo se decide con el resultado completo (vpn conocido).
+- Esquema de color: `<meta name="color-scheme" content="only light">` y `:root{color-scheme:only light}` impiden que Edge o Chrome oscurezcan el sitio a la fuerza (modo oscuro automático). No quitarlos: COATL no tiene modo oscuro.
