@@ -140,7 +140,11 @@ export function construir() {
   });
   /* El JavaScript va en un archivo aparte con defer (v18): el documento pesa ~320 KB menos y el primer pintado
      no espera a que llegue el código. El nombre lleva su hash: cada versión es un archivo nuevo, sin caché vieja. */
-  const jsFinal = '"use strict";\n' + js;
+  const jsFinal = '"use strict";\n' + js
+    .replace('/*@@VALIDACION@@*/ null', () => JSON.stringify(datoJSON('denue/validacion')))
+    .replace('@@IA_URL@@', () => IA_URL);
+  const sinLlenar = jsFinal.match(/@@[A-Z_]+(?::[^@]*)?@@/);
+  if (sinLlenar) throw new Error('Marcador sin llenar en el JS: ' + sinLlenar[0]);
   const jsArchivo = 'assets/js/coatl-' + crypto.createHash('sha256').update(jsFinal, 'utf8').digest('hex').slice(0, 10) + '.js';
   fs.mkdirSync(path.join(raiz, 'assets', 'js'), { recursive: true });
   for (const f of fs.readdirSync(path.join(raiz, 'assets', 'js'))) if (/^coatl-[0-9a-f]+\.js$/.test(f)) fs.rmSync(path.join(raiz, 'assets', 'js', f));

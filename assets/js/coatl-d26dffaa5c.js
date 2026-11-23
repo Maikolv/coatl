@@ -604,7 +604,7 @@ function fiesta(){
 }
 
 /* Validación fuera de muestra (data/denue/validacion.json); el build la inserta. */
-const VALIDACION=/*@@VALIDACION@@*/ null;
+const VALIDACION={"que_se_valida":"Probabilidad de seguir en el DENUE a 5 años (alta 2019-11 → edición 2024-11) para negocios de Coacalco de los giros de COATL, con giro estimado sin Coacalco y zona por validación cruzada de 5 grupos.","n":2562,"observado":0.506,"predicho_promedio":0.355,"brier":0.2691,"brier_constante":0.25,"brier_nivel_corregido":0.2463,"desplazamiento_nivel_logit":0.637,"pendiente_calibracion":0.794,"auc":0.576,"deciles":[{"decil":1,"n":257,"predicho":0.244,"predicho_nivel_corregido":0.378,"observado":0.428},{"decil":2,"n":249,"predicho":0.281,"predicho_nivel_corregido":0.426,"observado":0.386},{"decil":3,"n":263,"predicho":0.301,"predicho_nivel_corregido":0.449,"observado":0.414},{"decil":4,"n":252,"predicho":0.317,"predicho_nivel_corregido":0.468,"observado":0.464},{"decil":5,"n":252,"predicho":0.336,"predicho_nivel_corregido":0.489,"observado":0.552},{"decil":6,"n":262,"predicho":0.359,"predicho_nivel_corregido":0.514,"observado":0.569},{"decil":7,"n":258,"predicho":0.378,"predicho_nivel_corregido":0.535,"observado":0.484},{"decil":8,"n":240,"predicho":0.41,"predicho_nivel_corregido":0.568,"observado":0.575},{"decil":9,"n":271,"predicho":0.427,"predicho_nivel_corregido":0.585,"observado":0.572},{"decil":10,"n":258,"predicho":0.493,"predicho_nivel_corregido":0.647,"observado":0.616}],"lectura":"COATL predice en promedio 36% a 5 años y en el DENUE siguió el 51%. Con el nivel corregido, la Brier mejora 1.5% sobre un pronóstico constante; AUC 0.58 (0.5 = azar). Giro y zona ordenan el riesgo un poco mejor que el azar; no predicen negocio por negocio.","mejora_sobre_constante":0.0148};
 
 function pintarKPIs(e,mc,S,modelo){
   const f=finanzas(e,mc,S), rp=rangoP(modelo);
@@ -1809,7 +1809,7 @@ function aplicarInterpretacion(r){
 /* IA del proyecto (Gemini) a través del intermediario de COATL (servicios/ia, Vercel).
    La clave es del proyecto y vive en el servidor: el visitante no necesita ninguna.
    IA_URL la inyecta el build; fuera del sitio publicado (pruebas, copia local) la IA se activa con ?ia=1. */
-const IA_URL="@@IA_URL@@";
+const IA_URL="https://coatl-ia.vercel.app/api/coatl";
 const IA_ACTIVA=!!IA_URL && (location.hostname.endsWith("github.io") || new URLSearchParams(location.search).has("ia"));
 async function iaProyecto(modo, texto, contexto){
   let r;
