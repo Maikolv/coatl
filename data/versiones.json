@@ -495,6 +495,32 @@
         "payback": "4.1 meses",
         "vpn": "$736,085"
       },
+      "commits": [
+        "1ea9268",
+        "c079078"
+      ]
+    },
+    {
+      "id": "v18",
+      "fecha": "2026-11-23",
+      "titulo": "Video con las voces del equipo, carga más ligera y área táctil del carrusel",
+      "resumen": "El video final lleva las voces del equipo en 17 de 19 escenas, con subtítulos de lo que se dijo. El HTML pasa de 597 KB a 220 KB: el JS sale a un archivo con defer y las fotos fuera de la primera vista se cargan en diferido. Los puntos del carrusel cumplen el área táctil de 24 px.",
+      "motivo": "El equipo grabó sus voces. PageSpeed Insights daba 95 de rendimiento y 97 de accesibilidad en el sitio publicado; la única auditoría fallida era el tamaño de los puntos del carrusel.",
+      "cambios": [
+        "Video: voces de Miguel, Bruno y Alonso; las escenas 15 y 17 siguen con voz sintética hasta regrabarlas con el guion vigente.",
+        "JS en assets/js/coatl-<hash>.js con defer; la CSP ya no permite scripts en línea.",
+        "Fotos del carrusel diferidas salvo la primera de Inicio; la foto del Palacio deja de ir en base64.",
+        "Puntos del carrusel con área táctil de 24 px (WCAG 2.5.8).",
+        "scripts/medir_lighthouse.mjs y docs/rendimiento/INFORME.md con cada medición, la matriz de recursos y el estudio del DENUE."
+      ],
+      "modelo": "El modelo no cambia: P = 40.9 % (rango 33.4–48.9 %), VPN $736,085.",
+      "referencia": {
+        "P": "40.9 %",
+        "utilidad": "$60,371",
+        "roi": "302.9 %",
+        "payback": "4.1 meses",
+        "vpn": "$736,085"
+      },
       "commits": []
     }
   ]

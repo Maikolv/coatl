@@ -370,8 +370,9 @@ body.vista-todo .pestanas-app{display:none}
 .car-btn{border:1px solid var(--niebla-2);background:#fff;color:var(--granate);width:2.4rem;height:2.4rem;border-radius:50%;font-size:1.2rem;line-height:1;cursor:pointer}
 .car-btn:hover,.car-btn:focus-visible{background:var(--rojo);color:#fff;outline:none}
 .car-pausa{font-size:.8rem}
-.car-puntos{display:flex;gap:.35rem;flex-wrap:wrap;justify-content:center}
-.car-punto{width:.7rem;height:.7rem;border-radius:50%;border:0;background:#E5CFCB;cursor:pointer;padding:0}
+.car-puntos{display:flex;gap:0;flex-wrap:wrap;justify-content:center}
+/* área táctil de 24 px (WCAG 2.5.8) con el punto visible de .7rem: el relleno no se pinta */
+.car-punto{width:1.5rem;height:1.5rem;border-radius:50%;border:0;background:#E5CFCB;background-clip:content-box;cursor:pointer;padding:.4rem}
 .car-punto[aria-current="true"]{background:var(--rojo);transform:scale(1.25)}
 .car-punto:focus-visible{outline:2px solid var(--granate);outline-offset:2px}
 @media (prefers-reduced-motion:reduce){.car-pista{scroll-behavior:auto}}

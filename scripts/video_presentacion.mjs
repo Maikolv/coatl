@@ -241,7 +241,10 @@ try {
     ffmpeg(['-i', vis, '-i', wav, '-filter_complex', `[0:v]fade=t=in:st=0:d=0.35,fade=t=out:st=${(d - 0.35).toFixed(2)}:d=0.35[v];[1:a]adelay=${PAUSA * 1000}|${PAUSA * 1000},apad,aresample=48000[a]`, '-map', '[v]', '-map', '[a]', '-t', String(d), '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-c:a', 'aac', '-b:a', '192k', '-ac', '2', parte]);
     partes.push(parte);
     // Cada línea dura en proporción a su largo dentro de la narración de la escena.
-    const frases = trozos(e.voz), total = frases.reduce((a, x) => a + x.length, 0); let ti = t0 + PAUSA;
+    // Con voz real, los subtítulos dicen lo que se escucha: entregables/voces/NN-escena.txt (si existe) gana sobre el guion.
+    const dicho = path.join(VOCES, archivoVoz(i, e) + '.txt');
+    const texto = real && fs.existsSync(dicho) ? fs.readFileSync(dicho, 'utf8').trim() : e.voz;
+    const frases = trozos(texto), total = frases.reduce((a, x) => a + x.length, 0); let ti = t0 + PAUSA;
     for (const fr of frases) { const tf = ti + (d - 2 * PAUSA) * fr.length / total; cues.push([ti, tf, fr]); ti = tf; }
     if (real) narradores.push([t0 + 0.4, t0 + Math.min(d - 0.4, 4.5), AUTOR[e.quien]]);   // el nombre solo aparece cuando la voz es la de esa persona
     t0 += d;
@@ -267,7 +270,7 @@ fs.writeFileSync(path.join(TMP, 'sub.ass'), [
   ...cues.map(([a, z, x]) => `Dialogue: 0,${tass(a)},${tass(z)},COATL,,0,0,0,,${x}`),
   ...narradores.map(([a, z, x]) => `Dialogue: 1,${tass(a)},${tass(z)},NARRA,,0,0,0,,{\\fad(300,300)}Narra: ${x}`),
 ].join('\n') + '\n', 'utf8');
-for (const f of fs.readdirSync(path.join(RAIZ, 'assets/fuentes'))) fs.copyFileSync(path.join(RAIZ, 'assets/fuentes', f), path.join(TMP, f));
+for (const f of fs.readdirSync(path.join(RAIZ, 'assets/fuentes'), { withFileTypes: true })) if (f.isFile()) fs.copyFileSync(path.join(RAIZ, 'assets/fuentes', f.name), path.join(TMP, f.name));   // solo archivos: assets/fuentes/web/ es una carpeta
 const final = path.join(RAIZ, 'entregables/COATL_Video.mp4');
 execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', 'unido.mp4', '-vf', 'ass=sub.ass:fontsdir=.', '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-c:a', 'copy', '-movflags', '+faststart', final], { cwd: TMP, stdio: 'inherit' });
 // Portada del video para el sitio (Inicio): un cuadro de la tarjeta de título.

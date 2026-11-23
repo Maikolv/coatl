@@ -1,0 +1,151 @@
+{
+ "etiqueta": "02-fotos-diferidas",
+ "commit": "c079078",
+ "fecha": "2026-11-23T08:13:33.944Z",
+ "configuracion": "Lighthouse 12.2.1 · móvil predeterminado · Chrome headless --disable-gpu · servidor local dist/",
+ "corridas": 5,
+ "mediana": {
+  "puntuacion": 44,
+  "lcp_s": 4.9,
+  "tbt_s": 1.85,
+  "fcp_s": 2.93,
+  "accesibilidad": 97
+ },
+ "detalle": [
+  {
+   "puntuacion": 44,
+   "accesibilidad": 97,
+   "lcp_s": 5.05,
+   "tbt_s": 1.85,
+   "fcp_s": 2.82,
+   "tareas_largas": 20,
+   "hilo_principal_s": 12.19,
+   "elemento_lcp": "",
+   "scripts": [
+    {
+     "url": "/",
+     "total_ms": 6619,
+     "script_ms": 66
+    },
+    {
+     "url": "/assets/js/coatl-e204c06596.js",
+     "total_ms": 4015,
+     "script_ms": 1590
+    },
+    {
+     "url": "Unattributable",
+     "total_ms": 1518,
+     "script_ms": 24
+    }
+   ]
+  },
+  {
+   "puntuacion": 42,
+   "accesibilidad": 97,
+   "lcp_s": 4.9,
+   "tbt_s": 2.04,
+   "fcp_s": 3.43,
+   "tareas_largas": 20,
+   "hilo_principal_s": 12.37,
+   "elemento_lcp": "",
+   "scripts": [
+    {
+     "url": "/",
+     "total_ms": 6906,
+     "script_ms": 111
+    },
+    {
+     "url": "/assets/js/coatl-e204c06596.js",
+     "total_ms": 3614,
+     "script_ms": 1584
+    },
+    {
+     "url": "Unattributable",
+     "total_ms": 1822,
+     "script_ms": 38
+    }
+   ]
+  },
+  {
+   "puntuacion": 46,
+   "accesibilidad": 97,
+   "lcp_s": 5.13,
+   "tbt_s": 1.45,
+   "fcp_s": 2.93,
+   "tareas_largas": 20,
+   "hilo_principal_s": 9.94,
+   "elemento_lcp": "",
+   "scripts": [
+    {
+     "url": "/",
+     "total_ms": 6066,
+     "script_ms": 83
+    },
+    {
+     "url": "/assets/js/coatl-e204c06596.js",
+     "total_ms": 2515,
+     "script_ms": 1190
+    },
+    {
+     "url": "Unattributable",
+     "total_ms": 1323,
+     "script_ms": 44
+    }
+   ]
+  },
+  {
+   "puntuacion": 46,
+   "accesibilidad": 97,
+   "lcp_s": 4.9,
+   "tbt_s": 1.82,
+   "fcp_s": 2.59,
+   "tareas_largas": 20,
+   "hilo_principal_s": 10.75,
+   "elemento_lcp": "",
+   "scripts": [
+    {
+     "url": "/",
+     "total_ms": 6167,
+     "script_ms": 150
+    },
+    {
+     "url": "/assets/js/coatl-e204c06596.js",
+     "total_ms": 3091,
+     "script_ms": 1173
+    },
+    {
+     "url": "Unattributable",
+     "total_ms": 1433,
+     "script_ms": 53
+    }
+   ]
+  },
+  {
+   "puntuacion": 36,
+   "accesibilidad": 97,
+   "lcp_s": 4.78,
+   "tbt_s": 5.74,
+   "fcp_s": 4.44,
+   "tareas_largas": 20,
+   "hilo_principal_s": 24.55,
+   "elemento_lcp": "",
+   "scripts": [
+    {
+     "url": "/",
+     "total_ms": 14796,
+     "script_ms": 178
+    },
+    {
+     "url": "/assets/js/coatl-e204c06596.js",
+     "total_ms": 5522,
+     "script_ms": 3097
+    },
+    {
+     "url": "Unattributable",
+     "total_ms": 4150,
+     "script_ms": 70
+    }
+   ]
+  }
+ ]
+}

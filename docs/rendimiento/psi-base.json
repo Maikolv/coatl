@@ -1,0 +1,9 @@
+{
+ "etiqueta": "psi-base",
+ "commit": "c079078",
+ "fecha": "2026-11-23",
+ "configuracion": "PageSpeed Insights (pagespeed.web.dev), móvil, sitio publicado https://maikolv.github.io/coatl/. La API devolvió 429 (cuota agotada); el resultado se leyó del informe de la interfaz web.",
+ "corridas": 1,
+ "mediana": { "puntuacion": 95, "lcp_s": 2.0, "tbt_s": 0, "fcp_s": 2.0, "speed_index_s": 4.3, "cls": 0, "accesibilidad": 97, "practicas": 100, "seo": 100 },
+ "auditoria_accesibilidad_fallida": "target-size: los puntos del carrusel (.car-punto) medían 11 px (0.7rem); el mínimo es 24 px"
+}

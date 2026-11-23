@@ -24,6 +24,7 @@
 | v15 | 2026-11-17 | Validación fuera de muestra, sin doble conteo y plan que acota la pérdida | 38.0 % | $60,371 | 302.9 % | 4.1 meses | $686,989 |
 | v16 | 2026-11-17 | Auditoría estricta: regla de salida corregida y β recalibrados | 40.9 % | $60,371 | 302.9 % | 4.1 meses | $736,085 |
 | v17 | 2026-11-18 | Encuesta a negocios, veredicto honesto con VPN negativo y cotización del stand | 40.9 % | $60,371 | 302.9 % | 4.1 meses | $736,085 |
+| v18 | 2026-11-23 | Video con las voces del equipo, carga más ligera y área táctil del carrusel | 40.9 % | $60,371 | 302.9 % | 4.1 meses | $736,085 |
 
 ## v1 · Importación inicial (12 de noviembre de 2026)
 
@@ -323,5 +324,21 @@ Confirmaciones: `b406eb6`, `9f364d1`.
 - Veredicto: con P de 65 % o más y VPN negativo, el letrero dice «Sobrevive, pero no recupera la inversión», no hay confeti y la leyenda lo aclara.
 - Cotización del stand por partida (entregables/COATL_Stand_Cotizacion.pdf) y totales actualizados en docs/STAND.md.
 - Documentos con v14 a v16 y escena de Estrategia del guion actualizada.
+
+**Efecto en el modelo.** El modelo no cambia: P = 40.9 % (rango 33.4–48.9 %), VPN $736,085.
+
+Confirmaciones: `1ea9268`, `c079078`.
+
+## v18 · Video con las voces del equipo, carga más ligera y área táctil del carrusel (23 de noviembre de 2026)
+
+**Qué es.** El video final lleva las voces del equipo en 17 de 19 escenas, con subtítulos de lo que se dijo. El HTML pasa de 597 KB a 220 KB: el JS sale a un archivo con defer y las fotos fuera de la primera vista se cargan en diferido. Los puntos del carrusel cumplen el área táctil de 24 px.
+
+**Por qué se hizo.** El equipo grabó sus voces. PageSpeed Insights daba 95 de rendimiento y 97 de accesibilidad en el sitio publicado; la única auditoría fallida era el tamaño de los puntos del carrusel.
+
+- Video: voces de Miguel, Bruno y Alonso; las escenas 15 y 17 siguen con voz sintética hasta regrabarlas con el guion vigente.
+- JS en assets/js/coatl-<hash>.js con defer; la CSP ya no permite scripts en línea.
+- Fotos del carrusel diferidas salvo la primera de Inicio; la foto del Palacio deja de ir en base64.
+- Puntos del carrusel con área táctil de 24 px (WCAG 2.5.8).
+- scripts/medir_lighthouse.mjs y docs/rendimiento/INFORME.md con cada medición, la matriz de recursos y el estudio del DENUE.
 
 **Efecto en el modelo.** El modelo no cambia: P = 40.9 % (rango 33.4–48.9 %), VPN $736,085.

@@ -323,3 +323,16 @@ No se usó WebGL: CLAUDE.md lo rechaza. La profundidad se logra con SVG, 2.5D y 
 | 3 | La encuesta llevaba el enlace del sitio | **Atendido.** Sin enlaces; el proyecto se describe en texto y se avisa que COATL nunca pide contraseñas, datos bancarios ni pagos. |
 | 4 | Costos del stand sin cotizar | **Atendido.** Cotización por partida con referencias de mercado. |
 | 5 | Video con la referencia de v12 | **Pendiente:** espera las voces del equipo. |
+
+## 18. v18 — rendimiento, accesibilidad y video
+
+| # | Hallazgo | Estado |
+|---|---|---|
+| 1 | El sitio publicado ya daba 95 de rendimiento en PageSpeed Insights (móvil); la meta de 70 se cumplía | Documentado en `docs/rendimiento/INFORME.md` |
+| 2 | Accesibilidad 97: los puntos del carrusel medían 11 px (WCAG 2.5.8 pide 24 px) | Corregido |
+| 3 | HTML de 597 KB con el JS (318 KB) y una foto en base64 dentro | JS externo con `defer` y foto como archivo: 220 KB |
+| 4 | Nueve fotos del carrusel se descargaban al abrir | Diferidas salvo la primera de Inicio |
+| 5 | La CSP permitía scripts en línea | Retirado `'unsafe-inline'` de `script-src` |
+| 6 | Dos grabaciones del video (escenas 15 y 17) afirman cosas que ya no son ciertas | Siguen con voz sintética; regrabar con `docs/GUION_VOCES.md` |
+| 7 | `video_presentacion.mjs` fallaba al copiar la carpeta de fuentes `web/` | Corregido |
+| 8 | DENUE: ¿falta integrar la API oficial? | No: la descarga masiva semanal ya es la fuente oficial; la API solo validaría lo mismo |

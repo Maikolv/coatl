@@ -1,0 +1,43 @@
+{
+ "etiqueta": "ab-A4",
+ "commit": "c079078",
+ "fecha": "2026-11-23T08:05:12.281Z",
+ "configuracion": "Lighthouse 12.2.1 · móvil predeterminado · Chrome headless --disable-gpu · servidor local dist/",
+ "corridas": 1,
+ "mediana": {
+  "puntuacion": 43,
+  "lcp_s": 4.98,
+  "tbt_s": 1.8,
+  "fcp_s": 3.34,
+  "accesibilidad": 97
+ },
+ "detalle": [
+  {
+   "puntuacion": 43,
+   "accesibilidad": 97,
+   "lcp_s": 4.98,
+   "tbt_s": 1.8,
+   "fcp_s": 3.34,
+   "tareas_largas": 20,
+   "hilo_principal_s": 12.09,
+   "elemento_lcp": "",
+   "scripts": [
+    {
+     "url": "/",
+     "total_ms": 7747,
+     "script_ms": 81
+    },
+    {
+     "url": "/assets/js/coatl-e204c06596.js",
+     "total_ms": 2696,
+     "script_ms": 1279
+    },
+    {
+     "url": "Unattributable",
+     "total_ms": 1613,
+     "script_ms": 29
+    }
+   ]
+  }
+ ]
+}

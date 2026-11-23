@@ -1,319 +1,347 @@
 1
-00:00:00,700 --> 00:00:04,655
+00:00:00,700 --> 00:00:04,073
 COATL: Cálculo de Oportunidad y Análisis Territorial Local.
 
 2
-00:00:04,655 --> 00:00:09,213
+00:00:04,073 --> 00:00:07,960
 Un proyecto de Probabilidad y Estadística para estimar si un negocio
 
 3
-00:00:09,213 --> 00:00:11,828
+00:00:07,960 --> 00:00:10,189
 sobrevivirá en Coacalco de Berriozábal.
 
 4
-00:00:13,228 --> 00:00:17,100
+00:00:11,589 --> 00:00:15,101
 Según el INEGI, de cada cien negocios que nacen en México,
 
 5
-00:00:17,100 --> 00:00:20,639
+00:00:15,101 --> 00:00:18,311
 solo cuarenta y tres siguen abiertos a los tres años.
 
 6
-00:00:20,639 --> 00:00:24,445
+00:00:18,311 --> 00:00:21,762
 Y la decisión de abrir suele tomarse sin medir el riesgo.
 
 7
-00:00:24,445 --> 00:00:27,583
+00:00:21,762 --> 00:00:24,609
 COATL responde dos preguntas antes de invertir:
 
 8
-00:00:27,583 --> 00:00:31,923
+00:00:24,609 --> 00:00:28,545
 qué tan probable es que el negocio siga abierto y rentable a tres
 
 9
-00:00:31,923 --> 00:00:33,792
+00:00:28,545 --> 00:00:30,240
 años, y cuánto podría ganar.
 
 10
-00:00:35,193 --> 00:00:39,664
+00:00:31,640 --> 00:00:35,493
 Es una aplicación web gratuita: funciona en cualquier navegador,
 
 11
-00:00:39,664 --> 00:00:44,275
+00:00:35,493 --> 00:00:39,466
 en computadora o en teléfono, sin instalar nada y sin registrarse.
 
 12
-00:00:44,275 --> 00:00:47,558
+00:00:39,466 --> 00:00:42,295
 La portada muestra el tablero de cien negocios:
 
 13
-00:00:47,558 --> 00:00:49,864
+00:00:42,295 --> 00:00:44,282
 cuántos siguen abiertos cada año.
 
 14
-00:00:51,264 --> 00:00:56,120
+00:00:45,682 --> 00:00:50,068
 En el simulador, el usuario le pone nombre a su negocio y configura
 
 15
-00:00:56,120 --> 00:00:59,310
+00:00:50,068 --> 00:00:52,948
 treinta y seis variables en cuatro pestañas:
 
 16
-00:00:59,310 --> 00:01:01,919
+00:00:52,948 --> 00:00:55,305
 giro, zona, clientes, ticket, renta,
 
 17
-00:01:01,919 --> 00:01:06,196
+00:00:55,305 --> 00:00:59,167
 empleados e inversión. Cada cambio recalcula al instante la
 
 18
-00:01:06,196 --> 00:01:10,255
+00:00:59,167 --> 00:01:02,833
 probabilidad, la utilidad y los indicadores financieros.
 
 19
-00:01:11,655 --> 00:01:14,602
+00:01:04,233 --> 00:01:07,040
 El motor combina cuatro técnicas de la materia:
 
 20
-00:01:14,602 --> 00:01:17,736
+00:01:07,040 --> 00:01:10,027
 una regresión logística para la probabilidad base;
 
 21
-00:01:17,736 --> 00:01:21,623
+00:01:10,027 --> 00:01:13,730
 una curva de supervivencia de riesgos proporcionales con datos
 
 22
-00:01:21,623 --> 00:01:25,886
+00:01:13,730 --> 00:01:17,792
 oficiales del INEGI; una simulación Monte Carlo reproducible para el
 
 23
-00:01:25,886 --> 00:01:29,460
+00:01:17,792 --> 00:01:21,196
 riesgo; y el análisis financiero con valor presente neto,
 
 24
-00:01:29,460 --> 00:01:31,905
+00:01:21,196 --> 00:01:23,526
 retorno y recuperación de la inversión.
 
 25
-00:01:33,305 --> 00:01:37,964
+00:01:24,926 --> 00:01:29,764
 El apartado Territorio reúne los indicadores oficiales del municipio y
 
 26
-00:01:37,964 --> 00:01:40,959
+00:01:29,764 --> 00:01:32,875
 fotografías reales de Coacalco: su movilidad,
 
 27
-00:01:40,959 --> 00:01:44,487
+00:01:32,875 --> 00:01:36,538
 su comercio regional y de barrio, y su vida cultural.
 
 28
-00:01:45,887 --> 00:01:49,857
+00:01:37,938 --> 00:01:42,612
 El mapa real divide Coacalco en seis zonas construidas sobre las
 
 29
-00:01:49,857 --> 00:01:52,960
+00:01:42,612 --> 00:01:46,264
 setenta áreas geoestadísticas oficiales del INEGI,
 
 30
-00:01:52,960 --> 00:01:56,434
+00:01:46,264 --> 00:01:50,354
 y compara la probabilidad del mismo negocio en cada una.
 
 31
-00:01:57,834 --> 00:02:02,317
+00:01:51,754 --> 00:01:56,488
 La competencia sale del Directorio Estadístico Nacional de Unidades
 
 32
-00:02:02,317 --> 00:02:06,264
+00:01:56,488 --> 00:02:00,656
 Económicas, el DENUE, que se actualiza cada semana de forma
 
 33
-00:02:06,264 --> 00:02:10,480
+00:02:00,656 --> 00:02:05,107
 automática. En Coacalco hay más de once mil quinientos negocios
 
 34
-00:02:10,480 --> 00:02:14,160
+00:02:05,107 --> 00:02:08,992
 registrados, en cuatrocientas veinticuatro actividades.
 
 35
-00:02:15,560 --> 00:02:19,596
+00:02:10,392 --> 00:02:14,748
 Si el negocio ya existe, el apartado Para empresas analiza su
 
 36
-00:02:19,596 --> 00:02:23,698
+00:02:14,748 --> 00:02:19,176
 historial mensual a partir de una plantilla de Excel con guía.
 
 37
-00:02:23,698 --> 00:02:26,278
+00:02:19,176 --> 00:02:21,961
 El archivo se lee solo en el navegador:
 
 38
-00:02:26,278 --> 00:02:28,461
+00:02:21,961 --> 00:02:24,317
 nunca se envía a ningún servidor.
 
 39
-00:02:29,861 --> 00:02:33,872
+00:02:25,717 --> 00:02:30,409
 Ningún dato se inventa. La información proviene del INEGI,
 
 40
-00:02:33,872 --> 00:02:36,914
-de los Censos Económicos dos mil diecinueve,
+00:02:30,409 --> 00:02:35,586
+de los Censos Económicos 2019, del Censo de Población 2020 y del
 
 41
-00:02:36,914 --> 00:02:40,510
-del Censo de Población dos mil veinte y del CONEVAL.
+00:02:35,586 --> 00:02:41,087
+CONEVAL. Lo que es supuesto del equipo se rotula como estimación del
 
 42
-00:02:40,510 --> 00:02:45,143
-Lo que es supuesto del equipo se rotula como estimación del equipo.
+00:02:41,087 --> 00:02:41,653
+equipo.
 
 43
-00:02:46,543 --> 00:02:51,043
+00:02:43,053 --> 00:02:47,698
 Con esos resultados, el apartado de Estrategia construye un análisis
 
 44
-00:02:51,043 --> 00:02:55,410
+00:02:47,698 --> 00:02:52,207
 FODA con el propio modelo y propone acciones ordenadas por cuántos
 
 45
-00:02:55,410 --> 00:02:59,116
+00:02:52,207 --> 00:02:56,033
 puntos suben la probabilidad. El plan se puede combinar,
 
 46
-00:02:59,116 --> 00:03:02,094
-calendarizar a noventa días y guardar en PDF.
+00:02:56,033 --> 00:02:58,765
+calendarizar a 90 días y guardar en PDF.
 
 47
-00:03:03,494 --> 00:03:06,214
+00:03:00,165 --> 00:03:03,620
 Mejora tu negocio va más allá de los números:
 
 48
-00:03:06,214 --> 00:03:09,055
+00:03:03,620 --> 00:03:07,227
 ofrece alternativas que se prueban con un clic,
 
 49
-00:03:09,055 --> 00:03:13,105
+00:03:07,227 --> 00:03:12,371
 un diagnóstico de cinco niveles con un borrador a la medida en cada
 
 50
-00:03:13,105 --> 00:03:17,155
-punto, una estimación fiscal y un modelo en dos punto cinco D de lo
+00:03:12,371 --> 00:03:17,667
+punto, una estimación fiscal y un modelo en 2.5D de lo que el negocio
 
 51
-00:03:17,155 --> 00:03:19,210
-que el negocio puede llegar a ser.
+00:03:17,667 --> 00:03:19,279
+puede llegar a hacer.
 
 52
-00:03:20,610 --> 00:03:23,483
-Y el resultado se lleva en el teléfono.
+00:03:20,679 --> 00:03:23,343
+El resultado se lleva en el teléfono.
 
 53
-00:03:23,483 --> 00:03:26,282
-Un código QR abre el reporte completo,
+00:03:23,343 --> 00:03:27,807
+Un código QR abre el reporte del simulador y de la estrategia,
 
 54
-00:03:26,282 --> 00:03:30,849
-del simulador y de la estrategia, listo para guardarse en PDF.
+00:03:27,807 --> 00:03:32,487
+listo para guardarse en PDF. El resultado viaja dentro del propio
 
 55
-00:03:30,849 --> 00:03:34,090
-El resultado viaja dentro del propio enlace:
+00:03:32,487 --> 00:03:35,151
+enlace: no se sube a ningún servidor.
 
 56
-00:03:34,090 --> 00:03:36,226
-no se sube a ningún servidor.
-
-57
-00:03:37,626 --> 00:03:42,264
+00:03:36,551 --> 00:03:41,557
 Un asistente siempre disponible responde preguntas como cómo voy o qué
 
-58
-00:03:42,264 --> 00:03:44,914
+57
+00:03:41,557 --> 00:03:44,418
 zona me conviene, usando el mismo motor.
 
-59
-00:03:44,914 --> 00:03:49,354
+58
+00:03:44,418 --> 00:03:49,210
 Para preguntas libres, la inteligencia artificial de COATL responde
 
-60
-00:03:49,354 --> 00:03:51,938
+59
+00:03:49,210 --> 00:03:51,999
 sin pedirle ninguna clave al visitante.
 
+60
+00:03:53,399 --> 00:03:56,197
+El proyecto ha tenido dieciocho versiones.
+
 61
-00:03:53,338 --> 00:03:55,877
-El proyecto ha tenido trece versiones.
+00:03:56,197 --> 00:03:59,661
+Primero el modelo pasó a la tabla oficial del INEGI.
 
 62
-00:03:55,877 --> 00:03:59,018
-El modelo cambió de fondo en las tres primeras,
+00:03:59,661 --> 00:04:04,258
+Después, los coeficientes de giro y zona se estimaron siguiendo a más
 
 63
-00:03:59,018 --> 00:04:01,557
-al pasar a la tabla oficial del INEGI;
+00:04:04,258 --> 00:04:08,722
+de trescientos mil negocios en el DENUE de dos mil diecinueve a dos
 
 64
-00:04:01,557 --> 00:04:05,767
-desde entonces, sus cifras de referencia se mantienen idénticas
+00:04:08,722 --> 00:04:11,187
+mil veinticuatro, y el de formalidad,
 
 65
-00:04:05,767 --> 00:04:10,043
-mientras el sitio crece, porque las vigilan pruebas automáticas.
+00:04:11,187 --> 00:04:15,318
+con el panel de la ENOE. Con datos reales y una validación con
 
 66
-00:04:11,443 --> 00:04:14,621
-El proyecto se programó en Visual Studio Code,
+00:04:15,318 --> 00:04:19,981
+negocios de Coacalco, la cafetería de referencia en Los Héroes pasó de
 
 67
-00:04:14,621 --> 00:04:17,453
-con control de versiones en Git y GitHub.
+00:04:19,981 --> 00:04:22,913
+cincuenta y dos a cuarenta y uno por ciento.
 
 68
-00:04:17,453 --> 00:04:22,012
-El motor se escribió en módulos independientes y se validó con una
+00:04:22,913 --> 00:04:25,711
+Cada cifra la vigilan pruebas automáticas.
 
 69
-00:04:22,012 --> 00:04:26,157
-réplica en Python. Cada cambio pasa por pruebas automáticas,
+00:04:27,111 --> 00:04:30,056
+El proyecto se programó en Visual Studio Code,
 
 70
-00:04:26,157 --> 00:04:29,749
-incluidas las de accesibilidad, antes de publicarse.
+00:04:30,056 --> 00:04:32,681
+con control de versiones en Git y GitHub.
 
 71
-00:04:31,149 --> 00:04:35,022
-COATL declara sus límites. Los coeficientes del modelo son
+00:04:32,681 --> 00:04:36,906
+El motor se escribió en módulos independientes y se validó con una
 
 72
-00:04:35,022 --> 00:04:38,829
-estimaciones del equipo, no una regresión con microdatos;
+00:04:36,906 --> 00:04:40,748
+réplica en Python. Cada cambio pasa por pruebas automáticas,
 
 73
-00:04:38,829 --> 00:04:43,237
-por eso la probabilidad se acompaña siempre de un rango plausible,
+00:04:40,748 --> 00:04:44,077
+incluidas las de accesibilidad, antes de publicarse.
 
 74
-00:04:43,237 --> 00:04:47,645
-que es un análisis de sensibilidad y no un intervalo de confianza.
+00:04:45,477 --> 00:04:50,039
+COATL declara sus límites. Giro, zona y formalidad ya se estiman con
 
 75
-00:04:47,645 --> 00:04:51,852
-La herramienta apoya la decisión, pero no sustituye la asesoría
+00:04:50,039 --> 00:04:52,655
+microdatos del INEGI, pero experiencia,
 
 76
-00:04:51,852 --> 00:04:52,654
-profesional.
+00:04:52,655 --> 00:04:56,815
+reserva, marketing y deuda siguen siendo supuestos del equipo,
 
 77
-00:04:54,054 --> 00:04:58,215
-La interfaz se adapta al teléfono, tanto en vertical como en
+00:04:56,815 --> 00:05:00,370
+porque ninguna fuente pública los liga con el cierre.
 
 78
-00:04:58,215 --> 00:05:00,642
-horizontal, sin perder información.
+00:05:00,370 --> 00:05:04,731
+Y lo comprobamos con negocios reales de Coacalco que el modelo no
 
 79
-00:05:02,042 --> 00:05:06,539
-COATL convierte datos oficiales en una decisión informada.
+00:05:04,731 --> 00:05:08,421
+había visto: ordena el riesgo apenas mejor que el azar.
 
 80
-00:05:06,539 --> 00:05:08,400
+00:05:08,421 --> 00:05:12,849
+Por eso la probabilidad se acompaña siempre de un rango plausible,
+
+81
+00:05:12,849 --> 00:05:17,277
+que es un análisis de sensibilidad y no un intervalo de confianza.
+
+82
+00:05:17,277 --> 00:05:21,503
+La herramienta apoya la decisión, pero no sustituye la asesoría
+
+83
+00:05:21,503 --> 00:05:22,309
+profesional.
+
+84
+00:05:23,709 --> 00:05:27,234
+La interfaz se adapta al teléfono, tanto en vertical como en
+
+85
+00:05:27,234 --> 00:05:29,291
+horizontal, sin perder información.
+
+86
+00:05:30,691 --> 00:05:34,516
+COATL convierte datos oficiales en una decisión informada.
+
+87
+00:05:34,516 --> 00:05:36,099
 Gracias por su atención.

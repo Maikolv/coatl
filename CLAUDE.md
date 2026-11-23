@@ -192,3 +192,10 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - Encuesta: `node scripts/encuesta.mjs` → `entregables/encuesta/` (Apps Script, encabezados, codificación). **Sin enlaces** en el formulario ni en el repositorio (ni el del sitio ni el del propio formulario): evita fugas y suplantaciones. Respuestas solo en la hoja privada del equipo.
 - `pintarVeredicto(P, vpn)`: con P ≥ 65 % y VPN < 0 el letrero es «Sobrevive, pero no recupera la inversión» y no hay confeti; el confeti solo se decide con el resultado completo (vpn conocido).
 - Esquema de color: `<meta name="color-scheme" content="only light">` y `:root{color-scheme:only light}` impiden que Edge o Chrome oscurezcan el sitio a la fuerza (modo oscuro automático). No quitarlos: COATL no tiene modo oscuro.
+
+## v18: voces, carga y medición
+
+- JS fuera del HTML: el build escribe `assets/js/coatl-<hash>.js` (con `defer`; borra los anteriores) y la CSP queda en `script-src 'self'` sin `'unsafe-inline'`. No vuelvas a meter scripts en línea.
+- Carrusel: solo la primera foto de Inicio es `eager`/`fetchpriority=high`; el resto, `lazy`. La foto del Palacio es archivo (`assets/img/palacio-coacalco.webp`), no base64.
+- Medición: `node scripts/medir_lighthouse.mjs <etiqueta> [corridas]` (Lighthouse 12.2.1 en `.cache/lh`). En esta laptop el índice de CPU varía mucho: compara con corridas A/B intercaladas y usa PageSpeed Insights como referencia. Resultados e informe en `docs/rendimiento/`.
+- Video: las voces van en `entregables/voces/NN-escena.*`; si existe `NN-escena.txt`, los subtítulos usan ese texto (lo dicho) en vez del guion. Escenas 15 y 17 pendientes de regrabar con el guion vigente.

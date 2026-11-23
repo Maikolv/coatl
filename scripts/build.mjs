@@ -67,12 +67,13 @@ function carrusel(grupo) {
   const ids = Object.keys(cred).filter((id) => cred[id].uso === 'Carrusel · ' + uso);
   const figuras = ids.map((id) => [cred[id].titulo, figuraFoto(id, 'car-foto')]);
   if (grupo === 'territorio') {   // la foto del Palacio Municipal va incrustada y abre este carrusel
-    figuras.unshift(['Palacio Municipal de Coacalco', '<figure class="foto-cita foto-escena car-foto"><img src="data:image/webp;base64,@@FOTO_PALACIO@@" width="960" height="720" loading="lazy" decoding="async" alt="Fachada del Palacio Municipal de Coacalco con arcos y la estatua de Felipe Berriozábal al frente">' +
+    figuras.unshift(['Palacio Municipal de Coacalco', '<figure class="foto-cita foto-escena car-foto"><img src="assets/img/palacio-coacalco.webp" width="960" height="720" loading="lazy" decoding="async" alt="Fachada del Palacio Municipal de Coacalco con arcos y la estatua de Felipe Berriozábal al frente">' +
       '<figcaption><span class="foto-titulo">Palacio Municipal de Coacalco</span> <a href="https://commons.wikimedia.org/wiki/File:Coacalco_Estado_Mexico.JPG" target="_blank" rel="noopener">ProtoplasmaKid</a> · <a href="https://creativecommons.org/licenses/by-sa/4.0/" target="_blank" rel="noopener">CC BY-SA 4.0</a></figcaption></figure>']);
   }
   const n = figuras.length;
   const slides = figuras.map(([, fig], i) => `<li class="car-slide" aria-roledescription="diapositiva" aria-label="${i + 1} de ${n}">` +
-    fig.replace('loading="lazy"', i < 3 ? 'loading="eager"' : 'loading="lazy"') + '</li>').join('');
+    // Solo la primera foto del carrusel de Inicio se pide al cargar; las demás, al acercarse (v18: ~1 MB menos al inicio).
+    fig.replace('loading="lazy"', grupo === 'inicio' && i === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy"') + '</li>').join('');
   const puntos = figuras.map(([t], i) => `<button type="button" class="car-punto" data-i="${i}" aria-label="Ver foto ${i + 1}: ${t.replace(/"/g, '')}"></button>`).join('');
   return `<section class="carrusel" id="carrusel-${grupo}" aria-roledescription="carrusel" aria-label="${etiqueta}">
       <ul class="car-pista" tabindex="0" aria-live="off">${slides}</ul>
@@ -137,25 +138,31 @@ export function construir() {
     reglas.push(`[data-ei="${n}"]{${decl.split(';').filter((d) => d.trim()).map((d) => d.trim() + ' !important').join(';')}}`);
     return ` data-ei="${n}"`;
   });
+  /* El JavaScript va en un archivo aparte con defer (v18): el documento pesa ~320 KB menos y el primer pintado
+     no espera a que llegue el código. El nombre lleva su hash: cada versión es un archivo nuevo, sin caché vieja. */
+  const jsFinal = '"use strict";\n' + js;
+  const jsArchivo = 'assets/js/coatl-' + crypto.createHash('sha256').update(jsFinal, 'utf8').digest('hex').slice(0, 10) + '.js';
+  fs.mkdirSync(path.join(raiz, 'assets', 'js'), { recursive: true });
+  for (const f of fs.readdirSync(path.join(raiz, 'assets', 'js'))) if (/^coatl-[0-9a-f]+\.js$/.test(f)) fs.rmSync(path.join(raiz, 'assets', 'js', f));
+  fs.writeFileSync(path.join(raiz, jsArchivo), jsFinal);
   const cssFinal = css + '\n/* estilos en línea movidos por el build */\n' + reglas.join('\n') + '\n';
   let html = plantilla
     .replace('/*@@CSS@@*/', () => cssFinal)
-    .replace('/*@@JS@@*/', () => js)
+    .replace('@@JS_ARCHIVO@@', () => jsArchivo)
     .replace('/*@@VALIDACION@@*/ null', () => JSON.stringify(datoJSON('denue/validacion')))
     .replace(/@@DATO:([a-z]+\/[a-z_]+):([a-z0-9_.]+)(?::(pct|n))?@@/gi, (_, f, ruta, fmt) => formatoDato(ruta.split('.').reduce((o, k) => o?.[k], datoJSON(f)), fmt, f + ':' + ruta))
     .replace('@@IA_URL@@', () => IA_URL)
     .replace('@@IA_ORIGEN@@', () => (IA_URL ? new URL(IA_URL).origin : ''))
     .replace(/@@FOTO:([a-z-]+):([a-z-]+)@@/g, (_, id, clase) => figuraFoto(id, clase))
     .replace(/@@CARRUSEL:([a-z]+)@@/g, (_, g) => carrusel(g))
-    .replace('@@VIDEO@@', () => videoProyecto())
-    .replace('@@FOTO_PALACIO@@', () => fs.readFileSync(path.join(raiz, 'assets/img/palacio-coacalco.webp')).toString('base64'));
+    .replace('@@VIDEO@@', () => videoProyecto());
   // CSP sin 'unsafe-inline' para scripts: se autoriza solo el script en línea por su hash
   //.
   const inline = html.match(/<script>([\s\S]*?)<\/script>/);
   if (inline) {
     const hash = crypto.createHash('sha256').update(inline[1], 'utf8').digest('base64');
     html = html.replace("script-src 'self' 'unsafe-inline'", `script-src 'self' 'sha256-${hash}'`);
-  }
+  } else html = html.replace("script-src 'self' 'unsafe-inline'", "script-src 'self'");   // sin scripts en línea
   const estilo = html.match(/<style>([\s\S]*?)<\/style>/);
   if (estilo) {
     const hash = crypto.createHash('sha256').update(estilo[1], 'utf8').digest('base64');
@@ -170,6 +177,10 @@ export function construir() {
   copiarVideo();
   const plantillas = path.join(raiz, 'assets', 'plantillas');   // plantilla de Excel (scripts/plantilla_excel.mjs)
   if (fs.existsSync(plantillas)) fs.cpSync(plantillas, path.join(raiz, 'dist', 'assets', 'plantillas'), { recursive: true });
+  fs.mkdirSync(path.join(raiz, 'dist', 'assets', 'img'), { recursive: true });
+  fs.copyFileSync(path.join(raiz, 'assets/img/palacio-coacalco.webp'), path.join(raiz, 'dist/assets/img/palacio-coacalco.webp'));   // foto del Palacio, ya no incrustada
+  fs.rmSync(path.join(raiz, 'dist', 'assets', 'js'), { recursive: true, force: true });
+  fs.cpSync(path.join(raiz, 'assets', 'js'), path.join(raiz, 'dist', 'assets', 'js'), { recursive: true });   // JavaScript del sitio
   fs.cpSync(path.join(raiz, 'assets', 'fuentes', 'web'), path.join(raiz, 'dist', 'assets', 'fuentes', 'web'), { recursive: true });   // tipografías del sitio
   for (const sub of ['zonas', 'escenarios', 'iconos']) {   // fotos de zonas y de escenarios (scripts/fotos_sync.mjs)
     const fotos = path.join(raiz, 'assets', 'img', sub);
