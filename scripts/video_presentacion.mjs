@@ -7,7 +7,7 @@
 //
 // Uso: node scripts/video_presentacion.mjs            (requiere Windows o voces grabadas, Edge/Chromium, ffmpeg y `npm run build`)
 //      node scripts/video_presentacion.mjs --guion    (solo escribe docs/GUION_VOCES.md, sin generar el video)
-import { spawn, execFileSync } from 'node:child_process';
+import { spawn, spawnSync, execFileSync } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
 
@@ -108,7 +108,8 @@ ${ESCENAS.map((e, i) => `${i + 1}. **${AUTOR[e.quien].split(' ')[0]}** · \`${ar
 if (process.argv.includes('--guion')) { escribirGuion(); process.exit(0); }
 
 const { chromium } = await import('@playwright/test');
-fs.rmSync(TMP, { recursive: true, force: true }); fs.mkdirSync(TMP, { recursive: true });
+// se vacía en lugar de borrarse: en Windows la carpeta puede estar abierta como directorio de trabajo de otra consola
+fs.mkdirSync(TMP, { recursive: true }); for (const f of fs.readdirSync(TMP)) fs.rmSync(path.join(TMP, f), { recursive: true, force: true });
 // Las fuentes van en base64: una página en blanco no puede leer archivos locales (file://).
 const fuente = (f) => 'data:font/ttf;base64,' + fs.readFileSync(path.join(RAIZ, 'assets/fuentes', f)).toString('base64');
 
@@ -125,11 +126,29 @@ function narrar(texto, wav) {
 }
 /* Voz de la escena: la grabación del narrador si existe (sin silencios en los extremos y con volumen normalizado);
    si no, la voz sintética provisional. Devuelve true cuando la voz es real. */
+/* Limpieza de las grabaciones del teléfono: quita zumbido grave, siseo de fondo (afftdn) y el ruido entre frases
+   (compuerta suave, −18 dB), quita lo «encajonado» (220 Hz), da presencia (3.2 kHz), suaviza las «s» y empareja
+   la dinámica. En la prueba con la grabación más ruidosa (06), la voz pasó de 18.5 a 41.5 dB sobre el ruido. */
+const LIMPIEZA = 'highpass=f=80,afftdn=nr=24:nf=-50:tn=1,agate=threshold=0.015:ratio=2.5:range=0.12:attack=5:release=250,' +
+  'equalizer=f=220:t=q:w=1:g=-2,equalizer=f=3200:t=q:w=1.2:g=2.5,deesser=i=0.4,acompressor=threshold=-22dB:ratio=3:attack=6:release=150:makeup=2';
+const RECORTE = 'silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.1,areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.1,areverse';
+// Volumen parejo en dos pasos: mide la sonoridad tras la limpieza y aplica la ganancia exacta para −16 LUFS, con limitador a −1 dBFS.
+const sonoridad = (f, af) => parseFloat(spawnSync('ffmpeg', ['-hide_banner', '-i', f, '-af', af + ',ebur128=framelog=quiet', '-f', 'null', '-'], { encoding: 'utf8' }).stderr.match(/I:\s+(-?[\d.]+) LUFS/g).at(-1).match(/-?[\d.]+/)[0]);
+function nivelar(entrada, af, wav) {
+  // el limitador recorta los picos y deja algunas voces hasta 2 dB abajo: se mide de nuevo y se corrige (≤5 vueltas, ±0.5 LU)
+  let g = -16 - sonoridad(entrada, af);
+  for (let k = 0; k < 5; k++) {
+    ffmpeg(['-i', entrada, '-af', `${af},volume=${g.toFixed(2)}dB,alimiter=limit=0.89:attack=3:release=60:level=false`, '-ar', '48000', '-ac', '1', wav]);
+    const err = -16 - sonoridad(wav, 'anull');
+    if (Math.abs(err) <= 0.5) break;
+    g += err;
+  }
+}
 function vozDe(i, e, wav) {
   const real = grabacion(i, e);
-  if (real) { ffmpeg(['-i', real, '-af', 'silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.1,areverse,silenceremove=start_periods=1:start_threshold=-45dB:start_silence=0.1,areverse,highpass=f=70,loudnorm=I=-16:TP=-1.5:LRA=11', '-ar', '48000', '-ac', '1', wav]); return true; }
+  if (real) { nivelar(real, RECORTE + ',' + LIMPIEZA, wav); return true; }
   const crudo = wav.replace(/\.wav$/, '_tts.wav'); narrar(e.voz, crudo);
-  ffmpeg(['-i', crudo, '-af', 'loudnorm=I=-16:TP=-1.5:LRA=11', '-ar', '48000', '-ac', '1', wav]); return false;
+  nivelar(crudo, 'highpass=f=80', wav); return false;
 }
 const GRECA = (color) => `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='18' viewBox='0 0 72 18'%3E%3Cpath d='M0 18 V12 H6 V6 H12 V0 H24 V6 H18 V12 H12 V18 Z M36 18 V12 H42 V6 H48 V0 H60 V6 H54 V12 H48 V18 Z' fill='%23${color}'/%3E%3Crect x='28' y='7' width='4' height='4' fill='%23${color}'/%3E%3Crect x='64' y='7' width='4' height='4' fill='%23${color}'/%3E%3C/svg%3E")`;
 function tarjetaHTML(o) {
@@ -271,8 +290,20 @@ fs.writeFileSync(path.join(TMP, 'sub.ass'), [
   ...narradores.map(([a, z, x]) => `Dialogue: 1,${tass(a)},${tass(z)},NARRA,,0,0,0,,{\\fad(300,300)}Narra: ${x}`),
 ].join('\n') + '\n', 'utf8');
 for (const f of fs.readdirSync(path.join(RAIZ, 'assets/fuentes'), { withFileTypes: true })) if (f.isFile()) fs.copyFileSync(path.join(RAIZ, 'assets/fuentes', f.name), path.join(TMP, f.name));   // solo archivos: assets/fuentes/web/ es una carpeta
+/* Música de fondo original (scripts/musica_fondo.py, sin derechos de terceros). Se le quitan graves y la banda de
+   la voz (2.5 kHz) para que no compita, va unos 12 dB debajo de la voz y baja otros ≈6 dB mientras alguien habla
+   (compresión por cadena lateral). La mezcla se limita a −1 dBFS. */
+const largo = duracion(path.join(TMP, 'unido.mp4'));
+execFileSync('uv', ['run', '--no-project', '--with', 'numpy', 'python', '-I', path.join(RAIZ, 'scripts/musica_fondo.py'), largo.toFixed(2), path.join(TMP, 'musica.wav')], { stdio: 'inherit' });
+ffmpeg(['-i', path.join(TMP, 'unido.mp4'), '-i', path.join(TMP, 'musica.wav'), '-filter_complex',
+  '[0:a]asplit=2[voz][guia];[1:a]highpass=f=90,equalizer=f=2500:t=q:w=1.5:g=-5,volume=-14dB[mus];' +
+  '[mus][guia]sidechaincompress=threshold=0.03:ratio=4:attack=20:release=450[bajo];' +
+  '[voz][bajo]amix=inputs=2:duration=first:normalize=0,alimiter=limit=0.89:level=false[a]',
+  '-map', '0:v', '-map', '[a]', '-c:v', 'copy', '-c:a', 'aac', '-b:a', '256k', '-ar', '48000', path.join(TMP, 'mezcla.mp4')]);
 const final = path.join(RAIZ, 'entregables/COATL_Video.mp4');
-execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', 'unido.mp4', '-vf', 'ass=sub.ass:fontsdir=.', '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-c:a', 'copy', '-movflags', '+faststart', final], { cwd: TMP, stdio: 'inherit' });
+execFileSync('ffmpeg', ['-loglevel', 'error', '-y', '-i', 'mezcla.mp4', '-vf', 'ass=sub.ass:fontsdir=.', '-c:v', 'libx264', '-preset', 'medium', '-crf', '19', '-c:a', 'copy', '-movflags', '+faststart', final], { cwd: TMP, stdio: 'inherit' });
+// Copia ligera para Teams o correo: 720p y audio AAC de 160 kb/s (≈20 MB para 6 min).
+ffmpeg(['-i', final, '-vf', 'scale=1280:720:flags=lanczos', '-c:v', 'libx264', '-preset', 'slow', '-crf', '27', '-c:a', 'aac', '-b:a', '160k', '-movflags', '+faststart', path.join(RAIZ, 'entregables/COATL_Video_Teams.mp4')]);
 // Portada del video para el sitio (Inicio): un cuadro de la tarjeta de título.
 fs.mkdirSync(path.join(RAIZ, 'assets/video'), { recursive: true });
 ffmpeg(['-ss', '3', '-i', final, '-frames:v', '1', '-vf', 'scale=1280:-2', '-q:v', '4', path.join(RAIZ, 'assets/video/poster.jpg')]);

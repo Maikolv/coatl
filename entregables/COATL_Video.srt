@@ -235,113 +235,113 @@ Para preguntas libres, la inteligencia artificial de COATL responde
 sin pedirle ninguna clave al visitante.
 
 60
-00:03:53,399 --> 00:03:56,197
-El proyecto ha tenido dieciocho versiones.
+00:03:53,399 --> 00:03:56,259
+El proyecto ha tenido diecinueve versiones.
 
 61
-00:03:56,197 --> 00:03:59,661
+00:03:56,259 --> 00:03:59,717
 Primero el modelo pasó a la tabla oficial del INEGI.
 
 62
-00:03:59,661 --> 00:04:04,258
+00:03:59,717 --> 00:04:04,306
 Después, los coeficientes de giro y zona se estimaron siguiendo a más
 
 63
-00:04:04,258 --> 00:04:08,722
+00:04:04,306 --> 00:04:08,762
 de trescientos mil negocios en el DENUE de dos mil diecinueve a dos
 
 64
-00:04:08,722 --> 00:04:11,187
+00:04:08,762 --> 00:04:11,223
 mil veinticuatro, y el de formalidad,
 
 65
-00:04:11,187 --> 00:04:15,318
+00:04:11,223 --> 00:04:15,346
 con el panel de la ENOE. Con datos reales y una validación con
 
 66
-00:04:15,318 --> 00:04:19,981
+00:04:15,346 --> 00:04:20,001
 negocios de Coacalco, la cafetería de referencia en Los Héroes pasó de
 
 67
-00:04:19,981 --> 00:04:22,913
+00:04:20,001 --> 00:04:22,928
 cincuenta y dos a cuarenta y uno por ciento.
 
 68
-00:04:22,913 --> 00:04:25,711
+00:04:22,928 --> 00:04:25,721
 Cada cifra la vigilan pruebas automáticas.
 
 69
-00:04:27,111 --> 00:04:30,056
+00:04:27,121 --> 00:04:30,066
 El proyecto se programó en Visual Studio Code,
 
 70
-00:04:30,056 --> 00:04:32,681
+00:04:30,066 --> 00:04:32,691
 con control de versiones en Git y GitHub.
 
 71
-00:04:32,681 --> 00:04:36,906
+00:04:32,691 --> 00:04:36,916
 El motor se escribió en módulos independientes y se validó con una
 
 72
-00:04:36,906 --> 00:04:40,748
+00:04:36,916 --> 00:04:40,758
 réplica en Python. Cada cambio pasa por pruebas automáticas,
 
 73
-00:04:40,748 --> 00:04:44,077
+00:04:40,758 --> 00:04:44,087
 incluidas las de accesibilidad, antes de publicarse.
 
 74
-00:04:45,477 --> 00:04:50,039
+00:04:45,487 --> 00:04:50,049
 COATL declara sus límites. Giro, zona y formalidad ya se estiman con
 
 75
-00:04:50,039 --> 00:04:52,655
+00:04:50,049 --> 00:04:52,665
 microdatos del INEGI, pero experiencia,
 
 76
-00:04:52,655 --> 00:04:56,815
+00:04:52,665 --> 00:04:56,825
 reserva, marketing y deuda siguen siendo supuestos del equipo,
 
 77
-00:04:56,815 --> 00:05:00,370
+00:04:56,825 --> 00:05:00,380
 porque ninguna fuente pública los liga con el cierre.
 
 78
-00:05:00,370 --> 00:05:04,731
+00:05:00,380 --> 00:05:04,741
 Y lo comprobamos con negocios reales de Coacalco que el modelo no
 
 79
-00:05:04,731 --> 00:05:08,421
+00:05:04,741 --> 00:05:08,431
 había visto: ordena el riesgo apenas mejor que el azar.
 
 80
-00:05:08,421 --> 00:05:12,849
+00:05:08,431 --> 00:05:12,859
 Por eso la probabilidad se acompaña siempre de un rango plausible,
 
 81
-00:05:12,849 --> 00:05:17,277
+00:05:12,859 --> 00:05:17,287
 que es un análisis de sensibilidad y no un intervalo de confianza.
 
 82
-00:05:17,277 --> 00:05:21,503
+00:05:17,287 --> 00:05:21,514
 La herramienta apoya la decisión, pero no sustituye la asesoría
 
 83
-00:05:21,503 --> 00:05:22,309
+00:05:21,514 --> 00:05:22,319
 profesional.
 
 84
-00:05:23,709 --> 00:05:27,234
+00:05:23,719 --> 00:05:27,244
 La interfaz se adapta al teléfono, tanto en vertical como en
 
 85
-00:05:27,234 --> 00:05:29,291
+00:05:27,244 --> 00:05:29,301
 horizontal, sin perder información.
 
 86
-00:05:30,691 --> 00:05:34,516
+00:05:30,701 --> 00:05:34,526
 COATL convierte datos oficiales en una decisión informada.
 
 87
-00:05:34,516 --> 00:05:36,099
+00:05:34,526 --> 00:05:36,109
 Gracias por su atención.
