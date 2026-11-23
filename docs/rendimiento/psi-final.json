@@ -1,0 +1,9 @@
+{
+ "etiqueta": "psi-final",
+ "commit": "06fada3",
+ "fecha": "2026-11-23",
+ "configuracion": "PageSpeed Insights (pagespeed.web.dev), pestaña móvil, sitio publicado https://maikolv.github.io/coatl/?v=06fada3 (parámetro para evitar la caché). Una corrida; PSI varía unos puntos entre corridas.",
+ "corridas": 1,
+ "mediana": { "puntuacion": 96, "lcp_s": 1.7, "tbt_s": 0.05, "fcp_s": 1.7, "speed_index_s": 4.8, "cls": 0, "accesibilidad": 100, "practicas": 100, "seo": 100 },
+ "escritorio": { "puntuacion": 100, "lcp_s": 0.3, "tbt_s": 0, "fcp_s": 0.3, "speed_index_s": 0.9, "cls": 0.005, "accesibilidad": 100 }
+}

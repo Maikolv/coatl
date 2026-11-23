@@ -37,7 +37,13 @@ El LCP local del paso 01 (8.85 s) sube porque, sin el JS bloqueando, el mayor el
 | Versión | Rendimiento | LCP | TBT | FCP | Speed Index | CLS | Accesibilidad | Prácticas | SEO |
 |---|---|---|---|---|---|---|---|---|---|
 | v17 (`c079078`), antes de estos cambios | **95** | 2.0 s | 0 ms | 2.0 s | 4.3 s | 0 | 97 | 100 | 100 |
-| v18 (después del deploy) | ver `psi-final.json` | | | | | | | | |
+| v18 (`06fada3`), después del deploy | **96** | 1.7 s | 50 ms | 1.7 s | 4.8 s | 0 | **100** | 100 | 100 |
+
+Cada fila es una sola corrida de PSI, que varía unos puntos entre corridas. La diferencia de rendimiento (95 → 96) está dentro de ese ruido. Lo que sí se puede afirmar:
+
+- LCP y FCP bajaron de 2.0 s a 1.7 s;
+- accesibilidad pasó de 97 a 100;
+- el HTML pesa 377 KB menos.
 
 **La meta de 70 ya se cumplía en el sitio publicado.** Los cambios de esta versión reducen el peso inicial y corrigen la accesibilidad. No eran necesarios para alcanzar la meta.
 
@@ -72,6 +78,7 @@ El LCP local del paso 01 (8.85 s) sube porque, sin el JS bloqueando, el mayor el
 2. Las escenas 15 (versiones) y 17 (limitaciones) siguen con la voz sintética. Sus grabaciones afirman cosas que ya no son ciertas («13 versiones… cifras idénticas»; «los coeficientes son estimaciones del equipo»). Hay que volver a grabarlas con `docs/GUION_VOCES.md`.
 3. El JS sale del HTML a un archivo con hash y `defer`. La CSP ya no permite scripts en línea.
 4. Las fotos fuera de la primera vista se cargan en diferido.
-5. Los puntos del carrusel tienen un área táctil de 24 px (WCAG 2.5.8).
-6. `scripts/video_presentacion.mjs` copia solo archivos de fuentes. Antes fallaba con la carpeta `web/`.
-7. `scripts/medir_lighthouse.mjs` permite repetir cada medición de este informe.
+5. Los puntos del carrusel tienen un área táctil de 24 px (WCAG 2.5.8). El punto activo crece sin invadir el área de sus vecinos.
+6. Error encontrado por el CI y corregido: al separar el JS, los marcadores `@@IA_URL@@` y `/*@@VALIDACION@@*/` quedaban sin llenar. Eso rompía la IA de COATL (404) y dejaba vacío el panel de validación. Ahora el build falla si queda algún marcador en el JS.
+7. `scripts/video_presentacion.mjs` copia solo archivos de fuentes. Antes fallaba con la carpeta `web/`.
+8. `scripts/medir_lighthouse.mjs` permite repetir cada medición de este informe.
