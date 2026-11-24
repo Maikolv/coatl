@@ -18,3 +18,13 @@ test('la opinión arma un correo al contacto del equipo sin enviar nada por su c
   expect(cuerpo).toContain('Agregaría más giros & zonas');
   await expect(page.locator('#creditos a[href="mailto:A660136406@my.uvm.edu.mx"]')).toHaveCount(1);
 });
+
+test('«Danos tu opinión» del pie lleva hasta la sección, no al inicio de la página', async ({ page }) => {
+  await page.goto('/');
+  await page.locator('#creditos a[href="#opinion"]').click();
+  await expect(page.locator('#opinion h2')).toBeInViewport();
+  // El título no queda tapado por la barra superior fija.
+  const [titulo, barra] = await page.evaluate(() => [document.querySelector('#opinion h2').getBoundingClientRect().top,
+    Math.max(...[...document.querySelectorAll('header, nav, #pestanasApp')].filter((e) => getComputedStyle(e).position.match(/sticky|fixed/)).map((e) => e.getBoundingClientRect().bottom), 0)]);
+  expect(titulo).toBeGreaterThanOrEqual(barra - 1);
+});

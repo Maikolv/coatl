@@ -1971,7 +1971,8 @@ function mostrarVista(v, destino, desplazar){
     if(typeof mapaL!=="undefined"&&mapaL&&mapaL.invalidateSize) setTimeout(()=>mapaL.invalidateSize(),60);
   }
   if(desplazar){
-    if(destino&&destino.dataset.pagina!==v.id&&!v.secciones.includes(destino.id)) destino.scrollIntoView({behavior:"auto"});
+    // Solo la primera sección del apartado abre arriba; cualquier otro destino (#opinion, #mejora, #mapa…) se desplaza hasta él.
+    if(destino&&destino.id!==v.secciones[0]) destino.scrollIntoView({behavior:"auto"});
     else window.scrollTo({top:0,behavior:"auto"});
   }
 }
