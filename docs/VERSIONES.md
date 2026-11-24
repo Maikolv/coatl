@@ -274,7 +274,7 @@ Confirmaciones: `25ecaf9`.
 - Prompts para Codex: continuar el trabajo (docs/PROMPT_CODEX_CONTINUAR.md) y llevar las prácticas de COATL a Help Quote Terminal (docs/PROMPT_HELP_QUOTE_TERMINAL.md).
 - Guion del video actualizado (cifras v13–v14, fuentes y límites).
 
-**Efecto en el modelo.** Cambian los β de «Formalización gradual» e «Informal». El escenario de referencia usa «Formal desde el inicio», que no cambia, así que sus cifras se mantienen: P = 38.0 % (rango 30.6–46.6 %), VPN 86,989.
+**Efecto en el modelo.** Cambian los β de «Formalización gradual» e «Informal». El escenario de referencia usa «Formal desde el inicio», que no cambia, así que sus cifras se mantienen: P = 38.0 % (rango 30.6–46.6 %), VPN $686,989.
 
 Confirmaciones: `14ae32d`.
 
