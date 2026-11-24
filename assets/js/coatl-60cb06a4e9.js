@@ -1903,6 +1903,7 @@ function fijarTope(){ const tira=document.getElementById('pestanasApp'), nav=doc
   // Los destinos (#opinion, #mejora…) se detienen bajo la barra y la tira, que son fijas y cambian de alto en móvil.
   document.documentElement.style.setProperty('--tope-fijo',(tope+tira.offsetHeight)+'px'); }
 window.addEventListener('resize',fijarTope);
+document.fonts?.ready.then(fijarTope);
 function pintarPestanas(){
   const tira=document.getElementById('pestanasApp'); if(!tira) return;
   try{ sessionStorage.setItem('coatl-pestanas',JSON.stringify(abiertas)); }catch(_){}
@@ -1974,8 +1975,19 @@ function mostrarVista(v, destino, desplazar){
     if(typeof mapaL!=="undefined"&&mapaL&&mapaL.invalidateSize) setTimeout(()=>mapaL.invalidateSize(),60);
   }
   if(desplazar){
+    fijarTope();   // medir justo antes: la barra cambia de alto cuando cargan las tipografías
     // Solo la primera sección del apartado abre arriba; cualquier otro destino (#opinion, #mejora, #mapa…) se desplaza hasta él.
-    if(destino&&destino.id!==v.secciones[0]) destino.scrollIntoView({behavior:"auto"});
+    if(destino&&destino.id!==v.secciones[0]){
+      destino.scrollIntoView({behavior:"auto"});
+      // Lo de arriba (tipografías, imágenes, widgets) puede cambiar de alto después del salto y dejar el
+      // destino bajo la barra: durante 2 s se vuelve a alinear, salvo que el visitante ya se mueva por su cuenta.
+      if(typeof ResizeObserver==="function"){
+        const ro=new ResizeObserver(()=>{ fijarTope(); destino.scrollIntoView({behavior:"auto"}); });
+        const soltar=()=>ro.disconnect();
+        ro.observe(document.body); setTimeout(soltar,2000);
+        ["wheel","touchstart","keydown","pointerdown"].forEach(t=>window.addEventListener(t,soltar,{once:true,passive:true}));
+      }
+    }
     else window.scrollTo({top:0,behavior:"auto"});
   }
 }
