@@ -122,7 +122,7 @@ export function htmlDocumento({ tipo, titulo, bajada, bloques, paginas = {} }) {
   const portada = `<section class="portada"><p class="tipo">${esc(tipo)} · versión ${VERSION.id.replace('v', '')} · ${esc(FECHA)}</p>
     <div class="marca">${LOGO(74)}<b>COATL</b></div><p class="lema">Cálculo de Oportunidad y Análisis Territorial Local</p><div class="greca"></div>
     <p class="titulo">${esc(titulo)}</p><p class="bajada">${enLinea(bajada)}</p>
-    <div class="ficha"><div><span>Autores</span>${AUTORES.map(esc).join('<br>')}</div><div><span>Proyecto</span>Proyecto de Participación Especial<br>Jornada Académica Empresarial<br>Probabilidad y Estadística</div>
+    <div class="ficha"><div><span>Autores</span>${AUTORES.map(esc).join('<br>')}</div><div><span>Proyecto</span>Feria Profesiográfica 2026<br>Probabilidad y Estadística<br>UVM</div>
     <div><span>Docente</span>${esc(DOCENTE)}</div><div><span>Sitio</span>${esc(SITIO.replace('https://', ''))}</div></div></section>`;
   return { html: `<!doctype html><html lang="es-MX"><head><meta charset="utf-8"><title>COATL · ${esc(titulo)}</title><style>${CSS_DOC}</style></head><body>${portada}${toc}${cuerpo}</body></html>`, indice };
 }

@@ -5,7 +5,7 @@ Simulador estadístico que estima la **probabilidad de que un negocio siga opera
 **Sitio:** https://maikolv.github.io/coatl/
 
 **Autores:** Miguel Antonio Cruz García · Bruno Alejandro López Bautista · Alonso Arroyo Cortés
-**Materia:** Probabilidad y Estadística · Mtra. Noemí Daniela Palacios Fermín · Jornada Académica Empresarial 2026
+**Materia:** Probabilidad y Estadística · Mtra. Noemí Daniela Palacios Fermín · Feria Profesiográfica 2026
 
 ## Qué hace
 
@@ -283,7 +283,7 @@ entregables/            documento técnico y reporte (PDF), presentación (PDF y
 - [Reporte técnico (PDF)](entregables/COATL_Reporte.pdf).
 - [Presentación (PDF)](entregables/COATL_Presentacion.pdf) y [PowerPoint editable](entregables/COATL_Presentacion.pptx).
 - [Libro técnico (Excel)](entregables/COATL_Libro_Tecnico.xlsx): todas las tablas del proyecto.
-- [Video para evaluadores](entregables/COATL_Video.mp4), con narración y subtítulos ([.srt](entregables/COATL_Video.srt)).
+- [Video de presentación](entregables/COATL_Video.mp4), con narración y subtítulos ([.srt](entregables/COATL_Video.srt)).
 
 Todo se regenera con `npm run entregables` (el video, con `npm run entregables -- --video`).
 

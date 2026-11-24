@@ -2,7 +2,7 @@
 
 Aplicación web estadística que estima la **probabilidad de supervivencia a 3 años** y la **rentabilidad esperada** de abrir un negocio en **Coacalco de Berriozábal, Estado de México**.
 
-- Proyecto de Participación Especial — Jornada Académica Empresarial, materia Probabilidad y Estadística.
+- Proyecto para la **Feria Profesiográfica 2026** (UVM), materia Probabilidad y Estadística. Ya no es proyecto de participación especial ni para la Jornada Académica: no uses esos nombres.
 - Docente: Mtra. Noemí Daniela Palacios Fermín.
 - Autores (orden obligatorio, no alterar): **Miguel Antonio Cruz García, Bruno Alejandro López Bautista, Alonso Arroyo Cortés**.
 - Posicionamiento: COATL es un producto/herramienta en sí mismo (en el que se invierte), no una herramienta que los inversionistas usan para sus propias decisiones.
@@ -161,7 +161,7 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - Monte Carlo y el rango plausible de P se calculan en un Web Worker desde un Blob generado por el build. Si falla el Worker, se usa el motor síncrono.
 
 - S₀(t) usa el tabulado nacional del INEGI 1989–2019 para t = 1…10. Los datos por giro siguen siendo estimaciones del equipo.
-- Video para evaluadores: `node scripts/video_presentacion.mjs` → `entregables/COATL_Video.mp4` + `.srt` (Windows: voz Sabina, Edge y ffmpeg). Todo documento usa la paleta, la greca y las tipografías del sitio (`assets/fuentes/`, incrustadas).
+- Video de presentación: `node scripts/video_presentacion.mjs` → `entregables/COATL_Video.mp4` + `.srt` (Windows: voz Sabina, Edge y ffmpeg). Todo documento usa la paleta, la greca y las tipografías del sitio (`assets/fuentes/`, incrustadas).
 - Teléfono: `tests/e2e/orientacion.spec.js` revisa vertical, horizontal y rotación; en horizontal bajo la barra superior no es fija.
 - La foto de contexto es obra de ProtoplasmaKid, publicada en Wikimedia Commons bajo CC BY-SA 4.0. [Ficha de la foto](https://commons.wikimedia.org/wiki/File:Coacalco_Estado_Mexico.JPG).
 - Diagrama UML de 6 carriles: hecho (`scripts/diagrama_uml.mjs` → docs/ y entregables/).
@@ -200,4 +200,6 @@ Antes de dar algo por terminado: build, `npm test`, validador Python, e2e en ver
 - Medición: `node scripts/medir_lighthouse.mjs <etiqueta> [corridas]` (Lighthouse 12.2.1 en `.cache/lh`). En esta laptop el índice de CPU varía mucho: compara con corridas A/B intercaladas y usa PageSpeed Insights como referencia. Resultados e informe en `docs/rendimiento/`.
 - Video: las voces van en `entregables/voces/NN-escena.*`; si existe `NN-escena.txt`, los subtítulos usan ese texto (lo dicho) en vez del guion. Las 19 escenas ya tienen voz del equipo (15 y 17 regrabadas por Miguel con el guion vigente).
 - Audio del video: cada voz pasa por `LIMPIEZA` (afftdn + compuerta suave + EQ + de-esser + compresor) y `nivelar` (−16 LUFS medidos, con corrección iterativa). Música de fondo ORIGINAL de `scripts/musica_fondo.py` (síntesis Karplus-Strong, semilla fija; sin derechos de terceros), ≈15 dB bajo la voz y con ducking por cadena lateral. No sustituirla por pistas descargadas.
-- Copia para Teams/correo: `entregables/COATL_Video_Teams.mp4` (720p, ≈17 MB), la genera el mismo script.
+- Copia para Teams/correo: `entregables/COATL_Video_Teams.mp4` (720p, ≈18 MB), la genera el mismo script.
+- Carrusel: las fotos son `lazy`, pero `explorar.js` las pasa a `eager` cuando el carrusel se acerca (las diapositivas fuera de la vista horizontal no cargaban solas y salían en blanco). Lo vigila `tests/e2e/carrusel.spec.js`.
+- v18 es la versión de entrega (Feria Profesiográfica 2026). No agregues una v19 sin regrabar la escena 15: su voz dice «diecinueve versiones».

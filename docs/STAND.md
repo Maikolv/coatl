@@ -1,6 +1,6 @@
 # Stand físico de COATL — tres propuestas
 
-Objetivo común: que un evaluador o inversionista entienda en **30 segundos** qué es COATL y en **3 minutos** lo vea funcionar con un negocio real de Coacalco. Identidad fija en las tres: rojo `#C8102E`, granate `#7A0C1F`, blanco hueso `#FBF6F3` y greca escalonada. Los precios son **aproximados en MXN**: cotiza en la papelería o imprenta local antes de comprar. **Cotización detallada por partida, con referencias de mercado y guía de montaje:** [`entregables/COATL_Stand_Cotizacion.pdf`](../entregables/COATL_Stand_Cotizacion.pdf) (rangos de un día, con recolección propia; pedir precio final con IVA, flete y montaje).
+Objetivo común: que un visitante de la Feria Profesiográfica 2026 (estudiantes, familias y docentes) entienda en **30 segundos** qué es COATL y en **3 minutos** lo vea funcionar con un negocio real de Coacalco. Identidad fija en las tres: rojo `#C8102E`, granate `#7A0C1F`, blanco hueso `#FBF6F3` y greca escalonada. Los precios son **aproximados en MXN**: cotiza en la papelería o imprenta local antes de comprar. **Cotización detallada por partida, con referencias de mercado y guía de montaje:** [`entregables/COATL_Stand_Cotizacion.pdf`](../entregables/COATL_Stand_Cotizacion.pdf) (rangos de un día, con recolección propia; pedir precio final con IVA, flete y montaje).
 
 | | A · Esencial | B · Profesional (recomendada) | C · Inmersiva |
 |---|---|---|---|
@@ -22,7 +22,7 @@ Para cuando el presupuesto es mínimo o el espacio es una mesa compartida.
 | Laptop propia con el sitio (`npm run servir`, funciona sin internet) | Demo en vivo | Propia |
 | Póster 60 × 90 cm en papel couché, pegado a cartón o foam board | Pregunta gancho y el modelo en 4 pasos | $180 – 350 |
 | QR impreso tamaño carta en acrílico o protector de hojas | Que lo prueben en su teléfono | $30 – 120 |
-| One-pager a color, 50 piezas | Lo que el evaluador se lleva | $150 – 300 |
+| One-pager a color, 50 piezas | Lo que el visitante se lleva | $150 – 300 |
 | Mantel rojo liso + franja de greca impresa en vinil o papel | Identidad | $250 – 450 |
 | Gafetes con nombre (los tres autores) | Imagen de equipo | $60 – 120 |
 | Extensión, multicontacto y cargadores | Energía | Propios |
@@ -33,7 +33,7 @@ Para cuando el presupuesto es mínimo o el espacio es una mesa compartida.
 
 ## Propuesta B · Profesional (recomendada)
 
-Equilibrio entre costo e impacto. Es la que conviene para una jornada académica con evaluadores e invitados externos.
+Equilibrio entre costo e impacto. Es la que conviene para la Feria Profesiográfica 2026, con mucho público de paso.
 
 | Recurso | Para qué | Costo aprox. |
 |---|---|---|

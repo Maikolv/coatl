@@ -1292,6 +1292,9 @@ let movimientoPausado=false;
 document.querySelectorAll(".carrusel").forEach(cont=>{
   const pista=cont.querySelector(".car-pista"), slides=[...pista.children], puntos=[...cont.querySelectorAll(".car-punto")];
   if(!slides.length) return;
+  /* Las fotos fuera de la vista horizontal no se cargan solas (lazy en pista con scroll):
+     al acercarse el carrusel se piden todas, así ninguna diapositiva aparece en blanco. */
+  new IntersectionObserver((ents,obs)=>{ if(ents.some(e=>e.isIntersecting)){ pista.querySelectorAll('img[loading="lazy"]').forEach(im=>im.loading="eager"); obs.disconnect(); } },{rootMargin:"600px 0px"}).observe(cont);
   let actual=0, pausado=matchMedia("(prefers-reduced-motion: reduce)").matches, encima=false, marco=0;
   const visibles=()=>Math.max(1,Math.round(pista.clientWidth/slides[0].offsetWidth));
   const marcar=i=>{ actual=i; puntos.forEach((p,k)=>p.setAttribute("aria-current",k===i?"true":"false")); };

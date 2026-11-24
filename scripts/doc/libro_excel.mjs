@@ -105,7 +105,7 @@ export async function generarLibro(salida) {
     [nombre, titulo, Number(filas)].forEach((v, i) => Object.assign(portada.getCell(r, i + 2), { value: i === 0 ? { text: v, hyperlink: `#'${v}'!A1` } : v, font: f(i === 0 ? { bold: true, color: { argb: ROJO }, underline: true } : {}), fill: relleno(k % 2 ? HUESO : BLANCO), border: borde(), alignment: { indent: 1, horizontal: i === 2 ? 'right' : 'left' } })); });
   const rp = 10 + hojas.length;
   portada.mergeCells(`B${rp}:D${rp}`);
-  Object.assign(portada.getCell(`B${rp}`), { value: 'Autores: ' + D.AUTORES.join(', ') + ' · Docente: ' + D.DOCENTE + ' · Proyecto de Participación Especial, Jornada Académica Empresarial, Probabilidad y Estadística.', font: f({ size: 9, color: { argb: GRIS } }), alignment: { wrapText: true } });
+  Object.assign(portada.getCell(`B${rp}`), { value: 'Autores: ' + D.AUTORES.join(', ') + ' · Docente: ' + D.DOCENTE + ' · Feria Profesiográfica 2026, Probabilidad y Estadística.', font: f({ size: 9, color: { argb: GRIS } }), alignment: { wrapText: true } });
   portada.getRow(rp).height = 30;
 
   fs.mkdirSync(path.dirname(salida), { recursive: true });

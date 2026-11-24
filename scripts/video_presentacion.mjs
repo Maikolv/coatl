@@ -1,4 +1,4 @@
-// Genera entregables/COATL_Video.mp4 (1080p) para evaluadores: tarjetas con la identidad de COATL (paleta, greca
+// Genera entregables/COATL_Video.mp4 (1080p) para la Feria Profesiográfica 2026: tarjetas con la identidad de COATL (paleta, greca
 // y tipografías del sitio), grabaciones reales del sitio, narración y subtítulos.
 //
 // VOCES DEL EQUIPO. Cada escena tiene asignado un narrador (Miguel, Bruno o Alonso). Si existe una grabación en
@@ -23,7 +23,7 @@ const numero = (n) => ['cero', 'una', 'dos', 'tres', 'cuatro', 'cinco', 'seis', 
 // ---------- Guion: cada escena = narrador + narración + visual ----------
 const ESCENAS = [
   { id: 'titulo', quien: 'miguel', tipo: 'tarjeta', voz: 'COATL: Cálculo de Oportunidad y Análisis Territorial Local. Un proyecto de Probabilidad y Estadística para estimar si un negocio sobrevivirá en Coacalco de Berriozábal.',
-    html: { fondo: 'granate', kicker: 'Jornada Académica Empresarial · Probabilidad y Estadística', titulo: 'COATL', sub: 'Cálculo de Oportunidad y Análisis Territorial Local', pie: TRES } },
+    html: { fondo: 'granate', kicker: 'Feria Profesiográfica 2026 · Probabilidad y Estadística', titulo: 'COATL', sub: 'Cálculo de Oportunidad y Análisis Territorial Local', pie: TRES } },
   { id: 'problema', quien: 'miguel', tipo: 'tarjeta', voz: 'Según el INEGI, de cada cien negocios que nacen en México, solo cuarenta y tres siguen abiertos a los tres años. Y la decisión de abrir suele tomarse sin medir el riesgo. COATL responde dos preguntas antes de invertir: qué tan probable es que el negocio siga abierto y rentable a tres años, y cuánto podría ganar.',
     html: { fondo: 'hueso', kicker: 'El problema', titulo: '¿Sobrevivirá mi negocio?', lista: ['43 de cada 100 negocios siguen abiertos a los 3 años (INEGI)', 'Probabilidad de seguir abierto y rentable a 3 años', 'Utilidad, punto de equilibrio, ROI, recuperación y VPN', 'Riesgo con 2,000 años simulados'] } },
   { id: 'inicio', quien: 'miguel', tipo: 'sitio', hash: 'inicio', accion: 'recorrer', voz: 'Es una aplicación web gratuita: funciona en cualquier navegador, en computadora o en teléfono, sin instalar nada y sin registrarse. La portada muestra el tablero de cien negocios: cuántos siguen abiertos cada año.' },
