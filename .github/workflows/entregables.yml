@@ -12,6 +12,7 @@ permissions:
 jobs:
   entregables:
     runs-on: ubuntu-24.04
+    timeout-minutes: 30   # una instalación colgada canceló una corrida tras 6 h (24 nov 2026)
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
