@@ -66,7 +66,7 @@ Cada fila es una sola corrida de PSI, que varía unos puntos entre corridas. La 
 | Spline Sans Mono | @fontsource-variable | OFL-1.1 | variable | 46b7dcafe3e51dbe / 0ca9a3989044d1f9 | `assets/fuentes/web/` | Cifras | build y capturas | En uso |
 | JS de COATL | propio | del equipo | v18 | e204c065965e29d0 | `assets/js/coatl-e204c06596.js` | Todo el sitio | unitarias, e2e y axe | Nuevo en v18 |
 | Fotos de escenarios y carruseles | Wikimedia Commons y otras (ver créditos) | CC BY / CC BY-SA | — | — | `assets/img/` | Inicio, Territorio | el build falla si una foto se repite | En uso |
-| Voces del video | grabaciones del equipo | del equipo | 2026-11 | — | `entregables/voces/` (no se versiona) | `entregables/COATL_Video.mp4` | revisión de cuadros | 17 de 19 escenas |
+| Voces del video | grabaciones del equipo | del equipo | 2026-11 | — | `entregables/voces/` (no se versiona) | `entregables/COATL_Video.mp4` | revisión de cuadros | 19 de 19 escenas |
 | Lighthouse | npm | Apache-2.0 | 12.2.1 | — | `.cache/lh/` (no se versiona) | `scripts/medir_lighthouse.mjs` | este informe | Herramienta |
 | faster-whisper (modelo «small») | PyPI / Hugging Face | MIT | — | — | `.cache/audios/` (no se versiona) | Transcribir las voces para los subtítulos | revisión de cuadros | Herramienta |
 
@@ -74,8 +74,8 @@ Cada fila es una sola corrida de PSI, que varía unos puntos entre corridas. La 
 
 ## 5. Cambios de la auditoría v18
 
-1. Las voces del equipo están en 17 de 19 escenas del video, con subtítulos que siguen lo que se dijo (`entregables/voces/NN-escena.txt`).
-2. Las escenas 15 (versiones) y 17 (limitaciones) siguen con la voz sintética. Sus grabaciones afirman cosas que ya no son ciertas («13 versiones… cifras idénticas»; «los coeficientes son estimaciones del equipo»). Hay que volver a grabarlas con `docs/GUION_VOCES.md`.
+1. Las voces del equipo están en las 19 escenas del video, con subtítulos que siguen lo que se dijo (`entregables/voces/NN-escena.txt`).
+2. Las escenas 15 (versiones) y 17 (limitaciones) se regrabaron con el guion vigente; ambas las narra Miguel.
 3. El JS sale del HTML a un archivo con hash y `defer`. La CSP ya no permite scripts en línea.
 4. Las fotos fuera de la primera vista se cargan en diferido.
 5. Los puntos del carrusel tienen un área táctil de 24 px (WCAG 2.5.8). El punto activo crece sin invadir el área de sus vecinos.
