@@ -129,6 +129,41 @@
   </div>
 </section>
 
+<section class="seccion" id="opinion" aria-labelledby="opinion-titulo">
+  <p class="folio">Tu opinión</p>
+  <h2 class="titulo" id="opinion-titulo">¿Qué te pareció COATL?</h2>
+  <p class="intro">Cuéntanos en un minuto qué te sirvió y qué mejorarías. Tu opinión llega directo al equipo por correo: <a href="mailto:A660136406@my.uvm.edu.mx">A660136406@my.uvm.edu.mx</a>.</p>
+  <article class="widget widget-claro widget-opinion" id="wOpinion" data-estado="vacio" aria-labelledby="wOpinion-q">
+    <p class="widget-pregunta" id="wOpinion-q">Califica COATL y déjanos una sugerencia</p>
+    <form class="op-form" id="opForm" novalidate>
+      <fieldset class="op-escala">
+        <legend>¿Qué tan útil te pareció? <span class="op-req">(obligatoria)</span></legend>
+        <div class="op-opciones">
+          <label><input type="radio" name="opUtil" value="1"><span>1<small>Nada</small></span></label>
+          <label><input type="radio" name="opUtil" value="2"><span>2<small>Poco</small></span></label>
+          <label><input type="radio" name="opUtil" value="3"><span>3<small>Regular</small></span></label>
+          <label><input type="radio" name="opUtil" value="4"><span>4<small>Útil</small></span></label>
+          <label><input type="radio" name="opUtil" value="5"><span>5<small>Muy útil</small></span></label>
+        </div>
+      </fieldset>
+      <div class="op-campos">
+        <div class="op-campo"><label for="opApartado">¿Qué apartado te gustó más?</label>
+          <select id="opApartado"><option value="">— Elige uno —</option><option>Inicio y mapa</option><option>Territorio</option><option>DENUE nacional</option><option>Simulador</option><option>Para empresas</option><option>Estrategia</option><option>Metodología</option><option>Video</option></select></div>
+        <div class="op-campo"><label for="opNombre">Tu nombre o carrera <span class="op-req">(opcional)</span></label>
+          <input type="text" id="opNombre" maxlength="80" autocomplete="off" placeholder="Ej.: Ana, Ingeniería Industrial"></div>
+        <div class="op-campo op-ancho"><label for="opMejora">¿Qué mejorarías o qué te gustó?</label>
+          <textarea id="opMejora" rows="4" maxlength="1000" placeholder="Ej.: Me gustó el mapa; agregaría más giros de negocio."></textarea></div>
+      </div>
+      <div class="acciones-widget">
+        <a class="btn btn-widget" id="opEnviar" href="mailto:A660136406@my.uvm.edu.mx">✉️ Enviar por correo</a>
+        <button type="button" class="btn btn-widget btn-sec" id="opCopiar">Copiar mi opinión</button>
+      </div>
+    </form>
+    <p class="nota-widget">Al enviar se abre tu aplicación de correo con la opinión ya escrita; tú decides si la mandas. COATL no guarda ni envía nada por su cuenta. Si no tienes correo configurado, copia tu opinión y pégala en un correo a A660136406@my.uvm.edu.mx.</p>
+    <p class="widget-estado" role="status" id="wOpinion-estado">Elige una calificación del 1 al 5.</p>
+  </article>
+</section>
+
 <section class="seccion" id="contexto">
   <p class="folio">El territorio en cifras</p>
   <h2 class="titulo">Coacalco de Berriozábal: un mercado de 293 mil personas</h2>
@@ -1015,7 +1050,7 @@
         <li><strong>Asistente de IA y «Describe tu negocio».</strong> Cuando escribes una pregunta libre o una descripción, ese texto y un resumen del escenario (giro, zona, probabilidad, utilidad, clientes y ticket) se envían al intermediario de COATL en Vercel Inc. y de ahí a la API de Gemini de Google LLC, en Estados Unidos, solo para generar la respuesta. COATL no guarda la conversación y pide a Google no almacenarla (<code>store:false</code>); en el plan gratuito, Google puede usar el contenido conforme a sus términos. <strong>No escribas datos personales, de contacto ni de terceros.</strong> Las preguntas de los botones («¿Cómo voy?», etc.) se responden en tu navegador sin enviar nada.</li>
         <li><strong>Mapas, fuentes y bibliotecas.</strong> Al cargar el mapa y las bibliotecas, tu navegador pide recursos a OpenStreetMap, Esri y cdnjs (Cloudflare), que reciben tu dirección IP como en cualquier sitio web.</li>
       </ul>
-      <p>Para dudas o para ejercer tus derechos (acceso, rectificación, cancelación u oposición) escribe en <a href="https://github.com/Maikolv/coatl/issues" target="_blank" rel="noopener">github.com/Maikolv/coatl/issues</a>. La autoridad en la materia es la Secretaría Anticorrupción y Buen Gobierno.</p>
+      <p>Para dudas o para ejercer tus derechos (acceso, rectificación, cancelación u oposición) escribe a <a href="mailto:A660136406@my.uvm.edu.mx">A660136406@my.uvm.edu.mx</a> o en <a href="https://github.com/Maikolv/coatl/issues" target="_blank" rel="noopener">github.com/Maikolv/coatl/issues</a>. La autoridad en la materia es la Secretaría Anticorrupción y Buen Gobierno.</p>
       <p><strong>Negocios guardados, aislados por usuario.</strong> Si guardas un negocio <em>sin perfil</em>, el nombre, las variables del simulador y tus respuestas del diagnóstico viven solo en esta pestaña del navegador y se borran al cerrarla. Si entras con un <em>usuario y una clave</em>, se guardan en este equipo <strong>cifrados</strong> (AES-GCM de 256 bits con una llave derivada de tu clave mediante PBKDF2); en el almacenamiento solo queda un identificador derivado del usuario y datos ilegibles, de modo que otra persona que use el mismo equipo no puede ver ni los nombres de tus negocios. El perfil se cierra al pulsar «Salir», al cerrar la pestaña o tras 15 minutos sin actividad. Nada de esto se envía a ningún servidor ni viaja en el enlace para compartir, y el equipo de COATL no puede verlo. <strong>Si olvidas tu clave, tus negocios no se pueden recuperar.</strong> El sitio también recuerda, solo durante la sesión, qué pestañas tienes abiertas y si pausaste el movimiento.</p>
       <p><strong>Archivos de empresas.</strong> Los archivos que cargues en la sección «Para empresas» se leen únicamente en tu navegador: no se envían a ningún servidor (la política de seguridad del sitio lo impide), no se guardan en el dispositivo y se eliminan al recargar la página o al pulsar «Borrar mis datos». COATL no tiene acceso a ellos. Si eliges un archivo de Excel, el navegador descarga el lector SheetJS desde cdnjs; esa descarga no incluye tus datos.</p>
       <p><strong>DENUE.</strong> Se publican solo conteos agregados del Directorio Estadístico Nacional de Unidades Económicas (INEGI), información pública; no se muestran nombres, direcciones ni contactos de los establecimientos.</p>
@@ -1092,7 +1127,7 @@
     </article>
     <article class="metodo" data-num="§13">
       <h3>Vigencia y cambios</h3>
-      <p>Aviso actualizado el 16 de noviembre de 2026 (versión 11 del sitio). Cambios de esta versión: negocios guardados en el navegador, estimación fiscal, diagnóstico de solidez, modelo 2.5D y licencias de terceros en un solo artículo.</p>
+      <p>Aviso actualizado el 23 de noviembre de 2026 (versión 18 del sitio, de entrega para la Feria Profesiográfica 2026). Cambios de esta versión: correo de contacto y formulario de opinión, que no guarda ni envía datos por su cuenta: abre tu aplicación de correo y tú decides si mandas el mensaje.</p>
       <p>Los cambios se publican en esta misma página y quedan registrados, con fecha y autor, en el <a href="https://github.com/Maikolv/coatl/commits/main" target="_blank" rel="noopener">historial público del repositorio</a>. Si un cambio afecta la forma en que se tratan tus datos, se indicará aquí de manera destacada.</p>
     </article>
     <article class="metodo" data-num="§14">
@@ -1170,6 +1205,8 @@
         <li>2,000 corridas por escenario, semilla reproducible</li>
         <li>Hecho con HTML, CSS y JavaScript (Chart.js + Leaflet)</li>
         <li><a href="#legal">Aviso legal y referencias completas</a></li>
+        <li>Contacto: <a href="mailto:A660136406@my.uvm.edu.mx">A660136406@my.uvm.edu.mx</a></li>
+        <li><a href="#opinion">Danos tu opinión</a></li>
       </ul>
     </div>
   </div>

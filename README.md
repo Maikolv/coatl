@@ -102,7 +102,8 @@ Simulador estadístico que estima la **probabilidad de que un negocio siga opera
 - **Reporte propio en PDF e imagen**: solo lo relevante del negocio, con la identidad de COATL; la imagen sale a 3,200 px de ancho.
 - **Plantilla de Excel con guía** para el apartado de empresas (`node scripts/plantilla_excel.mjs`).
 - **Identidad en movimiento**: grecas que avanzan y carruseles de fotos en Inicio y Territorio, con botón para pausar el movimiento.
-- **Stand físico**: tres propuestas de recursos en [docs/STAND.md](docs/STAND.md) y un encargo para Codex en [docs/PROMPT_CODEX_STAND.md](docs/PROMPT_CODEX_STAND.md).
+- **Stand físico**: tres propuestas austeras y acumulativas ($410 a $1,660) en [docs/STAND.md](docs/STAND.md), con cotización por partida, visualizaciones generadas con Codex e imprimibles a tamaño real (`node scripts/stand.mjs`).
+- **Contacto y opinión**: correo del equipo [A660136406@my.uvm.edu.mx](mailto:A660136406@my.uvm.edu.mx); sección «Tu opinión» en Inicio (arma un correo, no guarda ni envía nada) y formulario de Google de retroalimentación (`node scripts/retroalimentacion.mjs`).
 
 - **IA de COATL sin clave para el visitante**: el asistente y «Describe tu negocio» usan Gemini con la clave del proyecto, guardada en un intermediario de Vercel ([docs/GEMINI.md](docs/GEMINI.md)); sin red, responde el motor local.
 - **Mapa real en Inicio y en el Simulador**: el esquema del equipo se retiró; ambos usan las AGEB oficiales del INEGI.
@@ -283,7 +284,9 @@ entregables/            documento técnico y reporte (PDF), presentación (PDF y
 - [Reporte técnico (PDF)](entregables/COATL_Reporte.pdf).
 - [Presentación (PDF)](entregables/COATL_Presentacion.pdf) y [PowerPoint editable](entregables/COATL_Presentacion.pptx).
 - [Libro técnico (Excel)](entregables/COATL_Libro_Tecnico.xlsx): todas las tablas del proyecto.
-- [Video de presentación](entregables/COATL_Video.mp4), con narración y subtítulos ([.srt](entregables/COATL_Video.srt)).
+- [Video de presentación](entregables/COATL_Video.mp4), con narración y subtítulos ([.srt](entregables/COATL_Video.srt)); copia ligera para Teams o correo: [COATL_Video_Teams.mp4](entregables/COATL_Video_Teams.mp4).
+- [Cotización del stand (PDF)](entregables/COATL_Stand_Cotizacion.pdf) e imprimibles en [entregables/stand/](entregables/stand/).
+- Formulario de retroalimentación: [entregables/retroalimentacion/](entregables/retroalimentacion/) (Apps Script y encabezados).
 
 Todo se regenera con `npm run entregables` (el video, con `npm run entregables -- --video`).
 

@@ -5,7 +5,7 @@ const visibles = (page) => page.evaluate(() => [...document.querySelectorAll('[d
 
 test('cada apartado se abre como página propia y respeta atrás/adelante', async ({ page }) => {
   await page.goto('/', { waitUntil: 'domcontentloaded' });
-  expect(await visibles(page)).toEqual(['inicio', 'explorar']);
+  expect(await visibles(page)).toEqual(['inicio', 'explorar', 'opinion']);
   await page.click('.nav-links a[data-vista="simulador"]');
   await expect(page.locator('#simulador')).toBeVisible();
   expect(await visibles(page)).toEqual(['simulador', 'mejora']);

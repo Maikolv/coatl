@@ -675,3 +675,28 @@ body.sin-movimiento .legal-relleno::before{animation-play-state:paused!important
 .perfil-barra .nota-widget{grid-column:1/-1;color:#F0D5D8;margin:0}
 .perfil-barra input:disabled{opacity:.7}
 @media (max-width:820px){.perfil-barra{grid-template-columns:minmax(0,1fr)}}
+
+/* ---------- Tu opinión (#opinion) ---------- */
+.widget-opinion{max-width:860px}
+.op-form{margin:.9rem 0 .4rem}
+.op-escala{border:0;margin:0 0 1rem;padding:0}
+.op-escala legend,.op-campo label{font:700 .85rem var(--cuerpo);color:var(--granate);margin-bottom:.45rem;padding:0}
+.op-req{font-weight:500;color:var(--gris-texto)}
+.op-opciones{display:grid;grid-template-columns:repeat(5,1fr);gap:.5rem}
+.op-opciones label{position:relative;cursor:pointer}
+.op-opciones input{position:absolute;opacity:0;width:100%;height:100%;margin:0;cursor:pointer}
+.op-opciones span{display:flex;flex-direction:column;align-items:center;gap:.15rem;padding:.6rem .3rem;border:2px solid var(--niebla-2);border-radius:12px;background:#fff;
+  font:800 1.3rem var(--display);color:var(--granate);transition:background .15s,border-color .15s,color .15s}
+.op-opciones small{font:600 .7rem var(--cuerpo);color:var(--gris-texto)}
+.op-opciones label:hover span{border-color:var(--rojo)}
+.op-opciones input:checked+span{background:var(--rojo);border-color:var(--rojo);color:#fff}
+.op-opciones input:checked+span small{color:#FFE3E6}
+.op-opciones input:focus-visible+span{outline:3px solid var(--granate);outline-offset:2px}
+.op-campos{display:grid;grid-template-columns:1fr 1fr;gap:.9rem;margin-bottom:1rem}
+.op-campo label{display:block}
+.op-ancho{grid-column:1/-1}
+.op-campo input,.op-campo select,.op-campo textarea{width:100%;font:inherit;padding:.6rem .75rem;border:1px solid #C9AFAD;border-radius:10px;background:#fff;color:var(--tinta);min-height:2.7rem}
+.op-campo textarea{resize:vertical}
+.op-campo :is(input,select,textarea):focus-visible{outline:3px solid var(--granate);outline-offset:1px}
+#wOpinion[data-estado="vacio"] #opEnviar{background:var(--granate)}
+@media (max-width:640px){.op-campos{grid-template-columns:1fr}.op-opciones{gap:.3rem}.op-opciones small{font-size:.6rem}}

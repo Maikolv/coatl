@@ -1,3 +1,5 @@
+> **Histórico (v17).** Reemplazado por las propuestas austeras de [STAND.md](STAND.md), generadas por `scripts/stand.mjs`. Se conserva como registro.
+
 # COATL · Tres propuestas para el stand físico
 
 **Cálculo de Oportunidad y Análisis Territorial Local**  

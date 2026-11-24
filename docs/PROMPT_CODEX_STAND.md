@@ -1,3 +1,5 @@
+> **Histórico (v17).** Reemplazado por las propuestas austeras de [STAND.md](STAND.md), generadas por `scripts/stand.mjs`. Se conserva como registro.
+
 # Prompt para Codex — tres propuestas de stand físico
 
 Copia el bloque siguiente en Codex (desde la raíz del repositorio). Es de **solo lectura sobre el código**: lo único que puede crear es el archivo `docs/STAND_CODEX.md`.

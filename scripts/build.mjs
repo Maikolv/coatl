@@ -42,6 +42,7 @@ export const MODULOS_JS = [
   'assets/vendor/qrcode-generator-1.4.4.js',   // códigos QR (MIT), incluido para que funcione sin conexión
   'src/ui/reporte.js',
   'src/ui/legal.js',
+  'src/ui/opinion.js',
   'src/ui/app.js',
 ];
 

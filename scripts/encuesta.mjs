@@ -7,10 +7,8 @@
 // variable del modelo sin recodificar. Uso: node scripts/encuesta.mjs
 import fs from 'node:fs';
 import path from 'node:path';
-import { pathToFileURL } from 'node:url';
-import { chromium } from 'playwright';
 import { cargarModelo } from '../tests/cargar.mjs';
-import { LOGO } from './doc/kit.mjs';
+import { encabezados } from './doc/encabezado.mjs';
 
 const M = cargarModelo();
 const RAIZ = path.resolve(path.dirname(new URL(import.meta.url).pathname.replace(/^\/([A-Z]:)/, '$1')), '..');
@@ -119,35 +117,6 @@ fs.writeFileSync(path.join(SALIDA, 'crear_formulario.gs'), gs);
 fs.writeFileSync(path.join(SALIDA, 'codificacion.json'), JSON.stringify({ nota: 'Respuesta → valor del simulador (src/index.html). Deuda = porcentaje financiado típico de cada tramo.', ...CODIGOS }, null, 2) + '\n');
 
 // ---------- Encabezado 1600 × 400 con la identidad del sitio ----------
-const fuentes = (n) => pathToFileURL(path.join(RAIZ, 'assets/fuentes/web', n)).href;
-const greca = (color) => `url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='72' height='18' viewBox='0 0 72 18'%3E%3Cpath d='M0 18 V12 H6 V6 H12 V0 H24 V6 H18 V12 H30 V18 Z M36 18 V12 H42 V6 H48 V0 H60 V6 H54 V12 H66 V18 Z' fill='%23${color}'/%3E%3C/svg%3E")`;
-const encabezado = (grande) => `<!doctype html><meta charset="utf-8"><style>
-@font-face{font-family:B;src:url(${fuentes('bricolage-grotesque-latin-standard-normal.woff2')});font-weight:200 800}
-@font-face{font-family:H;src:url(${fuentes('hanken-grotesk-latin-wght-normal.woff2')});font-weight:100 900}
-@font-face{font-family:S;src:url(${fuentes('spline-sans-mono-latin-wght-normal.woff2')});font-weight:300 700}
-html,body{margin:0;width:1600px;height:400px;overflow:hidden}
-body{background:#7A0C1F;position:relative;font-family:H}
-.g{position:absolute;left:0;right:0;height:36px;background:${greca('C8102E')};background-size:144px 36px}
-.g.t{top:0}.g.b{bottom:0;transform:scaleY(-1)}
-.fondo{position:absolute;inset:36px 0;background:radial-gradient(circle at 85% 50%,rgba(200,16,46,.55),transparent 55%)}
-.c{position:absolute;left:${grande ? 300 : 96}px;right:${grande ? 300 : 96}px;top:36px;bottom:36px;display:flex;align-items:center;gap:${grande ? 36 : 44}px}
-.logo{width:${grande ? 120 : 132}px;height:${grande ? 120 : 132}px;flex:none;border-radius:26px;background:#C8102E;display:grid;place-items:center;box-shadow:0 0 0 6px #FBF6F3;overflow:hidden}
-.k{font-family:S;font-weight:600;letter-spacing:.24em;text-transform:uppercase;color:#F4C7CF;font-size:${grande ? 26 : 22}px;margin:0 0 10px}
-h1{font-family:B;font-weight:800;color:#FBF6F3;font-size:${grande ? 74 : 84}px;line-height:1;margin:0;letter-spacing:-.01em}
-p{color:#FBF6F3;opacity:.9;font-size:${grande ? 30 : 30}px;margin:14px 0 0;font-weight:500}
-</style><div class="g t"></div><div class="fondo"></div><div class="g b"></div>
-<div class="c"><div class="logo">${LOGO(grande ? 120 : 132)}</div>
-<div><p class="k">COATL · Encuesta</p><h1>${grande ? 'Negocios de Coacalco' : 'Encuesta a negocios de Coacalco'}</h1>${grande ? '' : '<p>Qué hace que un negocio siga abierto · 5 minutos · Probabilidad y Estadística</p>'}</div></div>`;
-const nav = await chromium.launch({ channel: 'msedge' });
-const pag = await nav.newPage({ viewport: { width: 1600, height: 400 } });
-for (const [arch, grande] of [['encabezado.png', false], ['encabezado-movil.png', true]]) {
-  const tmp = path.join(SALIDA, '_tmp.html');
-  fs.writeFileSync(tmp, encabezado(grande));
-  await pag.goto(pathToFileURL(tmp).href);
-  await pag.evaluate(() => document.fonts.ready);
-  await pag.screenshot({ path: path.join(SALIDA, arch) });
-  fs.unlinkSync(tmp);
-}
-await nav.close();
+await encabezados(SALIDA, { kicker: 'COATL · Encuesta', titulo: { escritorio: 'Encuesta a negocios de Coacalco', movil: 'Negocios de Coacalco' }, sub: 'Qué hace que un negocio siga abierto · 5 minutos · Probabilidad y Estadística' });
 const n = SECCIONES.reduce((s, x) => s + x.preguntas.length, 0) + 1;
 console.log(`entregables/encuesta: crear_formulario.gs (${SECCIONES.length + 1} secciones, ${n} preguntas), codificacion.json, encabezado.png y encabezado-movil.png`);

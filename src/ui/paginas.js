@@ -4,7 +4,7 @@
    funcionando y se pueden compartir; «atrás» y «adelante» del navegador también.
    ?vista=todo muestra todo en una sola página (útil para imprimir y para las pruebas). */
 const VISTAS=[
-  {id:"inicio",      titulo:"Inicio",        secciones:["inicio","explorar"]},
+  {id:"inicio",      titulo:"Inicio",        secciones:["inicio","explorar","opinion"]},
   {id:"territorio",  titulo:"Territorio",    secciones:["contexto"]},
   {id:"denue",       titulo:"DENUE nacional",secciones:["denue"]},
   {id:"simulador",   titulo:"Simulador",     secciones:["simulador","mejora"]},
