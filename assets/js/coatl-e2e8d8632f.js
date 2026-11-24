@@ -1898,15 +1898,18 @@ let abiertas=[]; try{ abiertas=JSON.parse(sessionStorage.getItem('coatl-pestanas
 abiertas=abiertas.filter(id=>VISTAS.some(v=>v.id===id));
 // La tira se pega debajo de la barra superior si esta es fija; en horizontal bajo, la barra se desplaza y la tira va arriba.
 function fijarTope(){ const tira=document.getElementById('pestanasApp'), nav=document.querySelector('.nav'); if(!tira||!nav) return;
-  tira.style.top=(getComputedStyle(nav).position==='sticky'?nav.offsetHeight:0)+'px'; }
+  const tope=getComputedStyle(nav).position==='sticky'?nav.offsetHeight:0;
+  tira.style.top=tope+'px';
+  // Los destinos (#opinion, #mejora…) se detienen bajo la barra y la tira, que son fijas y cambian de alto en móvil.
+  document.documentElement.style.setProperty('--tope-fijo',(tope+tira.offsetHeight)+'px'); }
 window.addEventListener('resize',fijarTope);
 function pintarPestanas(){
   const tira=document.getElementById('pestanasApp'); if(!tira) return;
-  fijarTope();
   try{ sessionStorage.setItem('coatl-pestanas',JSON.stringify(abiertas)); }catch(_){}
   tira.innerHTML=abiertas.map(id=>{const v=VISTAS.find(x=>x.id===id), act=id===vistaActual;
     return '<div class="pa-tab'+(act?' activa':'')+'" data-id="'+id+'"><button type="button" class="pa-mover" data-mover="'+id+'" aria-label="Mover la pestaña '+v.titulo+' (flechas izquierda y derecha, o arrastrar)" title="Arrastra para cambiar el orden">⠿</button><a href="#'+id+'"'+(act?' aria-current="page"':'')+'>'+v.titulo+'</a>'+
       '<button type="button" data-cerrar="'+id+'" aria-label="Cerrar la pestaña '+v.titulo+'">✕</button></div>';}).join('');
+  fijarTope();   // después de pintar: el alto de la tira depende de sus pestañas
   const act=tira.querySelector('.activa'); if(act) tira.scrollLeft=act.offsetLeft-tira.clientWidth/2+act.offsetWidth/2;
 }
 /* Reordenar pestañas: arrastrar el asa ⠿ (ratón o dedo, pointer events) o flechas ←/→ con el asa enfocada.

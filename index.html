@@ -9,7 +9,7 @@
 <link rel="preload" href="assets/fuentes/web/hanken-grotesk-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="assets/fuentes/web/bricolage-grotesque-latin-standard-normal.woff2" as="font" type="font/woff2" crossorigin>
 <meta name="theme-color" content="#7A0C1F">
-<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'sha256-SOHrxoFpEJzpNTpnadmXiEftdyuTVmPobxrqIf2DHsE='; font-src 'self'; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://coatl-ia.vercel.app; object-src 'none'; base-uri 'none'; form-action 'none'">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdnjs.cloudflare.com; worker-src blob:; style-src 'self' 'sha256-HlVD8OGaKHezwgIX73UByKKXgEhWtH5Qk42BY9XPyHs='; font-src 'self'; img-src 'self' data: blob: https://tile.openstreetmap.org https://server.arcgisonline.com https://cdnjs.cloudflare.com; connect-src 'self' https://coatl-ia.vercel.app; object-src 'none'; base-uri 'none'; form-action 'none'">
 <meta name="referrer" content="strict-origin-when-cross-origin">
 <meta property="og:type" content="website">
 <meta property="og:title" content="COATL · Simulador de oportunidad de negocios en Coacalco">
@@ -1063,7 +1063,7 @@ img{max-width:100%}
 .pie-legal{max-width:1200px;margin:2.5rem auto 0;border-top:1px solid rgba(255,255,255,.14);padding-top:1.2rem;font-family:var(--mono);font-size:.64rem;color:#B98A90;letter-spacing:.03em}
 
 /* ====== Navegación viva ====== */
-[id]{scroll-margin-top:92px}
+[id]{scroll-margin-top:calc(var(--tope-fijo,80px) + 12px)}
 .progreso{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--rojo),var(--rojo-vivo));z-index:60;width:0;transition:width .15s linear}
 .nav-links a.activa{background:var(--niebla);color:var(--granate)}
 .nav-links a.cta.activa{background:var(--granate);color:#fff}
@@ -3192,6 +3192,6 @@ body.sin-movimiento .legal-relleno::before{animation-play-state:paused!important
 <template id="libLeaflet"><script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.js" integrity="sha384-cxOPjt7s7Iz04uaHJceBmS+qpjv2JkIHNVcuOrM+YHwZOmJGBXI00mdUXEq65HTH" crossorigin="anonymous" referrerpolicy="no-referrer"></script></template>
 <template id="libChart"><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" integrity="sha384-bs/nf9FbdNouRbMiFcrcZfLXYPKiPaGVGplVbv7dLGECccEXDW+S3zjqSKR5ZEaD" crossorigin="anonymous" referrerpolicy="no-referrer"></script></template>
 
-<script src="assets/js/coatl-bbd0503d2a.js" defer></script>
+<script src="assets/js/coatl-e2e8d8632f.js" defer></script>
 </body>
 </html>

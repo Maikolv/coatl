@@ -379,7 +379,7 @@ img{max-width:100%}
 .pie-legal{max-width:1200px;margin:2.5rem auto 0;border-top:1px solid rgba(255,255,255,.14);padding-top:1.2rem;font-family:var(--mono);font-size:.64rem;color:#B98A90;letter-spacing:.03em}
 
 /* ====== Navegación viva ====== */
-[id]{scroll-margin-top:92px}
+[id]{scroll-margin-top:calc(var(--tope-fijo,80px) + 12px)}
 .progreso{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,var(--rojo),var(--rojo-vivo));z-index:60;width:0;transition:width .15s linear}
 .nav-links a.activa{background:var(--niebla);color:var(--granate)}
 .nav-links a.cta.activa{background:var(--granate);color:#fff}
