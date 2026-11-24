@@ -126,8 +126,6 @@ export function documentoTecnico() {
     p(`La forma de la curva es reveladora: el primer año es, con mucho, el más peligroso (cierra ${pct(1 - D.M.S0[1])} de los negocios) y el riesgo anual desciende después de manera sostenida. Esto justifica el énfasis del sitio en la reserva de capital y en los primeros meses de operación.`),
     h2('Giros'),
     p(`El simulador incluye 35 giros calibrados por el equipo, cada uno con ticket promedio, costo variable, demanda de referencia y coeficiente en el modelo. Además admite las 424 actividades presentes en Coacalco según el DENUE y las 989 del catálogo SCIAN; estas heredan los parámetros del giro calibrado más cercano y se rotulan como «estimación del equipo». La tabla completa de giros está en el apéndice B.`),
-    h2('Sincronización y calidad de los datos'),
-
     h2('Estimación de los coeficientes de giro y zona con el DENUE'),
     p(`Hasta la versión 12 todos los coeficientes β eran supuestos del equipo. A partir de la versión 13, los de **giro** y **zona** —los que más pesan en el resultado— se estiman con datos reales: ediciones sucesivas del Directorio Estadístico Nacional de Unidades Económicas para el Estado de México.`),
     h3('Por qué se puede medir la supervivencia con el DENUE'),
